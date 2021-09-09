@@ -1,5 +1,5 @@
 /**
- * Authors:
+ * Authors: Jeffrey Flynn, Jeffrey Cutcher, David Jachimowicz
  * Date:
  * Description:
  */
