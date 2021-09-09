@@ -7,19 +7,51 @@
 import java.util.Scanner;
 import java.util.ArrayList;
 import javax.lang.model.SourceVersion;
+// return SourceVersion.isIdentifier(name);
 
+
+//When taking data grab list of attributes from UMLClass and search through before
+/**
+ *  boolean ans = ______.contains(_____);
+ */
 public class DiagramModel {
-    public static void main(String[] args){
-        Scanner sc = new Scanner(System.in);
-        ArrayList<UMLClass> tester = new ArrayList<UMLClass>();
-        String userEntry = "";
-        System.out.println("Welcome to the text UML Diagram creator. To begin please select the action you would like to perform.");
-        while(!userEntry.equals("Exit")){
-            userEntry = sc.nextLine();
-        }
-        UMLClass test = new UMLClass(null, null, null);
+   private ArrayList<UMLClass> diagram = new ArrayList<UMLClass>();
 
-        //Ignore this, this is to avoid annoying red squiggles
-        System.out.println(test);
+    public void addClass(String name){
+         UMLClass holder = new UMLClass(name);
+         diagram.add(holder);
+    }
+
+    public void deleteClass(String entry){
+
+    }
+
+    private boolean isValid(String name,String where){
+        return true;
+    }
+
+
+    public void Save(){
+
+    }
+
+    public void Load(){
+
+    }
+
+    public void ListClass(String entry){
+
+    }
+
+    public void ListClasses(){
+
+    }
+
+    public void ListRelationships(){
+        
+    }
+
+    public void ListAttributes(String entry){
+        
     }
 }
