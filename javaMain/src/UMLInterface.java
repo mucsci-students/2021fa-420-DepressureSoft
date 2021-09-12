@@ -102,8 +102,31 @@ public class UMLInterface {
                     System.out.println("Sorry, we don't recognize that command, please try again.");
                 }
             }
+            else if(userEntry.equalsIgnoreCase("Display")){
+                System.out.println("Would you like to display one class or all of them?");
+                userEntry = sc.nextLine();
+                if(userEntry.equalsIgnoreCase("One")){
+                    System.out.println("Please enter the name of the class you want to display.");
+                    userEntry = sc.nextLine();
+                }
+                else if(userEntry.equalsIgnoreCase("All")){
+
+                }
+                else if(userEntry.equalsIgnoreCase("Exit")){
+                    break;
+                }
+                else{
+                    System.out.println("Sorry, we don't recognize that command, please try again.");
+                }
+            }
             else if(userEntry.equalsIgnoreCase("Exit")){
                 break;
+            }
+            else if(userEntry.equalsIgnoreCase("Save")){
+
+            }
+            else if(userEntry.equalsIgnoreCase("Load")){
+                
             }
             else{
                 System.out.println("Sorry, we don't recognize that command, please try again.");
