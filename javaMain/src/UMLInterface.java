@@ -11,7 +11,7 @@ public class UMLInterface {
         String userEntry3 = "";
 
         System.out.println("Welcome to the text UML Diagram creator. To begin please select the action you would like to perform.");
-     
+        System.out.println("If you're new please use the 'Help' command to see the options avaliable.");
         while(!userEntry.equals("Exit")){
             System.out.println("Please input your command.");
             userEntry = sc.nextLine();
@@ -78,7 +78,7 @@ public class UMLInterface {
             else if(userEntry.equalsIgnoreCase("Delete")){
                 System.out.println("Would you like to delete a class, attribute or relationship?");
                 userEntry = sc.nextLine();
-
+                holder.deleteClass(userEntry);
                 if(userEntry.equalsIgnoreCase("Class")){
                     System.out.println("Please enter the name of the class you would like to remove.");
                     userEntry = sc.nextLine();
@@ -127,6 +127,17 @@ public class UMLInterface {
             }
             else if(userEntry.equalsIgnoreCase("Load")){
                 
+            }
+            else if(userEntry.equalsIgnoreCase("Help")){
+                System.out.println("Command List:");
+                System.out.println("Note: 'Class' 'Attribute' and 'Relationship' are sub commands within 'Add', 'Rename', and 'Delete' all commands are 1 word.");
+                System.out.println("Add - Prompts you to add either a 'Class', 'Attribute', or 'Relationship' ");
+                System.out.println("Rename - Prompts you to rename either a 'Class' or an 'Attribute'");
+                System.out.println("Delete - Prompts you to remove either a 'Class', 'Attribute', or 'Relationship'");
+                System.out.println("Display - Gives the option to display either 'One' or 'All' classes.");
+                System.out.println("Save - Saves the current existing diagram.");
+                System.out.println("Load - Loads a diagram from file.");
+                System.out.println("Help - Displays the possible commands able to be made within the program.");
             }
             else{
                 System.out.println("Sorry, we don't recognize that command, please try again.");

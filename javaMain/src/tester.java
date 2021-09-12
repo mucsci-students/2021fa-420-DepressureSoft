@@ -11,6 +11,8 @@ public class tester {
             UMLClass tester1 = holder.getUML("Diagram1");
             tester1.addAttribute("Attribute1");
             tester1.addAttribute("Attribute2");
+            tester1.renameAttribute("Attribute2","RenamedAttribute");
+            tester1.removeAttribute("Attribute1");
             holder.addClass("Diagram2");
             holder.addClass("Diagram3");
             holder.ListClasses();
