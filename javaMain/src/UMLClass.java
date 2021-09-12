@@ -12,19 +12,6 @@ public class UMLClass {
     private ArrayList<String> attributes = new ArrayList<String>();
     private ArrayList<String> relationship = new ArrayList<String>();
     
-    //If user prompts that the diagram has a name, attributes and relationships. 
- /*   public UMLClass(String name, ArrayList<String> attributes,ArrayList<String> parent){
-        this.dName = name;
-        this.attributes = attributes;
-        this.relationship = parent;
-    }
-
-    //If user prompts that the diagram has a name and attributes.
-    public UMLClass(String name, ArrayList<String> attributes) {
-        this.dName = name;
-        this.attributes = attributes;
-    }
-*/
     //If user prompts that the diagram has a name.
     public UMLClass(String name) {
         this.dName = name;
@@ -56,7 +43,13 @@ public class UMLClass {
 
     //Run a for loop through the arrayList looking for the matching string. If none report Error.
     public void renameAttribute(String oldName,String newName){
-            attributes.set(attributes.indexOf(oldName),newName);
+        int i = attributes.size();
+        for(int j = 0; j < i; j++){
+            if(attributes.get(j) == oldName){
+                attributes.set(j,newName);
+                break;
+            }
+        }
     }
 
     //Grabs and returns attribute ArrayList.

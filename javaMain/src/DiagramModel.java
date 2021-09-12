@@ -22,8 +22,20 @@ public class DiagramModel {
          diagram.add(holder);
     }
 
+    /**
+     *Takes the String entered and searches the ArrayList for the object to delete.
+     */
     public void deleteClass(String entry){
+        int i = diagram.size();
 
+        for(int j = 0; j < i; j++){
+            UMLClass holder = diagram.get(j);
+            if(holder.getName() == entry){
+                diagram.remove(j);
+                break;
+            }
+        }
+        
     }
 
     private boolean isValid(String name,String where){
@@ -44,7 +56,16 @@ public class DiagramModel {
     }
 
     public void ListClasses(){
+        int i = diagram.size();
 
+        for(int j = 0; j < i; j++){
+            UMLClass holder = diagram.get(j);
+            System.out.println(holder.getName());
+            for(int k = 0; k < holder.getAttributes().size(); k++){
+                System.out.println(holder.getAttributes().get(i));
+            }
+            
+        }
     }
 
     public void ListRelationships(){
@@ -53,5 +74,10 @@ public class DiagramModel {
 
     public void ListAttributes(String entry){
         
+    }
+
+    //This class is neccessary for adding attributes to already existing diagrams.
+    public UMLClass getUML(String name){
+        return diagram.get(0);
     }
 }

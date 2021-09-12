@@ -12,6 +12,7 @@ public class UMLInterface {
      
         while(!userEntry.equals("Exit")){
             userEntry = sc.nextLine();
+            
             if(userEntry.equalsIgnoreCase("Add Class")){
                 System.out.println("Please enter the name of the class you would like to add.");
                 userEntry = sc.nextLine();
