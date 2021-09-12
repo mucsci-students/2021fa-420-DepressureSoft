@@ -4,7 +4,6 @@
  * Description:
  */
 
-import java.util.Scanner;
 import java.util.ArrayList;
 import javax.lang.model.SourceVersion;
 // return SourceVersion.isIdentifier(name);
@@ -62,7 +61,7 @@ public class DiagramModel {
             UMLClass holder = diagram.get(j);
             System.out.println(holder.getName());
             for(int k = 0; k < holder.getAttributes().size(); k++){
-                System.out.println(holder.getAttributes().get(i));
+                System.out.println(holder.getAttributes().get(k));
             }
             
         }
@@ -78,6 +77,13 @@ public class DiagramModel {
 
     //This class is neccessary for adding attributes to already existing diagrams.
     public UMLClass getUML(String name){
-        return diagram.get(0);
+        int i = diagram.size();
+        for(int j = 0; j < i; j++){
+            UMLClass holder = diagram.get(j);
+            if(holder.getName() == name){
+                return holder;
+            }
+        }
+        return null;
     }
 }
