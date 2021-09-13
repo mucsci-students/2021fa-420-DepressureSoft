@@ -142,9 +142,11 @@ public class DiagramModel {
         return relationships;
     }
 
-    // prints classes to console
+    /**
+     * Prints all the UMLClasses stored in diagram to the console.
+     */
     public void listClasses() { // JEFF
-
+        diagram.forEach((name, value) -> System.out.println(value.toString() + "\n"));
     }
 
     // prints class to console
