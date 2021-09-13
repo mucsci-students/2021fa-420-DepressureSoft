@@ -6,7 +6,10 @@
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.ListIterator;
+import java.util.Arrays;
 import javax.lang.model.SourceVersion;
+
 
 public class DiagramModel {
     
@@ -89,9 +92,30 @@ public class DiagramModel {
             
     }
 
-    // this method also checks existence of classes
+    /**
+     * Deletes a relationship between two classes.
+     * @param from The "parent" of the relationship, i.e. a superclass.
+     * @param to The "child" of the relationship, i.e. a subclass.
+     * @precondition A relationship between from and to, in the correct order, must
+     *  exist in the class diagram.
+     * @return True if preconditions were met, false if not.
+     */
     public boolean deleteRelationship(String from, String to) { // JEFF
-        return false; // temporary return statement
+        if(relationshipExists(from, to)) {
+            ListIterator<UMLClass[]> iter1 = relationships.listIterator();
+            UMLClass[] lookingFor = new UMLClass[2];
+            lookingFor[0] = getClass(from);
+            lookingFor[1] = getClass(to);
+            while(iter1.hasNext()) {
+                if(iter1.next().equals(lookingFor)) {
+                    relationships.remove(iter1.nextIndex() - 1); // need to test if this returns the correct index
+                    return true;
+                }
+            }
+            return false;
+        } else {
+            return false;
+        }
     }
 
     // this method also checks existence of class and validity of attName
