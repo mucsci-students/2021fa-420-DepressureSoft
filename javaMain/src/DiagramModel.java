@@ -93,28 +93,13 @@ public class DiagramModel {
     }
 
     /**
-     * Checks to make sure the name of a class does not contain any invalid
-     * characters. Valid characters are all letters and numbers.
-     * @param name The name to check.
-     * @return True if name does not contain any invalid characters, false if it does.
-     */
-    public static boolean checkClassName(String name) { // DAVID???
-        return true; // temporary return statement
-    }
-
-    /**
-     * Checks to make sure the name of an attribute does not contain any invalid characters.
+     * Checks to make sure name does not contain any invalid characters.
      * Valid characters are all letters and numbers, as well as parentheses ( ).
      * @param name The name to check.
      * @return True if name does not contain any invalid characters, false if it does.
      */
-    public static boolean checkAttName(String name) { // DAVID???
-        return true; // temporary return statement
-    }
-
-    // uses sourceversion to check name
     public static boolean checkNameSourceVersion(String name) { // DAVID
-        return true; // temporary return
+        return SourceVersion.isIdentifier(name);
     }
 
     /**
@@ -141,7 +126,7 @@ public class DiagramModel {
 
         if (classSrc == null)
         {
-            /** Updates doesExist if the source class DNE */
+            // Updates doesExist if the source class DNE 
             doesExist = "classSrcDNE";
         }
         else if (traitType != null)
@@ -149,7 +134,7 @@ public class DiagramModel {
             switch (traitType) 
             {
                 case "attribute":
-                    /** Finds index of desired attribute in source class */
+                    // Finds index of desired attribute in source class
                     int targetAttributeIndex = classSrc.getAttributes().indexOf(traitName);
                     if (targetAttributeIndex == -1)
                     {
