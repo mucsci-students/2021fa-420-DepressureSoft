@@ -63,9 +63,30 @@ public class DiagramModel {
         
     }
     
-    // this method also checks existence of classes
+    /**
+     * Adds a relationship between two classes.
+     * @param from The "parent" of the relationship, i.e. a superclass.
+     * @param to The "child" of the relationship, i.e. a subclass.
+     * @precondition from and to cannot contain the same class names, and
+     *  a relationship cannot be made between two classes that already have
+     *  a relationship.
+     * @return True if adding a relationship was successful, false if not.
+     */
     public boolean addRelationship(String from, String to) { // JEFF
-        return false; // temporary return statement
+        boolean classesExist = (classExists(from) && classExists(to));
+        boolean notSameClass = !from.equals(to);
+        boolean noExistingRelationship =
+            !(relationshipExists(from, to) || relationshipExists(to, from));
+        if(classesExist && notSameClass && noExistingRelationship) {
+            UMLClass[] arr = new UMLClass[2];
+            arr[0] = getClass(from);
+            arr[1] = getClass(to);
+            relationships.add(arr);
+            return true;
+        } else {
+            return false;
+        }
+            
     }
 
     // this method also checks existence of classes
