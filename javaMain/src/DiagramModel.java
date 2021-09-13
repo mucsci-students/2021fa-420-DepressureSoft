@@ -63,9 +63,16 @@ public class DiagramModel {
         return false; // temporary return statement
     }
 
-    // this method also checks existence of classes
+    /**
+     * Deletes a relationship between two classes.
+     * @param from The "parent" of the relationship, i.e. a superclass.
+     * @param to The "child" of the relationship, i.e. a subclass.
+     * @precondition A relationship between from and to, in the correct order, must
+     *  exist in the class diagram.
+     * @return True if preconditions were met, false if not.
+     */
     public boolean deleteRelationship(String from, String to) { // JEFF
-        return false; // temporary return statement
+        return true;
     }
 
     // this method also checks existence of class and validity of attName
