@@ -34,7 +34,12 @@ public class DiagramModel {
      * @return False if name is invalid, true if name is valid. 
      */
     public boolean addClass(String name) { // JEFF
-        return false; // temporary return statement
+        if(!classExists(name) && checkClassName(name) && name.length() > 0) {
+            diagram.put(name, new UMLClass(name));
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
