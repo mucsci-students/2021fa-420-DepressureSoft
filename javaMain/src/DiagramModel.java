@@ -6,7 +6,10 @@
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.ListIterator;
+import java.util.Arrays;
 import javax.lang.model.SourceVersion;
+
 
 public class DiagramModel {
     
@@ -72,7 +75,21 @@ public class DiagramModel {
      * @return True if preconditions were met, false if not.
      */
     public boolean deleteRelationship(String from, String to) { // JEFF
-        return true;
+        if(relationshipExists(from, to)) {
+            ListIterator<UMLClass[]> iter1 = relationships.listIterator();
+            UMLClass[] lookingFor = new UMLClass[2];
+            lookingFor[0] = getClass(from);
+            lookingFor[1] = getClass(to);
+            while(iter1.hasNext()) {
+                if(iter1.next().equals(lookingFor)) {
+                    relationships.remove(iter1.nextIndex() - 1); // need to test if this returns the correct index
+                    return true;
+                }
+            }
+            return false;
+        } else {
+            return false;
+        }
     }
 
     // this method also checks existence of class and validity of attName
@@ -122,7 +139,7 @@ public class DiagramModel {
 
     // uses sourceversion to check name
     public static boolean checkNameSourceVersion(String name) { // DAVID
-
+        return true; // temporary return
     }
 
     /**
