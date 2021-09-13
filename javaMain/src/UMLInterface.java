@@ -2,8 +2,9 @@ import java.util.Scanner;
 import java.util.ArrayList;
 
 public class UMLInterface {
-    public static void main(String[] args){
-
+    public static void main(String[] args){ 
+        // please use listClasses, listClass, and listRelationship methods.
+        // use methods in DiagramModel to check name validity/existence.
         DiagramModel holder = new DiagramModel();
         Scanner sc = new Scanner(System.in);
         String userEntry = "";

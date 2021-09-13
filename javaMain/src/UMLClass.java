@@ -34,7 +34,7 @@ public class UMLClass {
      * @precondition Name cannot already exist within the class, and cannot be blank.
      */
     public void addAttribute(String name) {
-
+        this.attributes.add(name);
     }
 
     /**
@@ -43,7 +43,7 @@ public class UMLClass {
      * @precondition Name must already exist as an attribute.
      */
     public void deleteAttribute(String name) {
-
+        this.attributes.remove(name);
     }
 
     /**
