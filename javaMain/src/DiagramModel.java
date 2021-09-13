@@ -6,6 +6,8 @@
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.ListIterator;
+
 import javax.lang.model.SourceVersion;
 
 public class DiagramModel {
@@ -239,8 +241,18 @@ public class DiagramModel {
      * @return True if the relationship exists in the diagram, false if not.
      */
     public boolean relationshipExists(String from, String to) { 
-        return false; // temporary return statement
-        // will need a for loop
+        if (!classExists(from) || !classExists(to)) return false;
+        ListIterator<UMLClass[]> iter1 = relationships.listIterator();
+        UMLClass[] lookingFor = new UMLClass[2];
+        lookingFor[0] = getClass(from);
+        lookingFor[1] = getClass(to);
+        while(iter1.hasNext()) {
+            if(iter1.next().equals(lookingFor)) {
+                relationships.remove(iter1.nextIndex() - 1); // need to test if this returns the correct index
+                return true;
+            }
+        }
+        return false;
     }
 
     public ArrayList<UMLClass[]> getRelationships() { // DONE
