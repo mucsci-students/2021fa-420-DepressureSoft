@@ -209,6 +209,40 @@ public class DiagramModel {
         }
     }
 
+    /**
+     * Checks that a class exists in the diagram.
+     * @param name The class name to check for.
+     * @return True if class by passed in name exists in diagram, false if not.
+     */
+    public boolean classExists(String name) { 
+        return diagram.containsKey(name);
+    }
+
+    /**
+     * Checks that an attribute exists in the diagram.
+     * @param name The name of the class the attribute is contained in.
+     * @param attName The name of the attribute to check for.
+     * @return True if the attribute exists in the diagram, false if not.
+     */
+    public boolean attributeExists(String className, String attName) { 
+        if(classExists(className)) {
+            return getClass(className).getAttributes().contains(attName);
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Checks that a relationship exists in the diagram.
+     * @param from The "parent" of the relationship.
+     * @param to The "child" of the relationship.
+     * @return True if the relationship exists in the diagram, false if not.
+     */
+    public boolean relationshipExists(String from, String to) { 
+        return false; // temporary return statement
+        // will need a for loop
+    }
+
     public ArrayList<UMLClass[]> getRelationships() { // DONE
         return relationships;
     }
