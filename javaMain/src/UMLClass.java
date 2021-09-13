@@ -54,6 +54,7 @@ public class UMLClass {
         attributes.remove(removedAttribute);
     }
 
+<<<<<<< Updated upstream
     //Run a for loop through the arrayList looking for the matching string. If none report Error.
     public void renameAttribute(String oldName,String newName){
             attributes.set(attributes.indexOf(oldName),newName);
@@ -62,6 +63,15 @@ public class UMLClass {
     //Grabs and returns attribute ArrayList.
     public  ArrayList<String> getAttributes(){
         return attributes;
+=======
+    /**
+     * Deletes an attribute from the attributes field.
+     * @param name The name of the attribute to delete.
+     * @precondition Name must already exist as an attribute.
+     */
+    public void deleteAttribute(String name) {
+        
+>>>>>>> Stashed changes
     }
 
     //Grabs and returns relationships ArrayList.
