@@ -146,7 +146,11 @@ public class DiagramModel {
      * Prints all the UMLClasses stored in diagram to the console.
      */
     public void listClasses() { // JEFF
-        diagram.forEach((name, value) -> System.out.println(value.toString() + "\n"));
+        if(diagram.size() > 0) {
+            diagram.forEach((name, value) -> System.out.println(value.toString() + "\n"));
+        } else {
+            System.out.println("The diagram contains no classes.");
+        }
     }
 
     // prints class to console
