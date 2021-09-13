@@ -115,7 +115,7 @@ public class DiagramModel {
 
     // uses sourceversion to check name
     public static boolean checkNameSourceVersion(String name) { // DAVID
-
+        return true; // temporary return
     }
 
     /**
