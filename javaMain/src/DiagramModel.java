@@ -92,7 +92,6 @@ public class DiagramModel {
         return new UMLClass("Temp"); // temporary return
     }
 
-
     /**
      * Checks to make sure the name of a class does not contain any invalid
      * characters. Valid characters are all letters and numbers.
@@ -119,23 +118,95 @@ public class DiagramModel {
     }
 
     /**
-     * Checks that a class by the name passed in exists in the diagram.
-     * @param name The class name to check for.
-     * @return True if class by passed in name exists in diagram, false if not.
+     * Checks for the existence of traitName in traitType. 
+     * Always checks for the existence of the source class.
+     * If checking an attribute, checks the source class's attribute list for the existence of that attribute.
+     * If checking a relationship, first checks if the destination class exists. If yes, then checks the 
+     *      relationship list for the existence of that relationship.
+     * 
+     * Returns a string depending on the existence of the traitName or classSrcInput.
+     * If the desired trait/class DNE, then a string will be returned specifying what does not exist.
+     * If the desired trait/class does exist, then a string of the value "true" will be returned.
+     * @param classSrcInput The source class
+     * @param classDestInput The destination class, used only for relationship checking. Can be filled with 
+     *      null otherwise
+     * @param traitName The name of the specific attribute to be checked. I left this as traitName because it
+     *      will expand to include methods and fields in the future. Right now it's only attributes
+     * @param traitType The type of trait to be checked, i.e. relationship or attribute (as of now)
      */
-    public boolean classExists(String name) { // DAVID
-        return false; // temporary return statement
-        // HashMap.containsKey("...")
+    public String checkExistence(String classSrcInput, String classDestInput, String traitName, String traitType){
+        UMLClass classSrc = diagram.get(classSrcInput);
+        UMLClass classDest = diagram.get(classDestInput);
+        String doesExist = "true";
+
+        if (classSrc == null)
+        {
+            /** Updates doesExist if the source class DNE */
+            doesExist = "classSrcDNE";
+        }
+        else if (traitType != null)
+        {
+            switch (traitType) 
+            {
+                case "attribute":
+                    /** Finds index of desired attribute in source class */
+                    int targetAttributeIndex = classSrc.getAttributes().indexOf(traitName);
+                    if (targetAttributeIndex == -1)
+                    {
+                        doesExist = "attributeDNE";
+                    }
+                    break;
+                
+                case "relationship":
+                    if (classDest == null)
+                    {
+                        doesExist = "classDestDNE";
+                    }
+                    else
+                    {
+                        // Need to search relationship list for this relationship
+                    }
+                    break;
+                default:
+                    break;
+                    
+            }
+        }
+        return doesExist;        
     }
 
-    public boolean attributeExists(String className, String attName) { // DAVID
-        return false; // temporary return statement
-        // will need a for loop
-    }
+    /**
+     * Partners with checkExistence to print terminal outputs for when the class/trait DNE.
+     * This is in a separate method from checkExistence so that a future isValidName function 
+     * can check if a name is a duplicate by using the checkExistence function.  
+     * 
+     * @param classSrcInput
+     * @param classDestInput
+     * @param traitName
+     * @param traitType
+     */
+    public void checkExistenceCLIOut(String classSrcInput, String classDestInput, String traitName, String traitType)
+    {
+        String doesExist = checkExistence(classSrcInput, classDestInput, traitName, traitType);
 
-    public boolean relationshipExists(String from, String to) { // DAVID
-        return false; // temporary return statement
-        // will need a for loop
+        if (doesExist != "true")
+        {
+            switch (doesExist)
+            {
+                case "classSrcDNE":
+                    System.out.println("Error: The source class " + classSrcInput + " does not exist.");
+                    break;
+                case "classDestDNE":
+                    System.out.println("Error: The destination class " + classDestInput + " does not exist.");
+                    break;
+                case "attributeDNE":
+                    System.out.println("Error: The attribute " + traitName + " does not exist in the class " 
+                    + classSrcInput + ".");
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 
     public ArrayList<UMLClass[]> getRelationships() { // DONE
