@@ -6,6 +6,8 @@
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import javax.lang.model.SourceVersion;
+
 
 public class DiagramModel {
     
@@ -82,17 +84,14 @@ public class DiagramModel {
         return false; // temporary return statement
     }
 
-
     public HashMap<String, UMLClass> getClasses() {
         return diagram;
     }
 
-    // temporarily commented out until UMLClass skeleton gets written
-    /*
     public UMLClass getClass(String name) {
         return new UMLClass("Temp"); // temporary return
     }
-    */
+
 
     /**
      * Checks to make sure the name of a class does not contain any invalid
@@ -112,6 +111,11 @@ public class DiagramModel {
      */
     public static boolean checkAttName(String name) {
         return false; // temporary return statement
+    }
+
+    // uses sourceversion to check name
+    public static boolean checkNameSourceVersion(String name) {
+
     }
 
     /**
@@ -136,6 +140,21 @@ public class DiagramModel {
 
     public ArrayList<UMLClass[]> getRelationships() {
         return relationships;
+    }
+
+    // prints classes to console
+    public void listClasses() {
+
+    }
+
+    // prints class to console
+    public void listClass(String name) {
+
+    }
+
+    // prints relationships to console
+    public void listRelationships() {
+
     }
 
 }
