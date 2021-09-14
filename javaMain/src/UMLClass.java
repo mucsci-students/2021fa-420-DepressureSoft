@@ -29,7 +29,7 @@ public class UMLClass {
 
     //User enters an EXISTING relationship to be removed from the relationship ArrayList. 
     public void deleteRelationship(String deleteRelation){
-            attributes.remove(deleteRelation);
+            relationship.remove(deleteRelation);
     }
     //User enters a VALID attribute to the ArrayList.
     public void addAttribute(String newAttribute){
