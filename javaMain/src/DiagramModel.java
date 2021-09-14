@@ -7,7 +7,7 @@
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ListIterator;
-
+import java.util.Arrays;
 import javax.lang.model.SourceVersion;
 
 public class DiagramModel {
@@ -36,7 +36,12 @@ public class DiagramModel {
      * @return False if name is invalid, true if name is valid. 
      */
     public boolean addClass(String name) { // JEFF
-        return false; // temporary return statement
+        if(!classExists(name) && checkNameSourceVersion(name) && name.length() > 0) {
+            diagram.put(name, new UMLClass(name));
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -60,14 +65,56 @@ public class DiagramModel {
         
     }
     
-    // this method also checks existence of classes
+    /**
+     * Adds a relationship between two classes.
+     * @param from The "parent" of the relationship, i.e. a superclass.
+     * @param to The "child" of the relationship, i.e. a subclass.
+     * @precondition from and to cannot contain the same class names, and
+     *  a relationship cannot be made between two classes that already have
+     *  a relationship.
+     * @return True if adding a relationship was successful, false if not.
+     */
     public boolean addRelationship(String from, String to) { // JEFF
-        return false; // temporary return statement
+        boolean classesExist = (classExists(from) && classExists(to));
+        boolean notSameClass = !from.equals(to);
+        boolean noExistingRelationship =
+            !(relationshipExists(from, to) || relationshipExists(to, from));
+        if(classesExist && notSameClass && noExistingRelationship) {
+            UMLClass[] arr = new UMLClass[2];
+            arr[0] = getClass(from);
+            arr[1] = getClass(to);
+            relationships.add(arr);
+            return true;
+        } else {
+            return false;
+        }
+            
     }
 
-    // this method also checks existence of classes
+    /**
+     * Deletes a relationship between two classes.
+     * @param from The "parent" of the relationship, i.e. a superclass.
+     * @param to The "child" of the relationship, i.e. a subclass.
+     * @precondition A relationship between from and to, in the correct order, must
+     *  exist in the class diagram.
+     * @return True if preconditions were met, false if not.
+     */
     public boolean deleteRelationship(String from, String to) { // JEFF
-        return false; // temporary return statement
+        if(relationshipExists(from, to)) {
+            ListIterator<UMLClass[]> iter1 = relationships.listIterator();
+            UMLClass[] lookingFor = new UMLClass[2];
+            lookingFor[0] = getClass(from);
+            lookingFor[1] = getClass(to);
+            while(iter1.hasNext()) {
+                if(iter1.next().equals(lookingFor)) {
+                    relationships.remove(iter1.nextIndex() - 1); // need to test if this returns the correct index
+                    return true;
+                }
+            }
+            return false;
+        } else {
+            return false;
+        }
     }
 
     // this method also checks existence of class and validity of attName
@@ -95,28 +142,13 @@ public class DiagramModel {
     }
 
     /**
-     * Checks to make sure the name of a class does not contain any invalid
-     * characters. Valid characters are all letters and numbers.
-     * @param name The name to check.
-     * @return True if name does not contain any invalid characters, false if it does.
-     */
-    public static boolean checkClassName(String name) { // DAVID???
-        return true; // temporary return statement
-    }
-
-    /**
-     * Checks to make sure the name of an attribute does not contain any invalid characters.
+     * Checks to make sure name does not contain any invalid characters.
      * Valid characters are all letters and numbers, as well as parentheses ( ).
      * @param name The name to check.
      * @return True if name does not contain any invalid characters, false if it does.
      */
-    public static boolean checkAttName(String name) { // DAVID???
-        return true; // temporary return statement
-    }
-
-    // uses sourceversion to check name
     public static boolean checkNameSourceVersion(String name) { // DAVID
-        return true; // temporary return
+        return SourceVersion.isIdentifier(name);
     }
 
     /**
@@ -143,7 +175,7 @@ public class DiagramModel {
 
         if (classSrc == null)
         {
-            /** Updates doesExist if the source class DNE */
+            // Updates doesExist if the source class DNE 
             doesExist = "classSrcDNE";
         }
         else if (traitType != null)
@@ -151,7 +183,7 @@ public class DiagramModel {
             switch (traitType) 
             {
                 case "attribute":
-                    /** Finds index of desired attribute in source class */
+                    // Finds index of desired attribute in source class
                     int targetAttributeIndex = classSrc.getAttributes().indexOf(traitName);
                     if (targetAttributeIndex == -1)
                     {
