@@ -82,16 +82,23 @@ public class DiagramModel {
 
     public void deleteRelationship(String from, String to)
     {
+        ListIterator<UMLClass[]> iter1 = relationships.listIterator();
         UMLClass fromClass = getUML(from);
         UMLClass toClass = getUML(to);
 
-        UMLClass[] lookingFor = new UMLClass[2];
-        lookingFor[0] = fromClass;
-        lookingFor[1] = toClass;
         fromClass.deleteRelationship(to);
         toClass.deleteRelationship(from);
 
-        relationships.remove(lookingFor);
+        while(iter1.hasNext()) {
+            int nextInd = iter1.nextIndex();
+            UMLClass[] relPair = iter1.next();
+            UMLClass foundFrom = relPair[0];
+            UMLClass foundTo = relPair[1];
+            if(foundFrom.equals(fromClass) && foundTo.equals(toClass)) {
+                relationships.remove(nextInd); // need to test if this returns the correct index
+
+            }
+        }
     }
   
     public void ListRelationships()
