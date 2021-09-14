@@ -137,8 +137,18 @@ public class DiagramModel {
         return diagram;
     }
 
+    /**
+     * Returns a single UMLClass object from the diagram.
+     * @param name The name of the class to grab.
+     * @return The appropriate UMLClass if class called [name] exists in the diagram, 
+     *  null if class does not exist in the diagram.
+     */
     public UMLClass getClass(String name) { // JEFF
-        return new UMLClass("Temp"); // temporary return
+        if(classExists(name)) {
+            return diagram.get(name);
+        } else {
+            return null;
+        }
     }
 
     /**
