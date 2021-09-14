@@ -51,7 +51,7 @@ public class DiagramModel {
      * @return False if the name does not exist in the class diagram, true if it does.
      */
     public boolean deleteClass(String name) { // JEFFREY
-        return false; // temporary return statement
+        return false;
     }
 
     /**
@@ -120,7 +120,12 @@ public class DiagramModel {
 
     // this method also checks existence of class and validity of attName
     public boolean addAttribute(String className, String attName) { // JEFFREY
-        return false; // temporary return statement
+        if(checkExistence(className,null,null,null).equals("true")){
+            UMLClass holder = diagram.get(className);   
+            holder.addAttribute(attName);
+            return true;
+        }
+        return false;
     }
 
     // this method also checks existence of class and attribute
