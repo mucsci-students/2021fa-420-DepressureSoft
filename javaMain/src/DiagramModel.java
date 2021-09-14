@@ -17,7 +17,8 @@ import java.util.HashMap;
 public class DiagramModel {
 
    private ArrayList<UMLClass> diagramOLD = new ArrayList<UMLClass>();
-private HashMap<String, UMLClass> diagram = new HashMap<String, UMLClass>();
+   private HashMap<String, UMLClass> diagram = new HashMap<String, UMLClass>();
+
     public void addClass(String name){
         UMLClass holder = new UMLClass(name);
         diagram.put(name, holder);
@@ -27,15 +28,7 @@ private HashMap<String, UMLClass> diagram = new HashMap<String, UMLClass>();
      *Takes the String entered and searches the ArrayList for the object to delete.
      */
     public void deleteClass(String entry){
-        int i = diagram.size();
-
-        for(int j = 0; j < i; j++){
-            UMLClass holder = diagram.get(j);
-            if(holder.getName() == entry){
-                diagram.remove(j);
-                break;
-            }
-        }
+        diagram.remove(entry);
         
     }
 
@@ -57,7 +50,7 @@ private HashMap<String, UMLClass> diagram = new HashMap<String, UMLClass>();
         if (checkExistence(className, null, null, null) == "true"){
             UMLClass input = diagram.get(className);
 
-            System.out.println("Name: \n" + input.getName());
+            System.out.println("Name: " + input.getName());
             System.out.println("Attributes: ");
 
             /** Prints attributes, prints special message if none */
@@ -80,16 +73,7 @@ private HashMap<String, UMLClass> diagram = new HashMap<String, UMLClass>();
     }
 
     public void ListClasses(){
-        int i = diagram.size();
-
-        for(int j = 0; j < i; j++){
-            UMLClass holder = diagram.get(j);
-            System.out.println(holder.getName());
-            for(int k = 0; k < holder.getAttributes().size(); k++){
-                System.out.println(holder.getAttributes().get(k));
-            }
-            
-        }
+        diagram.forEach((k,v) -> listClass(k));
     }
 
     public void ListRelationships(){
@@ -102,15 +86,9 @@ private HashMap<String, UMLClass> diagram = new HashMap<String, UMLClass>();
 
     //This class is neccessary for adding attributes to already existing diagrams.
     public UMLClass getUML(String name){
-        int i = diagram.size();
-        for(int j = 0; j < i; j++){
-            UMLClass holder = diagram.get(j);
-            if(holder.getName() == name){
-                return holder;
-            }
-        }
-        return null;
+        return diagram.get(name);
     }
+
 
     public void renameUMLClass(String oldName, String newName)
     {
