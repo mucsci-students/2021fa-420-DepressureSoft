@@ -7,6 +7,7 @@
 import java.util.ArrayList;
 import javax.lang.model.SourceVersion;
 import java.util.HashMap;
+import java.util.ListIterator;
 // return SourceVersion.isIdentifier(name);
 
 
@@ -15,9 +16,10 @@ import java.util.HashMap;
  *  boolean ans = ______.contains(_____);
  */
 public class DiagramModel {
+    private HashMap<String, UMLClass> diagram = new HashMap<String, UMLClass>();
+    private ArrayList<UMLClass[]> relationships;
 
-   private ArrayList<UMLClass> diagramOLD = new ArrayList<UMLClass>();
-   private HashMap<String, UMLClass> diagram = new HashMap<String, UMLClass>();
+    private HashMap<String, UMLClass> diagram = new HashMap<String, UMLClass>();
 
     public void addClass(String name){
         UMLClass holder = new UMLClass(name);
@@ -42,28 +44,22 @@ public class DiagramModel {
 
     public void listClass(String className)
     {
-        if (checkExistence(className, null, null, null) == "true"){
-            UMLClass input = diagram.get(className);
+        UMLClass input = diagram.get(className);
 
-            System.out.println("Name: " + input.getName());
-            System.out.println("Attributes: ");
+        System.out.println("Name: " + input.getName());
+        System.out.println("Attributes: ");
 
-            /** Prints attributes, prints special message if none */
-            if (input.getAttributes().size() == 0)
-            {
-                System.out.println("There are no attributes in this class.");
-            }
-            else
-            {
-                for (int i = 0; i < input.getAttributes().size(); i++)
-                {
-                    System.out.println(input.getAttributes().get(i));
-                }
-            }
+        /** Prints attributes, prints special message if none */
+        if (input.getAttributes().size() == 0)
+        {
+            System.out.println("There are no attributes in this class.");
         }
         else
         {
-            checkExistenceCLIOut(className, null, null, null);
+            for (int i = 0; i < input.getAttributes().size(); i++)
+            {
+                System.out.println(input.getAttributes().get(i));
+            }
         }
     }
 
@@ -71,8 +67,43 @@ public class DiagramModel {
         diagram.forEach((k,v) -> listClass(k));
     }
 
-    public void ListRelationships(){
-        
+    public void addRelationship(String from, String to)
+    {
+        UMLClass fromClass = getUML(from);
+        UMLClass toClass = getUML(to);
+
+        UMLClass[] arr = new UMLClass[2];
+        arr[0] = fromClass;
+        fromClass.addRelationship(to);
+        toClass.addRelationship(from);
+        arr[1] = toClass;
+        relationships.add(arr);
+    }
+
+    public void deleteRelationship(String from, String to)
+    {
+        ListIterator<UMLClass[]> iter1 = relationships.listIterator();
+        UMLClass[] lookingFor = new UMLClass[2];
+        lookingFor[0] = getUML(from);
+        lookingFor[1] = getUML(to);
+
+        while(iter1.hasNext()) {
+            if(iter1.next().equals(lookingFor)) {
+                relationships.remove(iter1.nextIndex() - 1); // need to test if this returns the correct index
+            }
+        }
+    }
+
+    public void ListRelationships()
+    {
+        ListIterator<UMLClass[]>iterator = relationships.listIterator();
+        while (iterator.hasNext())
+        {
+            UMLClass[] relPair = iterator.next();
+            UMLClass from = relPair[0];
+            UMLClass to = relPair[1];
+            System.out.println("From: " + from + "To: " + to);
+        }
     }
 
     public void ListAttributes(String entry){
@@ -87,24 +118,10 @@ public class DiagramModel {
 
     public void renameUMLClass(String oldName, String newName)
     {
-        String oldNameExists = checkExistence(oldName, null, null, null);
-        String newNameExists = checkExistence(newName, null, null, null);
-        if (oldNameExists == "true" && newNameExists != "true")
-        {
-            UMLClass renamedClass = diagram.get(oldName);
-            renamedClass.renameClass(newName);
-            diagram.remove(oldName);
-            diagram.put(newName, renamedClass);
-        }
-        else if (oldNameExists != "true")
-        {
-            System.out.println("The class to be renamed, " + oldName + ", does not exist.");
-        }
-        else 
-        {
-            System.out.println("The new name \"" + newName + "\" for the class " + 
-                oldName + " already exists as a class.");
-        }
+        UMLClass renamedClass = diagram.get(oldName);
+        renamedClass.renameClass(newName);
+        diagram.remove(oldName);
+        diagram.put(newName, renamedClass);
     }
 
     public String checkExistence(String classSrcInput, String classDestInput, String traitName, String traitType){
