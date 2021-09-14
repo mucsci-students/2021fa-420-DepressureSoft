@@ -10,7 +10,6 @@ import java.util.ListIterator;
 import java.util.Arrays;
 import javax.lang.model.SourceVersion;
 
-
 public class DiagramModel {
     
     
@@ -242,6 +241,50 @@ public class DiagramModel {
                     break;
             }
         }
+    }
+
+    /**
+     * Checks that a class exists in the diagram.
+     * @param name The class name to check for.
+     * @return True if class by passed in name exists in diagram, false if not.
+     */
+    public boolean classExists(String name) { 
+        return diagram.containsKey(name);
+    }
+
+    /**
+     * Checks that an attribute exists in the diagram.
+     * @param name The name of the class the attribute is contained in.
+     * @param attName The name of the attribute to check for.
+     * @return True if the attribute exists in the diagram, false if not.
+     */
+    public boolean attributeExists(String className, String attName) { 
+        if(classExists(className)) {
+            return getClass(className).getAttributes().contains(attName);
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Checks that a relationship exists in the diagram.
+     * @param from The "parent" of the relationship.
+     * @param to The "child" of the relationship.
+     * @return True if the relationship exists in the diagram, false if not.
+     */
+    public boolean relationshipExists(String from, String to) { 
+        if (!classExists(from) || !classExists(to)) return false;
+        ListIterator<UMLClass[]> iter1 = relationships.listIterator();
+        UMLClass[] lookingFor = new UMLClass[2];
+        lookingFor[0] = getClass(from);
+        lookingFor[1] = getClass(to);
+        while(iter1.hasNext()) {
+            if(iter1.next().equals(lookingFor)) {
+                relationships.remove(iter1.nextIndex() - 1); // need to test if this returns the correct index
+                return true;
+            }
+        }
+        return false;
     }
 
     public ArrayList<UMLClass[]> getRelationships() { // DONE
