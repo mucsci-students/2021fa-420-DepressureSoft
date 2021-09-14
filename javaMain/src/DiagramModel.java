@@ -308,7 +308,11 @@ public class DiagramModel {
 
     // prints class to console
     public void listClass(String name) { // DAVID?
-
+        if(classExists(name)) {
+            diagram.get(name).toString();
+        } else {
+            System.out.println("The class '" + "'' does not exist in the diagram.");
+        }
     }
 
     // prints relationships to console
