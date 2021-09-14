@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class tester {
 
     public static void main(String[] args){
@@ -44,6 +46,10 @@ public class tester {
             holder.addRelationship("Diagram3","Diagram5");
             holder.deleteRelationship("Diagram3","Diagram5");
             holder.ListRelationships();
+            UMLClass tester3 = holder.getUML("Diagram5");
+            ArrayList<String> relation = tester3.getRelationships();
+            for(int i = 0; i < relation.size(); i++)
+                System.out.println(relation.get(i));
     }
 
 }
