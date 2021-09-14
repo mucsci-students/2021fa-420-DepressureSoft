@@ -17,7 +17,7 @@ import java.util.ListIterator;
  */
 public class DiagramModel {
     private HashMap<String, UMLClass> diagram = new HashMap<String, UMLClass>();
-    private ArrayList<UMLClass[]> relationships;
+    private ArrayList<UMLClass[]> relationships = new ArrayList<UMLClass[]>();
 
     public void addClass(String name){
         UMLClass holder = new UMLClass(name);
@@ -100,12 +100,8 @@ public class DiagramModel {
             UMLClass[] relPair = iterator.next();
             UMLClass from = relPair[0];
             UMLClass to = relPair[1];
-            System.out.println("From: " + from + "To: " + to);
+            System.out.println("From: " + from.getName() + " To: " + to.getName());
         }
-    }
-
-    public void ListAttributes(String entry){
-        
     }
 
     //This class is neccessary for adding attributes to already existing diagrams.
