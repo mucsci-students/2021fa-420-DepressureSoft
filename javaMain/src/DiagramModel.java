@@ -28,8 +28,9 @@ public class DiagramModel {
      *Takes the String entered and searches the ArrayList for the object to delete.
      */
     public void deleteClass(String entry){
-        diagram.remove(entry);
-        
+        diagram.remove(entry); 
+
+        // need to deal with relationships
     }
 
     public void Save(){
@@ -75,26 +76,28 @@ public class DiagramModel {
         fromClass.addRelationship(to);
         toClass.addRelationship(from);
         arr[1] = toClass;
+      
         relationships.add(arr);
     }
 
     public void deleteRelationship(String from, String to)
     {
-        ListIterator<UMLClass[]> iter1 = relationships.listIterator();
+        UMLClass fromClass = getUML(from);
+        UMLClass toClass = getUML(to);
+
         UMLClass[] lookingFor = new UMLClass[2];
-        lookingFor[0] = getUML(from);
-        lookingFor[1] = getUML(to);
+        lookingFor[0] = fromClass;
+        lookingFor[1] = toClass;
+        fromClass.deleteRelationship(to);
+        toClass.deleteRelationship(from);
 
-        while(iter1.hasNext()) {
-            if(iter1.next().equals(lookingFor)) {
-                relationships.remove(iter1.nextIndex() - 1); // need to test if this returns the correct index
-            }
-        }
+        relationships.remove(lookingFor);
     }
-
+  
     public void ListRelationships()
     {
         ListIterator<UMLClass[]>iterator = relationships.listIterator();
+      
         while (iterator.hasNext())
         {
             UMLClass[] relPair = iterator.next();
