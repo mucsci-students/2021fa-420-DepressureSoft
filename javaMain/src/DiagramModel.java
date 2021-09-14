@@ -16,7 +16,7 @@ import java.util.HashMap;
  */
 public class DiagramModel {
    private ArrayList<UMLClass> diagram = new ArrayList<UMLClass>();
-
+    
     public void addClass(String name){
          UMLClass holder = new UMLClass(name);
          diagram.add(holder);

@@ -16,7 +16,7 @@ public class tester {
             holder.addClass("Diagram2");
             holder.addClass("Diagram3");
             holder.ListClasses();
-
+        
             System.out.println("Test #2: Removing Elements from the Diagram Model.");
             holder.deleteClass("Diagram1");
             holder.deleteClass("Diagram2");
