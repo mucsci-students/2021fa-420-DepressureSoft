@@ -28,9 +28,19 @@ public class DiagramModel {
      *Takes the String entered and searches the ArrayList for the object to delete.
      */
     public void deleteClass(String entry){
-        diagram.remove(entry); 
+        for(int i = 0; i < relationships.size(); i++)
+        {
+            UMLClass[] holder = relationships.get(i);
+            
+            if(holder[0].getName().equals(entry) || holder[1].getName().equals(entry))
+            {
+                holder[0].deleteRelationship(holder[1].getName());
+                holder[1].deleteRelationship(holder[0].getName());
+                relationships.remove(i);
+            }
+        }
 
-        // need to deal with relationships
+        diagram.remove(entry);
     }
 
     public void Save(){
