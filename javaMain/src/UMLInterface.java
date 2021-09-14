@@ -1,6 +1,7 @@
 import java.util.Scanner;
 import java.util.ArrayList;
-
+import java.util.HashMap;
+import javax.lang.model.SourceVersion;
 public class UMLInterface {
     public static void main(String[] args){
 
@@ -26,14 +27,17 @@ public class UMLInterface {
                 else if(userEntry.equalsIgnoreCase("Attribute")){
                     System.out.println("Please enter the name of the class you would like to add the attribute to.");
                     userEntry = sc.nextLine();
-                    boolean moreAttributes = true;
-                    while(moreAttributes){
-                        System.out.println("Please enter the name of the attribute you would like to add.");
-                        userEntry2 = sc.nextLine();
-                        System.out.println("Would you like to add another attribute to the class?");
-                        userEntry3 = sc.nextLine();
-                        if(userEntry3.equalsIgnoreCase("No")){
-                            moreAttributes = false;
+                    if(holder.checkExistence(userEntry,null,null,null).equals("true")){
+                        boolean moreAttributes = true;
+                        while(moreAttributes){
+                            System.out.println("Please enter the name of the attribute you would like to add.");
+                            userEntry2 = sc.nextLine();
+    
+                            System.out.println("Would you like to add another attribute to the class?");
+                            userEntry3 = sc.nextLine();
+                            if(userEntry3.equalsIgnoreCase("No")){
+                                moreAttributes = false;
+                            }
                         }
                     }
                 }
