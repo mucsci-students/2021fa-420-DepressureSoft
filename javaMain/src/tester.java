@@ -14,13 +14,25 @@ public class tester {
             tester1.renameAttribute("Attribute2","RenamedAttribute");
             tester1.removeAttribute("Attribute1");
             holder.addClass("Diagram2");
+            UMLClass tester2 = holder.getUML("Diagram2");
+            tester2.addAttribute("YOUSUCK");
+            tester2.addAttribute("YOUSUCK2");
+            tester2.addAttribute("YOUSUCK3");
             holder.addClass("Diagram3");
             holder.ListClasses();
+            System.out.println("--------------------------------------------------------");
+
         
             System.out.println("Test #2: Removing Elements from the Diagram Model.");
             holder.deleteClass("Diagram1");
             holder.deleteClass("Diagram2");
             holder.ListClasses();
+
+
+            System.out.println("----------------------------------------------------------");
+
+            System.out.println("Test #3: Printing Elements from the Diagram Model.");
+            holder.listClass("Diagram3");
 
     }
 

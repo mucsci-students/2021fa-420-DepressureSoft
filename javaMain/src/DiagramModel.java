@@ -19,6 +19,8 @@ public class DiagramModel {
     private HashMap<String, UMLClass> diagram = new HashMap<String, UMLClass>();
     private ArrayList<UMLClass[]> relationships;
 
+    private HashMap<String, UMLClass> diagram = new HashMap<String, UMLClass>();
+
     public void addClass(String name){
         UMLClass holder = new UMLClass(name);
         diagram.put(name, holder);
@@ -28,22 +30,9 @@ public class DiagramModel {
      *Takes the String entered and searches the ArrayList for the object to delete.
      */
     public void deleteClass(String entry){
-        int i = diagram.size();
-
-        for(int j = 0; j < i; j++){
-            UMLClass holder = diagram.get(j);
-            if(holder.getName() == entry){
-                diagram.remove(j);
-                break;
-            }
-        }
+        diagram.remove(entry);
         
     }
-
-    private boolean isValid(String name,String where){
-        return true;
-    }
-
 
     public void Save(){
 
@@ -57,7 +46,7 @@ public class DiagramModel {
     {
         UMLClass input = diagram.get(className);
 
-        System.out.println("Name: \n" + input.getName());
+        System.out.println("Name: " + input.getName());
         System.out.println("Attributes: ");
 
         /** Prints attributes, prints special message if none */
@@ -75,16 +64,7 @@ public class DiagramModel {
     }
 
     public void ListClasses(){
-        int i = diagram.size();
-
-        for(int j = 0; j < i; j++){
-            UMLClass holder = diagram.get(j);
-            System.out.println(holder.getName());
-            for(int k = 0; k < holder.getAttributes().size(); k++){
-                System.out.println(holder.getAttributes().get(k));
-            }
-            
-        }
+        diagram.forEach((k,v) -> listClass(k));
     }
 
     public void addRelationship(String from, String to)
@@ -134,6 +114,7 @@ public class DiagramModel {
     public UMLClass getUML(String name){
         return diagram.get(name);
     }
+
 
     public void renameUMLClass(String oldName, String newName)
     {
