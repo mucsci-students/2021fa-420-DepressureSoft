@@ -5,6 +5,7 @@
  */
 
 import java.util.ArrayList;
+import java.util.ListIterator;
 
 public class UMLClass {
     
@@ -61,5 +62,21 @@ public class UMLClass {
      */
     public void reName(String name) {
         this.className = name;
+    }
+
+    /**
+     * Condenses all the UMLClass object's data into a nicely formatted String.
+     * @return A multi-line String of all the data.
+     */
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Class Name: " + this.className + "\n");
+        sb.append("Attributes: ");
+        ListIterator<String> iter = attributes.listIterator();
+        while(iter.hasNext()) {
+            sb.append("\n" + iter.next());
+        }
+        return sb.toString();
+
     }
 }
