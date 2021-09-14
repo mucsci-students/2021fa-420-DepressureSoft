@@ -32,11 +32,6 @@ public class DiagramModel {
         
     }
 
-    private boolean isValid(String name,String where){
-        return true;
-    }
-
-
     public void Save(){
 
     }
