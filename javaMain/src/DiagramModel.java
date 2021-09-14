@@ -17,7 +17,7 @@ import java.util.ListIterator;
  */
 public class DiagramModel {
     private HashMap<String, UMLClass> diagram = new HashMap<String, UMLClass>();
-    private ArrayList<UMLClass[]> relationships;
+    private ArrayList<UMLClass[]> relationships = new ArrayList<UMLClass[]>();
 
     private HashMap<String, UMLClass> diagram = new HashMap<String, UMLClass>();
 
@@ -30,8 +30,9 @@ public class DiagramModel {
      *Takes the String entered and searches the ArrayList for the object to delete.
      */
     public void deleteClass(String entry){
-        diagram.remove(entry);
-        
+        diagram.remove(entry); 
+
+        // need to deal with relationships
     }
 
     public void Save(){
@@ -82,21 +83,22 @@ public class DiagramModel {
 
     public void deleteRelationship(String from, String to)
     {
-        ListIterator<UMLClass[]> iter1 = relationships.listIterator();
-        UMLClass[] lookingFor = new UMLClass[2];
-        lookingFor[0] = getUML(from);
-        lookingFor[1] = getUML(to);
+        UMLClass fromClass = getUML(from);
+        UMLClass toClass = getUML(to);
 
-        while(iter1.hasNext()) {
-            if(iter1.next().equals(lookingFor)) {
-                relationships.remove(iter1.nextIndex() - 1); // need to test if this returns the correct index
-            }
-        }
+        UMLClass[] lookingFor = new UMLClass[2];
+        lookingFor[0] = fromClass;
+        lookingFor[1] = toClass;
+        fromClass.deleteRelationship(to);
+        toClass.deleteRelationship(from);
+
+        relationships.remove(lookingFor);
     }
 
     public void ListRelationships()
     {
         ListIterator<UMLClass[]>iterator = relationships.listIterator();
+
         while (iterator.hasNext())
         {
             UMLClass[] relPair = iterator.next();
@@ -104,10 +106,6 @@ public class DiagramModel {
             UMLClass to = relPair[1];
             System.out.println("From: " + from + "To: " + to);
         }
-    }
-
-    public void ListAttributes(String entry){
-        
     }
 
     //This class is neccessary for adding attributes to already existing diagrams.
