@@ -50,6 +50,7 @@ public class UMLInterface {
                     userEntry = sc.nextLine();
                     System.out.println("Please enter the second class within the relationship you would like to add.");
                     userEntry2 = sc.nextLine();
+                    holder.addRelationship(userEntry,userEntry2);
                 }
                 else if(userEntry.equalsIgnoreCase("Exit"))
                 {
@@ -70,6 +71,7 @@ public class UMLInterface {
                     userEntry = sc.nextLine();
                     System.out.println("Please enter what you want to rename it to.");
                     userEntry2 = sc.nextLine();
+                    holder.renameUMLClass(userEntry,userEntry2);
                 }
                 else if(userEntry.equalsIgnoreCase("Attribute"))
                 {
@@ -79,6 +81,7 @@ public class UMLInterface {
                     userEntry2 = sc.nextLine();
                     System.out.println("Please enter what you want to rename it to.");
                     userEntry3 = sc.nextLine();
+                    holder.getUML(userEntry).renameAttribute(userEntry2,userEntry3);
                 }
                 else if(userEntry.equalsIgnoreCase("Exit"))
                 {
@@ -97,6 +100,7 @@ public class UMLInterface {
                 {
                     System.out.println("Please enter the name of the class you would like to remove.");
                     userEntry = sc.nextLine();
+                    holder.deleteClass(userEntry);
                 }
                 else if(userEntry.equalsIgnoreCase("Attribute"))
                 {
@@ -104,6 +108,7 @@ public class UMLInterface {
                     userEntry = sc.nextLine();
                     System.out.println("Please enter the name of the attribute you would like to remove.");
                     userEntry2 = sc.nextLine();
+                    holder.getUML(userEntry).removeAttribute(userEntry2);
                 }
                 else if(userEntry.equalsIgnoreCase("Relationship"))
                 {
@@ -111,6 +116,7 @@ public class UMLInterface {
                     userEntry = sc.nextLine();
                     System.out.println("Please enter the second class within the relationship you would like to delete.");
                     userEntry2 = sc.nextLine();
+                    holder.deleteRelationship(userEntry,userEntry2);
                 }
                 else if(userEntry.equalsIgnoreCase("Exit"))
                 {
@@ -122,7 +128,7 @@ public class UMLInterface {
             }
             else if(userEntry.equalsIgnoreCase("Display"))
             {
-                System.out.println("Would you like to display one class or all of them?");
+                System.out.println("Would you like to display 'one' class or 'all' of them?");
                 userEntry = sc.nextLine();
                 if(userEntry.equalsIgnoreCase("One"))
                 {
@@ -132,7 +138,7 @@ public class UMLInterface {
                 }
                 else if(userEntry.equalsIgnoreCase("All"))
                 {
-
+                    holder.ListClasses();
                 }
                 else if(userEntry.equalsIgnoreCase("Exit"))
                 {
