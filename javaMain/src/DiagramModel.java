@@ -19,8 +19,6 @@ public class DiagramModel {
     private HashMap<String, UMLClass> diagram = new HashMap<String, UMLClass>();
     private ArrayList<UMLClass[]> relationships;
 
-    private HashMap<String, UMLClass> diagram = new HashMap<String, UMLClass>();
-
     public void addClass(String name){
         UMLClass holder = new UMLClass(name);
         diagram.put(name, holder);
