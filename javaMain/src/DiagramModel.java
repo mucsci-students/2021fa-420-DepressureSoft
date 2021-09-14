@@ -19,8 +19,6 @@ public class DiagramModel {
     private HashMap<String, UMLClass> diagram = new HashMap<String, UMLClass>();
     private ArrayList<UMLClass[]> relationships = new ArrayList<UMLClass[]>();
 
-    private HashMap<String, UMLClass> diagram = new HashMap<String, UMLClass>();
-
     public void addClass(String name){
         UMLClass holder = new UMLClass(name);
         diagram.put(name, holder);
@@ -78,6 +76,7 @@ public class DiagramModel {
         fromClass.addRelationship(to);
         toClass.addRelationship(from);
         arr[1] = toClass;
+      
         relationships.add(arr);
     }
 
@@ -94,17 +93,17 @@ public class DiagramModel {
 
         relationships.remove(lookingFor);
     }
-
+  
     public void ListRelationships()
     {
         ListIterator<UMLClass[]>iterator = relationships.listIterator();
-
+      
         while (iterator.hasNext())
         {
             UMLClass[] relPair = iterator.next();
             UMLClass from = relPair[0];
             UMLClass to = relPair[1];
-            System.out.println("From: " + from + "To: " + to);
+            System.out.println("From: " + from.getName() + " To: " + to.getName());
         }
     }
 

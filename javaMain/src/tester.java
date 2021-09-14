@@ -34,6 +34,16 @@ public class tester {
             System.out.println("Test #3: Printing Elements from the Diagram Model.");
             holder.listClass("Diagram3");
 
+
+            System.out.println("----------------------------------------------------------");
+
+            System.out.println("Test #4: Adding Relationships to the Diagram Model.");
+            holder.addClass("Diagram4");
+            holder.addClass("Diagram5");
+            holder.addRelationship("Diagram4","Diagram5");
+            holder.addRelationship("Diagram3","Diagram5");
+            holder.deleteRelationship("Diagram3","Diagram5");
+            holder.ListRelationships();
     }
 
 }
