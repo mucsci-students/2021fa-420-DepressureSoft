@@ -39,8 +39,16 @@ public class DiagramModel {
                 relationships.remove(i);
             }
         }
-
         diagram.remove(entry);
+    }
+
+    /**
+     * Checks that the class called name exists in the diagram.
+     * @param name The name of the class to check for.
+     * @return True if class exists, false if not.
+     */
+    public boolean classExists(String name) { 
+        return diagram.containsKey(name);
     }
 
     public void Save(){
