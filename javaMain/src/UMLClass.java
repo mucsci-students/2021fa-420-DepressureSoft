@@ -1,47 +1,83 @@
 /**
  * Authors: Jeffrey Flynn, Jeffrey Cutcher, David Jachimowicz
- * Date:
- * Description:
+ * Date: 9/15/21
  */
 
 
 import java.util.ArrayList;
 
+/**
+ * Represents a class in a class diagram, including the name of the class, the class's attributes, and 
+ *  classes related to this class. 
+ */
 public class UMLClass {
+
+    /**
+     * The name of the class.
+     */
     private String dName;
+    /**
+     * The attributes of the class (which include both fields and methods).
+     */
     private ArrayList<String> attributes = new ArrayList<String>();
+    /**
+     * Names of the classes that this class is related to.
+     */
     private ArrayList<String> relationship = new ArrayList<String>();
     
-    //If user prompts that the diagram has a name.
+    /**
+     * Main constructor that sets the name of the new class.
+     * @param name The name of the new class.
+     */
     public UMLClass(String name) {
         this.dName = name;
     }
     
-    //User enters a VALID name to change the current diagram into.
+    /**
+     * Renames the class representation.
+     * @param newName The new name for the class representation.
+     */
     public void renameClass(String newName){
         this.dName = newName;
     }
 
-    //User enters a VALID diagram to add to the relationships
+    /**
+     * Adds a relationship to the class representation.
+     * @param newRelation The name of the class that this class will be related to.
+     */
     public void addRelationship(String newRelation){
         relationship.add(newRelation);
     }
 
-    //User enters an EXISTING relationship to be removed from the relationship ArrayList. 
+    /**
+     * Deletes a relationship to the class representation.
+     * @param deleteRelation The name of the class that this class is related to that will be deleted.
+     */
     public void deleteRelationship(String deleteRelation){
             relationship.remove(deleteRelation);
     }
-    //User enters a VALID attribute to the ArrayList.
+
+    /**
+     * Adds a new attribute the class representation.
+     * @param newAttribute The name of the new attribute.
+     */
     public void addAttribute(String newAttribute){
         attributes.add(newAttribute);
     }
 
-    //User enters an EXISTING attribute to be removed from the arrayList. 
+    /**
+     * Removes an existing attribute from the class representation.
+     * @param removedAttribute The name of the attribute to delete.
+     */
     public void removeAttribute(String removedAttribute){
         attributes.remove(removedAttribute);
     }
 
-    //Run a for loop through the arrayList looking for the matching string. If none report Error.
+    /**
+     * Renames an existing attribute in the class representation.
+     * @param oldName Name of the attribute to rename.
+     * @param newName New name for the attribute.
+     */
     public void renameAttribute(String oldName,String newName){
         int i = attributes.size();
         for(int j = 0; j < i; j++){
@@ -52,17 +88,26 @@ public class UMLClass {
         }
     }
 
-    //Grabs and returns attribute ArrayList.
+    /**
+     * Returns an ArrayList<String> of all the class representation's attributes.
+     * @return The attributes field.
+     */
     public  ArrayList<String> getAttributes(){
         return attributes;
     }
 
-    //Grabs and returns relationships ArrayList.
+    /**
+     * Returns an ArrayList<String> of all the classes related to this class.
+     * @return The relationship field.
+     */
     public  ArrayList<String> getRelationships(){
         return relationship;
     }
 
-    //Grabs and returns UMLClass name.
+    /**
+     * Returns the name of the class representation.
+     * @return The dName field.
+     */
     public  String getName(){
         return dName;
     }
