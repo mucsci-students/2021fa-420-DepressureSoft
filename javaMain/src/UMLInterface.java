@@ -128,7 +128,7 @@ public class UMLInterface {
             }
             else if(userEntry.equalsIgnoreCase("Display"))
             {
-                System.out.println("Would you like to display 'one' class or 'all' of them?");
+                System.out.println("Would you like to display 'one' class, 'all' classes, or their 'relationships'?");
                 userEntry = sc.nextLine();
                 if(userEntry.equalsIgnoreCase("One"))
                 {
@@ -139,6 +139,10 @@ public class UMLInterface {
                 else if(userEntry.equalsIgnoreCase("All"))
                 {
                     holder.ListClasses();
+                }
+                else if(userEntry.equalsIgnoreCase("Relationships"))
+                {
+                    holder.ListRelationships();
                 }
                 else if(userEntry.equalsIgnoreCase("Exit"))
                 {
