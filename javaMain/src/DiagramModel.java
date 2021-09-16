@@ -32,8 +32,15 @@ public class DiagramModel {
      * @param name The name of the new class.
      */
     public void addClass(String name){
-        UMLClass holder = new UMLClass(name);
-        diagram.put(name, holder);
+        if(!classExists(name))
+        {
+            UMLClass holder = new UMLClass(name);
+            diagram.put(name, holder);  
+        }
+        else
+        {
+            System.out.println("The class \"" + name + "\" already exists.");
+        }
     }
 
     /**
@@ -41,28 +48,28 @@ public class DiagramModel {
      * @param entry The name of the class to delete.
      */
     public void deleteClass(String entry){
-        for(int i = 0; i < relationships.size(); i++)
+        if(classExists(entry))
         {
-            UMLClass[] holder = relationships.get(i);
-            
-            if(holder[0].getName().equals(entry) || holder[1].getName().equals(entry))
+            for(int i = 0; i < relationships.size(); i++)
             {
-                holder[0].deleteRelationship(holder[1].getName());
-                holder[1].deleteRelationship(holder[0].getName());
-                relationships.remove(i);
+                UMLClass[] holder = relationships.get(i);
+                
+                if(holder[0].getName().equals(entry) || holder[1].getName().equals(entry))
+                {
+                    holder[0].deleteRelationship(holder[1].getName());
+                    holder[1].deleteRelationship(holder[0].getName());
+                    relationships.remove(i);
+                }
             }
+            diagram.remove(entry);
         }
-        diagram.remove(entry);
+        else
+        {
+            System.out.println("The class \"" + entry + "\" cannot be deleted, as it does not exist");
+        }
     }
 
-    /**
-     * Checks that the class called name exists in the diagram.
-     * @param name The name of the class to check for.
-     * @return True if class exists, false if not.
-     */
-    public boolean classExists(String name) { 
-        return diagram.containsKey(name);
-    }
+
 
     /**
      * Saves the class diagram to a JSON file using the format specified by the CSCI 420 fall 2021 
@@ -87,22 +94,29 @@ public class DiagramModel {
      */
     public void listClass(String className)
     {
-        UMLClass input = diagram.get(className);
+        if(classExists(className))
+            {
+            UMLClass input = diagram.get(className);
 
-        System.out.println("Name: " + input.getName());
-        System.out.println("Attributes: ");
+            System.out.println("Name: " + input.getName());
+            System.out.println("Attributes: ");
 
-        /** Prints attributes, prints special message if none */
-        if (input.getAttributes().size() == 0)
-        {
-            System.out.println("There are no attributes in this class.");
+            /** Prints attributes, prints special message if none */
+            if (input.getAttributes().size() == 0)
+            {
+                System.out.println("There are no attributes in this class.");
+            }
+            else
+            {
+                for (int i = 0; i < input.getAttributes().size(); i++)
+                {
+                    System.out.println(input.getAttributes().get(i));
+                }
+            }
         }
         else
         {
-            for (int i = 0; i < input.getAttributes().size(); i++)
-            {
-                System.out.println(input.getAttributes().get(i));
-            }
+            System.out.println("The class \"" + className + "\" cannot be displayed, as it does not exist");
         }
     }
 
@@ -175,7 +189,7 @@ public class DiagramModel {
     }
 
     /**
-     * Grabs a UMLClass objeect from the diagram, if one by the specified name exists.
+     * Grabs a UMLClass object from the diagram, if one by the specified name exists.
      * @param name The name of the UMLClass to grab.
      * @return The UMLClass object of the specified name.
      */
@@ -191,10 +205,37 @@ public class DiagramModel {
      */
     public void renameUMLClass(String oldName, String newName)
     {
-        UMLClass renamedClass = diagram.get(oldName);
-        renamedClass.renameClass(newName);
-        diagram.remove(oldName);
-        diagram.put(newName, renamedClass);
+        boolean oldClassExists = classExists(oldName);
+        boolean newClassExists = classExists(newName);
+
+        if(oldClassExists && !newClassExists)
+        {
+            UMLClass renamedClass = diagram.get(oldName);
+            renamedClass.renameClass(newName);
+            diagram.remove(oldName);
+            diagram.put(newName, renamedClass);
+        }
+        else
+        {
+            if(!oldClassExists)
+            {
+                System.out.println("The class \"" + oldName + "\" cannot be renamed, as it does not exist.");
+            }
+            else if(newClassExists)
+            {
+                System.out.println("The class \"" + oldName + "\" cannot be renamed to \"" + newName + 
+                    "\", as \"" + newName + "\" already exists as a class.");
+            }
+        }
+    }
+
+    /**
+     * Checks that the class called name exists in the diagram.
+     * @param name The name of the class to check for.
+     * @return True if class exists, false if not.
+     */
+    public boolean classExists(String name) { 
+        return diagram.containsKey(name);
     }
 
     /**
