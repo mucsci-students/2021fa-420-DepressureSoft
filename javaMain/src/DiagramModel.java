@@ -135,16 +135,68 @@ public class DiagramModel {
      */
     public void addRelationship(String from, String to)
     {
-        UMLClass fromClass = getUML(from);
-        UMLClass toClass = getUML(to);
+        boolean fromClassExists = classExists(from);
+        boolean toClassExists = classExists(to);
 
-        UMLClass[] arr = new UMLClass[2];
-        arr[0] = fromClass;
-        fromClass.addRelationship(to);
-        toClass.addRelationship(from);
-        arr[1] = toClass;
-      
-        relationships.add(arr);
+        if(fromClassExists && toClassExists)
+        {
+            if(!from.equals(to))
+            {
+                boolean relationshipExists = false;
+
+                // Iterate for relationship existence
+                for(int i = 0; i < relationships.size(); i++){
+                    UMLClass[] holder = relationships.get(i);
+
+                    if(holder[0].getName().equals(from) && holder[1].getName().equals(to)){
+                        relationshipExists = true;
+                    }
+                    else if(holder[0].getName().equals(to) && holder[1].getName().equals(from))
+                    {
+                        relationshipExists = true;
+                    }
+                }
+
+                if(!relationshipExists)
+                {
+                    UMLClass fromClass = getUML(from);
+                    UMLClass toClass = getUML(to);
+
+                    UMLClass[] arr = new UMLClass[2];
+                    arr[0] = fromClass;
+                    fromClass.addRelationship(to);
+                    toClass.addRelationship(from);
+                    arr[1] = toClass;
+                
+                    relationships.add(arr);                    
+                }
+                // If relationship exists already
+                else
+                {
+                    System.out.println("The relationship between \"" + from + "\" and \"" + to + 
+                        "\" cannot be added, as it already exists");
+                }
+            }
+            // If recursive relationship
+            else
+            {
+                System.out.println("The relationship cannot be added, as the source and destination class are the same.");
+            }
+        }
+        // If either class DNE
+        else
+        {
+            if(!fromClassExists)
+            {
+                System.out.println("The relationship cannot be added, as the source class \"" + from + 
+                    "\" does not exist");
+            }
+            else if(!toClassExists)
+            {
+                System.out.println("The relationship cannot be added, as the destination class \"" + to + 
+                "\" does not exist");
+            }
+        }
     }
 
     /**
@@ -155,19 +207,46 @@ public class DiagramModel {
      */
     public void deleteRelationship(String from, String to)
     {
-        UMLClass fromClass = getUML(from);
-        UMLClass toClass = getUML(to);
+        boolean fromClassExists = classExists(from);
+        boolean toClassExists = classExists(to);
 
-        UMLClass[] lookingFor = {fromClass, toClass};
-        fromClass.deleteRelationship(to);
-        toClass.deleteRelationship(from);
-        
-        for(int i = 0; i < relationships.size(); i++){
-            UMLClass[] holder = relationships.get(i);
-            if(holder[0].getName().equals(from)){
-                if(holder[1].getName().equals(to)){
+        if(fromClassExists && toClassExists)
+        {
+            boolean relationshipExists = false;
+
+            // Iterate for relationship existence and deletion
+            for(int i = 0; i < relationships.size(); i++){
+                UMLClass[] holder = relationships.get(i);
+
+                if(holder[0].getName().equals(from) && holder[1].getName().equals(to)){
                     relationships.remove(i);
+                    relationshipExists = true;
                 }
+                else if(holder[0].getName().equals(to) && holder[1].getName().equals(from))
+                {
+                    relationships.remove(i);
+                    relationshipExists = true;
+                }
+            }
+            // If relationship did not exist prior
+            if(!relationshipExists)
+            {
+                System.out.println("The relationship between \"" + from + "\" and \"" + to + 
+                    "\" cannot be deleted, as it does not exist");
+            }
+        }
+        // If either class DNE
+        else
+        {
+            if(!fromClassExists)
+            {
+                System.out.println("The relationship cannot be added, as the source class \"" + from + 
+                    "\" does not exist");
+            }
+            else if(!toClassExists)
+            {
+                System.out.println("The relationship cannot be added, as the destination class \"" + to + 
+                "\" does not exist");
             }
         }
     }

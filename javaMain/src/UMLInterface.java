@@ -95,7 +95,6 @@ public class UMLInterface {
             {
                 System.out.println("Would you like to delete a class, attribute or relationship?");
                 userEntry = sc.nextLine();
-                holder.deleteClass(userEntry);
                 if(userEntry.equalsIgnoreCase("Class"))
                 {
                     System.out.println("Please enter the name of the class you would like to remove.");
