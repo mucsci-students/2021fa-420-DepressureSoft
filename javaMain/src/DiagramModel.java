@@ -1,31 +1,44 @@
 /**
- * Authors:
- * Date:
- * Description:
+ * Authors: Jeffrey Flynn, David Jachimowicz, Jeff Cutcher
+ * Date: 9/15/21
  */
 
 import java.util.ArrayList;
 import javax.lang.model.SourceVersion;
 import java.util.HashMap;
 import java.util.ListIterator;
-// return SourceVersion.isIdentifier(name);
 
-
-//When taking data grab list of attributes from UMLClass and search through before
 /**
- *  boolean ans = ______.contains(_____);
+ * Represents a UML class diagram, and allows users to manipulate the diagram by 
+ *  adding/removing/renaming classes, attributes, and relationships between classes.
  */
 public class DiagramModel {
+
+    /**
+     * HashMap representing the classes in the diagram. Keys are class names while values are UMLClass objects
+     *  representing the class.
+     */
     private HashMap<String, UMLClass> diagram = new HashMap<String, UMLClass>();
+    /**
+     * ArrayList representing the class relationships within the diagram. In each element, there is a 2-element
+     *  array containing references to UMLClass objects that exist in the diagram. Position [0] contains the "parent"
+     *  of the relationship while [1] contains the "child."
+     */
     private ArrayList<UMLClass[]> relationships = new ArrayList<UMLClass[]>();
 
+    /**
+     * Adds a new class to the diagram, checking to ensure that a class with the same name does not already exist,
+     *  and that the name conforms to the standards set forth in javax.lang.model.SourceVersion.isIdentifier().
+     * @param name The name of the new class.
+     */
     public void addClass(String name){
         UMLClass holder = new UMLClass(name);
         diagram.put(name, holder);
     }
 
     /**
-     *Takes the String entered and searches the ArrayList for the object to delete.
+     * Deletes a new class from the diagram, checking that the name entered exists in the diagram.
+     * @param entry The name of the class to delete.
      */
     public void deleteClass(String entry){
         for(int i = 0; i < relationships.size(); i++)
@@ -51,14 +64,27 @@ public class DiagramModel {
         return diagram.containsKey(name);
     }
 
+    /**
+     * Saves the class diagram to a JSON file using the format specified by the CSCI 420 fall 2021 
+     * standardization committee.
+     */
     public void Save(){
 
     }
 
+    /**
+     * Loads a class diagram from a JSON file formatted using the format specified by the CSCI 420 fall 2021 
+     * standardization committee.
+     */
     public void Load(){
 
     }
 
+    /**
+     * Prints out the contents of a single class to the console, checking first to make sure the given
+     *  class name exists in the diagram.
+     * @param className The name of the class to display.
+     */
     public void listClass(String className)
     {
         UMLClass input = diagram.get(className);
@@ -80,10 +106,19 @@ public class DiagramModel {
         }
     }
 
+    /**
+     * Prints the contents of every class in the diagram to the console.
+     */
     public void ListClasses(){
         diagram.forEach((k,v) -> listClass(k));
     }
 
+    /**
+     * Adds a class relationship to the diagram, checking to ensure that both classes exist, a relationship
+     *  does not already exist between the two classes, and that the relationship is not recursive.
+     * @param from The "parent" of the relationship.
+     * @param to The "child" of the relationship.
+     */
     public void addRelationship(String from, String to)
     {
         UMLClass fromClass = getUML(from);
@@ -98,6 +133,12 @@ public class DiagramModel {
         relationships.add(arr);
     }
 
+    /**
+     * Deletes a class relationship from the diagram, checking to ensure that both classes exist and
+     *  a relationship exists between those two classes in the correct order.
+     * @param from The "parent" of the relationship.
+     * @param to The "child" of the relationship.
+     */
     public void deleteRelationship(String from, String to)
     {
         UMLClass fromClass = getUML(from);
@@ -117,6 +158,9 @@ public class DiagramModel {
         }
     }
   
+    /**
+     * Prints all the relationships in the class diagram.
+     */
     public void ListRelationships()
     {
         ListIterator<UMLClass[]>iterator = relationships.listIterator();
@@ -130,12 +174,21 @@ public class DiagramModel {
         }
     }
 
-    //This class is neccessary for adding attributes to already existing diagrams.
+    /**
+     * Grabs a UMLClass objeect from the diagram, if one by the specified name exists.
+     * @param name The name of the UMLClass to grab.
+     * @return The UMLClass object of the specified name.
+     */
     public UMLClass getUML(String name){
         return diagram.get(name);
     }
 
-
+    /**
+     * Renames a class in the diagram, checking to ensure that the specified class exists and that the new 
+     *  class name conforms to the standards set forth in javax.lang.model.SourceVersion.isIdentifier().
+     * @param oldName The name of the class to rename.
+     * @param newName The new name of the specified class.
+     */
     public void renameUMLClass(String oldName, String newName)
     {
         UMLClass renamedClass = diagram.get(oldName);
@@ -144,6 +197,29 @@ public class DiagramModel {
         diagram.put(newName, renamedClass);
     }
 
+    /**
+     * Checks for the existence of traitName in traitType. 
+     * Always checks for the existence of the source class.
+     * If checking an attribute, checks the source class's attribute list for the existence of that attribute.
+     * If checking a relationship, first checks if the destination class exists. If yes, then checks the 
+     *      relationship list for the existence of that relationship.
+     * 
+     * Returns a string depending on the existence of the traitName or classSrcInput.
+     * If the desired trait/class DNE, then a string will be returned specifying what does not exist.
+     * @param classSrcInput The source class.
+     * @param classDestInput The destination class, used only for relationship checking. Can be filled with 
+     *      null otherwise.
+     * @param traitName The name of the specific attribute to be checked. I left this as traitName because it
+     *      will expand to include methods and fields in the future. Right now it's only attributes. Can be
+     *      filled with null if not checking traits.
+     * @param traitType The type of trait to be checked, i.e. "relationship" or "attribute" (as of now). Can
+     *      be filled with null if not checking traits.
+     * @return A string specifying what does not exist. If the desired trait/class does exist, "true" will be
+     *      returned.
+     *      If classSrcInput does not exist: "classSrcDNE"
+     *      If classDest does not exist: "classDestDNE"
+     *      If traitName does not exist and traitType == "attribute": "attributeDNE"
+     */
     public String checkExistence(String classSrcInput, String classDestInput, String traitName, String traitType){
         UMLClass classSrc = diagram.get(classSrcInput);
         UMLClass classDest = diagram.get(classDestInput);
@@ -190,10 +266,14 @@ public class DiagramModel {
      * This is in a separate method from checkExistence so that a future isValidName function 
      * can check if a name is a duplicate by using the checkExistence function.  
      * 
-     * @param classSrcInput
-     * @param classDestInput
-     * @param traitName
-     * @param traitType
+     * @param classSrcInput The source class.
+     * @param classDestInput The destination class, used only for relationship checking. Can be filled with 
+     *      null otherwise.
+     * @param traitName The name of the specific attribute to be checked. I left this as traitName because it
+     *      will expand to include methods and fields in the future. Right now it's only attributes. Can be
+     *      filled with null if not checking traits.
+     * @param traitType The type of trait to be checked, i.e. "relationship" or "attribute" (as of now). Can
+     *      be filled with null if not checking traits.
      */
     public void checkExistenceCLIOut(String classSrcInput, String classDestInput, String traitName, String traitType)
     {
