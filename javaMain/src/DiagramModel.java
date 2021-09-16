@@ -32,8 +32,15 @@ public class DiagramModel {
      * @param name The name of the new class.
      */
     public void addClass(String name){
-        UMLClass holder = new UMLClass(name);
-        diagram.put(name, holder);
+        if(!classExists(name))
+        {
+            UMLClass holder = new UMLClass(name);
+            diagram.put(name, holder);  
+        }
+        else
+        {
+            System.out.println("The class \"" + name + "\" already exists.");
+        }
     }
 
     /**
@@ -41,28 +48,28 @@ public class DiagramModel {
      * @param entry The name of the class to delete.
      */
     public void deleteClass(String entry){
-        for(int i = 0; i < relationships.size(); i++)
+        if(classExists(entry))
         {
-            UMLClass[] holder = relationships.get(i);
-            
-            if(holder[0].getName().equals(entry) || holder[1].getName().equals(entry))
+            for(int i = 0; i < relationships.size(); i++)
             {
-                holder[0].deleteRelationship(holder[1].getName());
-                holder[1].deleteRelationship(holder[0].getName());
-                relationships.remove(i);
+                UMLClass[] holder = relationships.get(i);
+                
+                if(holder[0].getName().equals(entry) || holder[1].getName().equals(entry))
+                {
+                    holder[0].deleteRelationship(holder[1].getName());
+                    holder[1].deleteRelationship(holder[0].getName());
+                    relationships.remove(i);
+                }
             }
+            diagram.remove(entry);
         }
-        diagram.remove(entry);
+        else
+        {
+            System.out.println("The class \"" + entry + "\" cannot be deleted, as it does not exist");
+        }
     }
 
-    /**
-     * Checks that the class called name exists in the diagram.
-     * @param name The name of the class to check for.
-     * @return True if class exists, false if not.
-     */
-    public boolean classExists(String name) { 
-        return diagram.containsKey(name);
-    }
+
 
     /**
      * Saves the class diagram to a JSON file using the format specified by the CSCI 420 fall 2021 
@@ -87,22 +94,29 @@ public class DiagramModel {
      */
     public void listClass(String className)
     {
-        UMLClass input = diagram.get(className);
+        if(classExists(className))
+            {
+            UMLClass input = diagram.get(className);
 
-        System.out.println("Name: " + input.getName());
-        System.out.println("Attributes: ");
+            System.out.println("Name: " + input.getName());
+            System.out.println("Attributes: ");
 
-        /** Prints attributes, prints special message if none */
-        if (input.getAttributes().size() == 0)
-        {
-            System.out.println("There are no attributes in this class.");
+            /** Prints attributes, prints special message if none */
+            if (input.getAttributes().size() == 0)
+            {
+                System.out.println("There are no attributes in this class.");
+            }
+            else
+            {
+                for (int i = 0; i < input.getAttributes().size(); i++)
+                {
+                    System.out.println(input.getAttributes().get(i));
+                }
+            }
         }
         else
         {
-            for (int i = 0; i < input.getAttributes().size(); i++)
-            {
-                System.out.println(input.getAttributes().get(i));
-            }
+            System.out.println("The class \"" + className + "\" cannot be displayed, as it does not exist");
         }
     }
 
@@ -121,16 +135,68 @@ public class DiagramModel {
      */
     public void addRelationship(String from, String to)
     {
-        UMLClass fromClass = getUML(from);
-        UMLClass toClass = getUML(to);
+        boolean fromClassExists = classExists(from);
+        boolean toClassExists = classExists(to);
 
-        UMLClass[] arr = new UMLClass[2];
-        arr[0] = fromClass;
-        fromClass.addRelationship(to);
-        toClass.addRelationship(from);
-        arr[1] = toClass;
-      
-        relationships.add(arr);
+        if(fromClassExists && toClassExists)
+        {
+            if(!from.equals(to))
+            {
+                boolean relationshipExists = false;
+
+                // Iterate for relationship existence
+                for(int i = 0; i < relationships.size(); i++){
+                    UMLClass[] holder = relationships.get(i);
+
+                    if(holder[0].getName().equals(from) && holder[1].getName().equals(to)){
+                        relationshipExists = true;
+                    }
+                    else if(holder[0].getName().equals(to) && holder[1].getName().equals(from))
+                    {
+                        relationshipExists = true;
+                    }
+                }
+
+                if(!relationshipExists)
+                {
+                    UMLClass fromClass = getUML(from);
+                    UMLClass toClass = getUML(to);
+
+                    UMLClass[] arr = new UMLClass[2];
+                    arr[0] = fromClass;
+                    fromClass.addRelationship(to);
+                    toClass.addRelationship(from);
+                    arr[1] = toClass;
+                
+                    relationships.add(arr);                    
+                }
+                // If relationship exists already
+                else
+                {
+                    System.out.println("The relationship between \"" + from + "\" and \"" + to + 
+                        "\" cannot be added, as it already exists");
+                }
+            }
+            // If recursive relationship
+            else
+            {
+                System.out.println("The relationship cannot be added, as the source and destination class are the same.");
+            }
+        }
+        // If either class DNE
+        else
+        {
+            if(!fromClassExists)
+            {
+                System.out.println("The relationship cannot be added, as the source class \"" + from + 
+                    "\" does not exist");
+            }
+            else if(!toClassExists)
+            {
+                System.out.println("The relationship cannot be added, as the destination class \"" + to + 
+                "\" does not exist");
+            }
+        }
     }
 
     /**
@@ -141,19 +207,46 @@ public class DiagramModel {
      */
     public void deleteRelationship(String from, String to)
     {
-        UMLClass fromClass = getUML(from);
-        UMLClass toClass = getUML(to);
+        boolean fromClassExists = classExists(from);
+        boolean toClassExists = classExists(to);
 
-        UMLClass[] lookingFor = {fromClass, toClass};
-        fromClass.deleteRelationship(to);
-        toClass.deleteRelationship(from);
-        
-        for(int i = 0; i < relationships.size(); i++){
-            UMLClass[] holder = relationships.get(i);
-            if(holder[0].getName().equals(from)){
-                if(holder[1].getName().equals(to)){
+        if(fromClassExists && toClassExists)
+        {
+            boolean relationshipExists = false;
+
+            // Iterate for relationship existence and deletion
+            for(int i = 0; i < relationships.size(); i++){
+                UMLClass[] holder = relationships.get(i);
+
+                if(holder[0].getName().equals(from) && holder[1].getName().equals(to)){
                     relationships.remove(i);
+                    relationshipExists = true;
                 }
+                else if(holder[0].getName().equals(to) && holder[1].getName().equals(from))
+                {
+                    relationships.remove(i);
+                    relationshipExists = true;
+                }
+            }
+            // If relationship did not exist prior
+            if(!relationshipExists)
+            {
+                System.out.println("The relationship between \"" + from + "\" and \"" + to + 
+                    "\" cannot be deleted, as it does not exist");
+            }
+        }
+        // If either class DNE
+        else
+        {
+            if(!fromClassExists)
+            {
+                System.out.println("The relationship cannot be added, as the source class \"" + from + 
+                    "\" does not exist");
+            }
+            else if(!toClassExists)
+            {
+                System.out.println("The relationship cannot be added, as the destination class \"" + to + 
+                "\" does not exist");
             }
         }
     }
@@ -175,7 +268,7 @@ public class DiagramModel {
     }
 
     /**
-     * Grabs a UMLClass objeect from the diagram, if one by the specified name exists.
+     * Grabs a UMLClass object from the diagram, if one by the specified name exists.
      * @param name The name of the UMLClass to grab.
      * @return The UMLClass object of the specified name.
      */
@@ -191,10 +284,37 @@ public class DiagramModel {
      */
     public void renameUMLClass(String oldName, String newName)
     {
-        UMLClass renamedClass = diagram.get(oldName);
-        renamedClass.renameClass(newName);
-        diagram.remove(oldName);
-        diagram.put(newName, renamedClass);
+        boolean oldClassExists = classExists(oldName);
+        boolean newClassExists = classExists(newName);
+
+        if(oldClassExists && !newClassExists)
+        {
+            UMLClass renamedClass = diagram.get(oldName);
+            renamedClass.renameClass(newName);
+            diagram.remove(oldName);
+            diagram.put(newName, renamedClass);
+        }
+        else
+        {
+            if(!oldClassExists)
+            {
+                System.out.println("The class \"" + oldName + "\" cannot be renamed, as it does not exist.");
+            }
+            else if(newClassExists)
+            {
+                System.out.println("The class \"" + oldName + "\" cannot be renamed to \"" + newName + 
+                    "\", as \"" + newName + "\" already exists as a class.");
+            }
+        }
+    }
+
+    /**
+     * Checks that the class called name exists in the diagram.
+     * @param name The name of the class to check for.
+     * @return True if class exists, false if not.
+     */
+    public boolean classExists(String name) { 
+        return diagram.containsKey(name);
     }
 
     /**
