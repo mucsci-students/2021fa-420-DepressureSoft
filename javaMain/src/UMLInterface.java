@@ -35,7 +35,7 @@ public class UMLInterface {
                     {
                         System.out.println("Please enter the name of the attribute you would like to add.");
                         userEntry2 = sc.nextLine();
-                        holder.getUML(userEntry).addAttribute(userEntry2);
+                        holder.addAttribute(userEntry, userEntry2);
                         System.out.println("Would you like to add another attribute to the class?");
                         userEntry3 = sc.nextLine();
                         if(userEntry3.equalsIgnoreCase("No"))
@@ -81,7 +81,7 @@ public class UMLInterface {
                     userEntry2 = sc.nextLine();
                     System.out.println("Please enter what you want to rename it to.");
                     userEntry3 = sc.nextLine();
-                    holder.getUML(userEntry).renameAttribute(userEntry2,userEntry3);
+                    holder.renameAttribute(userEntry, userEntry2, userEntry3);
                 }
                 else if(userEntry.equalsIgnoreCase("Exit"))
                 {
@@ -108,7 +108,7 @@ public class UMLInterface {
                     userEntry = sc.nextLine();
                     System.out.println("Please enter the name of the attribute you would like to remove.");
                     userEntry2 = sc.nextLine();
-                    holder.getUML(userEntry).removeAttribute(userEntry2);
+                    holder.deleteAttribute(userEntry, userEntry2);
                 }
                 else if(userEntry.equalsIgnoreCase("Relationship"))
                 {

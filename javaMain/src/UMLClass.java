@@ -79,13 +79,8 @@ public class UMLClass {
      * @param newName New name for the attribute.
      */
     public void renameAttribute(String oldName,String newName){
-        int i = attributes.size();
-        for(int j = 0; j < i; j++){
-            if(attributes.get(j) == oldName){
-                attributes.set(j,newName);
-                break;
-            }
-        }
+        int index = attributes.indexOf(oldName);
+        attributes.set(index, newName);
     }
 
     /**

@@ -198,6 +198,111 @@ public class DiagramModel {
     }
 
     /**
+     * Adds an attribute to a class, given that the class exists and that the attribute is not a duplicate.
+     * @param className The name of the class to add an attribute to.
+     * @param attributeName The name of the attribute to be added.
+     */
+    public void addAttribute(String className, String attributeName)
+    {
+        UMLClass parentClass = getUML(className);
+        boolean parentExists = classExists(className);
+    
+        if(parentExists)
+        {
+           boolean attributeExists = parentClass.getAttributes().contains(attributeName); 
+
+           if(!attributeExists)
+           {
+               parentClass.addAttribute(attributeName);
+           }
+           else
+           {
+                System.out.println("The attribute \"" + attributeName + 
+                    "\" cannot be added, as it already exists in the parent class \"" + className + "\".");
+           }
+        }
+        else
+        {
+            System.out.println("The attribute \"" + attributeName + 
+                "\" cannot be added, as the parent class \"" + className + "\" does not exist.");  
+        }
+    }
+
+    /**
+     * Deletes an attribute from a class, given that the class and attribute both exists.
+     * @param className The name of the class to add an attribute to.
+     * @param attributeName The name of the attribute to be deleted.
+     */
+    public void deleteAttribute(String className, String attributeName)
+    {
+        UMLClass parentClass = getUML(className);
+        boolean parentExists = classExists(className);
+    
+        if(parentExists)
+        {
+           boolean attributeExists = parentClass.getAttributes().contains(attributeName); 
+
+           if(attributeExists)
+           {
+               parentClass.removeAttribute(attributeName);
+           }
+           else
+           {
+                System.out.println("The attribute \"" + attributeName + 
+                    "\" cannot be deleted, as it does not exist in the parent class \"" + className + "\".");
+           }
+        }
+        else
+        {
+            System.out.println("The attribute \"" + attributeName + 
+                "\" cannot be deleted, as the parent class \"" + className + "\" does not exist.");  
+        }
+    }
+
+    /**
+     * Renames an attribute from a class, given that the class exists, the attribute exists, and the new 
+     *  attribute name does not exist.
+     * @param className The name of the class to add an attribute to.
+     * @param oldAttributeName The name of the attribute to be renamed.
+     * @param newAttributeName The name that oldAttributeName will be renamed to.
+     */
+    public void renameAttribute(String className, String oldAttributeName, String newAttributeName)
+    {
+        UMLClass parentClass = getUML(className);
+        boolean parentExists = classExists(className);
+    
+        if(parentExists)
+        {
+           boolean oldAttributeExists = parentClass.getAttributes().contains(oldAttributeName); 
+           boolean newAttributeExists = parentClass.getAttributes().contains(newAttributeName); 
+
+           if(oldAttributeExists && !newAttributeExists)
+           {
+               parentClass.renameAttribute(oldAttributeName, newAttributeName);
+           }
+           else if(!oldAttributeExists)
+           {
+                System.out.println("The attribute \"" + oldAttributeName + 
+                    "\" cannot be renamed, as it does not exist in the parent class \"" + className + "\".");
+           }
+           else if(newAttributeExists)
+           {
+                System.out.println("The attribute \"" + oldAttributeName + 
+                    "\" cannot be renamed to \"" + newAttributeName + "\", as \"" + newAttributeName + 
+                    "\" already exists in the parent class \"" + className + "\".");
+           }
+        }
+        else
+        {
+            System.out.println("The attribute \"" + oldAttributeName + 
+                "\" cannot be renamed, as the parent class \"" + className + "\" does not exist.");  
+        }
+    }
+
+
+
+
+    /**
      * Checks for the existence of traitName in traitType. 
      * Always checks for the existence of the source class.
      * If checking an attribute, checks the source class's attribute list for the existence of that attribute.
