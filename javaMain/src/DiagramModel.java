@@ -32,15 +32,21 @@ public class DiagramModel {
      * @param name The name of the new class.
      */
     public void addClass(String name){
-        if(!classExists(name))
-        {
-            UMLClass holder = new UMLClass(name);
-            diagram.put(name, holder);  
+        if(SourceVersion.isIdentifier(name)){
+            if(!classExists(name))
+            {
+                UMLClass holder = new UMLClass(name);
+                diagram.put(name, holder);  
+            }
+            else
+            {
+                System.out.println("The class \"" + name + "\" already exists.");
+            }
         }
-        else
-        {
-            System.out.println("The class \"" + name + "\" already exists.");
+        else{
+            System.out.println(name + "\" is not a proper name.");
         }
+
     }
 
     /**
@@ -326,7 +332,7 @@ public class DiagramModel {
     {
         UMLClass parentClass = getUML(className);
         boolean parentExists = classExists(className);
-    
+        if(SourceVersion.isIdentifier(attributeName)){
         if(parentExists)
         {
            boolean attributeExists = parentClass.getAttributes().contains(attributeName); 
@@ -346,6 +352,10 @@ public class DiagramModel {
             System.out.println("The attribute \"" + attributeName + 
                 "\" cannot be added, as the parent class \"" + className + "\" does not exist.");  
         }
+    }
+    else{
+        System.out.println(attributeName + "\" is not a proper name.");
+    }
     }
 
     /**
