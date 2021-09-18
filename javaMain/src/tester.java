@@ -12,23 +12,23 @@ public class tester {
             
             System.out.println("Test #1: Adding Elements to the Diagram Model.");
 
-            System.out.println("Expected: diagram1 with attributes attribute1,attribute2, Diagram2, Diagram3 ");
+            System.out.println("Expected: diagram1 with attributes attribute1, attribute2, Diagram2, Diagram3 ");
 
             System.out.println("");
 
             System.out.println("Actual: ");
-            holder.addClass("diagram1");
-            holder.getUML("diagram1").addAttribute("attribute1");
-            holder.getUML("diagram1").addAttribute("attribute2");
-            holder.addClass("diagram2");
-            holder.addClass("diagram3");
+            holder.addClass("Diagram1");
+            holder.getUML("Diagram1").addAttribute("attribute1");
+            holder.getUML("Diagram1").addAttribute("attribute2");
+            holder.addClass("Diagram2");
+            holder.addClass("Diagram3");
             holder.ListClasses();
             System.out.println("--------------------------------------------------------");
 
 
             System.out.println("Test #2: Removing Elements from the Diagram Model.");
 
-            System.out.println("Expected: diagram1 with attributes attribute1, attribute2");
+            System.out.println("Expected: Diagram1 and Diagram2 deleted, Diagram 3 remains.");
             
             System.out.println();
 
@@ -55,7 +55,7 @@ public class tester {
 
             System.out.println("Test #4: Adding Relationships to the Diagram Model.");
 
-            System.out.println("Expected: Two Diagram3 fails, Diagram 4->5 Succeed");
+            System.out.println("Expected: Diagram4 -> Diagram5 succeeds, Diagram3 -> Diagram5 fails.");
 
             System.out.println("");
             
@@ -67,6 +67,8 @@ public class tester {
             holder.deleteRelationship("Diagram3","Diagram5");
             holder.ListRelationships();
     }
+
+
 
 }
 
