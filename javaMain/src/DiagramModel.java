@@ -290,6 +290,9 @@ public class DiagramModel {
      */
     public void renameUMLClass(String oldName, String newName)
     {
+        if(SourceVersion.isIdentifier(newName)){
+
+        
         boolean oldClassExists = classExists(oldName);
         boolean newClassExists = classExists(newName);
 
@@ -312,6 +315,11 @@ public class DiagramModel {
                     "\", as \"" + newName + "\" already exists as a class.");
             }
         }
+        }
+        else{
+            System.out.println(newName + "\" is not a proper name.");
+        }
+
     }
 
     /**
@@ -400,7 +408,7 @@ public class DiagramModel {
     {
         UMLClass parentClass = getUML(className);
         boolean parentExists = classExists(className);
-    
+        if(SourceVersion.isIdentifier(newAttributeName)){
         if(parentExists)
         {
            boolean oldAttributeExists = parentClass.getAttributes().contains(oldAttributeName); 
@@ -426,6 +434,10 @@ public class DiagramModel {
         {
             System.out.println("The attribute \"" + oldAttributeName + 
                 "\" cannot be renamed, as the parent class \"" + className + "\" does not exist.");  
+        }
+        }
+        else{
+            System.out.println(newAttributeName + "\" is not a proper name.");
         }
     }
 
