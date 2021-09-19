@@ -1,6 +1,4 @@
 import java.util.Scanner;
-import java.util.ArrayList;
-import javax.lang.model.SourceVersion;
 
 /**
  * Public Interface responsible for connecting all programmed methods to the Terminal. 
