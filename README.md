@@ -7,7 +7,7 @@
 3. Go to https://code.visualstudio.com/docs/java/java-tutorial and download the necessary Java Kit for your system.
 NOTE: Make sure your system has the necessary Java Compiler installed on Visual Studio. 
 
-4. Sign in to your gitHub account and click File -> New Repository then add DepressureSoft's repository to your list.
+4. Within GitHub Desktop, sign in to your gitHub account and click File -> New Repository then add DepressureSoft's repository to your list.
 
 5. Select 'Open in Visual Studio Code'
 
