@@ -13,7 +13,7 @@ NOTE: Make sure your system has the necessary Java Compiler installed on Visual 
 
 6. Once opened go to the 'UMLInterface.java'
 
-7. Right-click anywhere within 'UMLInterface.java' and select 'Run Java' and refer to incode instructions to run the program.
+7. Right-click anywhere within 'UMLInterface.java' and select 'Run Java' and refer to incode instructions on how to navigate the program.
 
 
 Note: Save/Load functionality has been delayed until sprint 2.
