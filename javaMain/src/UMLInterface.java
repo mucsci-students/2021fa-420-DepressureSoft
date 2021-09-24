@@ -60,9 +60,9 @@ public class UMLInterface {
                     userEntry = sc.nextLine();
                     userEntry = userEntry.toLowerCase().trim();
                   
-                        System.out.println("Please enter the name of the method you would like to add.");
-                        userEntry2 = sc.nextLine();
-                        userEntry2 = userEntry2.toLowerCase().trim();
+                    System.out.println("Please enter the name of the method you would like to add.");
+                    userEntry2 = sc.nextLine();
+                    userEntry2 = userEntry2.toLowerCase().trim();
                      //   holder.addMethod(userEntry, userEntry2);
                     
                 }
