@@ -126,7 +126,7 @@ public class UMLInterface {
                     userEntry = userEntry.toLowerCase().trim();
                     System.out.println("Please enter the name of the attribute you would like to remove.");
                     userEntry2 = sc.nextLine();
-                    userEntry2 = userEntry.toLowerCase().trim();
+                    userEntry2 = userEntry2.toLowerCase().trim();
                     holder.deleteAttribute(userEntry, userEntry2);
                 }
                 else if(userEntry.equalsIgnoreCase("Relationship"))
