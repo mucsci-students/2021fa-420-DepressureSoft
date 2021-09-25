@@ -20,34 +20,34 @@ public class UMLInterface {
         {
             System.out.println("Please input your command.");
             userEntry = sc.nextLine();
-            userEntry = userEntry.toLowerCase().trim();
+            userEntry = userEntry.trim();
             if(userEntry.equalsIgnoreCase("Add"))
             {
                 System.out.println("Would you like to add a class, method, field, parameter, or relationship?");
                 userEntry = sc.nextLine();
-                userEntry = userEntry.toLowerCase().trim();
+                userEntry = userEntry.trim();
                 if(userEntry.equalsIgnoreCase("Class"))
                 {
                     System.out.println("Please enter the name of the class you would like to add.");
                     userEntry = sc.nextLine();
-                    userEntry = userEntry.toLowerCase().trim();
+                    userEntry = userEntry.trim();
                     holder.addClass(userEntry);
                 }
                 else if(userEntry.equalsIgnoreCase("Field"))
                 {
                     System.out.println("Please enter the name of the class you would like to add the field to.");
                     userEntry = sc.nextLine();
-                    userEntry = userEntry.toLowerCase().trim();
+                    userEntry = userEntry.trim();
                     boolean moreAttributes = true;
                     while(moreAttributes)
                     {
                         System.out.println("Please enter the name of the field you would like to add.");
                         userEntry2 = sc.nextLine();
-                        userEntry2 = userEntry2.toLowerCase().trim();
+                        userEntry2 = userEntry2.trim();
                         holder.addAttribute(userEntry, userEntry2);
                         System.out.println("Would you like to add another field to the class? 'yes' or 'no'");
                         userEntry3 = sc.nextLine();
-                        userEntry3 = userEntry3.toLowerCase().trim();
+                        userEntry3 = userEntry3.trim();
                         if(userEntry3.equalsIgnoreCase("No"))
                         {
                             moreAttributes = false;
@@ -58,11 +58,11 @@ public class UMLInterface {
                 {
                     System.out.println("Please enter the name of the class you would like to add the method to.");
                     userEntry = sc.nextLine();
-                    userEntry = userEntry.toLowerCase().trim();
+                    userEntry = userEntry.trim();
                   
                     System.out.println("Please enter the name of the method you would like to add.");
                     userEntry2 = sc.nextLine();
-                    userEntry2 = userEntry2.toLowerCase().trim();
+                    userEntry2 = userEntry2.trim();
                      //   holder.addMethod(userEntry, userEntry2);
                     
                 }
@@ -70,15 +70,15 @@ public class UMLInterface {
                 {
                     System.out.println("Please enter the name of the class you would like to add the parameter to.");
                     userEntry = sc.nextLine();
-                    userEntry = userEntry.toLowerCase().trim();
+                    userEntry = userEntry.trim();
                     
                     System.out.println("Please enter the name of the method you would like to add the parameter to.");
                     userEntry2 = sc.nextLine();
-                    userEntry2 = userEntry2.toLowerCase().trim();
+                    userEntry2 = userEntry2.trim();
 
                     System.out.println("Please enter the name of the parameter you would like to add.");
                     userEntry3 = sc.nextLine();
-                    userEntry3 = userEntry3.toLowerCase().trim();
+                    userEntry3 = userEntry3.trim();
                      //   holder.addParameter(userEntry, userEntry2,userEntry3);
                     
                 }
@@ -86,13 +86,13 @@ public class UMLInterface {
                 {
                     System.out.println("Please enter the first class within the relationship you would like to add.");
                     userEntry = sc.nextLine();
-                    userEntry = userEntry.toLowerCase().trim();
+                    userEntry = userEntry.trim();
                     System.out.println("Please enter the second class within the relationship you would like to add.");
                     userEntry2 = sc.nextLine();
-                    userEntry2 = userEntry2.toLowerCase().trim();
+                    userEntry2 = userEntry2.trim();
                     System.out.println("Please enter the type of relationship between the two classes.");
                     userEntry3 = sc.nextLine();
-                    userEntry3 = userEntry3.toLowerCase().trim();
+                    userEntry3 = userEntry3.trim();
                     //holder.addRelationship(userEntry,userEntry2,userEntry3);
                     holder.addRelationship(userEntry,userEntry2);
                 }
@@ -111,43 +111,43 @@ public class UMLInterface {
             {
                 System.out.println("Would you like to rename a class  method, field, or parameter?");
                 userEntry = sc.nextLine();
-                userEntry = userEntry.toLowerCase().trim();
+                userEntry = userEntry.trim();
                 if(userEntry.equalsIgnoreCase("Class"))
                 {
                     System.out.println("Please enter the name of the class you would like to rename.");
                     userEntry = sc.nextLine();
-                    userEntry = userEntry.toLowerCase().trim();
+                    userEntry = userEntry.trim();
                     System.out.println("Please enter what you want to rename it to.");
                     userEntry2 = sc.nextLine();
-                    userEntry2 = userEntry2.toLowerCase().trim();
+                    userEntry2 = userEntry2.trim();
                     holder.renameUMLClass(userEntry,userEntry2);
                 }
                 else if(userEntry.equalsIgnoreCase("Field"))
                 {
                     System.out.println("Please enter the name of the class where the field is located.");
                     userEntry = sc.nextLine();
-                    userEntry = userEntry.toLowerCase().trim();
+                    userEntry = userEntry.trim();
                     System.out.println("Please enter the name of the field you would like to rename.");
                     userEntry2 = sc.nextLine();
-                    userEntry2 = userEntry2.toLowerCase().trim();
+                    userEntry2 = userEntry2.trim();
                     System.out.println("Please enter what you want to rename it to.");
                     userEntry3 = sc.nextLine();
-                    userEntry3 = userEntry3.toLowerCase().trim();
+                    userEntry3 = userEntry3.trim();
                     holder.renameAttribute(userEntry, userEntry2, userEntry3);
                 }
                 else if(userEntry.equalsIgnoreCase("Method"))
                 {
                     System.out.println("Please enter the name of the class where the method is located.");
                     userEntry = sc.nextLine();
-                    userEntry = userEntry.toLowerCase().trim();
+                    userEntry = userEntry.trim();
                   
                     System.out.println("Please enter the name of the method you would like to rename.");
                     userEntry2 = sc.nextLine();
-                    userEntry2 = userEntry2.toLowerCase().trim();
+                    userEntry2 = userEntry2.trim();
 
                     System.out.println("Please enter what you want to rename it to.");
                     userEntry3 = sc.nextLine();
-                    userEntry3 = userEntry3.toLowerCase().trim();
+                    userEntry3 = userEntry3.trim();
                      //   holder.renameMethod(userEntry, userEntry2,userEntry3);
                     
                 }
@@ -155,19 +155,19 @@ public class UMLInterface {
                 {
                     System.out.println("Please enter the name of the class where the parameter is located.");
                     userEntry = sc.nextLine();
-                    userEntry = userEntry.toLowerCase().trim();
+                    userEntry = userEntry.trim();
                   
                     System.out.println("Please enter the name of the method where the parameter is located.");
                     userEntry2 = sc.nextLine();
-                    userEntry2 = userEntry2.toLowerCase().trim();
+                    userEntry2 = userEntry2.trim();
 
                     System.out.println("Please enter the name of the parameter you would like to rename.");
                     userEntry3 = sc.nextLine();
-                    userEntry3 = userEntry3.toLowerCase().trim();
+                    userEntry3 = userEntry3.trim();
 
                     System.out.println("Please enter what you want to rename it to.");
                     userEntry4 = sc.nextLine();
-                    userEntry4 = userEntry4.toLowerCase().trim();
+                    userEntry4 = userEntry4.trim();
                      //   holder.renameParameter(userEntry,userEntry2,userEntry3,userEntry4);
                     
                 }
@@ -186,33 +186,33 @@ public class UMLInterface {
             {
                 System.out.println("Would you like to delete a class, method, parameter, field, or relationship?");
                 userEntry = sc.nextLine();
-                userEntry = userEntry.toLowerCase().trim();
+                userEntry = userEntry.trim();
                 if(userEntry.equalsIgnoreCase("Class"))
                 {
                     System.out.println("Please enter the name of the class you would like to remove.");
                     userEntry = sc.nextLine();
-                    userEntry = userEntry.toLowerCase().trim();
+                    userEntry = userEntry.trim();
                     holder.deleteClass(userEntry);
                 }
                 else if(userEntry.equalsIgnoreCase("Field"))
                 {
                     System.out.println("Please enter the name of the class where the field is located.");
                     userEntry = sc.nextLine();
-                    userEntry = userEntry.toLowerCase().trim();
+                    userEntry = userEntry.trim();
                     System.out.println("Please enter the name of the field you would like to remove.");
                     userEntry2 = sc.nextLine();
-                    userEntry2 = userEntry.toLowerCase().trim();
+                    userEntry2 = userEntry.trim();
                     holder.deleteAttribute(userEntry, userEntry2);
                 }
                 else if(userEntry.equalsIgnoreCase("Method"))
                 {
                     System.out.println("Please enter the name of the class you would like to delete the method from.");
                     userEntry = sc.nextLine();
-                    userEntry = userEntry.toLowerCase().trim();
+                    userEntry = userEntry.trim();
                   
                     System.out.println("Please enter the name of the method you would like to remove.");
                     userEntry2 = sc.nextLine();
-                    userEntry2 = userEntry2.toLowerCase().trim();
+                    userEntry2 = userEntry2.trim();
                      //   holder.deleteMethod(userEntry, userEntry2);
                     
                 }
@@ -220,15 +220,15 @@ public class UMLInterface {
                 {
                     System.out.println("Please enter the name of the class you would like to remove the parameter from.");
                     userEntry = sc.nextLine();
-                    userEntry = userEntry.toLowerCase().trim();
+                    userEntry = userEntry.trim();
                     
                     System.out.println("Please enter the name of the method you would like to remove the parameter from.");
                     userEntry2 = sc.nextLine();
-                    userEntry2 = userEntry2.toLowerCase().trim();
+                    userEntry2 = userEntry2.trim();
 
                     System.out.println("Please enter the name of the parameter you would like to remove.");
                     userEntry3 = sc.nextLine();
-                    userEntry3 = userEntry3.toLowerCase().trim();
+                    userEntry3 = userEntry3.trim();
                      //   holder.deleteParameter(userEntry, userEntry2,userEntry3);
                     
                 }
@@ -236,10 +236,10 @@ public class UMLInterface {
                 {
                     System.out.println("Please enter the first class within the relationship you would like to delete.");
                     userEntry = sc.nextLine();
-                    userEntry = userEntry.toLowerCase().trim();
+                    userEntry = userEntry.trim();
                     System.out.println("Please enter the second class within the relationship you would like to delete.");
                     userEntry2 = sc.nextLine();
-                    userEntry2 = userEntry.toLowerCase().trim();
+                    userEntry2 = userEntry.trim();
                     holder.deleteRelationship(userEntry,userEntry2);
                 }
                 else if(userEntry.equalsIgnoreCase("Exit"))
@@ -257,12 +257,12 @@ public class UMLInterface {
             {
                 System.out.println("Would you like to display 'one' class, 'all' classes, or their 'relationships'?");
                 userEntry = sc.nextLine();
-                userEntry = userEntry.toLowerCase().trim();
+                userEntry = userEntry.trim();
                 if(userEntry.equalsIgnoreCase("One"))
                 {
                     System.out.println("Please enter the name of the class you want to display.");
                     userEntry = sc.nextLine();
-                    userEntry = userEntry.toLowerCase().trim();
+                    userEntry = userEntry.trim();
                     holder.listClass(userEntry);
                 }
                 else if(userEntry.equalsIgnoreCase("All"))
