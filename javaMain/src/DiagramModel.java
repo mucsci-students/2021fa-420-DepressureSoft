@@ -105,18 +105,18 @@ public class DiagramModel {
             UMLClass input = diagram.get(className);
 
             System.out.println("Name: " + input.getName());
-            System.out.println("Attributes: ");
+            System.out.println("Fields: ");
 
-            /** Prints attributes, prints special message if none */
-            if (input.getAttributes().size() == 0)
+            /** Prints fields, prints special message if none */
+            if (input.getFields().size() == 0)
             {
-                System.out.println("There are no attributes in this class.");
+                System.out.println("There are no fields in this class.");
             }
             else
             {
-                for (int i = 0; i < input.getAttributes().size(); i++)
+                for (int i = 0; i < input.getFields().size(); i++)
                 {
-                    System.out.println(input.getAttributes().get(i));
+                    System.out.println(input.getFields().get(i));
                 }
             }
         }
@@ -332,37 +332,37 @@ public class DiagramModel {
     }
 
     /**
-     * Adds an attribute to a class, given that the class exists and that the attribute is not a duplicate.
-     * @param className The name of the class to add an attribute to.
-     * @param attributeName The name of the attribute to be added.
+     * Adds a field to a class, given that the class exists and that the field is not a duplicate.
+     * @param className The name of the class to add a field to.
+     * @param attributeName The name of the field to be added.
      */
-    public void addAttribute(String className, String attributeName)
+    public void addField(String className, String fieldName)
     {
         UMLClass parentClass = getUML(className);
         boolean parentExists = classExists(className);
-        if(SourceVersion.isIdentifier(attributeName)){
+        if(SourceVersion.isIdentifier(fieldName)){
         if(parentExists)
         {
-           boolean attributeExists = parentClass.getAttributes().contains(attributeName); 
+           boolean fieldExists = parentClass.getFields().contains(fieldName); 
 
-           if(!attributeExists)
+           if(!fieldExists)
            {
-               parentClass.addAttribute(attributeName);
+               parentClass.addField(fieldName);
            }
            else
            {
-                System.out.println("The attribute \"" + attributeName + 
+                System.out.println("The attribute \"" + fieldName + 
                     "\" cannot be added, as it already exists in the parent class \"" + className + "\".");
            }
         }
         else
         {
-            System.out.println("The attribute \"" + attributeName + 
+            System.out.println("The attribute \"" + fieldName + 
                 "\" cannot be added, as the parent class \"" + className + "\" does not exist.");  
         }
     }
     else{
-        System.out.println(attributeName + "\" is not a proper name.");
+        System.out.println(fieldName + "\" is not a proper name.");
     }
     }
 
@@ -378,7 +378,7 @@ public class DiagramModel {
     
         if(parentExists)
         {
-           boolean attributeExists = parentClass.getAttributes().contains(attributeName); 
+           boolean attributeExists = parentClass.getFields().contains(attributeName); 
 
            if(attributeExists)
            {
@@ -411,8 +411,8 @@ public class DiagramModel {
         if(SourceVersion.isIdentifier(newAttributeName)){
         if(parentExists)
         {
-           boolean oldAttributeExists = parentClass.getAttributes().contains(oldAttributeName); 
-           boolean newAttributeExists = parentClass.getAttributes().contains(newAttributeName); 
+           boolean oldAttributeExists = parentClass.getFields().contains(oldAttributeName); 
+           boolean newAttributeExists = parentClass.getFields().contains(newAttributeName); 
 
            if(oldAttributeExists && !newAttributeExists)
            {
@@ -483,7 +483,7 @@ public class DiagramModel {
             {
                 case "attribute":
                     /** Finds index of desired attribute in source class */
-                    int targetAttributeIndex = classSrc.getAttributes().indexOf(traitName);
+                    int targetAttributeIndex = classSrc.getFields().indexOf(traitName);
                     if (targetAttributeIndex == -1)
                     {
                         doesExist = "attributeDNE";

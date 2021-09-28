@@ -44,7 +44,7 @@ public class UMLInterface {
                         System.out.println("Please enter the name of the field you would like to add.");
                         userEntry2 = sc.nextLine();
                         userEntry2 = userEntry2.trim();
-                        holder.addAttribute(userEntry, userEntry2);
+                        holder.addField(userEntry, userEntry2);
                         System.out.println("Would you like to add another field to the class? 'yes' or 'no'");
                         userEntry3 = sc.nextLine();
                         userEntry3 = userEntry3.trim();

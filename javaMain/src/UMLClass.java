@@ -17,9 +17,9 @@ public class UMLClass {
      */
     private String dName;
     /**
-     * The attributes of the class (which include both fields and methods).
+     * The fields of the class (does not include methods).
      */
-    private ArrayList<String> attributes = new ArrayList<String>();
+    private ArrayList<String> fields = new ArrayList<String>();
     /**
      * Names of the classes that this class is related to.
      */
@@ -58,11 +58,11 @@ public class UMLClass {
     }
 
     /**
-     * Adds a new attribute the class representation.
-     * @param newAttribute The name of the new attribute.
+     * Adds a new field the class representation.
+     * @param newField The name of the new field.
      */
-    public void addAttribute(String newAttribute){
-        attributes.add(newAttribute);
+    public void addField(String newField){
+        fields.add(newField);
     }
 
     /**
@@ -70,7 +70,7 @@ public class UMLClass {
      * @param removedAttribute The name of the attribute to delete.
      */
     public void removeAttribute(String removedAttribute){
-        attributes.remove(removedAttribute);
+        fields.remove(removedAttribute);
     }
 
     /**
@@ -79,16 +79,16 @@ public class UMLClass {
      * @param newName New name for the attribute.
      */
     public void renameAttribute(String oldName,String newName){
-        int index = attributes.indexOf(oldName);
-        attributes.set(index, newName);
+        int index = fields.indexOf(oldName);
+        fields.set(index, newName);
     }
 
     /**
-     * Returns an ArrayList<String> of all the class representation's attributes.
-     * @return The attributes field.
+     * Returns an ArrayList<String> of all the class representation's fields.
+     * @return The fields ArrayList.
      */
-    public  ArrayList<String> getAttributes(){
-        return attributes;
+    public  ArrayList<String> getFields(){
+        return fields;
     }
 
     /**
