@@ -7,7 +7,7 @@
 import java.util.ArrayList;
 
 /**
- * Represents a class in a class diagram, including the name of the class, the class's attributes, and 
+ * Represents a class in a class diagram, including the name of the class, the class's fields, and 
  *  classes related to this class. 
  */
 public class UMLClass {
@@ -66,11 +66,11 @@ public class UMLClass {
     }
 
     /**
-     * Removes an existing attribute from the class representation.
-     * @param removedAttribute The name of the attribute to delete.
+     * Removes an existing field from the class representation.
+     * @param removedField The name of the field to delete.
      */
-    public void removeAttribute(String removedAttribute){
-        fields.remove(removedAttribute);
+    public void removeField(String removedField){
+        fields.remove(removedField);
     }
 
     /**

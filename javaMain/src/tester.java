@@ -48,7 +48,7 @@ public class tester {
             
             System.out.println("Actual: ");
             holder.addField("diagram444","field123");
-            holder.deleteAttribute("diagram1","field123");
+            holder.deleteField("diagram1","field123");
             holder.renameAttribute("diagram1","fieldttt","fieldneww");
 
             System.out.println("----------------------------------------------------------");

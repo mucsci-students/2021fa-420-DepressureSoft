@@ -10,7 +10,7 @@ import java.util.ListIterator;
 
 /**
  * Represents a UML class diagram, and allows users to manipulate the diagram by 
- *  adding/removing/renaming classes, attributes, and relationships between classes.
+ *  adding/removing/renaming classes, fields, and relationships between classes.
  */
 public class DiagramModel {
 
@@ -334,7 +334,7 @@ public class DiagramModel {
     /**
      * Adds a field to a class, given that the class exists and that the field is not a duplicate.
      * @param className The name of the class to add a field to.
-     * @param attributeName The name of the field to be added.
+     * @param fieldName The name of the field to be added.
      */
     public void addField(String className, String fieldName)
     {
@@ -351,13 +351,13 @@ public class DiagramModel {
            }
            else
            {
-                System.out.println("The attribute \"" + fieldName + 
+                System.out.println("The field \"" + fieldName + 
                     "\" cannot be added, as it already exists in the parent class \"" + className + "\".");
            }
         }
         else
         {
-            System.out.println("The attribute \"" + fieldName + 
+            System.out.println("The field \"" + fieldName + 
                 "\" cannot be added, as the parent class \"" + className + "\" does not exist.");  
         }
     }
@@ -367,32 +367,32 @@ public class DiagramModel {
     }
 
     /**
-     * Deletes an attribute from a class, given that the class and attribute both exists.
-     * @param className The name of the class to add an attribute to.
-     * @param attributeName The name of the attribute to be deleted.
+     * Deletes a field from a class, given that the class and field both exist.
+     * @param className The name of the class to delete a field from.
+     * @param fieldName The name of the field to be deleted.
      */
-    public void deleteAttribute(String className, String attributeName)
+    public void deleteField(String className, String fieldName)
     {
         UMLClass parentClass = getUML(className);
         boolean parentExists = classExists(className);
     
         if(parentExists)
         {
-           boolean attributeExists = parentClass.getFields().contains(attributeName); 
+           boolean fieldExists = parentClass.getFields().contains(fieldName); 
 
-           if(attributeExists)
+           if(fieldExists)
            {
-               parentClass.removeAttribute(attributeName);
+               parentClass.removeField(fieldName);
            }
            else
            {
-                System.out.println("The attribute \"" + attributeName + 
+                System.out.println("The field \"" + fieldName + 
                     "\" cannot be deleted, as it does not exist in the parent class \"" + className + "\".");
            }
         }
         else
         {
-            System.out.println("The attribute \"" + attributeName + 
+            System.out.println("The field \"" + fieldName + 
                 "\" cannot be deleted, as the parent class \"" + className + "\" does not exist.");  
         }
     }

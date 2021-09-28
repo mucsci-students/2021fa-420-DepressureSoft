@@ -38,8 +38,8 @@ public class UMLInterface {
                     System.out.println("Please enter the name of the class you would like to add the field to.");
                     userEntry = sc.nextLine();
                     userEntry = userEntry.trim();
-                    boolean moreAttributes = true;
-                    while(moreAttributes)
+                    boolean moreFields = true;
+                    while(moreFields)
                     {
                         System.out.println("Please enter the name of the field you would like to add.");
                         userEntry2 = sc.nextLine();
@@ -50,7 +50,7 @@ public class UMLInterface {
                         userEntry3 = userEntry3.trim();
                         if(userEntry3.equalsIgnoreCase("No"))
                         {
-                            moreAttributes = false;
+                            moreFields = false;
                         }
                     }
                 }
@@ -204,7 +204,7 @@ public class UMLInterface {
 
 
                     userEntry2 = userEntry2.trim();
-                    holder.deleteAttribute(userEntry, userEntry2);
+                    holder.deleteField(userEntry, userEntry2);
                 }
                 else if(userEntry.equalsIgnoreCase("Method"))
                 {
