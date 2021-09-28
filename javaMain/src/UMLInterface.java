@@ -201,7 +201,9 @@ public class UMLInterface {
                     userEntry = userEntry.trim();
                     System.out.println("Please enter the name of the field you would like to remove.");
                     userEntry2 = sc.nextLine();
-                    userEntry2 = userEntry.trim();
+
+
+                    userEntry2 = userEntry2.trim();
                     holder.deleteAttribute(userEntry, userEntry2);
                 }
                 else if(userEntry.equalsIgnoreCase("Method"))
