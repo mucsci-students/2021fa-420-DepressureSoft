@@ -398,46 +398,46 @@ public class DiagramModel {
     }
 
     /**
-     * Renames an attribute from a class, given that the class exists, the attribute exists, and the new 
-     *  attribute name does not exist.
-     * @param className The name of the class to add an attribute to.
-     * @param oldAttributeName The name of the attribute to be renamed.
-     * @param newAttributeName The name that oldAttributeName will be renamed to.
+     * Renames a field from a class, given that the class exists, the field exists, and the new 
+     *  field name does not exist.
+     * @param className The name of the class to add an field to.
+     * @param oldFieldName The name of the field to be renamed.
+     * @param newFieldName The name that oldFieldName will be renamed to.
      */
-    public void renameAttribute(String className, String oldAttributeName, String newAttributeName)
+    public void renameField(String className, String oldFieldName, String newFieldName)
     {
         UMLClass parentClass = getUML(className);
         boolean parentExists = classExists(className);
-        if(SourceVersion.isIdentifier(newAttributeName)){
+        if(SourceVersion.isIdentifier(newFieldName)){
         if(parentExists)
         {
-           boolean oldAttributeExists = parentClass.getFields().contains(oldAttributeName); 
-           boolean newAttributeExists = parentClass.getFields().contains(newAttributeName); 
+           boolean oldFieldExists = parentClass.getFields().contains(oldFieldName); 
+           boolean newFieldExists = parentClass.getFields().contains(newFieldName); 
 
-           if(oldAttributeExists && !newAttributeExists)
+           if(oldFieldExists && !newFieldExists)
            {
-               parentClass.renameAttribute(oldAttributeName, newAttributeName);
+               parentClass.renameField(oldFieldName, newFieldName);
            }
-           else if(!oldAttributeExists)
+           else if(!oldFieldExists)
            {
-                System.out.println("The attribute \"" + oldAttributeName + 
+                System.out.println("The field \"" + oldFieldName + 
                     "\" cannot be renamed, as it does not exist in the parent class \"" + className + "\".");
            }
-           else if(newAttributeExists)
+           else if(oldFieldExists)
            {
-                System.out.println("The attribute \"" + oldAttributeName + 
-                    "\" cannot be renamed to \"" + newAttributeName + "\", as \"" + newAttributeName + 
+                System.out.println("The field \"" + oldFieldName + 
+                    "\" cannot be renamed to \"" + newFieldName + "\", as \"" + newFieldName + 
                     "\" already exists in the parent class \"" + className + "\".");
            }
         }
         else
         {
-            System.out.println("The attribute \"" + oldAttributeName + 
+            System.out.println("The field \"" + oldFieldName + 
                 "\" cannot be renamed, as the parent class \"" + className + "\" does not exist.");  
         }
         }
         else{
-            System.out.println(newAttributeName + "\" is not a proper name.");
+            System.out.println(newFieldName + "\" is not a proper name.");
         }
     }
 

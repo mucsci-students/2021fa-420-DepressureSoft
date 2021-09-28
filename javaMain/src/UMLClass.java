@@ -74,11 +74,11 @@ public class UMLClass {
     }
 
     /**
-     * Renames an existing attribute in the class representation.
-     * @param oldName Name of the attribute to rename.
-     * @param newName New name for the attribute.
+     * Renames an existing field in the class representation.
+     * @param oldName Name of the field to rename.
+     * @param newName New name for the field.
      */
-    public void renameAttribute(String oldName,String newName){
+    public void renameField(String oldName, String newName){
         int index = fields.indexOf(oldName);
         fields.set(index, newName);
     }

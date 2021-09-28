@@ -109,7 +109,7 @@ public class UMLInterface {
             }
             else if(userEntry.equalsIgnoreCase("Rename"))
             {
-                System.out.println("Would you like to rename a class  method, field, or parameter?");
+                System.out.println("Would you like to rename a class, method, field, or parameter?");
                 userEntry = sc.nextLine();
                 userEntry = userEntry.trim();
                 if(userEntry.equalsIgnoreCase("Class"))
@@ -133,7 +133,7 @@ public class UMLInterface {
                     System.out.println("Please enter what you want to rename it to.");
                     userEntry3 = sc.nextLine();
                     userEntry3 = userEntry3.trim();
-                    holder.renameAttribute(userEntry, userEntry2, userEntry3);
+                    holder.renameField(userEntry, userEntry2, userEntry3);
                 }
                 else if(userEntry.equalsIgnoreCase("Method"))
                 {

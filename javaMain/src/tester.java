@@ -12,7 +12,7 @@ public class tester {
             
             System.out.println("Test #1: Adding Elements to the Diagram Model.");
 
-            System.out.println("Expected: diagram1 with attributes Field1, Field2, Diagram2, Diagram3 ");
+            System.out.println("Expected: diagram1 with fields Field1, Field2, Diagram2, Diagram3 ");
 
             System.out.println("");
 
@@ -49,7 +49,7 @@ public class tester {
             System.out.println("Actual: ");
             holder.addField("diagram444","field123");
             holder.deleteField("diagram1","field123");
-            holder.renameAttribute("diagram1","fieldttt","fieldneww");
+            holder.renameField("diagram1","fieldttt","fieldneww");
 
             System.out.println("----------------------------------------------------------");
 
