@@ -184,7 +184,7 @@ public class DiagramModel {
                 else
                 {
                     System.out.println("The relationship between \"" + from + "\" and \"" + to + 
-                        "\" cannot be added, as it already exists");
+                        "\" cannot be added, as a relationship already exists between those classes.");
                 }
             }
             // If recursive relationship
@@ -245,19 +245,20 @@ public class DiagramModel {
         {
             if(!fromClassExists)
             {
-                System.out.println("The relationship cannot be added, as the source class \"" + from + 
-                    "\" does not exist");
+                System.out.println("The source class \"" + from + "\" does not exist");
             }
             else if(!toClassExists)
             {
-                System.out.println("The relationship cannot be added, as the destination class \"" + to + 
-                "\" does not exist");
+                System.out.println("The destination class \"" + to + "\" does not exist");
             }
         }
     }
 
     /**
-     * 
+     * Changes the type of the relationship between class "from" and class "to".
+     * @param from The "from" end of the relationship.
+     * @param to The "to" end of the relationship.
+     * @param newType The new type to assign the relationship to.
      */
     public void changeRelationshipType(String from, String to, Relationship.RelationshipType newType) {
         boolean fromClassExists = classExists(from);
@@ -303,6 +304,9 @@ public class DiagramModel {
     public void ListRelationships()
     {
         ListIterator<Relationship>iterator = relationships.listIterator();
+        if (relationships.isEmpty()) {
+            System.out.println("There are no relationships to display.");
+        }
       
         while (iterator.hasNext())
         {
