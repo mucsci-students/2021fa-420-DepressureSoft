@@ -7,7 +7,7 @@
 import java.util.ArrayList;
 
 /**
- * Represents a class in a class diagram, including the name of the class, the class's attributes, and 
+ * Represents a class in a class diagram, including the name of the class, the class's fields, and 
  *  classes related to this class. 
  */
 public class UMLClass {
@@ -17,9 +17,9 @@ public class UMLClass {
      */
     private String dName;
     /**
-     * The attributes of the class (which include both fields and methods).
+     * The fields of the class (does not include methods).
      */
-    private ArrayList<String> attributes = new ArrayList<String>();
+    private ArrayList<String> fields = new ArrayList<String>();
     /**
      * Names of the classes that this class is related to.
      */
@@ -58,37 +58,37 @@ public class UMLClass {
     }
 
     /**
-     * Adds a new attribute the class representation.
-     * @param newAttribute The name of the new attribute.
+     * Adds a new field the class representation.
+     * @param newField The name of the new field.
      */
-    public void addAttribute(String newAttribute){
-        attributes.add(newAttribute);
+    public void addField(String newField){
+        fields.add(newField);
     }
 
     /**
-     * Removes an existing attribute from the class representation.
-     * @param removedAttribute The name of the attribute to delete.
+     * Removes an existing field from the class representation.
+     * @param removedField The name of the field to delete.
      */
-    public void removeAttribute(String removedAttribute){
-        attributes.remove(removedAttribute);
+    public void removeField(String removedField){
+        fields.remove(removedField);
     }
 
     /**
-     * Renames an existing attribute in the class representation.
-     * @param oldName Name of the attribute to rename.
-     * @param newName New name for the attribute.
+     * Renames an existing field in the class representation.
+     * @param oldName Name of the field to rename.
+     * @param newName New name for the field.
      */
-    public void renameAttribute(String oldName,String newName){
-        int index = attributes.indexOf(oldName);
-        attributes.set(index, newName);
+    public void renameField(String oldName, String newName){
+        int index = fields.indexOf(oldName);
+        fields.set(index, newName);
     }
 
     /**
-     * Returns an ArrayList<String> of all the class representation's attributes.
-     * @return The attributes field.
+     * Returns an ArrayList<String> of all the class representation's fields.
+     * @return The fields ArrayList.
      */
-    public  ArrayList<String> getAttributes(){
-        return attributes;
+    public  ArrayList<String> getFields(){
+        return fields;
     }
 
     /**

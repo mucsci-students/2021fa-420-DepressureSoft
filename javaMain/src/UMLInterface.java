@@ -38,19 +38,19 @@ public class UMLInterface {
                     System.out.println("Please enter the name of the class you would like to add the field to.");
                     userEntry = sc.nextLine();
                     userEntry = userEntry.trim();
-                    boolean moreAttributes = true;
-                    while(moreAttributes)
+                    boolean moreFields = true;
+                    while(moreFields)
                     {
                         System.out.println("Please enter the name of the field you would like to add.");
                         userEntry2 = sc.nextLine();
                         userEntry2 = userEntry2.trim();
-                        holder.addAttribute(userEntry, userEntry2);
+                        holder.addField(userEntry, userEntry2);
                         System.out.println("Would you like to add another field to the class? 'yes' or 'no'");
                         userEntry3 = sc.nextLine();
                         userEntry3 = userEntry3.trim();
                         if(userEntry3.equalsIgnoreCase("No"))
                         {
-                            moreAttributes = false;
+                            moreFields = false;
                         }
                     }
                 }
@@ -109,7 +109,7 @@ public class UMLInterface {
             }
             else if(userEntry.equalsIgnoreCase("Rename"))
             {
-                System.out.println("Would you like to rename a class  method, field, or parameter?");
+                System.out.println("Would you like to rename a class, method, field, or parameter?");
                 userEntry = sc.nextLine();
                 userEntry = userEntry.trim();
                 if(userEntry.equalsIgnoreCase("Class"))
@@ -133,7 +133,7 @@ public class UMLInterface {
                     System.out.println("Please enter what you want to rename it to.");
                     userEntry3 = sc.nextLine();
                     userEntry3 = userEntry3.trim();
-                    holder.renameAttribute(userEntry, userEntry2, userEntry3);
+                    holder.renameField(userEntry, userEntry2, userEntry3);
                 }
                 else if(userEntry.equalsIgnoreCase("Method"))
                 {
@@ -204,7 +204,7 @@ public class UMLInterface {
 
 
                     userEntry2 = userEntry2.trim();
-                    holder.deleteAttribute(userEntry, userEntry2);
+                    holder.deleteField(userEntry, userEntry2);
                 }
                 else if(userEntry.equalsIgnoreCase("Method"))
                 {
