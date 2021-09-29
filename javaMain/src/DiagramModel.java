@@ -10,7 +10,7 @@ import java.util.ListIterator;
 
 /**
  * Represents a UML class diagram, and allows users to manipulate the diagram by 
- *  adding/removing/renaming classes, attributes, and relationships between classes.
+ *  adding/removing/renaming classes, fields, and relationships between classes.
  */
 public class DiagramModel {
 
@@ -105,18 +105,18 @@ public class DiagramModel {
             UMLClass input = diagram.get(className);
 
             System.out.println("Name: " + input.getName());
-            System.out.println("Attributes: ");
+            System.out.println("Fields: ");
 
-            /** Prints attributes, prints special message if none */
-            if (input.getAttributes().size() == 0)
+            /** Prints fields, prints special message if none */
+            if (input.getFields().size() == 0)
             {
-                System.out.println("There are no attributes in this class.");
+                System.out.println("There are no fields in this class.");
             }
             else
             {
-                for (int i = 0; i < input.getAttributes().size(); i++)
+                for (int i = 0; i < input.getFields().size(); i++)
                 {
-                    System.out.println(input.getAttributes().get(i));
+                    System.out.println(input.getFields().get(i));
                 }
             }
         }
@@ -332,112 +332,113 @@ public class DiagramModel {
     }
 
     /**
-     * Adds an attribute to a class, given that the class exists and that the attribute is not a duplicate.
-     * @param className The name of the class to add an attribute to.
-     * @param attributeName The name of the attribute to be added.
+     * Adds a field to a class, given that the class exists and that the field is not a duplicate.
+     * @param className The name of the class to add a field to.
+     * @param fieldName The name of the field to be added.
      */
-    public void addAttribute(String className, String attributeName)
+    public void addField(String className, String fieldName)
     {
         UMLClass parentClass = getUML(className);
         boolean parentExists = classExists(className);
-        if(SourceVersion.isIdentifier(attributeName)){
+        if(SourceVersion.isIdentifier(fieldName)){
         if(parentExists)
         {
-           boolean attributeExists = parentClass.getAttributes().contains(attributeName); 
+           boolean fieldExists = parentClass.getFields().contains(fieldName); 
 
-           if(!attributeExists)
+           if(!fieldExists)
            {
-               parentClass.addAttribute(attributeName);
+               parentClass.addField(fieldName);
            }
            else
            {
-                System.out.println("The attribute \"" + attributeName + 
+                System.out.println("The field \"" + fieldName + 
                     "\" cannot be added, as it already exists in the parent class \"" + className + "\".");
            }
         }
         else
         {
-            System.out.println("The attribute \"" + attributeName + 
+            System.out.println("The field \"" + fieldName + 
                 "\" cannot be added, as the parent class \"" + className + "\" does not exist.");  
         }
     }
     else{
-        System.out.println(attributeName + "\" is not a proper name.");
+        System.out.println(fieldName + "\" is not a proper name.");
     }
     }
 
     /**
-     * Deletes an attribute from a class, given that the class and attribute both exists.
-     * @param className The name of the class to add an attribute to.
-     * @param attributeName The name of the attribute to be deleted.
+     * Deletes a field from a class, given that the class and field both exist.
+     * @param className The name of the class to delete a field from.
+     * @param fieldName The name of the field to be deleted.
      */
-    public void deleteAttribute(String className, String attributeName)
+    public void deleteField(String className, String fieldName)
     {
         UMLClass parentClass = getUML(className);
         boolean parentExists = classExists(className);
     
         if(parentExists)
         {
-           boolean attributeExists = parentClass.getAttributes().contains(attributeName); 
+           boolean fieldExists = parentClass.getFields().contains(fieldName); 
 
-           if(attributeExists)
+           if(fieldExists)
            {
-               parentClass.removeAttribute(attributeName);
+               parentClass.removeField(fieldName);
            }
            else
            {
-                System.out.println("The attribute \"" + attributeName + 
+                System.out.println("The field \"" + fieldName + 
                     "\" cannot be deleted, as it does not exist in the parent class \"" + className + "\".");
            }
         }
         else
         {
-            System.out.println("The attribute \"" + attributeName + 
+            System.out.println("The field \"" + fieldName + 
                 "\" cannot be deleted, as the parent class \"" + className + "\" does not exist.");  
         }
     }
 
     /**
-     * Renames an attribute from a class, given that the class exists, the attribute exists, and the new 
-     *  attribute name does not exist.
-     * @param className The name of the class to add an attribute to.
-     * @param oldAttributeName The name of the attribute to be renamed.
-     * @param newAttributeName The name that oldAttributeName will be renamed to.
+     * Renames a field from a class, given that the class exists, the field exists, and the new 
+     *  field name does not exist.
+     * @param className The name of the class to add an field to.
+     * @param oldFieldName The name of the field to be renamed.
+     * @param newFieldName The name that oldFieldName will be renamed to.
      */
-    public void renameAttribute(String className, String oldAttributeName, String newAttributeName)
+    public void renameField(String className, String oldFieldName, String newFieldName)
     {
         UMLClass parentClass = getUML(className);
         boolean parentExists = classExists(className);
-        if(SourceVersion.isIdentifier(newAttributeName)){
+        if(SourceVersion.isIdentifier(newFieldName)){
         if(parentExists)
         {
-           boolean oldAttributeExists = parentClass.getAttributes().contains(oldAttributeName); 
-           boolean newAttributeExists = parentClass.getAttributes().contains(newAttributeName); 
+           boolean oldFieldExists = parentClass.getFields().contains(oldFieldName); 
+           boolean newFieldExists = parentClass.getFields().contains(newFieldName); 
 
-           if(oldAttributeExists && !newAttributeExists)
+           if(oldFieldExists && !newFieldExists)
            {
-               parentClass.renameAttribute(oldAttributeName, newAttributeName);
+               parentClass.renameField(oldFieldName, newFieldName);
            }
-           else if(!oldAttributeExists)
+           else if(!oldFieldExists)
            {
-                System.out.println("The attribute \"" + oldAttributeName + 
+                System.out.println("The field \"" + oldFieldName + 
                     "\" cannot be renamed, as it does not exist in the parent class \"" + className + "\".");
            }
-           else if(newAttributeExists)
+           else if(oldFieldExists)
            {
-                System.out.println("The attribute \"" + oldAttributeName + 
-                    "\" cannot be renamed to \"" + newAttributeName + "\", as \"" + newAttributeName + 
+                System.out.println("The field \"" + oldFieldName + 
+                    "\" cannot be renamed to \"" + newFieldName + "\", as \"" + newFieldName + 
                     "\" already exists in the parent class \"" + className + "\".");
            }
         }
         else
         {
-            System.out.println("The attribute \"" + oldAttributeName + 
+            System.out.println("The field \"" + oldFieldName + 
                 "\" cannot be renamed, as the parent class \"" + className + "\" does not exist.");  
         }
         }
         else{
-            System.out.println(newAttributeName + "\" is not a proper name.");
+            System.out.println(newFieldName + "\" is not a proper name.");
         }
     }
+
 }
