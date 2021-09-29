@@ -20,11 +20,9 @@ public class DiagramModel {
      */
     private HashMap<String, UMLClass> diagram = new HashMap<String, UMLClass>();
     /**
-     * ArrayList representing the class relationships within the diagram. In each element, there is a 2-element
-     *  array containing references to UMLClass objects that exist in the diagram. Position [0] contains the "parent"
-     *  of the relationship while [1] contains the "child."
+     * ArrayList of relationship types representing the class relationships within the diagram.
      */
-    private ArrayList<UMLClass[]> relationships = new ArrayList<UMLClass[]>();
+    private ArrayList<Relationship> relationships = new ArrayList<Relationship>();
 
     /**
      * Adds a new class to the diagram, checking to ensure that a class with the same name does not already exist,
@@ -58,12 +56,20 @@ public class DiagramModel {
         {
             for(int i = 0; i < relationships.size(); i++)
             {
+                /*
                 UMLClass[] holder = relationships.get(i);
                 
                 if(holder[0].getName().equals(entry) || holder[1].getName().equals(entry))
                 {
                     holder[0].deleteRelationship(holder[1].getName());
                     holder[1].deleteRelationship(holder[0].getName());
+                    relationships.remove(i);
+                }
+                */
+
+                Relationship holder = relationships.get(i);
+                if(holder.getTo().getName().equals(entry) || holder.getFrom().getName().equals(entry))
+                {
                     relationships.remove(i);
                 }
             }
@@ -136,10 +142,12 @@ public class DiagramModel {
     /**
      * Adds a class relationship to the diagram, checking to ensure that both classes exist, a relationship
      *  does not already exist between the two classes, and that the relationship is not recursive.
-     * @param from The "parent" of the relationship.
-     * @param to The "child" of the relationship.
+     * @param from The "child" of the relationship.
+     * @param to The "parent" of the relationship.
+     * @param type The type of the relationship. Can be one of AGGREGATION, COMPOSITION, INHERITANCE, 
+     *  or REALIZATION.
      */
-    public void addRelationship(String from, String to)
+    public void addRelationship(String from, String to, Relationship.RelationshipType type)
     {
         boolean fromClassExists = classExists(from);
         boolean toClassExists = classExists(to);
@@ -152,12 +160,13 @@ public class DiagramModel {
 
                 // Iterate for relationship existence
                 for(int i = 0; i < relationships.size(); i++){
-                    UMLClass[] holder = relationships.get(i);
+                    Relationship holder = relationships.get(i);
 
-                    if(holder[0].getName().equals(from) && holder[1].getName().equals(to)){
+                    if(holder.getFrom().getName().equals(from) && holder.getTo().getName().equals(to))
+                    {
                         relationshipExists = true;
                     }
-                    else if(holder[0].getName().equals(to) && holder[1].getName().equals(from))
+                    else if(holder.getFrom().getName().equals(to) && holder.getTo().getName().equals(from))
                     {
                         relationshipExists = true;
                     }
@@ -168,13 +177,8 @@ public class DiagramModel {
                     UMLClass fromClass = getUML(from);
                     UMLClass toClass = getUML(to);
 
-                    UMLClass[] arr = new UMLClass[2];
-                    arr[0] = fromClass;
-                    fromClass.addRelationship(to);
-                    toClass.addRelationship(from);
-                    arr[1] = toClass;
-                
-                    relationships.add(arr);                    
+                    Relationship newRelationship = new Relationship(fromClass, toClass, type);
+                    relationships.add(newRelationship);
                 }
                 // If relationship exists already
                 else
@@ -222,14 +226,9 @@ public class DiagramModel {
 
             // Iterate for relationship existence and deletion
             for(int i = 0; i < relationships.size(); i++){
-                UMLClass[] holder = relationships.get(i);
+                Relationship holder = relationships.get(i);
 
-                if(holder[0].getName().equals(from) && holder[1].getName().equals(to)){
-                    relationships.remove(i);
-                    relationshipExists = true;
-                }
-                else if(holder[0].getName().equals(to) && holder[1].getName().equals(from))
-                {
+                if(holder.getFrom().getName().equals(from) && holder.getTo().getName().equals(to)){
                     relationships.remove(i);
                     relationshipExists = true;
                 }
@@ -256,20 +255,62 @@ public class DiagramModel {
             }
         }
     }
+
+    /**
+     * 
+     */
+    public void changeRelationshipType(String from, String to, Relationship.RelationshipType newType) {
+        boolean fromClassExists = classExists(from);
+        boolean toClassExists = classExists(to);
+
+        if(fromClassExists && toClassExists)
+        {
+            boolean relationshipExists = false;
+
+            // Iterate for relationship existence and deletion
+            for(int i = 0; i < relationships.size(); i++){
+                Relationship holder = relationships.get(i);
+
+                if(holder.getFrom().getName().equals(from) && holder.getTo().getName().equals(to)){
+                    holder.setType(newType);
+                    relationshipExists = true;
+                }
+            }
+            // If relationship did not exist prior
+            if(!relationshipExists)
+            {
+                System.out.println("The type of the relationship between \"" + from + "\" and \"" + to + 
+                    "\" cannot be changed, as the relationship does not exist");
+            }
+        }
+        // If either class DNE
+        else
+        {
+            if(!fromClassExists)
+            {
+                System.out.println("The source class \"" + from + "\" does not exist");
+            }
+            else if(!toClassExists)
+            {
+                System.out.println("The destination class \"" + to + "\" does not exist");
+            }
+        }
+    }
   
     /**
      * Prints all the relationships in the class diagram.
      */
     public void ListRelationships()
     {
-        ListIterator<UMLClass[]>iterator = relationships.listIterator();
+        ListIterator<Relationship>iterator = relationships.listIterator();
       
         while (iterator.hasNext())
         {
-            UMLClass[] relPair = iterator.next();
-            UMLClass from = relPair[0];
-            UMLClass to = relPair[1];
-            System.out.println("From: " + from.getName() + " To: " + to.getName());
+            Relationship current = iterator.next();
+            UMLClass from = current.getFrom();
+            UMLClass to = current.getTo();
+            System.out.println("From: " + from.getName() + " To: " + to.getName() + " Type: " + 
+                current.getRelationshipType());
         }
     }
 

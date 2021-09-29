@@ -94,7 +94,7 @@ public class UMLInterface {
                     userEntry3 = sc.nextLine();
                     userEntry3 = userEntry3.trim();
                     //holder.addRelationship(userEntry,userEntry2,userEntry3);
-                    holder.addRelationship(userEntry,userEntry2);
+                    //holder.addRelationship(userEntry,userEntry2);
                 }
                 else if(userEntry.equalsIgnoreCase("Exit"))
                 {

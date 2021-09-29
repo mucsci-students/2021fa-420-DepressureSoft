@@ -62,8 +62,8 @@ public class tester {
             System.out.println("Actual: ");
             holder.addClass("Diagram4");
             holder.addClass("Diagram5");
-            holder.addRelationship("Diagram4","Diagram5");
-            holder.addRelationship("Diagram3","Diagram5");
+            //holder.addRelationship("Diagram4","Diagram5");
+            //holder.addRelationship("Diagram3","Diagram5");
             holder.deleteRelationship("Diagram3","Diagram5");
             holder.ListRelationships();
     }
