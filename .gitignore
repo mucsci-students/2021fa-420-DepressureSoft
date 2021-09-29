@@ -2,3 +2,4 @@
 .vscode/settings.json
 .DS_Store
 javaMain/bin
+javaMain/src/TempTester.java
