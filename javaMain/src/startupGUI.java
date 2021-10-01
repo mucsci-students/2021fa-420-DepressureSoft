@@ -40,7 +40,7 @@ public class startupGUI {
         button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 frame.dispose();
-               //NOTHING YET
+                GUI.main(args);
             }
          });
 
