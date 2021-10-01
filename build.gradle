@@ -9,6 +9,8 @@
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     id 'application'
+    id 'com.github.johnrengelman.shadow' version '6.1.0'
+    id 'java'
 }
 
 repositories {
@@ -25,6 +27,18 @@ dependencies {
     // This dependency is used by the application.
     implementation 'com.google.guava:guava:29.0-jre'
 }
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'umleditor.startupGUI'
+    }
+}
+
+shadowJar {
+    archiveVersion = 'v2.0.0'
+}
+
+mainClassName = 'umleditor.startupGUI'
 
 application {
     // Define the main class for the application.
