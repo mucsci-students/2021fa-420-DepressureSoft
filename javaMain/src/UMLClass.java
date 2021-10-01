@@ -1,5 +1,5 @@
 /**
- * Authors: Jeffrey Flynn, Jeffrey Cutcher, David Jachimowicz
+ * Authors: Jeffrey Flynn, Jeffrey Cutcher, David Jachimowicz, Alex Balagurak
  * Date: 9/15/21
  */
 
@@ -24,6 +24,10 @@ public class UMLClass {
      * Names of the classes that this class is related to.
      */
     private ArrayList<String> relationship = new ArrayList<String>();
+    /**
+     * The methods of the class.
+     */
+    private ArrayList<Methods> methods = new ArrayList<Methods>();
     
     /**
      * Main constructor that sets the name of the new class.
@@ -55,6 +59,32 @@ public class UMLClass {
      */
     public void deleteRelationship(String deleteRelation){
             relationship.remove(deleteRelation);
+    }
+
+    /**
+     * Adds a new method to the class representation.
+     * @param newMethod
+     */
+    public void addMethod(Methods newMethod){
+        methods.add(newMethod);
+    }
+
+    /**
+     * Removes an existing method from the class representation.
+     * @param removeMethod
+     */
+    public void removeMethod(Methods removeMethod){
+        methods.remove(removeMethod);
+    }
+
+    /**
+     * Renames a method if it exists in the class representation. 
+     * @param currentMethod
+     * @param newMethodName
+     */
+    public void renameMethod(Methods currentMethod, String newMethodName){
+        int index = methods.indexOf(currentMethod.getMethodName());
+        methods.get(index).renameMethod(newMethodName);
     }
 
     /**
