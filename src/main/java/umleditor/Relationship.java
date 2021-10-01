@@ -1,3 +1,4 @@
+package umleditor;
 /**
  * Represents a relationship in the UML class diagram.
  */
