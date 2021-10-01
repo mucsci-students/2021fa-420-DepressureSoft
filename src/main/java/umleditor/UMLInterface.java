@@ -1,3 +1,4 @@
+package umleditor;
 import java.util.Scanner;
 
 /**

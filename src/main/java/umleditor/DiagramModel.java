@@ -1,3 +1,4 @@
+package umleditor;
 /**
  * Authors: Jeffrey Flynn, David Jachimowicz, Jeff Cutcher
  * Date: 9/15/21
