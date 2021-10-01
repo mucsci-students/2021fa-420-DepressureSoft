@@ -90,11 +90,15 @@ public class UMLInterface {
                     System.out.println("Please enter the second class within the relationship you would like to add.");
                     userEntry2 = sc.nextLine();
                     userEntry2 = userEntry2.trim();
-                    System.out.println("Please enter the type of relationship between the two classes.");
+                    System.out.println("Please enter the type of relationship between the two classes."
+                        + "\nCan be either \"aggregation\", \"composition\", \"inheritance\", or \"realization\".");
                     userEntry3 = sc.nextLine();
                     userEntry3 = userEntry3.trim();
-                    //holder.addRelationship(userEntry,userEntry2,userEntry3);
-                    holder.addRelationship(userEntry,userEntry2);
+                    if (getRelTypeFromString(userEntry3) != null) {
+                        holder.addRelationship(userEntry,userEntry2,getRelTypeFromString(userEntry3));
+                    } else {
+                        System.out.println("\"" + userEntry3 + "\" is not a valid relationship type.");
+                    }
                 }
                 else if(userEntry.equalsIgnoreCase("Exit"))
                 {
@@ -241,7 +245,7 @@ public class UMLInterface {
                     userEntry = userEntry.trim();
                     System.out.println("Please enter the second class within the relationship you would like to delete.");
                     userEntry2 = sc.nextLine();
-                    userEntry2 = userEntry.trim();
+                    userEntry2 = userEntry2.trim();
                     holder.deleteRelationship(userEntry,userEntry2);
                 }
                 else if(userEntry.equalsIgnoreCase("Exit"))
@@ -254,6 +258,22 @@ public class UMLInterface {
                 else{
                     System.out.println("Sorry, we don't recognize that command, please try again.");
                 }
+            }
+            else if(userEntry.equalsIgnoreCase("ChangeType"))
+            {
+                System.out.println("Please enter the first class within the relationship you want to change the type of.");
+                userEntry = sc.nextLine().trim();
+                System.out.println("Please enter the second class within the relationship you want to change the type of.");
+                userEntry2 = sc.nextLine().trim();
+                System.out.println("Please enter the relationship type you would like to change this relationship to."
+                    + "\nCan be either \"aggregation\", \"composition\", \"inheritance\", or \"realization\".");
+                userEntry3 = sc.nextLine().trim();
+                if (getRelTypeFromString(userEntry3) != null) {
+                    holder.changeRelationshipType(userEntry,userEntry2,getRelTypeFromString(userEntry3));
+                } else {
+                    System.out.println("\"" + userEntry3 + "\" is not a valid relationship type.");
+                }
+
             }
             else if(userEntry.equalsIgnoreCase("Display"))
             {
@@ -305,16 +325,39 @@ public class UMLInterface {
                 System.out.println("Add - Prompts you to add either a 'class', 'method', 'parameter', 'field', or 'relationship' ");
                 System.out.println("Rename - Prompts you to rename either a 'class', 'method', 'parameter', or 'field'");
                 System.out.println("Delete - Prompts you to remove either a 'class','method', 'parameter', 'field', or 'relationship'");
+                System.out.println("ChangeType – Allows you to change the type of an existing relationship.");
                 System.out.println("Display - Gives the option to display either 'one' or 'all' classes.");
                 System.out.println("Save - Saves the current existing diagram.");
                 System.out.println("Load - Loads a diagram from file.");
                 System.out.println("Exit - Allows you to stop the program from running.");
                 System.out.println("Help - Displays the possible commands able to be made within the program.");
+                // Suggestion: Sample – Loads a sample class diagram, first prompting the user if they would like to save their current work.
+                // Suggestion: Clear – Clears the class diagram, first prompting the user if they are sure they want to delete their current unsaved work.
             }
             else
             {
                 System.out.println("Sorry, we don't recognize that command, please try again.");
             }
+        }
+    }
+
+    /**
+     * Helper method that returns a value from the RelationshipType enum that matches the input string.
+     * @param input The input string.
+     * @reutn The correct RelationshipType enum value if input equals "aggregation", "composition", "inheritance", 
+     *  or "realization", null if not.
+     */
+    private static Relationship.RelationshipType getRelTypeFromString(String input) {
+        if (input.equalsIgnoreCase("aggregation")) {
+            return Relationship.RelationshipType.AGGREGATION;
+        } else if (input.equalsIgnoreCase("composition")) {
+            return Relationship.RelationshipType.COMPOSITION;
+        } else if (input.equalsIgnoreCase("inheritance")) {
+            return Relationship.RelationshipType.INHERITANCE;
+        } else if (input.equalsIgnoreCase("realization")) {
+            return Relationship.RelationshipType.REALIZATION;
+        } else {
+            return null;
         }
     }
 }

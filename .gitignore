@@ -1,4 +1,4 @@
 
 .vscode/settings.json
 .DS_Store
-javaMain/bin
+*.class
