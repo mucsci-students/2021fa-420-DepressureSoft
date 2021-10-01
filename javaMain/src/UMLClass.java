@@ -20,12 +20,6 @@ public class UMLClass {
      * The fields of the class (does not include methods).
      */
     private ArrayList<String> fields = new ArrayList<String>();
-    /**
-     * Names of the classes that this class is related to.
-     */
-    /*
-    private ArrayList<String> relationship = new ArrayList<String>();
-    */
 
     /**
      * Main constructor that sets the name of the new class.
@@ -42,26 +36,6 @@ public class UMLClass {
     public void renameClass(String newName){
         this.dName = newName;
     }
-
-    /**
-     * Adds a relationship to the class representation.
-     * @param newRelation The name of the class that this class will be related to.
-     */
-    /*
-    public void addRelationship(String newRelation){
-        relationship.add(newRelation);
-    }
-    */
-
-    /**
-     * Deletes a relationship to the class representation.
-     * @param deleteRelation The name of the class that this class is related to that will be deleted.
-     */
-    /*
-    public void deleteRelationship(String deleteRelation){
-            relationship.remove(deleteRelation);
-    }
-    */
 
     /**
      * Adds a new field the class representation.
@@ -96,16 +70,6 @@ public class UMLClass {
     public  ArrayList<String> getFields(){
         return fields;
     }
-
-    /**
-     * Returns an ArrayList<String> of all the classes related to this class.
-     * @return The relationship field.
-     */
-    /*
-    public  ArrayList<String> getRelationships(){
-        return relationship;
-    }
-    */
 
     /**
      * Returns the name of the class representation.

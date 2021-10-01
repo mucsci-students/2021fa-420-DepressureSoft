@@ -56,17 +56,6 @@ public class DiagramModel {
         {
             for(int i = 0; i < relationships.size(); i++)
             {
-                /*
-                UMLClass[] holder = relationships.get(i);
-                
-                if(holder[0].getName().equals(entry) || holder[1].getName().equals(entry))
-                {
-                    holder[0].deleteRelationship(holder[1].getName());
-                    holder[1].deleteRelationship(holder[0].getName());
-                    relationships.remove(i);
-                }
-                */
-
                 Relationship holder = relationships.get(i);
                 if(holder.getTo().getName().equals(entry) || holder.getFrom().getName().equals(entry))
                 {
@@ -142,8 +131,8 @@ public class DiagramModel {
     /**
      * Adds a class relationship to the diagram, checking to ensure that both classes exist, a relationship
      *  does not already exist between the two classes, and that the relationship is not recursive.
-     * @param from The "child" of the relationship.
-     * @param to The "parent" of the relationship.
+     * @param from The "parent" of the relationship.
+     * @param to The "child" of the relationship.
      * @param type The type of the relationship. Can be one of AGGREGATION, COMPOSITION, INHERITANCE, 
      *  or REALIZATION.
      */
