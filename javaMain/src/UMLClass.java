@@ -82,8 +82,8 @@ public class UMLClass {
      * @param currentMethod
      * @param newMethodName
      */
-    public void renameMethod(Methods currentMethod, String newMethodName){
-        int index = methods.indexOf(currentMethod.getMethodName());
+    public void renameMethod(String currentMethod, String newMethodName){
+        int index = methods.indexOf(currentMethod);
         methods.get(index).renameMethod(newMethodName);
     }
 

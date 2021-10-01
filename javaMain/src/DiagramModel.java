@@ -216,8 +216,39 @@ public class DiagramModel {
      * @param oldMethodName
      * @param newMethodName
      */
-    public void renameMethod(String oldMethodName, String newMethodName){
-        
+    public void renameMethod(String className, String oldMethodName, String newMethodName){
+
+        UMLClass parentClass = getUML(className);
+        boolean parentExists = classExists(className);
+
+        if(parentExists){
+            boolean methodExists = false;
+            boolean newMethodNameExists = false;
+            for(int i = 0; i < methods.size(); i++)
+            {
+                UMLClass[] holder = methods.get(i);
+                if(holder[0].getName().equals(oldMethodName))
+                {
+                    methodExists = true;
+                }
+                if(holder[0].getName().equals(newMethodName)){
+                    newMethodNameExists = true;
+                }
+            }
+            if(methodExists && !newMethodNameExists){
+                parentClass.renameMethod(oldMethodName, newMethodName);
+            }
+            else
+            {
+                    System.out.println("The method \"" + oldMethodName + 
+                        "\" cannot be renamed, as it does not exist.");
+            }
+        }
+        else
+        {
+            System.out.println("The method \"" + oldMethodName + 
+                "\" cannot be renamed, as the parent class \"" + className + "\" does not exist.");  
+        }
     }
     
     /**
