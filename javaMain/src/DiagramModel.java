@@ -26,6 +26,8 @@ public class DiagramModel {
      */
     private ArrayList<UMLClass[]> relationships = new ArrayList<UMLClass[]>();
 
+    private ArrayList<UMLClass[]> methods = new ArrayList<UMLClass[]>();
+
     /**
      * Adds a new class to the diagram, checking to ensure that a class with the same name does not already exist,
      *  and that the name conforms to the standards set forth in javax.lang.model.SourceVersion.isIdentifier().
@@ -133,6 +135,91 @@ public class DiagramModel {
         diagram.forEach((k,v) -> listClass(k));
     }
 
+    /**
+     * Adds a method to a class diagram as long as class exists and method does not already exist.
+     * @param className
+     * @param methodName
+     */
+    public void addMethod(String className, Methods methodName){
+       
+        UMLClass parentClass = getUML(className);
+        boolean parentExists = classExists(className);
+    
+        if(parentExists)
+        {
+            boolean methodExists = false;
+            for(int i = 0; i < methods.size(); i++)
+            {
+                UMLClass[] holder = methods.get(i);
+                if(holder[0].getName().equals(methodName))
+                {
+                    methodExists = true;
+                }
+            }
+            if(!methodExists)
+            {
+                parentClass.addMethod(methodName);
+            }
+            else
+            {
+                    System.out.println("The method \"" + methodName + 
+                        "\" cannot be added, as it already exists in the parent class \"" + className + "\".");
+            }
+        }
+        else
+        {
+            System.out.println("The method \"" + methodName + 
+                "\" cannot be added, as the parent class \"" + className + "\" does not exist.");  
+        }
+    }
+    
+    /**
+     * Removes an existing method from the diagram, as long as class exists.
+     * @param className
+     * @param methodName
+     */
+    public void removeMethod(String className, Methods methodName){
+        
+        UMLClass parentClass = getUML(className);
+        boolean parentExists = classExists(className);
+    
+        if(parentExists)
+        {
+            boolean methodExists = false;
+            for(int i = 0; i < methods.size(); i++)
+            {
+                UMLClass[] holder = methods.get(i);
+                if(holder[0].getName().equals(methodName))
+                {
+                    methodExists = true;
+                }
+            }
+            if(!methodExists)
+            {
+                parentClass.removeMethod(methodName);
+            }
+            else
+            {
+                    System.out.println("The method \"" + methodName + 
+                        "\" cannot be removed, as it does not exist.");
+            }
+        }
+        else
+        {
+            System.out.println("The method \"" + methodName + 
+                "\" cannot be removed, as the parent class \"" + className + "\" does not exist.");  
+        }
+    }
+
+    /**
+     * Renames a method as long as it already exists.
+     * @param oldMethodName
+     * @param newMethodName
+     */
+    public void renameMethod(String oldMethodName, String newMethodName){
+        
+    }
+    
     /**
      * Adds a class relationship to the diagram, checking to ensure that both classes exist, a relationship
      *  does not already exist between the two classes, and that the relationship is not recursive.

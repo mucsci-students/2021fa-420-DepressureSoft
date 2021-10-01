@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 /**
  * Methods in the UML Class diagram.
  */
@@ -5,6 +7,7 @@
 public class Methods {
 
     private String methodName;
+    private ArrayList<String> parameters = new ArrayList<String>();
 
     /**
      * Creates a new method.
