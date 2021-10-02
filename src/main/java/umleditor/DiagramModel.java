@@ -6,6 +6,11 @@ package umleditor;
 
 import java.util.ArrayList;
 import javax.lang.model.SourceVersion;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import java.lang.reflect.Type;
+
 import java.util.HashMap;
 import java.util.ListIterator;
 
@@ -77,16 +82,21 @@ public class DiagramModel {
      * Saves the class diagram to a JSON file using the format specified by the CSCI 420 fall 2021 
      * standardization committee.
      */
-    public void Save(){
-
+    public void save(){
+        Gson document = new Gson();
+        System.out.println(document.toJson(diagram));
+        
     }
 
     /**
      * Loads a class diagram from a JSON file formatted using the format specified by the CSCI 420 fall 2021 
      * standardization committee.
      */
-    public void Load(){
-
+    public void load(String prevSave){
+        Type a = new TypeToken<HashMap<String, UMLClass>>(){}.getType();
+        HashMap<String, UMLClass> loader = new Gson().fromJson(prevSave, a);
+        diagram.clear();
+        diagram = loader;
     }
 
     /**

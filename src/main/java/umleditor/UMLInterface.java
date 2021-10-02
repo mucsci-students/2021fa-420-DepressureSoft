@@ -313,7 +313,7 @@ public class UMLInterface {
             }
             else if(userEntry.equalsIgnoreCase("Save"))
             {
-
+                holder.save();
             }
             else if(userEntry.equalsIgnoreCase("Load"))
             {
