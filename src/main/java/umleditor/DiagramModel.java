@@ -118,6 +118,11 @@ public class DiagramModel {
         } 
     }
 
+    /**
+     * Formats the contents of a UMLClass into JSON. Designed to be used with the save method.
+     * @param theClass The class to format into JSON.
+     * @return A formatted string of the contents of theClass.
+     */
     private String jsonTxtClassMaker(UMLClass theClass) {
         StringBuilder result = new StringBuilder();
         result.append("    {\n");
