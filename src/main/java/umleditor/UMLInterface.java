@@ -313,7 +313,11 @@ public class UMLInterface {
             }
             else if(userEntry.equalsIgnoreCase("Save"))
             {
-                holder.save();
+                System.out.println("Please enter directory to save to. Example: \"/Users/jeff/Desktop/\"");
+                userEntry = sc.nextLine();
+                System.out.println("Please enter a name for your save file. (The .json extension will be appended automatically)");
+                userEntry2 = sc.nextLine();
+                holder.save(userEntry, userEntry2);
             }
             else if(userEntry.equalsIgnoreCase("Load"))
             {

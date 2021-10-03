@@ -9,6 +9,9 @@ import javax.lang.model.SourceVersion;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
+import java.io.FileWriter;
+import java.io.IOException;
 import java.lang.reflect.Type;
 
 import java.util.HashMap;
@@ -81,11 +84,58 @@ public class DiagramModel {
     /**
      * Saves the class diagram to a JSON file using the format specified by the CSCI 420 fall 2021 
      * standardization committee.
+     * @param directory The path relative to the root directory to save the file to. Must end with "/"
+     *  and be a valid path.
+     * @param fileName The name of the file. Must not include the .json extension, which is appended
+     *  automatically.
      */
-    public void save(){
-        Gson document = new Gson();
-        System.out.println(document.toJson(diagram));
-        
+    public void save(String directory, String fileName){
+        StringBuilder jsonTxt = new StringBuilder();
+        jsonTxt.append("{\n  \"classes\": [\n");
+        diagram.forEach((k,v) -> jsonTxt.append(jsonTxtClassMaker(v)));
+        if (!diagram.isEmpty()) {
+            jsonTxt.deleteCharAt(jsonTxt.length() - 2);
+        }
+        jsonTxt.append("  ],\n  \"relationships\": [\n");
+        for(Relationship relationship : relationships) {
+            jsonTxt.append("    {\n");
+            jsonTxt.append("      \"source\": \"" + relationship.getFrom().getName() + "\",\n");
+            jsonTxt.append("      \"destination\": \"" + relationship.getTo().getName() + "\",\n");
+            jsonTxt.append("      \"type\": \"" + relationship.getRelationshipType() + "\"\n");
+            jsonTxt.append("    },\n");
+        }
+        if (!relationships.isEmpty()) {
+            jsonTxt.deleteCharAt(jsonTxt.length() - 2);
+        }  
+        jsonTxt.append("  ]\n}");
+        try {
+            String filePath = directory + fileName + ".json";
+            FileWriter fw1 = new FileWriter(filePath);
+            fw1.write(jsonTxt.toString());
+            fw1.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } 
+    }
+
+    private String jsonTxtClassMaker(UMLClass theClass) {
+        StringBuilder result = new StringBuilder();
+        result.append("    {\n");
+        result.append("      \"name\": \"" + theClass.getName() + "\",\n");
+        result.append("      \"fields\": [\n");
+        ArrayList<String> fields = theClass.getFields();
+        for(String field : fields) {
+            result.append("        { \"name\": \"" + field + "\", \"type\": \"N/A\" },\n"); 
+        }
+        if(!fields.isEmpty()) {
+            result.deleteCharAt(result.length() - 2);
+        }
+        result.append("      ],\n");
+        result.append("      \"methods\": [\n");
+        // methods
+        result.append("      ]\n");
+        result.append("    },\n");
+        return result.toString();
     }
 
     /**
