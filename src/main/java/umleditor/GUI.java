@@ -22,10 +22,14 @@ public class GUI {
     JMenuItem deleteClass,deleteRelationship,deleteField,deleteMethod,deleteParameter;
     JMenuItem renameClass,renameField,renameMethod,renameParameter;
 
-    JPanel pane,actionPane;
+    JPanel pane,boxPane,actionPane;
 
     JTextField textBoxClassAdd;
     JTextField className,className2,methodName,fieldName,parameterName,relationType,renamer;
+
+    private DiagramModel model = new DiagramModel();
+    private HashMap<String,classBox> boxMap = new HashMap();
+    private classBox box;
 
     public GUI(){
 
@@ -48,6 +52,7 @@ public class GUI {
         pane = new JPanel();
         pane.setLayout(new GridBagLayout());
 
+        frame.add(pane);
         frame.setVisible(true);
     }
     /**
@@ -116,6 +121,7 @@ public class GUI {
         addClass.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 addClassWindow();
+                
             }
          });
          /**
@@ -248,6 +254,12 @@ public class GUI {
         actionPane = new JPanel(new FlowLayout());
         className = new JTextField("", 18);
 
+        classAddButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                addClassAction();
+            }
+         });
+
         actionPane.add(classNameAdd);
         actionPane.add(className);
         actionPane.add(classAddButton);
@@ -312,6 +324,12 @@ public class GUI {
         JLabel fieldLabel = new JLabel("Enter Field Name: ");
 
         JButton classAddButton = new JButton("Add");
+
+        classAddButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                addFieldAction();
+            }
+         });
 
         actionPane = new JPanel(new FlowLayout());
 
@@ -640,4 +658,36 @@ public class GUI {
 
         action.setVisible(true);
     }
+
+    /**
+     * Methods responsible for manipulating GUI Box Element. 
+     */
+    public void addClassAction(){
+        String newClass = className.getText();
+        model.addClass(newClass);
+        box = new classBox(newClass);
+        boxMap.put(newClass,box);
+        pane.add(box.getClassPanel());
+        frame.add(pane);
+        frame.setVisible(true);
+        action.dispose();
+    }
+
+    public void addFieldAction(){
+        String getClass = className.getText();
+		String field = fieldName.getText();
+
+        model.addField(getClass, field);
+        boxMap.get(getClass).addField(field);
+        action.dispose();
+    }
+
+    public void addMethodAction(){
+
+    }
+
+    public void addParameterAction(){
+
+    }
+
 }
