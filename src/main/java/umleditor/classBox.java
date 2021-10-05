@@ -13,9 +13,9 @@ public class classBox {
 
     private JLabel className;
     
-    private JPanel panel = null;
-    private JPanel fieldPanel = null;
-    private JPanel methodPanel = null;
+    private JPanel panel;
+    private JPanel fieldPanel;
+    private JPanel methodPanel;
 
     private GroupLayout gl_panel;
 
