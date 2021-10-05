@@ -690,4 +690,28 @@ public class GUI {
 
     }
 
+    public void deleteClassAction(){
+
+    }
+    public void deleteFieldAction(){
+
+    }
+    public void deletemethodAction(){
+
+    }
+    public void deleteParameterAction(){
+
+    }
+    public void renameClassAction(){
+
+    }
+    public void renameFieldAction(){
+
+    }
+    public void renameMethodAction(){
+
+    }
+    public void renameParameterAction(){
+        
+    }
 }
