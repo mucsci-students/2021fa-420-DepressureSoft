@@ -142,7 +142,7 @@ public class DiagramModel {
      * @param className
      * @param methodName
      */
-    public void addMethod(String className, Methods methodName){
+    public void addMethod(String className, String methodName){
        
         UMLClass parentClass = getUML(className);
         boolean parentExists = classExists(className);
