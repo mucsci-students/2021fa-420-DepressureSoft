@@ -29,6 +29,9 @@ public class classBox {
         fields = new ArrayList();
         params = new HashMap();
         methods = new ArrayList();
+        panel = null;
+        fieldPanel = null;
+        methodPanel = null;
         initialize();
     }
 
@@ -38,7 +41,8 @@ public class classBox {
         panel.add(className);
         methodPanel = new JPanel();
         fieldPanel = new JPanel();
-		fieldPanel.setLayout(new GridLayout(5, 2));
+        methodPanel.setLayout(new GridLayout(4,1));
+		fieldPanel.setLayout(new GridLayout(4,1));
         panel.add(methodPanel);
         panel.add(fieldPanel);
     }
@@ -66,8 +70,40 @@ public class classBox {
 		methodPanel.add(method);
 		methodPanel.repaint();
      }
+     public void addParameter(String parameter,String method){
+        if(params.containsKey(method)){
+            ArrayList<String> temp = params.get(method);
+            temp.add(parameter);
+        }
+        else{
+            ArrayList<String> temp = new ArrayList<String>();
+            temp.add(parameter);
+            params.put(method,temp);
+        }
+     }
+    /**
+     * Remove Element Functions
+     */
+     public void removeField(){
 
-     public void addParameter(){
+    }
+     public void removeMethod(){
 
      }
+     public void removeParameter(){
+         
+     }
+     /**
+      * Rename Element Functions
+      */
+     public void renameField(){
+         
+    }
+     public void renameMethod(){
+
+     }
+     public void renameParameter(){
+
+     }
+
 }

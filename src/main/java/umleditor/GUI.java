@@ -295,6 +295,11 @@ public class GUI {
         JLabel relationshipType = new JLabel("Enter Relationship Type: (A, C, I, R)");
 
         JButton classAddButton = new JButton("Add");
+        classAddButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                addRelationshipAction();
+            }
+         });
 
         actionPane = new JPanel(new FlowLayout());
 
@@ -358,6 +363,12 @@ public class GUI {
 
         JButton classAddButton = new JButton("Add");
 
+        classAddButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                addMethodAction();
+            }
+         });
+
         actionPane = new JPanel(new FlowLayout());
 
         className = new JTextField("", 18);
@@ -385,6 +396,11 @@ public class GUI {
         JLabel paramLabel = new JLabel("Enter Parameter Name: ");
 
         JButton classAddButton = new JButton("Add");
+        classAddButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                addParameterAction();
+            }
+         });
 
         actionPane = new JPanel(new FlowLayout());
 
@@ -414,6 +430,12 @@ public class GUI {
         JLabel classNameDelete = new JLabel("Enter Class Name: ");
         JButton classDeleteButton = new JButton("Delete");
 
+        classDeleteButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                deleteClassAction();
+            }
+         });
+
         actionPane = new JPanel(new FlowLayout());
         className = new JTextField("", 18);
 
@@ -436,7 +458,11 @@ public class GUI {
         JLabel classN2 = new JLabel("Enter Second Class Name: ");
 
         JButton classDeleteButton = new JButton("Delete");
-
+        classDeleteButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                deleteRelationshipAction();
+            }
+         });
         actionPane = new JPanel(new FlowLayout());
 
         className = new JTextField("", 18);
@@ -462,6 +488,11 @@ public class GUI {
         JLabel fieldLabel = new JLabel("Enter Field Name: ");
 
         JButton classDeleteButton = new JButton("Delete");
+        classDeleteButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                deleteFieldAction();
+            }
+         });
 
         actionPane = new JPanel(new FlowLayout());
 
@@ -489,6 +520,11 @@ public class GUI {
         JLabel methodLabel = new JLabel("Enter Method Name: ");
 
         JButton classDeleteButton = new JButton("Delete");
+        classDeleteButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                deleteMethodAction();
+            }
+         });
 
         actionPane = new JPanel(new FlowLayout());
 
@@ -517,6 +553,11 @@ public class GUI {
         JLabel paramLabel = new JLabel("Enter Parameter Name: ");
 
         JButton classDeleteButton = new JButton("Delete");
+        classDeleteButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                deleteParameterAction();
+            }
+         });
 
         actionPane = new JPanel(new FlowLayout());
 
@@ -547,6 +588,12 @@ public class GUI {
         JLabel classRenameLabel = new JLabel("Enter NEW Class Name: ");
         JButton classAddButton = new JButton("Rename");
 
+        classAddButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                renameClassAction();
+            }
+         });
+
         actionPane = new JPanel(new FlowLayout());
         className = new JTextField("", 18);
         className2 = new JTextField("", 18);
@@ -572,7 +619,13 @@ public class GUI {
         JLabel fieldLabel = new JLabel("Enter Field Name: ");
         JLabel fieldRenameLabel = new JLabel("Enter NEW Field Name: ");
 
-        JButton classDeleteButton = new JButton("Rename");
+        JButton classAddButton = new JButton("Rename");
+        classAddButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                renameFieldAction();
+            }
+         });
+
 
         actionPane = new JPanel(new FlowLayout());
 
@@ -587,7 +640,7 @@ public class GUI {
         actionPane.add(fieldRenameLabel);
         actionPane.add(renamer);
 
-        actionPane.add(classDeleteButton);
+        actionPane.add(classAddButton);
         action.add(actionPane);
 
         action.setVisible(true);
@@ -603,7 +656,12 @@ public class GUI {
         JLabel methodLabel = new JLabel("Enter Method Name: ");
         JLabel methodRenameLabel = new JLabel("Enter NEW Method Name: ");
 
-        JButton classDeleteButton = new JButton("Delete");
+        JButton classAddButton = new JButton("Delete");
+        classAddButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                renameMethodAction();
+            }
+         });
 
         actionPane = new JPanel(new FlowLayout());
 
@@ -618,7 +676,7 @@ public class GUI {
         actionPane.add(methodRenameLabel);
         actionPane.add(renamer);
 
-        actionPane.add(classDeleteButton);
+        actionPane.add(classAddButton);
         action.add(actionPane);
 
         action.setVisible(true);
@@ -635,7 +693,13 @@ public class GUI {
         JLabel paramLabel = new JLabel("Enter Parameter Name: ");
         JLabel paramRenameLabel = new JLabel("Enter NEW Parameter Name: ");
 
-        JButton classDeleteButton = new JButton("Delete");
+        JButton classAddButton = new JButton("Delete");
+        classAddButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                renameParameterAction();
+            }
+         });
+
 
         actionPane = new JPanel(new FlowLayout());
 
@@ -653,14 +717,14 @@ public class GUI {
         actionPane.add(paramRenameLabel);
         actionPane.add(renamer);
 
-        actionPane.add(classDeleteButton);
+        actionPane.add(classAddButton);
         action.add(actionPane);
 
         action.setVisible(true);
     }
 
     /**
-     * Methods responsible for manipulating GUI Box Element. 
+     * Methods below are responsible for manipulating GUI Display Boxs. 
      */
     public void addClassAction(){
         String newClass = className.getText();
@@ -683,35 +747,106 @@ public class GUI {
     }
 
     public void addMethodAction(){
+        String getClass = className.getText();
+		String method = methodName.getText();
 
+        //model.addMethod(getClass,method);
+        boxMap.get(getClass).addMethod(method);
+        action.dispose();
     }
 
     public void addParameterAction(){
+        String getClass = className.getText();
+		String method = methodName.getText();
+        String parameter = parameterName.getText();
 
+        //model.addParameter(getClass,method,parameter);
+        boxMap.get(getClass).addParameter(parameter,method);
+        action.dispose();
     }
 
-    public void deleteClassAction(){
+    public void addRelationshipAction(){
+        String classOne = className.getText();
+        String classTwo = className2.getText();
+        String relationT = relationType.getText();
 
+        //model.addRelationship(classOne,classTwo,relationType);
+        action.dispose();
+    }
+    /**
+     * Delete Actions
+     */
+    public void deleteClassAction(){
+        String newClass = className.getText();
+
+        model.deleteClass(newClass);
+        box = boxMap.get(newClass);
+        boxMap.remove(newClass);
+        action.dispose();
+        frame.repaint();
+    }
+    public void deleteRelationshipAction(){
+        String classOne = className.getText();
+        String classTwo = className2.getText();
+
+        model.deleteRelationship(classOne,classTwo);
+        action.dispose();
     }
     public void deleteFieldAction(){
+        String getClass = className.getText();
+		String field = fieldName.getText();
 
+        //model.removeField(getClass, field);
+       // boxMap.get(getClass).removeField(field);
+        action.dispose();
     }
-    public void deletemethodAction(){
+    public void deleteMethodAction(){
+        String getClass = className.getText();
+		String method = methodName.getText();
 
+        //model.removeMethod(getClass,method);
+        //boxMap.get(getClass).addMethod(method);
+        action.dispose();
     }
     public void deleteParameterAction(){
 
     }
+   /**
+    * Rename Functions
+    */
     public void renameClassAction(){
+        String oldClass = className.getText();
+        String newClass = className2.getText();
 
+        model.renameUMLClass(oldClass,newClass);
+        box = boxMap.get(newClass);
+        boxMap.remove(newClass);
+        boxMap.put(newClass,box);
+        action.dispose();
     }
     public void renameFieldAction(){
+        String getClass = className.getText();
+		String field = fieldName.getText();
+        String newField = renamer.getText();
 
+        model.renameField(getClass,field,newField);
+        action.dispose();
     }
     public void renameMethodAction(){
+        String getClass = className.getText();
+		String method = fieldName.getText();
+        String newMethod = renamer.getText();
 
+      //  model.renameMethod(getClass,method,newMethod);
+        action.dispose();
     }
     public void renameParameterAction(){
-        
+
+    }
+    public void save(){
+
+    }
+    public void load(){
+
     }
 }
