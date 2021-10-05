@@ -1,5 +1,5 @@
 /**
- * Authors: Jeffrey Flynn, David Jachimowicz, Jeff Cutcher
+ * Authors: Jeffrey Flynn, David Jachimowicz, Jeff Cutcher, Alex Balagurak
  * Date: 9/15/21
  */
 
@@ -27,6 +27,8 @@ public class DiagramModel {
     private ArrayList<UMLClass[]> relationships = new ArrayList<UMLClass[]>();
 
     private ArrayList<UMLClass[]> methods = new ArrayList<UMLClass[]>();
+
+    private ArrayList<String> parameters = new ArrayList<String>();
 
     /**
      * Adds a new class to the diagram, checking to ensure that a class with the same name does not already exist,
@@ -158,7 +160,8 @@ public class DiagramModel {
             }
             if(!methodExists)
             {
-                parentClass.addMethod(methodName);
+                Methods newMethod = new Methods(methodName);
+                parentClass.addMethod(newMethod);
             }
             else
             {
@@ -248,6 +251,55 @@ public class DiagramModel {
         {
             System.out.println("The method \"" + oldMethodName + 
                 "\" cannot be renamed, as the parent class \"" + className + "\" does not exist.");  
+        }
+    }
+
+    /**
+     * Adds parameter to a method if the method and class exist. 
+     * @param className
+     * @param methodName
+     * @param name
+     */
+    public void addParameter(String className, String methodName, String pName){
+        
+
+        UMLClass parentClass = getUML(className);
+        boolean parentExists = classExists(className);
+    
+        if(parentExists)
+        {
+            boolean methodExists = false;
+            for(int i = 0; i < methods.size(); i++)
+            {
+                UMLClass[] holder = methods.get(i);
+                if(holder[0].getName().equals(methodName))
+                {
+                    methodExists = true;
+                }
+            }
+            if(methodExists)
+            {
+                boolean paramExists = false;
+                for(String elements: parameters){
+                    if(elements.contains(pName)){
+                        paramExists = true;
+                    }
+                }
+                if(!paramExists){
+                    Parameters param = new Parameters(pName);
+                    Parameters.addParameters(pName);
+                }
+            }
+            else
+            {
+                    System.out.println("The parameter(s) \"" + pName + 
+                        "\" cannot be added, as it already exists in the method \"" + methodName + "\".");
+            }
+        }
+        else
+        {
+            System.out.println("The parameter(s) \"" + pName + 
+                "\" cannot be added, as the parent class \"" + className + "\" does not exist.");  
         }
     }
     

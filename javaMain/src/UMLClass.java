@@ -30,6 +30,11 @@ public class UMLClass {
     private ArrayList<Methods> methods = new ArrayList<Methods>();
     
     /**
+     * The parameters of a method in a class.
+     */
+    private ArrayList<String> parameters = new ArrayList<String>();
+    
+    /**
      * Main constructor that sets the name of the new class.
      * @param name The name of the new class.
      */
@@ -85,6 +90,32 @@ public class UMLClass {
     public void renameMethod(String currentMethod, String newMethodName){
         int index = methods.indexOf(methods.equals(currentMethod));
         methods.get(index).renameMethod(newMethodName);
+    }
+
+    /**
+     * Adds a new parameter to the class representation.
+     * @param pName
+     */
+    public void addParameter(String pName){
+        parameters.add(pName);
+    }
+
+    /**
+     * Removes an existing parameter from the class representation.
+     * @param pName
+     */
+    public void removeParameters(String pName){
+        parameters.remove(pName);
+    }
+
+    /**
+     * Renames a parameter as long as it exists in the class representation. 
+     * @param oldParam
+     * @param newParam
+     */
+    public void renameParameter(String oldParam, String newParam){
+        int index = parameters.indexOf(oldParam);
+        parameters.get(index) = renameParameter(newParam);
     }
 
     /**

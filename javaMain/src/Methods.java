@@ -33,4 +33,12 @@ public class Methods {
     public void renameMethod(String newMethod){
         this.methodName = newMethod;
     }
+
+    public void addParameters(String pName){
+        parameters.add(pName);
+    }
+
+    public void removeParameters(String pName){
+        parameters.remove(pName);
+    }
 }
