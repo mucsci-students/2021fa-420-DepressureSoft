@@ -26,10 +26,6 @@ public class DiagramModel {
      */
     private ArrayList<UMLClass[]> relationships = new ArrayList<UMLClass[]>();
 
-    private ArrayList<UMLClass[]> methods = new ArrayList<UMLClass[]>();
-
-    private ArrayList<String> parameters = new ArrayList<String>();
-
     /**
      * Adds a new class to the diagram, checking to ensure that a class with the same name does not already exist,
      *  and that the name conforms to the standards set forth in javax.lang.model.SourceVersion.isIdentifier().
@@ -145,22 +141,14 @@ public class DiagramModel {
     public void addMethod(String className, String methodName){
        
         UMLClass parentClass = getUML(className);
-        boolean parentExists = classExists(className);
     
-        if(parentExists)
+        if(parentClass != null)
         {
-            boolean methodExists = false;
-            for(int i = 0; i < methods.size(); i++)
+            
+            
+            if(!parentClass.methodExists(methodName))
             {
-                UMLClass[] holder = methods.get(i);
-                if(holder[0].getName().equals(methodName))
-                {
-                    methodExists = true;
-                }
-            }
-            if(!methodExists)
-            {
-                Methods newMethod = new Methods(methodName);
+                Method newMethod = new Method(methodName);
                 parentClass.addMethod(newMethod);
             }
             else
@@ -301,6 +289,10 @@ public class DiagramModel {
             System.out.println("The parameter(s) \"" + pName + 
                 "\" cannot be added, as the parent class \"" + className + "\" does not exist.");  
         }
+    }
+
+    public void deleteParameter(String className, String methodName, String pName) {
+
     }
     
     /**
@@ -446,7 +438,7 @@ public class DiagramModel {
     /**
      * Grabs a UMLClass object from the diagram, if one by the specified name exists.
      * @param name The name of the UMLClass to grab.
-     * @return The UMLClass object of the specified name.
+     * @return The UMLClass object of the specified name. Returns null if no class exists.
      */
     public UMLClass getUML(String name){
         return diagram.get(name);

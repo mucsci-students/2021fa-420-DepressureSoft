@@ -27,12 +27,7 @@ public class UMLClass {
     /**
      * The methods of the class.
      */
-    private ArrayList<Methods> methods = new ArrayList<Methods>();
-    
-    /**
-     * The parameters of a method in a class.
-     */
-    private ArrayList<String> parameters = new ArrayList<String>();
+    private ArrayList<Method> methods = new ArrayList<Method>();
     
     /**
      * Main constructor that sets the name of the new class.
@@ -63,59 +58,93 @@ public class UMLClass {
      * @param deleteRelation The name of the class that this class is related to that will be deleted.
      */
     public void deleteRelationship(String deleteRelation){
-            relationship.remove(deleteRelation);
+        relationship.remove(deleteRelation);
     }
 
     /**
      * Adds a new method to the class representation.
-     * @param newMethod
+     * @param methodName The name of the new method.
      */
-    public void addMethod(Methods newMethod){
-        methods.add(newMethod);
+    public void addMethod(String methodName){
+        methods.add(new Method(methodName));
     }
 
     /**
-     * Removes an existing method from the class representation.
-     * @param removeMethod
+     * Removes an existing method from the class representation, if it exists.
+     * @param methodName The name of the method to remove.
      */
-    public void removeMethod(Methods removeMethod){
-        methods.remove(removeMethod);
+    public void removeMethod(String methodName){
+        for(int index = 0; index < methods.size(); index++) {
+            if (methods.get(index).getMethodName().equals(methodName)) {
+                methods.remove(index);
+            }
+        }
     }
 
     /**
      * Renames a method if it exists in the class representation. 
-     * @param currentMethod
-     * @param newMethodName
+     * @param currentMethod 
+     * @param newMethodName 
      */
     public void renameMethod(String currentMethod, String newMethodName){
-        int index = methods.indexOf(methods.equals(currentMethod));
-        methods.get(index).renameMethod(newMethodName);
+        if(getMethod(methodName) != null) {
+            getMethod(methodName).renameMethod(newMethodName);
+        }
+    }
+
+    /**
+     * Returns true if the method called methodName exists in this class.
+     * @param methodName The name of the method to look for.
+     * @return True if method exists, false if not.
+     */
+    public boolean methodExists(String methodName) {
+        return (getMethod(methodName) != null)
+    }
+
+    /**
+     * Gets the method called methodName, if it exists.
+     * @param methodName the method to get.
+     * @return The method called methodName
+     */
+    public Method getMethod(String methodName) {
+        for(int index = 0; index < methods.size(); index++) {
+            if (methods.get(index).getMethodName().equals(methodName)) {
+                return methods.get(index);
+            }
+        }
+        return null;
     }
 
     /**
      * Adds a new parameter to the class representation.
-     * @param pName
+     * @param methodName The name of the method to add the parameter to.
+     * @param pName The name of the parameter to add.
      */
-    public void addParameter(String pName){
-        parameters.add(pName);
+    public void addParameter(String methodName, String pName){
+        if (getMethod(methodName) != null) {
+            getMethod(methodName).addParameter(pName);
+        }
     }
 
     /**
      * Removes an existing parameter from the class representation.
-     * @param pName
+     * @param methodName The name of the method to remove the parameter from.
+     * @param pName The name of the parameter to remove.
      */
-    public void removeParameters(String pName){
-        parameters.remove(pName);
+    public void removeParameter(String methodName, String pName){
+        if (getMethod(methodName) != null) {
+            getMethod(methodName).removeParameter(pName);
+        }
     }
 
     /**
-     * Renames a parameter as long as it exists in the class representation. 
-     * @param oldParam
-     * @param newParam
+     * Removes all the parameters from a method.
+     * @param methodName The name of the method to remove all parameters from.
      */
-    public void renameParameter(String oldParam, String newParam){
-        int index = parameters.indexOf(oldParam);
-        parameters.get(index) = renameParameter(newParam);
+    public void removeAllParameters(String methodName) {
+        if (getMethod(methodName) != null) {
+            getMethod(methodName).removeAllParameters();
+        }
     }
 
     /**
