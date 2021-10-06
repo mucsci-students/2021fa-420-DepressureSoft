@@ -84,4 +84,12 @@ public class Method {
     public String getPName(){
         return parameters.toString();
     }
+
+    /**
+     * Returns ArrayList of the parameters.
+     * @return ArrayList of parameters
+     */
+    public ArrayList<String> getParamList(){
+        return parameters;
+    }
 }
