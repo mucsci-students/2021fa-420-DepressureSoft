@@ -228,11 +228,19 @@ public class UMLInterface {
                     userEntry2 = sc.nextLine();
                     userEntry2 = userEntry2.trim();
 
-                    System.out.println("Please enter the name of the parameter you would like to remove.");
+                    System.out.println("Would you like to remove 'one' or 'all' of off the parameters?");
                     userEntry3 = sc.nextLine();
                     userEntry3 = userEntry3.trim();
-                    holder.deleteParameter(userEntry, userEntry2,userEntry3);
-                    
+                    if(userEntry3.equalsIgnoreCase("One")){
+                        System.out.println("Please enter the name of the parameter you would like to remove.");
+                        userEntry4 = sc.nextLine();
+                        userEntry4 = userEntry4.trim();
+                    holder.deleteParameter(userEntry, userEntry2, userEntry4);
+                    }else if(userEntry3.equalsIgnoreCase("All")){
+                        holder.deleteAllParameters(userEntry, userEntry2);
+                    }else{
+                        System.out.println("Sorry, we don't recognize that command, please try again.");
+                    }
                 }
                 else if(userEntry.equalsIgnoreCase("Relationship"))
                 {

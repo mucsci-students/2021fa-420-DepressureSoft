@@ -331,7 +331,7 @@ public class DiagramModel {
      * @param className
      * @param methodName
      */
-    public void removeAllParameters(String className, String methodName){
+    public void deleteAllParameters(String className, String methodName){
         UMLClass parentClass = getUML(className);
         if(parentClass != null){
             Method parentMethod = parentClass.getMethod(methodName);
