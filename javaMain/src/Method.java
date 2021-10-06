@@ -66,10 +66,10 @@ public class Method {
     }
 
     /**
-     * Returns ArrayList of the parameters. 
+     * Returns String of the parameters. 
      * @return
      */
-    public ArrayList<String> listParameters(){
-        return parameters;
+    public String getPName(){
+        return parameters.toString();
     }
 }
