@@ -87,8 +87,8 @@ public class UMLClass {
      * @param newMethodName 
      */
     public void renameMethod(String currentMethod, String newMethodName){
-        if(getMethod(methodName) != null) {
-            getMethod(methodName).renameMethod(newMethodName);
+        if(getMethod(currentMethod) != null) {
+            getMethod(currentMethod).renameMethod(newMethodName);
         }
     }
 
@@ -98,7 +98,7 @@ public class UMLClass {
      * @return True if method exists, false if not.
      */
     public boolean methodExists(String methodName) {
-        return (getMethod(methodName) != null)
+        return (getMethod(methodName) != null);
     }
 
     /**

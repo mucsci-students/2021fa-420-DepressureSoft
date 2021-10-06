@@ -49,7 +49,19 @@ public class Method {
         parameters.remove(pName);
     }
 
+    /**
+     * Removes all of the parameters from a method.
+     */
     public void removeAllParameters() {
         parameters.clear();
+    }
+
+    /**
+     * Checks to see if a paramter exists.
+     * @param pName
+     * @return
+     */
+    public boolean parameterExists(String pName){
+        return (parameters.contains(pName));
     }
 }

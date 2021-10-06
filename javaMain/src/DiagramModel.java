@@ -139,17 +139,12 @@ public class DiagramModel {
      * @param methodName
      */
     public void addMethod(String className, String methodName){
-       
         UMLClass parentClass = getUML(className);
-    
         if(parentClass != null)
         {
-            
-            
             if(!parentClass.methodExists(methodName))
             {
-                Method newMethod = new Method(methodName);
-                parentClass.addMethod(newMethod);
+                parentClass.addMethod(methodName);
             }
             else
             {
@@ -169,23 +164,11 @@ public class DiagramModel {
      * @param className
      * @param methodName
      */
-    public void removeMethod(String className, Methods methodName){
-        
+    public void removeMethod(String className, String methodName){
         UMLClass parentClass = getUML(className);
-        boolean parentExists = classExists(className);
-    
-        if(parentExists)
+        if(parentClass != null)
         {
-            boolean methodExists = false;
-            for(int i = 0; i < methods.size(); i++)
-            {
-                UMLClass[] holder = methods.get(i);
-                if(holder[0].getName().equals(methodName))
-                {
-                    methodExists = true;
-                }
-            }
-            if(!methodExists)
+            if(parentClass.methodExists(methodName))
             {
                 parentClass.removeMethod(methodName);
             }
@@ -202,31 +185,30 @@ public class DiagramModel {
         }
     }
 
+
+    /**
+     * Returns true if the method called exists in the class diagram.
+     * @param className
+     * @param methodName
+     * @return
+     */
+    public boolean methodExists(String className, String methodName){
+        UMLClass parentClass = getUML(className);
+        if(parentClass != null){
+            return parentClass.methodExists(methodName); 
+        }
+        return false;
+    }
+
     /**
      * Renames a method as long as it already exists.
      * @param oldMethodName
      * @param newMethodName
      */
     public void renameMethod(String className, String oldMethodName, String newMethodName){
-
         UMLClass parentClass = getUML(className);
-        boolean parentExists = classExists(className);
-
-        if(parentExists){
-            boolean methodExists = false;
-            boolean newMethodNameExists = false;
-            for(int i = 0; i < methods.size(); i++)
-            {
-                UMLClass[] holder = methods.get(i);
-                if(holder[0].getName().equals(oldMethodName))
-                {
-                    methodExists = true;
-                }
-                if(holder[0].getName().equals(newMethodName)){
-                    newMethodNameExists = true;
-                }
-            }
-            if(methodExists && !newMethodNameExists){
+        if(parentClass != null){
+            if(parentClass.methodExists(oldMethodName)){
                 parentClass.renameMethod(oldMethodName, newMethodName);
             }
             else
@@ -249,39 +231,18 @@ public class DiagramModel {
      * @param name
      */
     public void addParameter(String className, String methodName, String pName){
-        
-
         UMLClass parentClass = getUML(className);
-        boolean parentExists = classExists(className);
-    
-        if(parentExists)
+        if(parentClass != null)
         {
-            boolean methodExists = false;
-            for(int i = 0; i < methods.size(); i++)
+            Method parentMethod = parentClass.getMethod(methodName);
+            if(parentClass.methodExists(methodName))
             {
-                UMLClass[] holder = methods.get(i);
-                if(holder[0].getName().equals(methodName))
-                {
-                    methodExists = true;
-                }
-            }
-            if(methodExists)
-            {
-                boolean paramExists = false;
-                for(String elements: parameters){
-                    if(elements.contains(pName)){
-                        paramExists = true;
-                    }
-                }
-                if(!paramExists){
-                    Parameters param = new Parameters(pName);
-                    Parameters.addParameters(pName);
-                }
+               parentMethod.addParameter(pName);
             }
             else
             {
                     System.out.println("The parameter(s) \"" + pName + 
-                        "\" cannot be added, as it already exists in the method \"" + methodName + "\".");
+                        "\" cannot be added, as the method \"" + methodName + "does not exist.");
             }
         }
         else
@@ -291,8 +252,51 @@ public class DiagramModel {
         }
     }
 
-    public void deleteParameter(String className, String methodName, String pName) {
+    /**
+     * Removes parameter to a method if the method and class exist.
+     * @param className
+     * @param methodName
+     * @param pName
+     */
+    public void removeParameter(String className, String methodName, String pName) {
+        UMLClass parentClass = getUML(className);
+        if(parentClass != null){
+            Method parentMethod = parentClass.getMethod(methodName);
+            if(parentClass.methodExists(methodName)){
+                if(parentMethod.parameterExists(pName)){
+                    parentMethod.removeParameter(pName);
+                }
+            }
+            else{
+                System.out.println("The parameter(s) \"" + pName + 
+                        "\" cannot be removed, as the method \"" + methodName + "does not exist.");
+            }
+        }
+        else{
+            System.out.println("The parameter(s) \"" + pName + 
+                "\" cannot be removed, as the parent class \"" + className + "\" does not exist.");
+        }
+    }
 
+    /**
+     * Removes all parameters if the method and class exist.
+     * @param className
+     * @param methodName
+     */
+    public void removeAllParameters(String className, String methodName){
+        UMLClass parentClass = getUML(className);
+        if(parentClass != null){
+            Method parentMethod = parentClass.getMethod(methodName);
+            if(parentClass.methodExists(methodName)){
+                parentMethod.removeAllParameters();
+            }
+            else{
+                System.out.println("The parameter(s) cannot be removed, as the method \"" + methodName + "does not exist.");
+            }
+        }
+        else{
+            System.out.println("The parameter(s) cannot be removed, as the parent class \"" + className + "\" does not exist.");
+        }
     }
     
     /**
