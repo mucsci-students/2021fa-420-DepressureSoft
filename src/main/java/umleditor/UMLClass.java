@@ -1,8 +1,8 @@
+package umleditor;
 /**
  * Authors: Jeffrey Flynn, Jeffrey Cutcher, David Jachimowicz, Alex Balagurak
  * Date: 9/15/21
  */
-
 
 import java.util.ArrayList;
 
@@ -28,7 +28,7 @@ public class UMLClass {
      * The methods of the class.
      */
     private ArrayList<Method> methods = new ArrayList<Method>();
-    
+  
     /**
      * Main constructor that sets the name of the new class.
      * @param name The name of the new class.

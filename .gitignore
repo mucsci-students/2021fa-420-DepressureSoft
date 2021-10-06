@@ -1,4 +1,11 @@
+**/.vscode/settings.json
+**/.DS_Store
+**/*.class
 
-.vscode/settings.json
-.DS_Store
-*.class
+# Ignore Gradle project-specific cache directory
+.gradle
+
+# Ignore Gradle build output directory
+build
+
+**/.project
