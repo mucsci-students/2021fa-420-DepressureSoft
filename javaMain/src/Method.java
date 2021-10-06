@@ -64,4 +64,12 @@ public class Method {
     public boolean parameterExists(String pName){
         return (parameters.contains(pName));
     }
+
+    /**
+     * Returns ArrayList of the parameters. 
+     * @return
+     */
+    public ArrayList<String> listParameters(){
+        return parameters;
+    }
 }

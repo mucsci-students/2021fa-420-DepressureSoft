@@ -116,6 +116,14 @@ public class UMLClass {
     }
 
     /**
+     * Returns an ArrayList<Method> of all the class representation's methods.
+     * @return The methods ArrayList.
+     */
+    public ArrayList<Method> getMethods(){
+        return methods;
+    }
+
+    /**
      * Adds a new parameter to the class representation.
      * @param methodName The name of the method to add the parameter to.
      * @param pName The name of the parameter to add.

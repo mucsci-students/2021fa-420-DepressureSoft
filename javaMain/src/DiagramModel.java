@@ -101,7 +101,7 @@ public class DiagramModel {
     public void listClass(String className)
     {
         if(classExists(className))
-            {
+        {
             UMLClass input = diagram.get(className);
 
             System.out.println("Name: " + input.getName());
@@ -117,6 +117,20 @@ public class DiagramModel {
                 for (int i = 0; i < input.getFields().size(); i++)
                 {
                     System.out.println(input.getFields().get(i));
+                }
+            }
+
+            /** Prints methods, prints special message if no methods in UML class */
+            System.out.println("Methods: ");
+            if(input.getMethods().size() == 0)
+            {
+                System.out.println("There are no methods in this class.");
+            }
+            else
+            {
+                for(int i = 0; i < input.getMethods().size(); i++)
+                {
+                    System.out.println(input.getMethods().get(i).getMethodName());
                 }
             }
         }
