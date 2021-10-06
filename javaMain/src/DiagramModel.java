@@ -36,7 +36,7 @@ public class DiagramModel {
             if(!classExists(name))
             {
                 UMLClass holder = new UMLClass(name);
-                diagram.put(name, holder);  
+                diagram.put(name, holder); 
             }
             else
             {
@@ -130,7 +130,8 @@ public class DiagramModel {
             {
                 for(int i = 0; i < input.getMethods().size(); i++)
                 {
-                    System.out.println(input.getMethods().get(i).getMethodName() + " " + input.getMethods().get(i).getPName());
+                    System.out.println(input.getMethods().get(i).getMethodName() + 
+                        input.getMethods().get(i).getPName().replace("[", "(").replace("]", ")"));
                 }
             }
         }
@@ -154,22 +155,29 @@ public class DiagramModel {
      */
     public void addMethod(String className, String methodName){
         UMLClass parentClass = getUML(className);
-        if(parentClass != null)
+        if(SourceVersion.isIdentifier(methodName)) 
         {
-            if(!parentClass.methodExists(methodName))
+            if(parentClass != null)
             {
-                parentClass.addMethod(methodName);
+                if(!parentClass.methodExists(methodName))
+                {
+                    parentClass.addMethod(methodName);
+                }
+                else
+                {
+                        System.out.println("The method \"" + methodName + 
+                            "\" cannot be added, as it already exists in the parent class \"" + className + "\".");
+                }
             }
             else
             {
-                    System.out.println("The method \"" + methodName + 
-                        "\" cannot be added, as it already exists in the parent class \"" + className + "\".");
+                System.out.println("The method \"" + methodName + 
+                    "\" cannot be added, as the parent class \"" + className + "\" does not exist.");  
             }
         }
         else
         {
-            System.out.println("The method \"" + methodName + 
-                "\" cannot be added, as the parent class \"" + className + "\" does not exist.");  
+            System.out.println("\"" + methodName + "\" is not a valid method name.");
         }
     }
     
@@ -221,20 +229,27 @@ public class DiagramModel {
      */
     public void renameMethod(String className, String oldMethodName, String newMethodName){
         UMLClass parentClass = getUML(className);
-        if(parentClass != null){
-            if(parentClass.methodExists(oldMethodName)){
-                parentClass.renameMethod(oldMethodName, newMethodName);
+        if (SourceVersion.isIdentifier(newMethodName)) 
+        {
+            if(parentClass != null){
+                if(parentClass.methodExists(oldMethodName)){
+                    parentClass.renameMethod(oldMethodName, newMethodName);
+                }
+                else
+                {
+                        System.out.println("The method \"" + oldMethodName + 
+                            "\" cannot be renamed, as it does not exist.");
+                }
             }
             else
             {
-                    System.out.println("The method \"" + oldMethodName + 
-                        "\" cannot be renamed, as it does not exist.");
+                System.out.println("The method \"" + oldMethodName + 
+                    "\" cannot be renamed, as the parent class \"" + className + "\" does not exist.");  
             }
         }
         else
         {
-            System.out.println("The method \"" + oldMethodName + 
-                "\" cannot be renamed, as the parent class \"" + className + "\" does not exist.");  
+            System.out.println("\"" + newMethodName + "\" is not a valid method name.");
         }
     }
 
@@ -246,23 +261,30 @@ public class DiagramModel {
      */
     public void addParameter(String className, String methodName, String pName){
         UMLClass parentClass = getUML(className);
-        if(parentClass != null)
+        if(SourceVersion.isIdentifier(pName))
         {
-            Method parentMethod = parentClass.getMethod(methodName);
-            if(parentClass.methodExists(methodName))
+            if(parentClass != null)
             {
-               parentMethod.addParameter(pName);
+                Method parentMethod = parentClass.getMethod(methodName);
+                if(parentClass.methodExists(methodName))
+                {
+                parentMethod.addParameter(pName);
+                }
+                else
+                {
+                        System.out.println("The parameter(s) \"" + pName + 
+                            "\" cannot be added, as the method \"" + methodName + "does not exist.");
+                }
             }
             else
             {
-                    System.out.println("The parameter(s) \"" + pName + 
-                        "\" cannot be added, as the method \"" + methodName + "does not exist.");
+                System.out.println("The parameter(s) \"" + pName + 
+                    "\" cannot be added, as the parent class \"" + className + "\" does not exist.");  
             }
         }
         else
         {
-            System.out.println("The parameter(s) \"" + pName + 
-                "\" cannot be added, as the parent class \"" + className + "\" does not exist.");  
+            System.out.println("\"" + pName + "\" is not a valid parameter name.");
         }
     }
 
@@ -301,28 +323,35 @@ public class DiagramModel {
      */
     public void renameParameter(String className, String methodName, String oldPName, String newPName){
         UMLClass parentClass = getUML(className);
-        if(parentClass != null)
+        if(SourceVersion.isIdentifier(newPName))
         {
-            Method parentMethod = parentClass.getMethod(methodName);
-            if(parentClass.methodExists(methodName))
+            if(parentClass != null)
             {
-                if(parentMethod.parameterExists(oldPName))
+                Method parentMethod = parentClass.getMethod(methodName);
+                if(parentClass.methodExists(methodName))
                 {
-                    parentMethod.renameParameter(oldPName, newPName);
+                    if(parentMethod.parameterExists(oldPName))
+                    {
+                        parentMethod.renameParameter(oldPName, newPName);
+                    }
+                    else{
+                        System.out.println("The parameter(s) \"" + oldPName + 
+                            "\" cannot be renamed, as it does not exist.");
+                    }
                 }
                 else{
                     System.out.println("The parameter(s) \"" + oldPName + 
-                        "\" cannot be renamed, as it does not exist.");
+                            "\" cannot be renamed, as the method \"" + methodName + "does not exist.");
                 }
             }
             else{
                 System.out.println("The parameter(s) \"" + oldPName + 
-                        "\" cannot be renamed, as the method \"" + methodName + "does not exist.");
+                    "\" cannot be renamed, as the parent class \"" + className + "\" does not exist.");
             }
         }
-        else{
-            System.out.println("The parameter(s) \"" + oldPName + 
-                "\" cannot be renamed, as the parent class \"" + className + "\" does not exist.");
+        else
+        {
+            System.out.println("\"" + newPName + "\" is not a valid parameter name.");
         }
     }
 
