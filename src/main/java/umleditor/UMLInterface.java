@@ -7,7 +7,6 @@ import java.util.Scanner;
  */
 public class UMLInterface {
     public static void main(String[] args){
-
         DiagramModel holder = new DiagramModel();
         Scanner sc = new Scanner(System.in);
         String userEntry = "";
@@ -344,6 +343,7 @@ public class UMLInterface {
                 System.out.println("Sorry, we don't recognize that command, please try again.");
             }
         }
+        sc.close();
     }
 
     /**

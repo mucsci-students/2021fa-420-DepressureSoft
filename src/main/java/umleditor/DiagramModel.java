@@ -114,7 +114,8 @@ public class DiagramModel {
             fw1.write(jsonTxt.toString());
             fw1.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("An error occurred while trying to write json file:");
+            System.out.println(e);
         } 
     }
 
@@ -137,7 +138,25 @@ public class DiagramModel {
         }
         result.append("      ],\n");
         result.append("      \"methods\": [\n");
-        // methods
+        ArrayList<Method> methods = theClass.getMethods();
+        for(Method method : methods) {
+            result.append("        {\n");
+            result.append("          \"name\": \"" + method.getMethodName() + "\",\n");
+            result.append("          \"return_type\": \"n/a\",\n");
+            result.append("          \"params\": [\n");
+            ArrayList<String> parameters = method.getParamList();
+            for(String param : parameters) {
+                result.append("            { \"name\": \"" + param + "\", \"type\": \"n/a\"},\n");
+            }
+            if (!parameters.isEmpty()) {
+                result.deleteCharAt(result.length() - 2);
+            }
+            result.append("          ]\n");
+            result.append("        },\n");
+        }
+        if(!methods.isEmpty()) {
+            result.deleteCharAt(result.length() - 2);
+        }
         result.append("      ]\n");
         result.append("    },\n");
         return result.toString();
