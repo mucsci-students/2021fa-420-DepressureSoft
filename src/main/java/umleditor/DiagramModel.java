@@ -5,17 +5,23 @@ package umleditor;
  */
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.ListIterator;
+import java.util.Iterator;
 import javax.lang.model.SourceVersion;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Type;
 
-import java.util.HashMap;
-import java.util.ListIterator;
+
 
 /**
  * Represents a UML class diagram, and allows users to manipulate the diagram by 
@@ -165,9 +171,56 @@ public class DiagramModel {
     /**
      * Loads a class diagram from a JSON file formatted using the format specified by the CSCI 420 fall 2021 
      * standardization committee.
+     * @param fileLocation the directory of the json file to load.
      */
-    public void load(String prevSave){
+    public void load(String fileLocation){
+        JSONParser parser = new JSONParser();
+        try {
+            Object obj = parser.parse(new FileReader(fileLocation));
+            JSONObject json = (JSONObject) obj;
+            JSONArray classList = (JSONArray) json.get("classes");
+            Iterator <JSONObject> classIterator = classList.iterator();
+            while(classIterator.hasNext()) {
+                JSONObject currentClass = classIterator.next();
+                String currentClassName = (String) currentClass.get("name");
+                this.addClass(currentClassName);
+                JSONArray fieldList = (JSONArray) currentClass.get("fields");
+                Iterator <JSONObject> fieldIterator = fieldList.iterator();
+                while(fieldIterator.hasNext()) {
+                    String currentFieldName = (String) fieldIterator.next().get("name");
+                    this.addField(currentClassName, currentFieldName);
+                }
+            }
+            JSONArray relationshipList = (JSONArray) json.get("relationships");
+            Iterator <JSONObject> relationshipIterator = relationshipList.iterator();
+            while(relationshipIterator.hasNext()) {
+                JSONObject currentRelationship = relationshipIterator.next();
+                String source = (String) currentRelationship.get("source");
+                String destination = (String) currentRelationship.get("destination");
+                String type = (String) currentRelationship.get("type");
+                Relationship.RelationshipType relType = null;
+                if(type.equalsIgnoreCase("aggregation")) {
+                    relType = Relationship.RelationshipType.AGGREGATION;
+                } else if(type.equalsIgnoreCase("composition")) {
+                    relType = Relationship.RelationshipType.COMPOSITION;
+                } else if(type.equalsIgnoreCase("inheritance")) {
+                    relType = Relationship.RelationshipType.INHERITANCE;
+                } else if(type.equalsIgnoreCase("realization")) {
+                    relType = Relationship.RelationshipType.REALIZATION;
+                } else {
+                    throw new Exception("Invalid relationship type in json file in relationship between " +
+                        source + ":" + destination + ".");
+                }
+                this.addRelationship(source, destination, relType);
+            }
+            
+        }
+        catch (Exception e) {
+            System.out.println("An error occurred: \n" + e.toString());
+            e.printStackTrace();
+        }
         
+
     }
 
     /**

@@ -325,9 +325,11 @@ public class UMLInterface {
                 userEntry2 = sc.nextLine();
                 holder.save(userEntry, userEntry2);
             }
-            else if(userEntry.equalsIgnoreCase("Load"))
+            else if(userEntry.equalsIgnoreCase("Load")) 
             {
-                
+                System.out.println("Please enter location of file to load. Example: \"/Users/jeff/Desktop/save.json\"");
+                userEntry = sc.nextLine();
+                holder.load(userEntry);
             }
             else if(userEntry.equalsIgnoreCase("Help"))
             {
