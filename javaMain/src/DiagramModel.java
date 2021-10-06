@@ -178,7 +178,7 @@ public class DiagramModel {
      * @param className
      * @param methodName
      */
-    public void removeMethod(String className, String methodName){
+    public void deleteMethod(String className, String methodName){
         UMLClass parentClass = getUML(className);
         if(parentClass != null)
         {
@@ -272,7 +272,7 @@ public class DiagramModel {
      * @param methodName
      * @param pName
      */
-    public void removeParameter(String className, String methodName, String pName) {
+    public void deleteParameter(String className, String methodName, String pName) {
         UMLClass parentClass = getUML(className);
         if(parentClass != null){
             Method parentMethod = parentClass.getMethod(methodName);
@@ -289,6 +289,40 @@ public class DiagramModel {
         else{
             System.out.println("The parameter(s) \"" + pName + 
                 "\" cannot be removed, as the parent class \"" + className + "\" does not exist.");
+        }
+    }
+
+    /**
+     * Renames parameter if class and method exist. 
+     * @param className
+     * @param methodName
+     * @param oldPName
+     * @param newPName
+     */
+    public void renameParameter(String className, String methodName, String oldPName, String newPName){
+        UMLClass parentClass = getUML(className);
+        if(parentClass != null)
+        {
+            Method parentMethod = parentClass.getMethod(methodName);
+            if(parentClass.methodExists(methodName))
+            {
+                if(parentMethod.parameterExists(oldPName))
+                {
+                    parentMethod.renameParameter(oldPName, newPName);
+                }
+                else{
+                    System.out.println("The parameter(s) \"" + oldPName + 
+                        "\" cannot be renamed, as it does not exist.");
+                }
+            }
+            else{
+                System.out.println("The parameter(s) \"" + oldPName + 
+                        "\" cannot be renamed, as the method \"" + methodName + "does not exist.");
+            }
+        }
+        else{
+            System.out.println("The parameter(s) \"" + oldPName + 
+                "\" cannot be renamed, as the parent class \"" + className + "\" does not exist.");
         }
     }
 

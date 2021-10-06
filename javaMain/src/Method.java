@@ -50,6 +50,18 @@ public class Method {
     }
 
     /**
+     * Renames a parameter in the method.
+     * @param oldPName
+     * @param newPName
+     */
+    public void renameParameter(String oldPName, String newPName){
+        if(parameterExists(oldPName)){
+            int index = parameters.indexOf(oldPName);
+            parameters.set(index, newPName);
+        }
+    }
+
+    /**
      * Removes all of the parameters from a method.
      */
     public void removeAllParameters() {

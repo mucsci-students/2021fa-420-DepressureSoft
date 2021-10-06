@@ -63,7 +63,7 @@ public class UMLInterface {
                     System.out.println("Please enter the name of the method you would like to add.");
                     userEntry2 = sc.nextLine();
                     userEntry2 = userEntry2.trim();
-                     //   holder.addMethod(userEntry, userEntry2);
+                    holder.addMethod(userEntry, userEntry2);
                     
                 }
                 else if(userEntry.equalsIgnoreCase("Parameter"))
@@ -79,7 +79,7 @@ public class UMLInterface {
                     System.out.println("Please enter the name of the parameter you would like to add.");
                     userEntry3 = sc.nextLine();
                     userEntry3 = userEntry3.trim();
-                     //   holder.addParameter(userEntry, userEntry2,userEntry3);
+                    holder.addParameter(userEntry, userEntry2,userEntry3);
                     
                 }
                 else if(userEntry.equalsIgnoreCase("Relationship"))
@@ -148,7 +148,7 @@ public class UMLInterface {
                     System.out.println("Please enter what you want to rename it to.");
                     userEntry3 = sc.nextLine();
                     userEntry3 = userEntry3.trim();
-                     //   holder.renameMethod(userEntry, userEntry2,userEntry3);
+                    holder.renameMethod(userEntry, userEntry2,userEntry3);
                     
                 }
                 else if(userEntry.equalsIgnoreCase("Parameter"))
@@ -168,7 +168,7 @@ public class UMLInterface {
                     System.out.println("Please enter what you want to rename it to.");
                     userEntry4 = sc.nextLine();
                     userEntry4 = userEntry4.trim();
-                     //   holder.renameParameter(userEntry,userEntry2,userEntry3,userEntry4);
+                    holder.renameParameter(userEntry,userEntry2,userEntry3,userEntry4);
                     
                 }
                 else if(userEntry.equalsIgnoreCase("Exit"))
@@ -215,7 +215,7 @@ public class UMLInterface {
                     System.out.println("Please enter the name of the method you would like to remove.");
                     userEntry2 = sc.nextLine();
                     userEntry2 = userEntry2.trim();
-                     //   holder.deleteMethod(userEntry, userEntry2);
+                    holder.deleteMethod(userEntry, userEntry2);
                     
                 }
                 else if(userEntry.equalsIgnoreCase("Parameter"))
@@ -231,7 +231,7 @@ public class UMLInterface {
                     System.out.println("Please enter the name of the parameter you would like to remove.");
                     userEntry3 = sc.nextLine();
                     userEntry3 = userEntry3.trim();
-                     //   holder.deleteParameter(userEntry, userEntry2,userEntry3);
+                    holder.deleteParameter(userEntry, userEntry2,userEntry3);
                     
                 }
                 else if(userEntry.equalsIgnoreCase("Relationship"))
