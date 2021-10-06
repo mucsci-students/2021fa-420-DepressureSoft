@@ -7,7 +7,6 @@ import java.util.Scanner;
  */
 public class UMLInterface {
     public static void main(String[] args){
-
         DiagramModel holder = new DiagramModel();
         Scanner sc = new Scanner(System.in);
         String userEntry = "";
@@ -320,7 +319,11 @@ public class UMLInterface {
             }
             else if(userEntry.equalsIgnoreCase("Save"))
             {
-
+                System.out.println("Please enter directory to save to. Example: \"/Users/jeff/Desktop/\"");
+                userEntry = sc.nextLine();
+                System.out.println("Please enter a name for your save file. (The .json extension will be appended automatically)");
+                userEntry2 = sc.nextLine();
+                holder.save(userEntry, userEntry2);
             }
             else if(userEntry.equalsIgnoreCase("Load"))
             {
@@ -347,6 +350,7 @@ public class UMLInterface {
                 System.out.println("Sorry, we don't recognize that command, please try again.");
             }
         }
+        sc.close();
     }
 
     /**

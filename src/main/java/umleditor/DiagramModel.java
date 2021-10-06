@@ -6,6 +6,14 @@ package umleditor;
 
 import java.util.ArrayList;
 import javax.lang.model.SourceVersion;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.io.FileWriter;
+import java.io.IOException;
+import java.lang.reflect.Type;
+
 import java.util.HashMap;
 import java.util.ListIterator;
 
@@ -76,17 +84,93 @@ public class DiagramModel {
     /**
      * Saves the class diagram to a JSON file using the format specified by the CSCI 420 fall 2021 
      * standardization committee.
+     * @param directory The path relative to the root directory to save the file to. Must end with "/"
+     *  and be a valid path.
+     * @param fileName The name of the file. Must not include the .json extension, which is appended
+     *  automatically.
      */
-    public void Save(){
+    public void save(String directory, String fileName){
+        StringBuilder jsonTxt = new StringBuilder();
+        jsonTxt.append("{\n  \"classes\": [\n");
+        diagram.forEach((k,v) -> jsonTxt.append(jsonTxtClassMaker(v)));
+        if (!diagram.isEmpty()) {
+            jsonTxt.deleteCharAt(jsonTxt.length() - 2);
+        }
+        jsonTxt.append("  ],\n  \"relationships\": [\n");
+        for(Relationship relationship : relationships) {
+            jsonTxt.append("    {\n");
+            jsonTxt.append("      \"source\": \"" + relationship.getFrom().getName() + "\",\n");
+            jsonTxt.append("      \"destination\": \"" + relationship.getTo().getName() + "\",\n");
+            jsonTxt.append("      \"type\": \"" + relationship.getRelationshipType() + "\"\n");
+            jsonTxt.append("    },\n");
+        }
+        if (!relationships.isEmpty()) {
+            jsonTxt.deleteCharAt(jsonTxt.length() - 2);
+        }  
+        jsonTxt.append("  ]\n}");
+        try {
+            String filePath = directory + fileName + ".json";
+            FileWriter fw1 = new FileWriter(filePath);
+            fw1.write(jsonTxt.toString());
+            fw1.close();
+        } catch (IOException e) {
+            System.out.println("An error occurred while trying to write json file:");
+            System.out.println(e);
+        } 
+    }
 
+    /**
+     * Formats the contents of a UMLClass into JSON. Designed to be used with the save method.
+     * @param theClass The class to format into JSON.
+     * @return A formatted string of the contents of theClass.
+     */
+    private String jsonTxtClassMaker(UMLClass theClass) {
+        StringBuilder result = new StringBuilder();
+        result.append("    {\n");
+        result.append("      \"name\": \"" + theClass.getName() + "\",\n");
+        result.append("      \"fields\": [\n");
+        ArrayList<String> fields = theClass.getFields();
+        for(String field : fields) {
+            result.append("        { \"name\": \"" + field + "\", \"type\": \"N/A\" },\n"); 
+        }
+        if(!fields.isEmpty()) {
+            result.deleteCharAt(result.length() - 2);
+        }
+        result.append("      ],\n");
+        result.append("      \"methods\": [\n");
+        ArrayList<Method> methods = theClass.getMethods();
+        for(Method method : methods) {
+            result.append("        {\n");
+            result.append("          \"name\": \"" + method.getMethodName() + "\",\n");
+            result.append("          \"return_type\": \"n/a\",\n");
+            result.append("          \"params\": [\n");
+            ArrayList<String> parameters = method.getParamList();
+            for(String param : parameters) {
+                result.append("            { \"name\": \"" + param + "\", \"type\": \"n/a\"},\n");
+            }
+            if (!parameters.isEmpty()) {
+                result.deleteCharAt(result.length() - 2);
+            }
+            result.append("          ]\n");
+            result.append("        },\n");
+        }
+        if(!methods.isEmpty()) {
+            result.deleteCharAt(result.length() - 2);
+        }
+        result.append("      ]\n");
+        result.append("    },\n");
+        return result.toString();
     }
 
     /**
      * Loads a class diagram from a JSON file formatted using the format specified by the CSCI 420 fall 2021 
      * standardization committee.
      */
-    public void Load(){
-
+    public void load(String prevSave){
+        Type a = new TypeToken<HashMap<String, UMLClass>>(){}.getType();
+        HashMap<String, UMLClass> loader = new Gson().fromJson(prevSave, a);
+        diagram.clear();
+        diagram = loader;
     }
 
     /**
