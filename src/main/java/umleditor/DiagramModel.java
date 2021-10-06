@@ -167,10 +167,7 @@ public class DiagramModel {
      * standardization committee.
      */
     public void load(String prevSave){
-        Type a = new TypeToken<HashMap<String, UMLClass>>(){}.getType();
-        HashMap<String, UMLClass> loader = new Gson().fromJson(prevSave, a);
-        diagram.clear();
-        diagram = loader;
+        
     }
 
     /**
