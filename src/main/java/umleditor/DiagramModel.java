@@ -179,20 +179,34 @@ public class DiagramModel {
             Object obj = parser.parse(new FileReader(fileLocation));
             JSONObject json = (JSONObject) obj;
             JSONArray classList = (JSONArray) json.get("classes");
-            Iterator <JSONObject> classIterator = classList.iterator();
+            Iterator<JSONObject> classIterator = classList.iterator();
             while(classIterator.hasNext()) {
                 JSONObject currentClass = classIterator.next();
                 String currentClassName = (String) currentClass.get("name");
                 this.addClass(currentClassName);
                 JSONArray fieldList = (JSONArray) currentClass.get("fields");
-                Iterator <JSONObject> fieldIterator = fieldList.iterator();
+                Iterator<JSONObject> fieldIterator = fieldList.iterator();
                 while(fieldIterator.hasNext()) {
                     String currentFieldName = (String) fieldIterator.next().get("name");
                     this.addField(currentClassName, currentFieldName);
                 }
+                JSONArray methodList = (JSONArray) currentClass.get("methods");
+                Iterator<JSONObject> methodIterator = methodList.iterator();
+                while(methodIterator.hasNext()) {
+                    JSONObject currentMethod = methodIterator.next();
+                    String currentMethodName = (String) currentMethod.get("name");
+                    this.addMethod(currentClassName, currentMethodName);
+                    JSONArray parameterList = (JSONArray) currentMethod.get("params");
+                    Iterator<JSONObject> parameterIterator = parameterList.iterator();
+                    while(parameterIterator.hasNext()) {
+                        JSONObject currentParameter = parameterIterator.next();
+                        String currentParameterName = (String) currentParameter.get("name");
+                        this.addParameter(currentClassName, currentMethodName, currentParameterName);
+                    }
+                }
             }
             JSONArray relationshipList = (JSONArray) json.get("relationships");
-            Iterator <JSONObject> relationshipIterator = relationshipList.iterator();
+            Iterator<JSONObject> relationshipIterator = relationshipList.iterator();
             while(relationshipIterator.hasNext()) {
                 JSONObject currentRelationship = relationshipIterator.next();
                 String source = (String) currentRelationship.get("source");
