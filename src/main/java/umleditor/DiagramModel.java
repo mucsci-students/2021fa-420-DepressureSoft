@@ -248,8 +248,8 @@ public class DiagramModel {
         {
             UMLClass input = diagram.get(className);
 
-            System.out.println("Name: " + input.getName());
-            System.out.println("Fields: ");
+            System.out.println("\nName: " + input.getName());
+            System.out.print("Fields: ");
 
             /** Prints fields, prints special message if none */
             if (input.getFields().size() == 0)
@@ -258,10 +258,15 @@ public class DiagramModel {
             }
             else
             {
+                StringBuilder fieldBuilder = new StringBuilder();
                 for (int i = 0; i < input.getFields().size(); i++)
-                {
-                    System.out.println(input.getFields().get(i));
+                { 
+                    if(i != 0) {
+                        fieldBuilder.append(", ");
+                    }
+                    fieldBuilder.append(input.getFields().get(i));
                 }
+                System.out.println(fieldBuilder.toString());
             }
             /** Prints methods, prints special message if no methods in UML class */
             System.out.println("Methods: ");
@@ -282,6 +287,7 @@ public class DiagramModel {
         {
             System.out.println("The class \"" + className + "\" cannot be displayed, as it does not exist");
         }
+        System.out.println();
     }
 
     /**
