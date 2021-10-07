@@ -327,9 +327,18 @@ public class UMLInterface {
             }
             else if(userEntry.equalsIgnoreCase("Load")) 
             {
-                System.out.println("Please enter location of file to load. Example: \"/Users/jeff/Desktop/save.json\"");
+                System.out.println("Are you sure you want to load a new file? All unsaved work will be deleted. (y/n)");
                 userEntry = sc.nextLine();
-                holder.load(userEntry);
+                if(userEntry.substring(0, 1).equalsIgnoreCase("y")) {
+                    System.out.println("Please enter location of file to load. Example: \"/Users/jeff/Desktop/save.json\"");
+                    userEntry2 = sc.nextLine();
+                    holder.load(userEntry2);
+                } else if(userEntry.substring(0, 1).equalsIgnoreCase("n")) {
+                    // nothing
+                } else {
+                    System.out.println("Unrecognized command.");
+                }
+                
             }
             else if(userEntry.equalsIgnoreCase("Help"))
             {

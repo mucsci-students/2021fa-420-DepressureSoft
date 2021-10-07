@@ -174,6 +174,8 @@ public class DiagramModel {
      * @param fileLocation the directory of the json file to load.
      */
     public void load(String fileLocation){
+        this.diagram.clear();
+        this.relationships.clear();
         JSONParser parser = new JSONParser();
         try {
             Object obj = parser.parse(new FileReader(fileLocation));
