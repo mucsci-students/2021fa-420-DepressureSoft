@@ -20,7 +20,7 @@ repositories {
 
 dependencies {
     // Use JUnit test framework.
-    testImplementation 'junit:junit:4.13'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.7.1'
     
     implementation 'com.google.code.gson:gson:2.8.8'
 
@@ -43,4 +43,8 @@ mainClassName = 'umleditor.startupGUI'
 application {
     // Define the main class for the application.
     mainClass = 'umleditor.startupGUI'
+}
+
+test {
+    useJUnitPlatform()
 }
