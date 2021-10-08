@@ -9,5 +9,13 @@
 build
 
 **/.project
+<<<<<<< Updated upstream
 .classpath
 .settings/org.eclipse.buildship.core.prefs
+=======
+.settings/org.eclipse.buildship.core.prefs
+.classpath
+.project
+.project
+.project
+>>>>>>> Stashed changes

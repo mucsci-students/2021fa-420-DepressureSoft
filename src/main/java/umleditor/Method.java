@@ -1,3 +1,5 @@
+package umleditor;
+
 import java.util.ArrayList;
 
 /**
