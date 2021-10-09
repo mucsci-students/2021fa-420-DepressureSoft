@@ -5,9 +5,23 @@ package umleditor;
  */
 
 import java.util.ArrayList;
-import javax.lang.model.SourceVersion;
 import java.util.HashMap;
 import java.util.ListIterator;
+import java.util.Iterator;
+import javax.lang.model.SourceVersion;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.lang.reflect.Type;
+
+
 
 /**
  * Represents a UML class diagram, and allows users to manipulate the diagram by 
@@ -76,16 +90,152 @@ public class DiagramModel {
     /**
      * Saves the class diagram to a JSON file using the format specified by the CSCI 420 fall 2021 
      * standardization committee.
+     * @param directory The path relative to the root directory to save the file to. Must end with "/"
+     *  and be a valid path.
+     * @param fileName The name of the file. Must not include the .json extension, which is appended
+     *  automatically.
      */
-    public void Save(){
+    public void save(String directory, String fileName){
+        StringBuilder jsonTxt = new StringBuilder();
+        jsonTxt.append("{\n  \"classes\": [\n");
+        diagram.forEach((k,v) -> jsonTxt.append(jsonTxtClassMaker(v)));
+        if (!diagram.isEmpty()) {
+            jsonTxt.deleteCharAt(jsonTxt.length() - 2);
+        }
+        jsonTxt.append("  ],\n  \"relationships\": [\n");
+        for(Relationship relationship : relationships) {
+            jsonTxt.append("    {\n");
+            jsonTxt.append("      \"source\": \"" + relationship.getFrom().getName() + "\",\n");
+            jsonTxt.append("      \"destination\": \"" + relationship.getTo().getName() + "\",\n");
+            jsonTxt.append("      \"type\": \"" + relationship.getRelationshipType() + "\"\n");
+            jsonTxt.append("    },\n");
+        }
+        if (!relationships.isEmpty()) {
+            jsonTxt.deleteCharAt(jsonTxt.length() - 2);
+        }  
+        jsonTxt.append("  ]\n}");
+        try {
+            String filePath = directory + fileName + ".json";
+            FileWriter fw1 = new FileWriter(filePath);
+            fw1.write(jsonTxt.toString());
+            fw1.close();
+        } catch (IOException e) {
+            System.out.println("An error occurred while trying to write json file:");
+            System.out.println(e);
+        } 
+    }
 
+    /**
+     * Formats the contents of a UMLClass into JSON. Designed to be used with the save method.
+     * @param theClass The class to format into JSON.
+     * @return A formatted string of the contents of theClass.
+     */
+    private String jsonTxtClassMaker(UMLClass theClass) {
+        StringBuilder result = new StringBuilder();
+        result.append("    {\n");
+        result.append("      \"name\": \"" + theClass.getName() + "\",\n");
+        result.append("      \"fields\": [\n");
+        ArrayList<String> fields = theClass.getFields();
+        for(String field : fields) {
+            result.append("        { \"name\": \"" + field + "\", \"type\": \"N/A\" },\n"); 
+        }
+        if(!fields.isEmpty()) {
+            result.deleteCharAt(result.length() - 2);
+        }
+        result.append("      ],\n");
+        result.append("      \"methods\": [\n");
+        ArrayList<Method> methods = theClass.getMethods();
+        for(Method method : methods) {
+            result.append("        {\n");
+            result.append("          \"name\": \"" + method.getMethodName() + "\",\n");
+            result.append("          \"return_type\": \"n/a\",\n");
+            result.append("          \"params\": [\n");
+            ArrayList<String> parameters = method.getParamList();
+            for(String param : parameters) {
+                result.append("            { \"name\": \"" + param + "\", \"type\": \"n/a\"},\n");
+            }
+            if (!parameters.isEmpty()) {
+                result.deleteCharAt(result.length() - 2);
+            }
+            result.append("          ]\n");
+            result.append("        },\n");
+        }
+        if(!methods.isEmpty()) {
+            result.deleteCharAt(result.length() - 2);
+        }
+        result.append("      ]\n");
+        result.append("    },\n");
+        return result.toString();
     }
 
     /**
      * Loads a class diagram from a JSON file formatted using the format specified by the CSCI 420 fall 2021 
      * standardization committee.
+     * @param fileLocation the directory of the json file to load.
      */
-    public void Load(){
+    public void load(String fileLocation){
+        this.diagram.clear();
+        this.relationships.clear();
+        JSONParser parser = new JSONParser();
+        try {
+            Object obj = parser.parse(new FileReader(fileLocation));
+            JSONObject json = (JSONObject) obj;
+            JSONArray classList = (JSONArray) json.get("classes");
+            Iterator<JSONObject> classIterator = classList.iterator();
+            while(classIterator.hasNext()) {
+                JSONObject currentClass = classIterator.next();
+                String currentClassName = (String) currentClass.get("name");
+                this.addClass(currentClassName);
+                JSONArray fieldList = (JSONArray) currentClass.get("fields");
+                Iterator<JSONObject> fieldIterator = fieldList.iterator();
+                while(fieldIterator.hasNext()) {
+                    String currentFieldName = (String) fieldIterator.next().get("name");
+                    this.addField(currentClassName, currentFieldName);
+                }
+                JSONArray methodList = (JSONArray) currentClass.get("methods");
+                Iterator<JSONObject> methodIterator = methodList.iterator();
+                while(methodIterator.hasNext()) {
+                    JSONObject currentMethod = methodIterator.next();
+                    String currentMethodName = (String) currentMethod.get("name");
+                    this.addMethod(currentClassName, currentMethodName);
+                    JSONArray parameterList = (JSONArray) currentMethod.get("params");
+                    Iterator<JSONObject> parameterIterator = parameterList.iterator();
+                    while(parameterIterator.hasNext()) {
+                        JSONObject currentParameter = parameterIterator.next();
+                        String currentParameterName = (String) currentParameter.get("name");
+                        this.addParameter(currentClassName, currentMethodName, currentParameterName);
+                    }
+                }
+            }
+            JSONArray relationshipList = (JSONArray) json.get("relationships");
+            Iterator<JSONObject> relationshipIterator = relationshipList.iterator();
+            while(relationshipIterator.hasNext()) {
+                JSONObject currentRelationship = relationshipIterator.next();
+                String source = (String) currentRelationship.get("source");
+                String destination = (String) currentRelationship.get("destination");
+                String type = (String) currentRelationship.get("type");
+                Relationship.RelationshipType relType = null;
+                if(type.equalsIgnoreCase("aggregation")) {
+                    relType = Relationship.RelationshipType.AGGREGATION;
+                } else if(type.equalsIgnoreCase("composition")) {
+                    relType = Relationship.RelationshipType.COMPOSITION;
+                } else if(type.equalsIgnoreCase("inheritance")) {
+                    relType = Relationship.RelationshipType.INHERITANCE;
+                } else if(type.equalsIgnoreCase("realization")) {
+                    relType = Relationship.RelationshipType.REALIZATION;
+                } else {
+                    throw new Exception("Invalid relationship type in json file in relationship between " +
+                        source + ":" + destination + ".");
+                }
+                this.addRelationship(source, destination, relType);
+            }
+            
+        }
+        catch (Exception e) {
+            System.out.println("An error occurred: \n" + e.toString());
+            e.printStackTrace();
+        }
+        
 
     }
 
@@ -100,8 +250,8 @@ public class DiagramModel {
         {
             UMLClass input = diagram.get(className);
 
-            System.out.println("Name: " + input.getName());
-            System.out.println("Fields: ");
+            System.out.println("\nName: " + input.getName());
+            System.out.print("Fields: ");
 
             /** Prints fields, prints special message if none */
             if (input.getFields().size() == 0)
@@ -110,10 +260,15 @@ public class DiagramModel {
             }
             else
             {
+                StringBuilder fieldBuilder = new StringBuilder();
                 for (int i = 0; i < input.getFields().size(); i++)
-                {
-                    System.out.println(input.getFields().get(i));
+                { 
+                    if(i != 0) {
+                        fieldBuilder.append(", ");
+                    }
+                    fieldBuilder.append(input.getFields().get(i));
                 }
+                System.out.println(fieldBuilder.toString());
             }
             /** Prints methods, prints special message if no methods in UML class */
             System.out.println("Methods: ");
@@ -134,6 +289,7 @@ public class DiagramModel {
         {
             System.out.println("The class \"" + className + "\" cannot be displayed, as it does not exist");
         }
+        System.out.println();
     }
 
     /**

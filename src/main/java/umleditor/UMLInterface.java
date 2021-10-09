@@ -7,7 +7,6 @@ import java.util.Scanner;
  */
 public class UMLInterface {
     public static void main(String[] args){
-
         DiagramModel holder = new DiagramModel();
         Scanner sc = new Scanner(System.in);
         String userEntry = "";
@@ -320,10 +319,25 @@ public class UMLInterface {
             }
             else if(userEntry.equalsIgnoreCase("Save"))
             {
-
+                System.out.println("Please enter directory to save to. Example: \"/Users/jeff/Desktop/\"");
+                userEntry = sc.nextLine();
+                System.out.println("Please enter a name for your save file. (The .json extension will be appended automatically)");
+                userEntry2 = sc.nextLine();
+                holder.save(userEntry, userEntry2);
             }
-            else if(userEntry.equalsIgnoreCase("Load"))
+            else if(userEntry.equalsIgnoreCase("Load")) 
             {
+                System.out.println("Are you sure you want to load a new file? All unsaved work will be deleted. (y/n)");
+                userEntry = sc.nextLine();
+                if(userEntry.substring(0, 1).equalsIgnoreCase("y")) {
+                    System.out.println("Please enter location of file to load. Example: \"/Users/jeff/Desktop/save.json\"");
+                    userEntry2 = sc.nextLine();
+                    holder.load(userEntry2);
+                } else if(userEntry.substring(0, 1).equalsIgnoreCase("n")) {
+                    // nothing
+                } else {
+                    System.out.println("Unrecognized command.");
+                }
                 
             }
             else if(userEntry.equalsIgnoreCase("Help"))
@@ -347,6 +361,7 @@ public class UMLInterface {
                 System.out.println("Sorry, we don't recognize that command, please try again.");
             }
         }
+        sc.close();
     }
 
     /**
