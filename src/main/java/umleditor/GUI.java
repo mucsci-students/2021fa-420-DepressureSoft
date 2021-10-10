@@ -357,9 +357,7 @@ public class GUI {
 
         className = new JTextField("", 18);
         fieldName = new JTextField("", 18);
-        classes = new JList(model.getClasses().toArray());
-        JScrollPane listScroller = new JScrollPane(classes);
-
+        
         actionPane.add(classLabel);
         actionPane.add(className);
         actionPane.add(fieldLabel);
@@ -782,7 +780,7 @@ public class GUI {
 		String method = methodName.getText();
         String parameter = parameterName.getText();
 
-        //model.addParameter(getClass,method,parameter);
+        model.addParameter(getClass,method,parameter);
         boxMap.get(getClass).addParameter(parameter,method);
         action.dispose();
         frame.repaint();
@@ -806,6 +804,7 @@ public class GUI {
         pane.remove(boxMap.get(remClass).getClassPanel());
         boxMap.remove(remClass);
         action.dispose();
+        pane.repaint();
     }
     public void deleteRelationshipAction(){
         String classOne = className.getText();
@@ -818,7 +817,7 @@ public class GUI {
         String getClass = className.getText();
 		String field = fieldName.getText();
 
-         model.deleteField(getClass, field); //changed from remove field to delete field
+         model.deleteField(getClass, field); 
          box = boxMap.get(getClass);
          box.removeField(field);
         action.dispose();
@@ -829,7 +828,7 @@ public class GUI {
 
         box = boxMap.get(getClass);
         box.removeMethod(method);
-        //model.removeMethod(getClass,method); not defined yet in this version
+        model.deleteMethod(getClass,method);
         action.dispose();
     }
     public void deleteParameterAction(){ // param not implemented in this version 
@@ -874,7 +873,7 @@ public class GUI {
 
         box = boxMap.get(getClass);
         box.renameMethod(method,newMethod);
-      // model.renameMethod(getClass,method,newMethod);  not implemented in this version
+        model.renameMethod(getClass,method,newMethod);
         action.dispose();
     }
     public void renameParameterAction(){
