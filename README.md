@@ -28,6 +28,6 @@ cd 2021fa-420-DepressureSoft
 # Linux and macOS
 java -jar ./build/libs/umleditor-v2.0.0-all.jar
 
-# Linux and macOS
+# Windows
 java -jar .\build\libs\umleditor-v2.0.0-all.jar
 ```
