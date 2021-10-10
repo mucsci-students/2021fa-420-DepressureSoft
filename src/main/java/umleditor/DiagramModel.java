@@ -296,7 +296,7 @@ public class DiagramModel {
     /**
      * Prints the contents of every class in the diagram to the console.
      */
-    public void ListClasses(){
+    public void listClasses(){
         diagram.forEach((k,v) -> listClass(k));
     }
 
@@ -688,7 +688,7 @@ public class DiagramModel {
     /**
      * Prints all the relationships in the class diagram.
      */
-    public void ListRelationships()
+    public void listRelationships()
     {
         ListIterator<Relationship>iterator = relationships.listIterator();
         if (relationships.isEmpty()) {

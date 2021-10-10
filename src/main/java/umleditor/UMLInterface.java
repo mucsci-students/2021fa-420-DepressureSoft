@@ -8,11 +8,14 @@ import java.util.Scanner;
 public class UMLInterface {
     public static void main(String[] args){
         DiagramModel holder = new DiagramModel();
+        Controller controller = new Controller();
         Scanner sc = new Scanner(System.in);
         String userEntry = "";
         String userEntry2 = "";
         String userEntry3 = "";
         String userEntry4 = "";
+        String userEntry5 = "";
+        String userEntry6 = "";
 
         System.out.println("Welcome to the text UML Diagram creator. To begin please select the action you would like to perform.");
         System.out.println("If you're new please use the 'help' command to see the options avaliable.");
@@ -23,81 +26,89 @@ public class UMLInterface {
             userEntry = userEntry.trim();
             if(userEntry.equalsIgnoreCase("Add"))
             {
+            	userEntry = "add";
                 System.out.println("Would you like to add a class, method, field, parameter, or relationship?");
-                userEntry = sc.nextLine();
-                userEntry = userEntry.trim();
-                if(userEntry.equalsIgnoreCase("Class"))
+                userEntry2 = sc.nextLine();
+                userEntry2 = userEntry2.trim();
+                if(userEntry2.equalsIgnoreCase("Class"))
                 {
+                	userEntry2 = "class";
                     System.out.println("Please enter the name of the class you would like to add.");
-                    userEntry = sc.nextLine();
-                    userEntry = userEntry.trim();
-                    holder.addClass(userEntry);
+                    userEntry3 = sc.nextLine();
+                    userEntry3 = userEntry3.trim();
+                    controller.command(userEntry, userEntry2, userEntry3, userEntry4, userEntry5, userEntry6);
                 }
-                else if(userEntry.equalsIgnoreCase("Field"))
+                else if(userEntry2.equalsIgnoreCase("Field"))
                 {
+                	userEntry2 = "field";
                     System.out.println("Please enter the name of the class you would like to add the field to.");
-                    userEntry = sc.nextLine();
-                    userEntry = userEntry.trim();
+                    userEntry3 = sc.nextLine();
+                    userEntry3 = userEntry3.trim();
                     boolean moreFields = true;
                     while(moreFields)
                     {
                         System.out.println("Please enter the name of the field you would like to add.");
-                        userEntry2 = sc.nextLine();
-                        userEntry2 = userEntry2.trim();
-                        holder.addField(userEntry, userEntry2);
+                        userEntry4 = sc.nextLine();
+                        userEntry4 = userEntry4.trim();
+                        controller.command(userEntry, userEntry2, userEntry3, userEntry4, userEntry5, userEntry6);
                         System.out.println("Would you like to add another field to the class? 'yes' or 'no'");
-                        userEntry3 = sc.nextLine();
-                        userEntry3 = userEntry3.trim();
-                        if(userEntry3.equalsIgnoreCase("No"))
+                        userEntry4 = sc.nextLine();
+                        userEntry4 = userEntry4.trim();
+                        if(userEntry4.equalsIgnoreCase("No"))
                         {
                             moreFields = false;
                         }
                     }
                 }
-                else if(userEntry.equalsIgnoreCase("Method"))
+                else if(userEntry2.equalsIgnoreCase("Method"))
                 {
+                	userEntry2 = "method";
                     System.out.println("Please enter the name of the class you would like to add the method to.");
-                    userEntry = sc.nextLine();
-                    userEntry = userEntry.trim();
+                    userEntry3 = sc.nextLine();
+                    userEntry3 = userEntry3.trim();
                   
                     System.out.println("Please enter the name of the method you would like to add.");
-                    userEntry2 = sc.nextLine();
-                    userEntry2 = userEntry2.trim();
-                    holder.addMethod(userEntry, userEntry2);
+                    userEntry4 = sc.nextLine();
+                    userEntry4 = userEntry4.trim();
+                    controller.command(userEntry, userEntry2, userEntry3, userEntry4, userEntry5, userEntry6);
                     
                 }
-                else if(userEntry.equalsIgnoreCase("Parameter"))
+                else if(userEntry2.equalsIgnoreCase("Parameter"))
                 {
+                	userEntry2 = "parameter";
                     System.out.println("Please enter the name of the class you would like to add the parameter to.");
-                    userEntry = sc.nextLine();
-                    userEntry = userEntry.trim();
+                    userEntry3 = sc.nextLine();
+                    userEntry3 = userEntry3.trim();
                     
                     System.out.println("Please enter the name of the method you would like to add the parameter to.");
-                    userEntry2 = sc.nextLine();
-                    userEntry2 = userEntry2.trim();
+                    userEntry4 = sc.nextLine();
+                    userEntry4 = userEntry4.trim();
 
                     System.out.println("Please enter the name of the parameter you would like to add.");
-                    userEntry3 = sc.nextLine();
-                    userEntry3 = userEntry3.trim();
-                    holder.addParameter(userEntry, userEntry2,userEntry3);
+                    userEntry5 = sc.nextLine();
+                    userEntry5 = userEntry5.trim();
+                    controller.command(userEntry, userEntry2, userEntry3, userEntry4, userEntry5, userEntry6);
                     
                 }
-                else if(userEntry.equalsIgnoreCase("Relationship"))
+                else if(userEntry2.equalsIgnoreCase("Relationship"))
                 {
+                	userEntry2 = "relationship";
                     System.out.println("Please enter the first class within the relationship you would like to add.");
-                    userEntry = sc.nextLine();
-                    userEntry = userEntry.trim();
-                    System.out.println("Please enter the second class within the relationship you would like to add.");
-                    userEntry2 = sc.nextLine();
-                    userEntry2 = userEntry2.trim();
-                    System.out.println("Please enter the type of relationship between the two classes."
-                        + "\nCan be either \"aggregation\", \"composition\", \"inheritance\", or \"realization\".");
                     userEntry3 = sc.nextLine();
                     userEntry3 = userEntry3.trim();
-                    if (getRelTypeFromString(userEntry3) != null) {
-                        holder.addRelationship(userEntry,userEntry2,getRelTypeFromString(userEntry3));
+                    
+                    System.out.println("Please enter the second class within the relationship you would like to add.");
+                    userEntry4 = sc.nextLine();
+                    userEntry4 = userEntry4.trim();
+                    
+                    System.out.println("Please enter the type of relationship between the two classes."
+                        + "\nCan be either \"aggregation\", \"composition\", \"inheritance\", or \"realization\".");
+                    userEntry5 = sc.nextLine();
+                    userEntry5 = userEntry5.trim();
+                    if (getRelTypeFromString(userEntry5) != null) {
+                        controller.command(userEntry, userEntry2, userEntry3, userEntry4, userEntry5, userEntry6);
                     } else {
-                        System.out.println("\"" + userEntry3 + "\" is not a valid relationship type.");
+                        System.out.println("\"" + userEntry5 + "\" is not a valid relationship type.");
                     }
                 }
                 else if(userEntry.equalsIgnoreCase("Exit"))
@@ -113,66 +124,71 @@ public class UMLInterface {
             }
             else if(userEntry.equalsIgnoreCase("Rename"))
             {
+            	userEntry = "rename";
                 System.out.println("Would you like to rename a class, method, field, or parameter?");
-                userEntry = sc.nextLine();
-                userEntry = userEntry.trim();
-                if(userEntry.equalsIgnoreCase("Class"))
+                userEntry2 = sc.nextLine();
+                userEntry2 = userEntry2.trim();
+                if(userEntry2.equalsIgnoreCase("Class"))
                 {
+                	userEntry2 = "class";
                     System.out.println("Please enter the name of the class you would like to rename.");
-                    userEntry = sc.nextLine();
-                    userEntry = userEntry.trim();
-                    System.out.println("Please enter what you want to rename it to.");
-                    userEntry2 = sc.nextLine();
-                    userEntry2 = userEntry2.trim();
-                    holder.renameUMLClass(userEntry,userEntry2);
-                }
-                else if(userEntry.equalsIgnoreCase("Field"))
-                {
-                    System.out.println("Please enter the name of the class where the field is located.");
-                    userEntry = sc.nextLine();
-                    userEntry = userEntry.trim();
-                    System.out.println("Please enter the name of the field you would like to rename.");
-                    userEntry2 = sc.nextLine();
-                    userEntry2 = userEntry2.trim();
-                    System.out.println("Please enter what you want to rename it to.");
                     userEntry3 = sc.nextLine();
                     userEntry3 = userEntry3.trim();
-                    holder.renameField(userEntry, userEntry2, userEntry3);
-                }
-                else if(userEntry.equalsIgnoreCase("Method"))
-                {
-                    System.out.println("Please enter the name of the class where the method is located.");
-                    userEntry = sc.nextLine();
-                    userEntry = userEntry.trim();
-                  
-                    System.out.println("Please enter the name of the method you would like to rename.");
-                    userEntry2 = sc.nextLine();
-                    userEntry2 = userEntry2.trim();
-
-                    System.out.println("Please enter what you want to rename it to.");
-                    userEntry3 = sc.nextLine();
-                    userEntry3 = userEntry3.trim();
-                    holder.renameMethod(userEntry, userEntry2,userEntry3);
-                    
-                }
-                else if(userEntry.equalsIgnoreCase("Parameter"))
-                {
-                    System.out.println("Please enter the name of the class where the parameter is located.");
-                    userEntry = sc.nextLine();
-                    userEntry = userEntry.trim();
-                  
-                    System.out.println("Please enter the name of the method where the parameter is located.");
-                    userEntry2 = sc.nextLine();
-                    userEntry2 = userEntry2.trim();
-
-                    System.out.println("Please enter the name of the parameter you would like to rename.");
-                    userEntry3 = sc.nextLine();
-                    userEntry3 = userEntry3.trim();
-
                     System.out.println("Please enter what you want to rename it to.");
                     userEntry4 = sc.nextLine();
                     userEntry4 = userEntry4.trim();
-                    holder.renameParameter(userEntry,userEntry2,userEntry3,userEntry4);
+                    controller.command(userEntry, userEntry2, userEntry3, userEntry4, userEntry5, userEntry6);
+                }
+                else if(userEntry2.equalsIgnoreCase("Field"))
+                {
+                	userEntry2 = "field";
+                    System.out.println("Please enter the name of the class where the field is located.");
+                    userEntry3 = sc.nextLine();
+                    userEntry3 = userEntry3.trim();
+                    System.out.println("Please enter the name of the field you would like to rename.");
+                    userEntry4 = sc.nextLine();
+                    userEntry4 = userEntry4.trim();
+                    System.out.println("Please enter what you want to rename it to.");
+                    userEntry5 = sc.nextLine();
+                    userEntry5 = userEntry5.trim();
+                    controller.command(userEntry, userEntry2, userEntry3, userEntry4, userEntry5, userEntry6);
+                }
+                else if(userEntry2.equalsIgnoreCase("Method"))
+                {
+                	userEntry2 = "method";
+                    System.out.println("Please enter the name of the class where the method is located.");
+                    userEntry3 = sc.nextLine();
+                    userEntry3 = userEntry3.trim();
+                  
+                    System.out.println("Please enter the name of the method you would like to rename.");
+                    userEntry4 = sc.nextLine();
+                    userEntry4 = userEntry4.trim();
+
+                    System.out.println("Please enter what you want to rename it to.");
+                    userEntry5 = sc.nextLine();
+                    userEntry5 = userEntry5.trim();
+                    controller.command(userEntry, userEntry2, userEntry3, userEntry4, userEntry5, userEntry6);
+                    
+                }
+                else if(userEntry2.equalsIgnoreCase("Parameter"))
+                {
+                	userEntry2 = "parameter";
+                    System.out.println("Please enter the name of the class where the parameter is located.");
+                    userEntry3 = sc.nextLine();
+                    userEntry3 = userEntry3.trim();
+                  
+                    System.out.println("Please enter the name of the method where the parameter is located.");
+                    userEntry4 = sc.nextLine();
+                    userEntry4 = userEntry4.trim();
+
+                    System.out.println("Please enter the name of the parameter you would like to rename.");
+                    userEntry5 = sc.nextLine();
+                    userEntry5 = userEntry5.trim();
+
+                    System.out.println("Please enter what you want to rename it to.");
+                    userEntry6 = sc.nextLine();
+                    userEntry6 = userEntry6.trim();
+                    controller.command(userEntry, userEntry2, userEntry3, userEntry4, userEntry5, userEntry6);
                     
                 }
                 else if(userEntry.equalsIgnoreCase("Exit"))
@@ -188,72 +204,79 @@ public class UMLInterface {
             }
             else if(userEntry.equalsIgnoreCase("Delete"))
             {
+            	userEntry = "delete";
                 System.out.println("Would you like to delete a class, method, parameter, field, or relationship?");
-                userEntry = sc.nextLine();
-                userEntry = userEntry.trim();
-                if(userEntry.equalsIgnoreCase("Class"))
+                userEntry2 = sc.nextLine();
+                userEntry2 = userEntry2.trim();
+                if(userEntry2.equalsIgnoreCase("Class"))
                 {
+                	userEntry2 = "class";
                     System.out.println("Please enter the name of the class you would like to remove.");
-                    userEntry = sc.nextLine();
-                    userEntry = userEntry.trim();
-                    holder.deleteClass(userEntry);
-                }
-                else if(userEntry.equalsIgnoreCase("Field"))
-                {
-                    System.out.println("Please enter the name of the class where the field is located.");
-                    userEntry = sc.nextLine();
-                    userEntry = userEntry.trim();
-                    System.out.println("Please enter the name of the field you would like to remove.");
-                    userEntry2 = sc.nextLine();
-
-
-                    userEntry2 = userEntry2.trim();
-                    holder.deleteField(userEntry, userEntry2);
-                }
-                else if(userEntry.equalsIgnoreCase("Method"))
-                {
-                    System.out.println("Please enter the name of the class you would like to delete the method from.");
-                    userEntry = sc.nextLine();
-                    userEntry = userEntry.trim();
-                  
-                    System.out.println("Please enter the name of the method you would like to remove.");
-                    userEntry2 = sc.nextLine();
-                    userEntry2 = userEntry2.trim();
-                    holder.deleteMethod(userEntry, userEntry2);
-                    
-                }
-                else if(userEntry.equalsIgnoreCase("Parameter"))
-                {
-                    System.out.println("Please enter the name of the class you would like to remove the parameter from.");
-                    userEntry = sc.nextLine();
-                    userEntry = userEntry.trim();
-                    
-                    System.out.println("Please enter the name of the method you would like to remove the parameter from.");
-                    userEntry2 = sc.nextLine();
-                    userEntry2 = userEntry2.trim();
-                    System.out.println("Would you like to remove 'one' or 'all' of off the parameters?");
                     userEntry3 = sc.nextLine();
                     userEntry3 = userEntry3.trim();
-                    if(userEntry3.equalsIgnoreCase("One")){
+                    controller.command(userEntry, userEntry2, userEntry3, userEntry4, userEntry5, userEntry6);
+                }
+                else if(userEntry2.equalsIgnoreCase("Field"))
+                {
+                	userEntry2 = "field";
+                    System.out.println("Please enter the name of the class where the field is located.");
+                    userEntry3 = sc.nextLine();
+                    userEntry3 = userEntry3.trim();
+                    
+                    System.out.println("Please enter the name of the field you would like to remove.");
+                    userEntry4 = sc.nextLine();
+                    userEntry4 = userEntry4.trim();
+                    controller.command(userEntry, userEntry2, userEntry3, userEntry4, userEntry5, userEntry6);
+                }
+                else if(userEntry2.equalsIgnoreCase("Method"))
+                {
+                	userEntry2 = "method";
+                    System.out.println("Please enter the name of the class you would like to delete the method from.");
+                    userEntry3 = sc.nextLine();
+                    userEntry3 = userEntry3.trim();
+                  
+                    System.out.println("Please enter the name of the method you would like to remove.");
+                    userEntry4 = sc.nextLine();
+                    userEntry4 = userEntry4.trim();
+                    controller.command(userEntry, userEntry2, userEntry3, userEntry4, userEntry5, userEntry6);
+                    
+                }
+                else if(userEntry2.equalsIgnoreCase("Parameter"))
+                {
+                	userEntry2 = "parameter";
+                    System.out.println("Please enter the name of the class you would like to remove the parameter from.");
+                    userEntry3 = sc.nextLine();
+                    userEntry3 = userEntry3.trim();
+                    
+                    System.out.println("Please enter the name of the method you would like to remove the parameter from.");
+                    userEntry4 = sc.nextLine();
+                    userEntry4 = userEntry4.trim();
+                    System.out.println("Would you like to remove 'one' or 'all' of off the parameters?");
+                    userEntry5 = sc.nextLine();
+                    userEntry5 = userEntry5.trim();
+                    if(userEntry5.equalsIgnoreCase("One")){
+                    	userEntry5 = "one";
                         System.out.println("Please enter the name of the parameter you would like to remove.");
-                        userEntry4 = sc.nextLine();
-                        userEntry4 = userEntry4.trim();
-                    holder.deleteParameter(userEntry, userEntry2, userEntry4);
-                    }else if(userEntry3.equalsIgnoreCase("All")){
-                        holder.deleteAllParameters(userEntry, userEntry2);
+                        userEntry6 = sc.nextLine();
+                        userEntry6 = userEntry6.trim();
+                    controller.command(userEntry, userEntry2, userEntry3, userEntry4, userEntry5, userEntry6);
+                    }else if(userEntry5.equalsIgnoreCase("All")){
+                    	userEntry5 = "all";
+                        controller.command(userEntry, userEntry2, userEntry3, userEntry4, userEntry5, userEntry6);
                     }else{
                         System.out.println("Sorry, we don't recognize that command, please try again.");
                     }
                 }
-                else if(userEntry.equalsIgnoreCase("Relationship"))
+                else if(userEntry2.equalsIgnoreCase("Relationship"))
                 {
+                	userEntry2 = "relationship";
                     System.out.println("Please enter the first class within the relationship you would like to delete.");
-                    userEntry = sc.nextLine();
-                    userEntry = userEntry.trim();
+                    userEntry3 = sc.nextLine();
+                    userEntry3 = userEntry3.trim();
                     System.out.println("Please enter the second class within the relationship you would like to delete.");
-                    userEntry2 = sc.nextLine();
-                    userEntry2 = userEntry2.trim();
-                    holder.deleteRelationship(userEntry,userEntry2);
+                    userEntry4 = sc.nextLine();
+                    userEntry4 = userEntry4.trim();
+                    controller.command(userEntry, userEntry2, userEntry3, userEntry4, userEntry5, userEntry6);
                 }
                 else if(userEntry.equalsIgnoreCase("Exit"))
                 {
@@ -268,41 +291,46 @@ public class UMLInterface {
             }
             else if(userEntry.equalsIgnoreCase("ChangeType"))
             {
+            	userEntry = "changeType";
                 System.out.println("Please enter the first class within the relationship you want to change the type of.");
-                userEntry = sc.nextLine().trim();
-                System.out.println("Please enter the second class within the relationship you want to change the type of.");
                 userEntry2 = sc.nextLine().trim();
+                System.out.println("Please enter the second class within the relationship you want to change the type of.");
+                userEntry3 = sc.nextLine().trim();
                 System.out.println("Please enter the relationship type you would like to change this relationship to."
                     + "\nCan be either \"aggregation\", \"composition\", \"inheritance\", or \"realization\".");
-                userEntry3 = sc.nextLine().trim();
-                if (getRelTypeFromString(userEntry3) != null) {
-                    holder.changeRelationshipType(userEntry,userEntry2,getRelTypeFromString(userEntry3));
+                userEntry4 = sc.nextLine().trim();
+                if (getRelTypeFromString(userEntry4) != null) {
+                    controller.command(userEntry, userEntry2, userEntry3, userEntry4, userEntry5, userEntry6);
                 } else {
-                    System.out.println("\"" + userEntry3 + "\" is not a valid relationship type.");
+                    System.out.println("\"" + userEntry4 + "\" is not a valid relationship type.");
                 }
 
             }
             else if(userEntry.equalsIgnoreCase("Display"))
             {
+            	userEntry = "display";
                 System.out.println("Would you like to display 'one' class, 'all' classes, or their 'relationships'?");
-                userEntry = sc.nextLine();
-                userEntry = userEntry.trim();
-                if(userEntry.equalsIgnoreCase("One"))
+                userEntry2 = sc.nextLine();
+                userEntry2 = userEntry2.trim();
+                if(userEntry2.equalsIgnoreCase("One"))
                 {
+                	userEntry2 = "one";
                     System.out.println("Please enter the name of the class you want to display.");
-                    userEntry = sc.nextLine();
-                    userEntry = userEntry.trim();
-                    holder.listClass(userEntry);
+                    userEntry3 = sc.nextLine();
+                    userEntry3 = userEntry3.trim();
+                    controller.command(userEntry, userEntry2, userEntry3, userEntry4, userEntry5, userEntry6);
                 }
-                else if(userEntry.equalsIgnoreCase("All"))
+                else if(userEntry2.equalsIgnoreCase("All"))
                 {
-                    holder.ListClasses();
+                	userEntry2 = "all";
+                    controller.command(userEntry, userEntry2, userEntry3, userEntry4, userEntry5, userEntry6);
                 }
-                else if(userEntry.equalsIgnoreCase("Relationships"))
+                else if(userEntry2.equalsIgnoreCase("Relationships"))
                 {
-                    holder.ListRelationships();
+                	userEntry2 = "relationships";
+                    controller.command(userEntry, userEntry2, userEntry3, userEntry4, userEntry5, userEntry6);
                 }
-                else if(userEntry.equalsIgnoreCase("Exit"))
+                else if(userEntry2.equalsIgnoreCase("Exit"))
                 {
                     break;
                 }

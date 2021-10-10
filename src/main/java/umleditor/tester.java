@@ -23,7 +23,7 @@ public class tester {
             holder.getUML("Diagram1").addField("Field2");
             holder.addClass("Diagram2");
             holder.addClass("Diagram3");
-            holder.ListClasses();
+            holder.listClasses();
             System.out.println("--------------------------------------------------------");
 
 
@@ -36,7 +36,7 @@ public class tester {
             System.out.println("Actual: ");
             holder.deleteClass("Diagram1");
             holder.deleteClass("Diagram2");
-            holder.ListClasses();
+            holder.listClasses();
 
 
             System.out.println("----------------------------------------------------------");
@@ -66,7 +66,7 @@ public class tester {
             //holder.addRelationship("Diagram4","Diagram5");
             //holder.addRelationship("Diagram3","Diagram5");
             holder.deleteRelationship("Diagram3","Diagram5");
-            holder.ListRelationships();
+            holder.listRelationships();
     }
 
 
