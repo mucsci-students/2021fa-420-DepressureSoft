@@ -34,7 +34,3 @@ java -jar ./build/libs/umleditor-v2.0.0-all.jar
 # Windows
 java -jar .\build\libs\umleditor-v2.0.0-all.jar
 ```
-
-
-Notes:
-- Full MVC implementation pushed to sprint 3
