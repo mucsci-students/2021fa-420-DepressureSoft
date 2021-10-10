@@ -1,6 +1,6 @@
 package umleditor;
 /**
- * Authors: Jeffrey Flynn, Jeffrey Cutcher, David Jachimowicz, Alex Balagurak
+ * Authors: Jeffrey Flynn, Jeffrey Cutcher, David Jachimowicz, Alex Balagurak, Jon Brennan
  * Date: 9/15/21
  */
 
