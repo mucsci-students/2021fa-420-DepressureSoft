@@ -41,6 +41,7 @@ public class startupGUI {
 	        //Adds Action Listener to Buttons so when clicked they preform necessary tasks. 
 	        button.addActionListener(e -> {
 	        	frame.dispose();
+			GUI.main(args);
 	        });
 	        button2.addActionListener(e -> {
 	            frame.dispose();
