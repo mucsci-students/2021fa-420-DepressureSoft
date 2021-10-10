@@ -1,5 +1,8 @@
 # 2021fa-420-DepressureSoft
 
+Need: 
+- [Java 11](https://www.oracle.com/java/technologies/downloads/#java11)
+
 1. Clone the repository
 
 ```
@@ -31,3 +34,7 @@ java -jar ./build/libs/umleditor-v2.0.0-all.jar
 # Windows
 java -jar .\build\libs\umleditor-v2.0.0-all.jar
 ```
+
+
+Notes:
+- Full MVC implementation pushed to sprint 3
