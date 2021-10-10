@@ -1,6 +1,6 @@
 package umleditor;
 /**
- * Authors: Jeffrey Flynn, David Jachimowicz, Jeff Cutcher, Alex Balagurak
+ * Authors: Jeffrey Flynn, David Jachimowicz, Jeff Cutcher, Alex Balagurak, Jon Brennan
  * Date: 9/15/21
  */
 
@@ -96,6 +96,7 @@ public class DiagramModel {
      */
     public void listClass(String className)
     {
+    	
         if(classExists(className))
         {
             UMLClass input = diagram.get(className);
@@ -715,5 +716,13 @@ public class DiagramModel {
             System.out.println(newFieldName + "\" is not a proper name.");
         }
     }
-
+    
+    /**
+     * Returns the number of classes currently in the diagram. 
+     * @return The number of classes in the diagram
+     */
+    public int numberOfClasses() 
+    {
+    	return diagram.size();
+    }
 }
