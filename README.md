@@ -1,7 +1,6 @@
 # 2021fa-420-DepressureSoft
 
-Need: 
-- [Java 11](https://www.oracle.com/java/technologies/downloads/#java11)
+Make sure your system is running java 11. You can get it [here](https://www.oracle.com/java/technologies/downloads/#java11).
 
 1. Clone the repository
 
@@ -12,7 +11,7 @@ git clone https://github.com/mucsci-students/2021fa-420-DepressureSoft
 2. Navigate to the project folder
 
 ```
-cd 2021fa-420-DepressureSoft
+cd (your github folder)/2021fa-420-DepressureSoft
 ```
 
 3. Invoke `gradlew` for your OS.
