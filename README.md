@@ -1,19 +1,36 @@
 # 2021fa-420-DepressureSoft
 
-1. Download Visual Studio Code 
+Need: 
+- [Java 11](https://www.oracle.com/java/technologies/downloads/#java11)
 
-2. Download GitHub Desktop
+1. Clone the repository
 
-3. Go to https://code.visualstudio.com/docs/java/java-tutorial and download the necessary Java Kit for your system.
-NOTE: Make sure your system has the necessary Java Compiler installed on Visual Studio. 
+```
+git clone https://github.com/mucsci-students/2021fa-420-DepressureSoft
+```
 
-4. Within GitHub Desktop, sign in to your gitHub account and click File -> Clone Repository then clone DepressureSoft's repository to your list.
+2. Navigate to the project folder
 
-5. Select 'Open in Visual Studio Code'
+```
+cd 2021fa-420-DepressureSoft
+```
 
-6. Once opened go to the 'UMLInterface.java'
+3. Invoke `gradlew` for your OS.
 
-7. Right-click anywhere within 'UMLInterface.java' and select 'Run Java' and refer to incode instructions on how to navigate the program.
+```
+# Linux and macOS
+./gradlew build
 
+# Windows
+.\gradlew.bat build
+```
 
-Note: Save/Load functionality has been delayed until sprint 2.
+4. To run the application, invoke the generated jar file
+
+```
+# Linux and macOS
+java -jar ./build/libs/umleditor-v2.0.0-all.jar
+
+# Windows
+java -jar .\build\libs\umleditor-v2.0.0-all.jar
+```

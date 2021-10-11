@@ -1,3 +1,4 @@
+package umleditor;
 import java.util.ArrayList;
 /**
  * Tester for the DiagramModel class. 
@@ -12,17 +13,17 @@ public class tester {
             
             System.out.println("Test #1: Adding Elements to the Diagram Model.");
 
-            System.out.println("Expected: diagram1 with attributes attribute1, attribute2, Diagram2, Diagram3 ");
+            System.out.println("Expected: diagram1 with fields Field1, Field2, Diagram2, Diagram3 ");
 
             System.out.println("");
 
             System.out.println("Actual: ");
             holder.addClass("Diagram1");
-            holder.getUML("Diagram1").addAttribute("attribute1");
-            holder.getUML("Diagram1").addAttribute("attribute2");
+            holder.getUML("Diagram1").addField("Field1");
+            holder.getUML("Diagram1").addField("Field2");
             holder.addClass("Diagram2");
             holder.addClass("Diagram3");
-            holder.ListClasses();
+            holder.listClasses();
             System.out.println("--------------------------------------------------------");
 
 
@@ -35,7 +36,7 @@ public class tester {
             System.out.println("Actual: ");
             holder.deleteClass("Diagram1");
             holder.deleteClass("Diagram2");
-            holder.ListClasses();
+            holder.listClasses();
 
 
             System.out.println("----------------------------------------------------------");
@@ -47,9 +48,9 @@ public class tester {
             System.out.println("");
             
             System.out.println("Actual: ");
-            holder.addAttribute("diagram444","attribute123");
-            holder.deleteAttribute("diagram1","attribute123");
-            holder.renameAttribute("diagram1","attributettt","attributeneww");
+            holder.addField("diagram444","field123");
+            holder.deleteField("diagram1","field123");
+            holder.renameField("diagram1","fieldttt","fieldneww");
 
             System.out.println("----------------------------------------------------------");
 
@@ -62,10 +63,10 @@ public class tester {
             System.out.println("Actual: ");
             holder.addClass("Diagram4");
             holder.addClass("Diagram5");
-            holder.addRelationship("Diagram4","Diagram5");
-            holder.addRelationship("Diagram3","Diagram5");
+            //holder.addRelationship("Diagram4","Diagram5");
+            //holder.addRelationship("Diagram3","Diagram5");
             holder.deleteRelationship("Diagram3","Diagram5");
-            holder.ListRelationships();
+            holder.listRelationships();
     }
 
 
