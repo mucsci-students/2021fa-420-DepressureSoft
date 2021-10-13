@@ -97,6 +97,7 @@ public class DiagramModel {
      */
     public void save(String directory, String fileName){
         StringBuilder jsonTxt = new StringBuilder();
+        
         jsonTxt.append("{\n  \"classes\": [\n");
         diagram.forEach((k,v) -> jsonTxt.append(jsonTxtClassMaker(v)));
         if (!diagram.isEmpty()) {

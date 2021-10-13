@@ -110,6 +110,12 @@ public class Controller {
 				break;
 			}
 			break;
+		case "save":
+			holder.save(input2, input3);
+			break;
+		case "load":
+			holder.load(input2);
+			break;
 		}
 	}
 	
