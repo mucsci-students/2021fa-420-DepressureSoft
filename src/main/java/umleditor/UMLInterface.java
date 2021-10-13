@@ -1,4 +1,5 @@
 package umleditor;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -6,18 +7,55 @@ import java.util.Scanner;
  * Allows for user to modify diagrams as they please. 
  */
 public class UMLInterface {
-    public static void main(String[] args){
-        Controller controller = new Controller();
+	
+	public void displayWelcome() {
+		System.out.println("  +---------------------------------------+");
+		System.out.println("  |       UML DIAGRAM CREATOR v.3         |");
+		System.out.println("  |                by DepressureSoft      |");
+		System.out.println("  |                                       |");
+		System.out.println("  |  Type \"help\" for a list of commands.  |");
+		System.out.println("  +---------------------------------------+");
+		
+	}
+	
+    public ArrayList<String> getInput() {
+    	ArrayList<String> result = new ArrayList<String>();
         Scanner sc = new Scanner(System.in);
-        String userEntry = "";
-        String userEntry2 = "";
-        String userEntry3 = "";
-        String userEntry4 = "";
-        String userEntry5 = "";
-        String userEntry6 = "";
-
-        System.out.println("Welcome to the text UML Diagram creator. To begin please select the action you would like to perform.");
-        System.out.println("If you're new please use the 'help' command to see the options avaliable.");
+        System.out.print("Command > ");
+        String userEntry = sc.nextLine();
+        sc.close();
+        if(userEntry.equalsIgnoreCase("exit")) {
+        	boolean exit = yesNoDialog("Are you sure you want to exit?");
+        	if(exit) {
+        		result.add("exit");
+        		return result;
+        	} else {
+        		return result;
+        	}
+        }
+        return result;
+        
+        
+        		
+    }
+    
+    private boolean yesNoDialog(String message) {
+    	System.out.println(message + " (Y/N)");
+    	Scanner sc = new Scanner(System.in);
+    	String result;
+    	result = sc.next();
+    	sc.close();
+    	if(result.equalsIgnoreCase("y")) {
+    		return true;
+    	} else if(result.equalsIgnoreCase("n")) {
+    		return false;
+    	} else {
+    		System.out.println("unrecognized command.");
+    		return false;
+    	}
+    }
+    
+        /*
         while(!userEntry.equals("Exit"))
         {
             System.out.println("Please input your command.");

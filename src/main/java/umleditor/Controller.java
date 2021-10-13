@@ -1,8 +1,15 @@
 package umleditor;
 
 public class Controller {
-	DiagramModel holder = new DiagramModel();
-	UMLInterface view = new UMLInterface();
+	public static void main(String[] args) {
+		DiagramModel model = new DiagramModel();
+		UMLInterface view = new UMLInterface();
+		view.displayWelcome();
+		boolean userInputLoop = true;
+		while(userInputLoop) {
+			view.getInput();
+		}
+	}
 	
 	/**
 	 * Controls access to model based on inputs.
