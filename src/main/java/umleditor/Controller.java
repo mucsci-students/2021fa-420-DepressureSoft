@@ -1,14 +1,63 @@
 package umleditor;
 
+import java.util.ArrayList;
+
 public class Controller {
 	public static void main(String[] args) {
 		DiagramModel model = new DiagramModel();
 		UMLInterface view = new UMLInterface();
 		view.displayWelcome();
 		boolean userInputLoop = true;
+		ArrayList<String> commands;
 		while(userInputLoop) {
-			view.getInput();
+			commands = view.getInput();
+			try {
+				if(checkKeyword(commands, 0, "exit")) {
+					userInputLoop = false;
+				} else if(checkKeyword(commands, 0, "add")) {
+					if(checkKeyword(commands, 1, "class")) {
+						if (commands.size() > 2) {
+							model.addClass(commands.get(2));
+							view.print("Class added successfully.");
+						} else {
+							view.print("Class name required.");
+						}
+					} else if(checkKeyword(commands, 1, "method")) {
+						if (commands.size() > 3) {
+							model.addMethod(commands.get(2), commands.get(3));
+							view.print("Method added successfully.");
+						} else {
+							view.print("Class and method names required.");
+						}
+					} else {
+						view.print("Unrecognized command.");
+					}
+				} else if(checkKeyword(commands, 0, "display")) {
+					if(checkKeyword(commands, 1, "all")) {
+						model.listClasses();
+					} else {
+						view.print("Valid commands: \"display class [classname]\", "
+								+ "\"display all\", or \"display relationships\".");
+					}
+				} else {
+					view.print("Unrecognized command.");
+				}
+			}
+			catch (Exception error) {
+				System.out.println(error.toString());
+			}
 		}
+	}
+	
+	
+	/**
+	 * Checks that a string in a list of strings exists at the specified index.
+	 * @param index The index of the list to look at.
+	 * @param keyword The string to compare with the string at the index.
+	 * @return If the string in the list matches "keyword", returns true, returns false otherwise.
+	 */
+	private static boolean checkKeyword(ArrayList<String> commandList, int index, String keyword) {
+		return (commandList.size() > index) && (commandList.get(index).equalsIgnoreCase(keyword));
 	}
 	
 	/**
@@ -18,6 +67,7 @@ public class Controller {
 	 * @param input3
 	 * @param input4
 	 */
+	/*
 	public void command(String input1, String input2, String input3, String input4, String input5, String input6)
 	{
 		switch(input1)
@@ -125,6 +175,7 @@ public class Controller {
 			break;
 		}
 	}
+	*/
 	
     /**
      * Helper method that returns a value from the RelationshipType enum that matches the input string.

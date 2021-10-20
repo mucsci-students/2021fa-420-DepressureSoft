@@ -45,7 +45,7 @@ public class startupGUI {
 	        });
 	        button2.addActionListener(e -> {
 	            frame.dispose();
-	            UMLInterface.main(args);
+	            Controller.main(args);
 	        });
 	        frame.pack();
 	        frame.setVisible(true);
