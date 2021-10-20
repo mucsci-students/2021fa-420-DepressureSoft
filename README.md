@@ -34,3 +34,9 @@ java -jar ./build/libs/umleditor-v2.0.0-all.jar
 # Windows
 java -jar .\build\libs\umleditor-v2.0.0-all.jar
 ```
+
+## Design Patterns
+
+1. Singleton - ModelHistory.java:41-49
+
+2. Snapshot - ModelHistory.java:56-60
