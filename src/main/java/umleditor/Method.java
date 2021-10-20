@@ -9,6 +9,7 @@ import java.util.ArrayList;
 public class Method {
 
     private String methodName;
+    private ArrayList<String> type = new ArrayList<String>();
     private ArrayList<String> parameters = new ArrayList<String>();
 
     /**
@@ -93,5 +94,58 @@ public class Method {
      */
     public ArrayList<String> getParamList(){
         return parameters;
+    }
+
+    /**
+     * Assigns a return type for the method.
+     * @param typeName
+     */
+    public void addType(String typeName){
+        type.add(typeName);
+    }
+
+    /**
+     * Removes an assigned return type from a method. 
+     * @param typeName
+     */
+    public void removeType(String typeName){
+        type.remove(typeName);
+    }
+
+    /**
+     * Changes a method type if the method and type exist in the class.
+     * @param oldType
+     * @param newType
+     */
+    public void renameType(String oldType, String newType){
+        if (typeExists(oldType)){
+            int index = type.indexOf(oldType);
+            type.set(index, newType);
+        }
+    }
+
+    /**
+     * Checks to see if the type exists.
+     * @param typeName
+     * @return
+     */
+    public boolean typeExists(String typeName){
+        return type.contains(typeName);
+    }
+
+    /**
+     * Returns String of type(s).
+     * @return
+     */
+    public String getTypeName(){
+        return type.toString();
+    }
+
+    /**
+     * Returns ArrayList of the types.
+     * @return
+     */
+    public ArrayList<String> getTypeList(){
+        return type;
     }
 }
