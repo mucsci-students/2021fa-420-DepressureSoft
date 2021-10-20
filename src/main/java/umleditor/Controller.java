@@ -3,6 +3,26 @@ package umleditor;
 import java.util.ArrayList;
 
 public class Controller {
+	
+	private static final String ADD_HELP = "ADD: Adds a class, method, field, parameter, or relationship to the diagram.\nadd class [class]\nadd method [class] [method]\nadd field [class] [field]\nadd parameter [class] [method] [parameter]\nadd relationship [sourceClass] [destinationClass] [type]";
+	private static final String DELETE_HELP = "DELETE: Deletes a class, method, field, parameter, or relationship from the diagram.\ndelete class [classname]\ndelete method [classname] [method]\ndelete field [class] [field]\ndelete parameter [class] [method] [parameter]\ndelete relationship [sourceClass] [destinationClass]";
+	private static final String RENAME_HELP = "RENAME: Renames a class, method, field, or parameter.\nrename class [class] [newname]\nrename method [class] [method] [newname]\nrename field [class] [field] [newname]\nrename parameter [class] [method] [parameter] [newname]";
+	private static final String SAVE_HELP = "SAVE: Saves the current class diagram to a json file.\n\nDirectory and file name must exist.\nsave [directory] [fileName]";
+	private static final String LOAD_HELP = "";
+	private static final String CHANGETYPE_HELP = "";
+	private static final String DISPLAY_HELP = "\"Valid commands: \"display class [classname]\", \"display all\", or \"display relationships\".";
+	private static final String HELP_HELP = "";
+	private static final String HELP_MENU = "----------| HELP MENU |----------\n"
+			+ "Type help [command] for additional information about each command.\n"
+			+ "add [class/method/field/parameter/relationship]\n"
+			+ "delete [class/method/field/parameter/relationship]\n"
+			+ "rename [class/method/field/parameter/relationship]\n"
+			+ "save [directory] [filename]\n"
+			+ "load [filepath]\n"
+			+ "changetype [field/method/relationship]\n"
+			+ "display [class/all/relationships]\n"
+			+ "help [command]";
+	
 	public static void main(String[] args) {
 		DiagramModel model = new DiagramModel();
 		UMLInterface view = new UMLInterface();
@@ -29,18 +49,64 @@ public class Controller {
 						} else {
 							view.print("Class and method names required.");
 						}
+					} else if(checkKeyword(commands, 1, "field")) {
+						if (commands.size() > 3) {
+							model.addField(commands.get(2), commands.get(3));
+							view.print("Field added successfully.");
+						} else {
+							view.print("Class name required.");
+						}
+						
 					} else {
-						view.print("Unrecognized command.");
+						view.print(ADD_HELP);
 					}
+					
+				} else if(checkKeyword(commands, 0, "delete")) {
+					
+				} else if(checkKeyword(commands, 0, "rename")) {
+					
+				} else if(checkKeyword(commands, 0, "save")) {
+					
+				} else if (checkKeyword(commands, 0, "load")) {
+					
+				} else if (checkKeyword(commands, 0, "changetype")) {
+				
 				} else if(checkKeyword(commands, 0, "display")) {
 					if(checkKeyword(commands, 1, "all")) {
 						model.listClasses();
+					} else if(checkKeyword(commands, 1, "class")) {
+						if(commands.size() > 2) {
+							model.listClass(commands.get(2));
+						}
+					} else if(checkKeyword(commands, 1, "relationships")) {
+						model.listRelationships();
 					} else {
-						view.print("Valid commands: \"display class [classname]\", "
-								+ "\"display all\", or \"display relationships\".");
+						view.print(DISPLAY_HELP);
 					}
+					
+				} else if(checkKeyword(commands, 0, "help")) {
+					if(checkKeyword(commands, 1, "add")) {
+						view.print(ADD_HELP);
+					} else if(checkKeyword(commands, 1, "delete")) {
+						view.print(DELETE_HELP);
+					} else if(checkKeyword(commands, 1, "rename")) {
+						view.print(RENAME_HELP);
+					} else if(checkKeyword(commands, 1, "save")) {
+						view.print(SAVE_HELP);
+					} else if(checkKeyword(commands, 1, "load")) {
+						view.print(LOAD_HELP);
+					} else if(checkKeyword(commands, 1, "changetype")) {
+						view.print(CHANGETYPE_HELP);
+					} else if(checkKeyword(commands, 1, "display")) {
+						view.print(DISPLAY_HELP);
+					} else if(checkKeyword(commands, 1, "help")) {
+						view.print(HELP_HELP);
+					} else {
+						view.print(HELP_MENU);
+					}
+					
 				} else {
-					view.print("Unrecognized command.");
+					view.print("Unrecognized command. Type \"help\" for more info.");
 				}
 			}
 			catch (Exception error) {
