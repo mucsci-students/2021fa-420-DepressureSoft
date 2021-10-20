@@ -19,12 +19,13 @@ public class UMLInterface {
 	
 	/**
 	 * Gets an array of strings from the user.
+	 * @param promptHeader The string to print before each command is entered.
 	 * @return An ArrayList<String> of user commands
 	 */
-    public ArrayList<String> getInput() {
+    public ArrayList<String> getInput(String promptHeader) {
     	ArrayList<String> result = new ArrayList<String>();
         Scanner sc = new Scanner(System.in);
-        System.out.print("Command > ");
+        System.out.print(promptHeader);
         String userEntry = "";
         userEntry += sc.nextLine();
         if(userEntry.trim().equalsIgnoreCase("exit")) {
@@ -83,7 +84,7 @@ public class UMLInterface {
      * @param message The message for the "dialog box".
      * @return Boolean based on the user's input.
      */
-    private boolean yesNoDialog(String message) {
+    public static boolean yesNoDialog(String message) {
     	System.out.println(message + " (Y/N)");
     	Scanner sc = new Scanner(System.in);
     	String result;
@@ -93,7 +94,6 @@ public class UMLInterface {
     	} else if(result.equalsIgnoreCase("n")) {
     		return false;
     	} else {
-    		System.out.println("unrecognized command.");
     		return false;
     	}
     }
@@ -471,24 +471,5 @@ public class UMLInterface {
         }
         sc.close();
     }
-
-    /**
-     * Helper method that returns a value from the RelationshipType enum that matches the input string.
-     * @param input The input string.
-     * @reutn The correct RelationshipType enum value if input equals "aggregation", "composition", "inheritance", 
-     *  or "realization", null if not.
-     */
-    private static Relationship.RelationshipType getRelTypeFromString(String input) {
-        if (input.equalsIgnoreCase("aggregation")) {
-            return Relationship.RelationshipType.AGGREGATION;
-        } else if (input.equalsIgnoreCase("composition")) {
-            return Relationship.RelationshipType.COMPOSITION;
-        } else if (input.equalsIgnoreCase("inheritance")) {
-            return Relationship.RelationshipType.INHERITANCE;
-        } else if (input.equalsIgnoreCase("realization")) {
-            return Relationship.RelationshipType.REALIZATION;
-        } else {
-            return null;
-        }
-    }
+    */
 }
