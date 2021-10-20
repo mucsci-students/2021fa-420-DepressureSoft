@@ -14,14 +14,14 @@ public class ModelHistory {
     * Theoretically there's no limit to this history because a stack
     * is implemented with a vector? IDK if this is a bad thing yet, we'll see.
     */
-    private Stack<DiagramModel> undoHistory = new Stack<DiagramModel>();
+    private Stack<DiagramModel> undoHistory;
 
     /** 
     * Stack representing the redo history of all diagram models. 
     * Theoretically there's no limit to this history because a stack
     * is implemented with a vector? IDK if this is a bad thing yet, we'll see.
     */
-    private Stack<DiagramModel> redoHistory = new Stack<DiagramModel>();
+    private Stack<DiagramModel> redoHistory;
 
     /** 
     * Private constructor cuz its a singleton
