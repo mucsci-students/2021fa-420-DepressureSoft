@@ -11,7 +11,7 @@ public class startupGUI {
     public static void main(String args[]){
     	if (args.length > 0) {
     		if (args[0].equals("--cli")) {
-        		UMLInterface.main(args);
+        		Controller.main(args);
         		System.exit(0);
     		}
     	} else {
@@ -45,7 +45,7 @@ public class startupGUI {
 	        });
 	        button2.addActionListener(e -> {
 	            frame.dispose();
-	            UMLInterface.main(args);
+	            Controller.main(args);
 	        });
 	        frame.pack();
 	        frame.setVisible(true);
