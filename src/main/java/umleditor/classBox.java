@@ -36,13 +36,13 @@ public class classBox {
     }
 
     public void initialize(){
-        panel = new JPanel(new GridLayout(1,1));
+        panel = new JPanel();
 		panel.setBorder(new LineBorder(new Color(20, 20, 20), 1));
         panel.add(className);
         methodPanel = new JPanel();
         fieldPanel = new JPanel();
-        methodPanel.setLayout(new GridLayout(4,1));
-		fieldPanel.setLayout(new GridLayout(4,1));
+        methodPanel.setLayout(new GridLayout(5,1));
+		fieldPanel.setLayout(new GridLayout(5,1));
         panel.add(methodPanel);
         panel.add(fieldPanel);
     }
@@ -65,23 +65,37 @@ public class classBox {
 		fieldPanel.add(field);
 		fieldPanel.repaint();
      }
+
      public void addMethod(String methodName){
         JLabel method = new JLabel(methodName);
 		methods.put(methodName,method);
 		methodPanel.add(method);
 		methodPanel.repaint();
      }
+
      public void addParameter(String parameter,String method){
+        String param = method + "(";
         if(params.containsKey(method)){
-            ArrayList<String> temp = params.get(method);
-            temp.add(parameter);
+            ArrayList<String> holder = params.get(method);
+            String holderV2 = parameter;
+            holder.add(holderV2);
+            params.put(method,holder);
         }
         else{
-            ArrayList<String> temp = new ArrayList<String>();
-            temp.add(parameter);
-            params.put(method,temp);
+            ArrayList<String> holder = new ArrayList<String>();
+            String holderV2 = parameter;
+            holder.add(holderV2);
+            params.put(method,holder);
         }
+        
+        for(String x : params.get(method)){
+            param = param + x + ", ";
+        }
+        param = param + ")";
+        methods.get(method).setText(param);
+        methodPanel.repaint();
      }
+
     /**
      * Remove Element Functions
      */
@@ -96,14 +110,15 @@ public class classBox {
         methodPanel.repaint();
      }
      public void removeParameter(String removes, String method){
-         ArrayList<String> temp = params.get(method);
-         
-         for(String t : temp){
-             if (t == removes){
-                 temp.remove(t);
-             }
-         }
-         methodPanel.repaint();
+        String param = method + "(";
+        ArrayList<String> holder = params.get(method);
+        holder.remove(removes);
+        for(String x : params.get(method)){
+            param = param + x + ", ";
+        }
+        param = param + ")";
+        methods.get(method).setText(param);
+        methodPanel.repaint();
      }
      /**
       * Rename Element Functions
@@ -115,22 +130,37 @@ public class classBox {
      public void renameField(String oldName, String newName){
         JLabel temp = fields.get(oldName);
         temp.setText(newName);
+        fields.remove(oldName);
+        fields.put(newName,temp);
         fieldPanel.repaint();
     }
      public void renameMethod(String oldName, String newName){
         JLabel temp = methods.get(oldName);
-        temp.setText(newName);
+        methods.put(newName,temp);
+        String method = newName + "(";
+        if(params.containsKey(oldName)){
+            params.put(newName,params.get(oldName));
+            for(String x : params.get(oldName)){
+                method = method + x + ", ";
+            }
+            method = method + ")";
+            params.remove(oldName);
+        }
+
+        temp.setText(method);
+        methods.remove(oldName);
         methodPanel.repaint();
      }
-     public void renameParameter(String oldParameter, String method, String newParameter){
-        ArrayList<String> temp = params.get(method);
-
-        for(String p : temp){
-            if(p == oldParameter)
-            {
-                oldParameter = newParameter;
-            }
+     public void renameParameter(String oldParameter, String newParameter, String method){
+        String param = method + "(";
+        ArrayList<String> holder = params.get(method);
+        int holderV2 = holder.indexOf(oldParameter);
+        holder.set(holderV2,newParameter);
+        for(String x : params.get(method)){
+            param = param + x + ", ";
         }
+        param = param + ")";
+        methods.get(method).setText(param);
         methodPanel.repaint();
      }
 
