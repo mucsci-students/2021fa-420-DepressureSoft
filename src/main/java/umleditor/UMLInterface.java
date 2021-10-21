@@ -1,4 +1,5 @@
 package umleditor;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -6,19 +7,98 @@ import java.util.Scanner;
  * Allows for user to modify diagrams as they please. 
  */
 public class UMLInterface {
-    public static void main(String[] args){
-        DiagramModel holder = new DiagramModel();
-        Controller controller = new Controller();
+	
+	public void displayWelcome() {
+		System.out.println("  +---------------------------------------+");
+		System.out.println("  |       UML DIAGRAM CREATOR v.3         |");
+		System.out.println("  |                by DepressureSoft      |");
+		System.out.println("  |                                       |");
+		System.out.println("  |  Type \"help\" for a list of commands.  |");
+		System.out.println("  +---------------------------------------+");
+	}
+	
+	/**
+	 * Gets an array of strings from the user.
+	 * @param promptHeader The string to print before each command is entered.
+	 * @return An ArrayList<String> of user commands
+	 */
+    public ArrayList<String> getInput(String promptHeader) {
+    	ArrayList<String> result = new ArrayList<String>();
         Scanner sc = new Scanner(System.in);
+        System.out.print(promptHeader);
         String userEntry = "";
-        String userEntry2 = "";
-        String userEntry3 = "";
-        String userEntry4 = "";
-        String userEntry5 = "";
-        String userEntry6 = "";
-
-        System.out.println("Welcome to the text UML Diagram creator. To begin please select the action you would like to perform.");
-        System.out.println("If you're new please use the 'help' command to see the options avaliable.");
+        userEntry += sc.nextLine();
+        if(userEntry.trim().equalsIgnoreCase("exit")) {
+        	boolean exit = yesNoDialog("Are you sure you want to exit?");
+        	if(exit) {
+        		result.add("exit");
+        		return result;
+        	} else {
+        		return result;
+        	}
+        }
+        else {
+        	result = splitString(userEntry);
+        }
+        return result;
+    }
+    
+    
+    /**
+     * Prints out string m.
+     * @param m The string to print to the console.
+     */
+    public void print(String m) {
+    	System.out.println(m);
+    }
+    
+    /**
+     * Splits a string at the locations of spaces into an ArrayList of substrings.
+     * @param input The string to split.
+     * @return An ArrayList of substrings from the original string.
+     */
+    private ArrayList<String> splitString(String input) {
+    	ArrayList<String> result = new ArrayList<String>();
+    	input = input.trim();
+    	int start = 0;
+    	int end = 0;
+    	for(int i = 0; i < input.length(); i++) {
+    		if(input.charAt(i) == ' ' || i == input.length() - 1) {
+    			if(i == input.length() - 1) {
+    				end = i + 1;
+    				result.add(input.substring(start, end));
+    			}
+    			else {
+	    			end = i;
+	    			result.add(input.substring(start, end));
+	    			start = end + 1;
+    			}
+    		}
+    	}
+    	return result;
+    }
+    
+    /**
+     * Makes a yes/no "dialog box". Prints message, and then returns true if user inputs "y" or false if users inputs "n"
+     * 	or any other unrecognized command.
+     * @param message The message for the "dialog box".
+     * @return Boolean based on the user's input.
+     */
+    public static boolean yesNoDialog(String message) {
+    	System.out.println(message + " (Y/N)");
+    	Scanner sc = new Scanner(System.in);
+    	String result;
+    	result = sc.nextLine();
+    	if(result.equalsIgnoreCase("y")) {
+    		return true;
+    	} else if(result.equalsIgnoreCase("n")) {
+    		return false;
+    	} else {
+    		return false;
+    	}
+    }
+    
+        /*
         while(!userEntry.equals("Exit"))
         {
             System.out.println("Please input your command.");
@@ -348,10 +428,10 @@ public class UMLInterface {
             else if(userEntry.equalsIgnoreCase("Save"))
             {
                 System.out.println("Please enter directory to save to. Example: \"/Users/jeff/Desktop/\"");
-                userEntry = sc.nextLine();
-                System.out.println("Please enter a name for your save file. (The .json extension will be appended automatically)");
                 userEntry2 = sc.nextLine();
-                holder.save(userEntry, userEntry2);
+                System.out.println("Please enter a name for your save file. (The .json extension will be appended automatically)");
+                userEntry3 = sc.nextLine();
+                controller.command(userEntry, userEntry2, userEntry3, userEntry4, userEntry5, userEntry6);
             }
             else if(userEntry.equalsIgnoreCase("Load")) 
             {
@@ -360,7 +440,7 @@ public class UMLInterface {
                 if(userEntry.substring(0, 1).equalsIgnoreCase("y")) {
                     System.out.println("Please enter location of file to load. Example: \"/Users/jeff/Desktop/save.json\"");
                     userEntry2 = sc.nextLine();
-                    holder.load(userEntry2);
+                    controller.command("load", userEntry2, userEntry3, userEntry4, userEntry5, userEntry6);
                 } else if(userEntry.substring(0, 1).equalsIgnoreCase("n")) {
                     // nothing
                 } else {
@@ -391,24 +471,5 @@ public class UMLInterface {
         }
         sc.close();
     }
-
-    /**
-     * Helper method that returns a value from the RelationshipType enum that matches the input string.
-     * @param input The input string.
-     * @reutn The correct RelationshipType enum value if input equals "aggregation", "composition", "inheritance", 
-     *  or "realization", null if not.
-     */
-    private static Relationship.RelationshipType getRelTypeFromString(String input) {
-        if (input.equalsIgnoreCase("aggregation")) {
-            return Relationship.RelationshipType.AGGREGATION;
-        } else if (input.equalsIgnoreCase("composition")) {
-            return Relationship.RelationshipType.COMPOSITION;
-        } else if (input.equalsIgnoreCase("inheritance")) {
-            return Relationship.RelationshipType.INHERITANCE;
-        } else if (input.equalsIgnoreCase("realization")) {
-            return Relationship.RelationshipType.REALIZATION;
-        } else {
-            return null;
-        }
-    }
+    */
 }
