@@ -1074,7 +1074,7 @@ public class GUI {
     * Rename Functions
     */
     public void renameClassAction(){
-        String oldClass = className.getText();
+        String oldClass = classNames.getSelectedItem().toString();
         String newClass = className2.getText();
 
         model.renameUMLClass(oldClass,newClass);
