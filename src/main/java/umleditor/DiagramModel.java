@@ -39,6 +39,30 @@ public class DiagramModel {
      */
     private ArrayList<Relationship> relationships = new ArrayList<Relationship>();
 
+    public DiagramModel (DiagramModel other){
+        diagram = new HashMap<String, UMLClass>();
+        Iterator diagramIter = other.diagram.entrySet().iterator();
+        while(diagramIter.hasNext()){
+            Map.Entry element = (Map.Entry) diagramIter.next();
+            String keyCopy = (String) element.getKey();
+            UMLClass classCopy = new UMLClass((UMLClass) element.getValue());
+            diagram.put(keyCopy, classCopy);
+        }
+
+        relationships = new ArrayList<Relationship>();
+        for(Relationship rel : other.relationships){
+            UMLClass fromCopy = diagram.get(rel.getFrom().getName());
+            UMLClass toCopy = diagram.get(rel.getTo().getName());
+            if(toCopy == null || fromCopy == null)
+            {
+                System.out.println("How tf did we get here")
+                return;
+            }
+            RelationshipType typeCopy = rel.getRelationshipType();
+            Relationship relCopy = new Relationship(fromCopy, toCopy, typeCopy);
+            relationships.add(relCopy);
+        }
+    }
     /**
      * Adds a new class to the diagram, checking to ensure that a class with the same name does not already exist,
      *  and that the name conforms to the standards set forth in javax.lang.model.SourceVersion.isIdentifier().

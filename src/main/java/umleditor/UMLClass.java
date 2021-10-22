@@ -36,6 +36,16 @@ public class UMLClass {
     public UMLClass(String name) {
         this.dName = name;
     }
+
+    public UMLClass(UMLClass other){
+        this.dName = other.dName;
+        this.fields = new ArrayList(other.fields);
+        this.relationship = new ArrayList(other.relationship);
+        for(Method m : other.methods){
+            Method methodCopy = new Method(m);
+            methods.add(methodCopy);
+        }
+    }
     
     /**
      * Renames the class representation.
