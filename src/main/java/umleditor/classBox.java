@@ -1,8 +1,6 @@
 package umleditor;
 
 import javax.swing.*;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.LineBorder;
 
 import java.awt.*;
@@ -41,8 +39,8 @@ public class classBox {
         panel.add(className);
         methodPanel = new JPanel();
         fieldPanel = new JPanel();
-        methodPanel.setLayout(new GridLayout(5,1));
-		fieldPanel.setLayout(new GridLayout(5,1));
+        methodPanel.setLayout(new GridLayout(4,2));
+		fieldPanel.setLayout(new GridLayout(4,2));
         panel.add(methodPanel);
         panel.add(fieldPanel);
     }
@@ -104,11 +102,13 @@ public class classBox {
         fields.remove(removes);
         fieldPanel.repaint();
     }
+    
      public void removeMethod(String removes){
         methodPanel.remove(methods.get(removes));
         methods.remove(removes);
         methodPanel.repaint();
      }
+     
      public void removeParameter(String removes, String method){
         String param = method + "(";
         ArrayList<String> holder = params.get(method);
@@ -123,10 +123,11 @@ public class classBox {
      /**
       * Rename Element Functions
       */
-      public void renameClass(String newName){
+     public void renameClass(String newName){
           className.setText(newName);
           panel.repaint();
       }
+    
      public void renameField(String oldName, String newName){
         JLabel temp = fields.get(oldName);
         temp.setText(newName);
@@ -134,6 +135,7 @@ public class classBox {
         fields.put(newName,temp);
         fieldPanel.repaint();
     }
+    
      public void renameMethod(String oldName, String newName){
         JLabel temp = methods.get(oldName);
         methods.put(newName,temp);
@@ -151,6 +153,7 @@ public class classBox {
         methods.remove(oldName);
         methodPanel.repaint();
      }
+    
      public void renameParameter(String oldParameter, String newParameter, String method){
         String param = method + "(";
         ArrayList<String> holder = params.get(method);

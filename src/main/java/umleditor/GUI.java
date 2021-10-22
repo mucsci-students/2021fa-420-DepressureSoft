@@ -10,6 +10,7 @@ import java.util.*;
 import javax.swing.*;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
+import javax.swing.UIManager;
 
 public class GUI { 
     
@@ -41,10 +42,15 @@ public class GUI {
     
     public static void main(String[] args){
         GUI test = new GUI(); 
-
-        test.drawGUI();
-
+        try {
+            UIManager.setLookAndFeel(
+            UIManager.getCrossPlatformLookAndFeelClassName());
+         } catch (Exception e) { 
+      }
+         JFrame.setDefaultLookAndFeelDecorated(true);
+         test.drawGUI();
     }
+
 
     public void drawGUI(){
         frame = new JFrame("UML Editor");
@@ -55,7 +61,6 @@ public class GUI {
         frame.setJMenuBar(menuBar);
         pane = new JPanel();
         pane.setLayout(new GridBagLayout());
-
         frame.add(pane);
         frame.setVisible(true);
     }
