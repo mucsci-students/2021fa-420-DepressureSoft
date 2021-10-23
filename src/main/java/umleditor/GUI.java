@@ -57,7 +57,7 @@ public class GUI {
         frame.setVisible(true);
     }
     /**
-     * Intializes Action Listeners and Start Menu
+     * Initializes Action Listeners and Start Menu
      */
     public void createInterface(){
         menuBar = new JMenuBar();
@@ -128,7 +128,6 @@ public class GUI {
         addClass.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 addClassWindow();
-                
             }
          });
          /**
@@ -243,6 +242,7 @@ public class GUI {
                 helpWindow();
             }
          });
+        updateButtons();
     }
 
     /**
@@ -752,6 +752,7 @@ public class GUI {
         frame.add(pane);
         frame.setVisible(true);
         action.dispose();
+        updateButtons();
     }
 
     public void addFieldAction(){
@@ -762,17 +763,19 @@ public class GUI {
         box = boxMap.get(getClass);
         box.addField(field);
         action.dispose();
+        updateButtons();
     }
 
     public void addMethodAction(){
         String getClass = className.getText();
 		String method = methodName.getText();
 
-        //model.addMethod(getClass,method);
+        model.addMethod(getClass, method);
         box = boxMap.get(getClass);
         box.addMethod(method);
         action.dispose();
         frame.repaint();
+        updateButtons();
     }
 
     public void addParameterAction(){
@@ -784,6 +787,7 @@ public class GUI {
         boxMap.get(getClass).addParameter(parameter,method);
         action.dispose();
         frame.repaint();
+        updateButtons();
     }
 
     public void addRelationshipAction(){
@@ -793,6 +797,7 @@ public class GUI {
 
         //model.addRelationship(classOne,classTwo,relationType);
         action.dispose();
+        updateButtons();
     }
     /**
      * Delete Actions
@@ -805,6 +810,7 @@ public class GUI {
         boxMap.remove(remClass);
         action.dispose();
         pane.repaint();
+        updateButtons();
     }
     public void deleteRelationshipAction(){
         String classOne = className.getText();
@@ -812,6 +818,7 @@ public class GUI {
 
         model.deleteRelationship(classOne,classTwo);
         action.dispose();
+        updateButtons();
     }
     public void deleteFieldAction(){
         String getClass = className.getText();
@@ -821,6 +828,7 @@ public class GUI {
          box = boxMap.get(getClass);
          box.removeField(field);
         action.dispose();
+        updateButtons();
     }
     public void deleteMethodAction(){
         String getClass = className.getText();
@@ -830,6 +838,7 @@ public class GUI {
         box.removeMethod(method);
         model.deleteMethod(getClass,method);
         action.dispose();
+        updateButtons();
     }
     public void deleteParameterAction(){ // param not implemented in this version 
         String getClass = className.getText();
@@ -840,7 +849,7 @@ public class GUI {
        box = boxMap.get(getClass);
        box.removeParameter(method,param);
        action.dispose();
-
+       updateButtons();
     }
    /**
     * Rename Functions
@@ -855,6 +864,7 @@ public class GUI {
         boxMap.remove(newClass);
         boxMap.put(newClass,box);
         action.dispose();
+        updateButtons();
     }
     public void renameFieldAction(){
         String getClass = className.getText();
@@ -865,6 +875,7 @@ public class GUI {
         box.renameField(field,newField);
         model.renameField(getClass,field,newField);
         action.dispose();
+        updateButtons();
     }
     public void renameMethodAction(){
         String getClass = className.getText();
@@ -875,6 +886,7 @@ public class GUI {
         box.renameMethod(method,newMethod);
         model.renameMethod(getClass,method,newMethod);
         action.dispose();
+        updateButtons();
     }
     public void renameParameterAction(){
         String getClass = className.getText();
@@ -883,11 +895,118 @@ public class GUI {
         String newparam = renamer.getText();
 
         //model.renameParameter(getclass, method, oldParam, newParam) not implemented this version but follows this syntax
+        updateButtons();
     }
     public void save(){
        // model.save();
     }
     public void load(){
        // model.load();
+    }
+    
+    /**
+     * Updates the availability of buttons based on the conditions of the model.
+     */
+    public void updateButtons() {
+    	//All adds
+    	//addRelationship
+    	if (model.numberOfClasses() < 2) {
+    		addRelationship.setEnabled(false);
+    	}
+    	else {
+    		addRelationship.setEnabled(true);
+    	}
+    	
+    	//addField, addMethod
+    	if (model.numberOfClasses() == 0) {
+    		addField.setEnabled(false);
+    		addMethod.setEnabled(false);
+    	}
+    	else {
+    		addField.setEnabled(true);
+    		addMethod.setEnabled(true);
+    	}
+    	
+    	//addParameter
+    	if (model.methodsPresent() == false) {
+    		addParameter.setEnabled(false);
+    	}
+    	else {
+    		addParameter.setEnabled(true);
+    	}
+    	
+    	//All deletes
+    	//deleteClass
+    	if (model.numberOfClasses() == 0) {
+    		deleteClass.setEnabled(false);
+    	}
+    	else {
+    		deleteClass.setEnabled(true);
+    	}
+    	
+    	//deleteRelationship
+    	if (model.relationshipsPresent() == false) {
+    		deleteRelationship.setEnabled(false);
+    	}
+    	else {
+    		deleteRelationship.setEnabled(true);
+    	}
+    	
+    	//deleteField
+    	if (model.fieldsPresent() == false) {
+    		deleteField.setEnabled(false);
+    	}
+    	else {
+    		deleteField.setEnabled(true);
+    	}
+    	
+    	//deleteMethod
+    	if (model.methodsPresent() == false) {
+    		deleteMethod.setEnabled(false);
+    	}
+    	else {
+    		deleteMethod.setEnabled(true);
+    	}
+    	
+    	//deleteParameter
+    	if (model.paramsPresent() == false) {
+    		deleteParameter.setEnabled(false);
+    	}
+    	else {
+    		deleteParameter.setEnabled(true);
+    	}
+    	
+    	//All renames
+    	//renameClass
+    	if (model.numberOfClasses() == 0) {
+    		renameClass.setEnabled(false);
+    	}
+    	else {
+    		renameClass.setEnabled(true);
+    	}
+    	
+    	//renameField
+    	if (model.fieldsPresent() == false) {
+    		renameField.setEnabled(false);
+    	}
+    	else {
+    		renameField.setEnabled(true);
+    	}
+    	
+    	//renameMethod
+    	if (model.methodsPresent() == false) {
+    		renameMethod.setEnabled(false);
+    	}
+    	else {
+    		renameMethod.setEnabled(true);
+    	}
+    	
+    	//renameParameter
+    	if (model.paramsPresent() == false) {
+    		renameParameter.setEnabled(false);
+    	}
+    	else {
+    		renameParameter.setEnabled(true);
+    	}
     }
 }

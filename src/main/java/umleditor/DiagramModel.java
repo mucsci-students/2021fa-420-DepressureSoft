@@ -882,4 +882,79 @@ public class DiagramModel {
     {
     	return diagram.size();
     }
+    
+    /**
+     * Returns a boolean determined by if any methods are within the diagram.
+     * @return True if a method exists, false otherwise
+     */
+    public boolean methodsPresent()
+    {
+    	boolean methPres = false;
+    	for (UMLClass value : diagram.values()) 
+    	{
+    		if (value.getMethods().size() > 0)
+    		{
+    			methPres = true;
+    			return methPres;
+    		}
+    	}
+    	
+    	return methPres;
+    }
+    
+    /**
+     * Returns a boolean determined by if any parameters are within the diagram.
+     * @return True if a parameter exists, false otherwise
+     */
+    public boolean paramsPresent()
+    {
+    	boolean parPres = false;
+    	for (UMLClass value : diagram.values()) 
+    	{
+    		for (Method meth : value.getMethods())
+    		{
+	    		if (meth.getParamList().size() > 0)
+	    		{
+	    			parPres = true;
+	    			return parPres;
+	    		}
+    		}
+    	}
+    	
+    	return parPres;
+    }
+    
+    /**
+     * Returns a boolean determined by if any relationships are within the diagram.
+     * @return True if a relationship exists, false otherwise.
+     */
+    public boolean relationshipsPresent()
+    {
+    	boolean relPres = false;
+    	if (relationships.size() > 0)
+    	{
+    		relPres = true;
+    	}
+    	
+    	return relPres;
+    }
+    
+    /**
+     * Returns a boolean determined by if any fields are within the diagram.
+     * @return True if a field exists, false otherwise
+     */
+    public boolean fieldsPresent()
+    {
+    	boolean fieldsPres = false;
+    	for (UMLClass value : diagram.values()) 
+    	{
+    		if (value.getFields().size() > 0)
+    		{
+    			fieldsPres = true;
+    			return fieldsPres;
+    		}
+    	}
+    	
+    	return fieldsPres;
+    }
 }
