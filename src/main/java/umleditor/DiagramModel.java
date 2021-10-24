@@ -882,4 +882,12 @@ public class DiagramModel {
     {
     	return diagram.size();
     }
+
+    public ArrayList<String> getClassNames(){
+        ArrayList<String> listOfKeys
+        = new ArrayList<String>(diagram.keySet());
+
+        return listOfKeys;
+    }
+    
 }
