@@ -971,6 +971,7 @@ public class GUI {
      */
     public void addClassAction(){
         String newClass = className.getText();
+        if(!duplicateClass(newClass)){
         model.addClass(newClass);
         box = new classBox(newClass);
         boxMap.put(newClass,box);
@@ -978,28 +979,48 @@ public class GUI {
         frame.add(pane);
         frame.setVisible(true);
         action.dispose();
+        }
+        else{
+            JLabel error = new JLabel("Class already exists.");
+            actionPane.add(error);
+            actionPane.validate();
+        }
     }
 
     public void addFieldAction(){
         String getClass = classNames.getSelectedItem().toString();
 		String field = fieldName.getText();
 
+        if(!boxMap.get(getClass).duplicateField(field)){
         model.addField(getClass, field);
         box = boxMap.get(getClass);
         box.addField(field);
         action.dispose();
         frame.validate();
+        }
+        else{
+            JLabel error = new JLabel("Field already exists.");
+            actionPane.add(error);
+            actionPane.validate();
+        }
     }
 
     public void addMethodAction(){
         String getClass = classNames.getSelectedItem().toString();
 		String method = methodName.getText();
 
+        if(!boxMap.get(getClass).duplicateMethod(method)){
         model.addMethod(getClass,method);
         box = boxMap.get(getClass);
         box.addMethod(method);
         action.dispose();
         frame.validate();
+         }
+        else{
+        JLabel error = new JLabel("Method already exists.");
+        actionPane.add(error);
+        actionPane.validate();
+        }
     }
 
     public void addParameterAction(){
@@ -1007,11 +1028,18 @@ public class GUI {
 		String method = methodNames.getSelectedItem().toString();
         String parameter = parameterName.getText();
 
+        if(!boxMap.get(getClass).duplicateParameter(method,parameter)){
         model.addParameter(getClass,method,parameter);
         box = boxMap.get(getClass);
         box.addParameter(parameter,method);
         action.dispose();
         frame.repaint();
+        }
+        else{
+        JLabel error = new JLabel("Parameter already exists.");
+        actionPane.add(error);
+        actionPane.validate();
+        }
     }
 
     public void addRelationshipAction(){
@@ -1077,32 +1105,51 @@ public class GUI {
         String oldClass = classNames.getSelectedItem().toString();
         String newClass = className2.getText();
 
+        if(!duplicateClass(newClass)){
         model.renameUMLClass(oldClass,newClass);
         box = boxMap.get(oldClass);
         box.renameClass(newClass);
         boxMap.remove(newClass);
         boxMap.put(newClass,box);
         action.dispose();
+        }
+        else{
+
+        }
     }
     public void renameFieldAction(){
         String getClass = classNames.getSelectedItem().toString();
 		String field = fieldNames.getSelectedItem().toString();
         String newField = renamer.getText();
 
+        if(!boxMap.get(getClass).duplicateField(newField)){
         box = boxMap.get(getClass);
         box.renameField(field,newField);
         model.renameField(getClass,field,newField);
         action.dispose();
+        }
+        else{
+        JLabel error = new JLabel("Field already exists.");
+        actionPane.add(error);
+        actionPane.validate();
+         }
     }
     public void renameMethodAction(){
         String getClass = classNames.getSelectedItem().toString();
 		String method = methodNames.getSelectedItem().toString();
         String newMethod = renamer.getText();
 
+        if(!boxMap.get(getClass).duplicateMethod(newMethod)){
         box = boxMap.get(getClass);
         box.renameMethod(method,newMethod);
         model.renameMethod(getClass,method,newMethod);
         action.dispose();
+        }
+        else{
+            JLabel error = new JLabel("Method already exists.");
+            actionPane.add(error);
+            actionPane.validate();
+        }
     }
     public void renameParameterAction(){
         String getClass = classNames.getSelectedItem().toString();
@@ -1110,11 +1157,17 @@ public class GUI {
         String oldParam = paramNames.getSelectedItem().toString();
         String newParam = renamer.getText();
 
-
+        if(!boxMap.get(getClass).duplicateParameter(method,newParam)){
         model.renameParameter(getClass, method,oldParam,newParam);
         box = boxMap.get(getClass);
         box.renameParameter(oldParam,newParam,method);
         action.dispose();
+        }
+        else{
+        JLabel error = new JLabel("Parameter already exists.");
+        actionPane.add(error);
+        actionPane.validate();
+        }
     }
     public void save(){
        // model.save();
@@ -1122,4 +1175,12 @@ public class GUI {
     public void load(){
        // model.load();
     }
+
+    public boolean duplicateClass(String className){
+        if(boxMap.containsKey(className))
+        return true;
+        else
+        return false;
+    }
+
 }

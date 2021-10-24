@@ -167,4 +167,31 @@ public class classBox {
         methodPanel.repaint();
      }
 
+
+     /**
+      * Existence Checkers 
+      */
+    public boolean duplicateField(String fieldName){
+        if(fields.containsKey(fieldName))
+        return true;
+        else
+        return false;
+    }
+    public boolean duplicateMethod(String methodName){
+        if(methods.containsKey(methodName))
+        return true;
+        else
+        return false;
+    }
+    public boolean duplicateParameter(String method, String parameterName){
+        ArrayList<String> holder = params.get(method);
+        if(holder != null){
+        if(holder.contains(parameterName))
+        return true;
+        else
+        return false;
+        }
+        else
+        return false;
+    }
 }
