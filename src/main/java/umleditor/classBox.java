@@ -2,6 +2,9 @@ package umleditor;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
+import javax.swing.event.MouseInputAdapter;
+
+import java.awt.event.MouseEvent;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -43,6 +46,22 @@ public class classBox {
 		fieldPanel.setLayout(new GridLayout(4,2));
         panel.add(methodPanel);
         panel.add(fieldPanel);
+
+        MouseInputAdapter movement = new MouseInputAdapter (){
+			private int x;
+			private int y;
+			public void mousePressed(MouseEvent e) {
+				this.x = e.getX();
+				this.y = e.getY();
+			}
+			public void mouseDragged(MouseEvent e) {
+				panel.setLocation(panel.getX() + (e.getX() - this.x), panel.getY() + (e.getY() - this.y));
+			}
+		};
+	
+		panel.addMouseListener(movement);
+		panel.addMouseMotionListener(movement);
+		
     }
     
     public String getClassName(){

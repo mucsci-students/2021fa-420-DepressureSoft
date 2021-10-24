@@ -60,7 +60,7 @@ public class GUI {
         createInterface();
         frame.setJMenuBar(menuBar);
         pane = new JPanel();
-        pane.setLayout(new GridBagLayout());
+        pane.setLayout(new DragLayout());
         frame.add(pane);
         frame.setVisible(true);
     }
