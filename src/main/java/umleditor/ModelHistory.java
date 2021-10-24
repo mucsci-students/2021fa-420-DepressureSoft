@@ -7,7 +7,7 @@ public class ModelHistory {
     /** 
     * Singelton instance of the model history
     */
-    private static ModelHistory historySingleton;
+    private static ModelHistory historySingleton = null;
 
     /** 
     * Stack representing the history of all diagram models. 
@@ -27,7 +27,6 @@ public class ModelHistory {
     * Private constructor cuz its a singleton
     */
     private ModelHistory() {
-        historySingleton = new ModelHistory();
         undoHistory = new Stack<DiagramModel>();
         redoHistory = new Stack<DiagramModel>();
     }

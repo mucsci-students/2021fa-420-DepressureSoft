@@ -594,6 +594,7 @@ public class DiagramModel {
 
                 if(!relationshipExists)
                 {
+                    snapshot();
                     UMLClass fromClass = getUML(from);
                     UMLClass toClass = getUML(to);
                     Relationship newRelationship = new Relationship(fromClass, toClass, type);
