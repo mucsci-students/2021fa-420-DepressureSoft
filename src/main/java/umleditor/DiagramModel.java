@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ListIterator;
 import java.util.Iterator;
+import java.util.Map;
 import javax.lang.model.SourceVersion;
 
 import org.json.simple.JSONArray;
@@ -39,6 +40,10 @@ public class DiagramModel {
      */
     private ArrayList<Relationship> relationships = new ArrayList<Relationship>();
 
+    public DiagramModel (){
+
+    }
+
     public DiagramModel (DiagramModel other){
         diagram = new HashMap<String, UMLClass>();
         Iterator diagramIter = other.diagram.entrySet().iterator();
@@ -55,10 +60,10 @@ public class DiagramModel {
             UMLClass toCopy = diagram.get(rel.getTo().getName());
             if(toCopy == null || fromCopy == null)
             {
-                System.out.println("How tf did we get here")
+                System.out.println("How tf did we get here");
                 return;
             }
-            RelationshipType typeCopy = rel.getRelationshipType();
+            Relationship.RelationshipType typeCopy = rel.getRelationshipType();
             Relationship relCopy = new Relationship(fromCopy, toCopy, typeCopy);
             relationships.add(relCopy);
         }
@@ -72,6 +77,7 @@ public class DiagramModel {
         if(SourceVersion.isIdentifier(name)){
             if(!classExists(name))
             {
+                snapshot();
                 UMLClass holder = new UMLClass(name);
                 diagram.put(name, holder);  
             }
@@ -905,5 +911,45 @@ public class DiagramModel {
     public int numberOfClasses() 
     {
     	return diagram.size();
+    }
+
+    public boolean undo()
+    {
+        ModelHistory history = ModelHistory.getInstance();
+
+        if (history.isUndoHistoryEmpty())
+        {
+            return false;
+        }
+        else 
+        {
+            DiagramModel old = history.undo();
+            this.diagram = old.diagram;
+            this.relationships = old.relationships;
+            return true;
+        }
+    }
+
+    public boolean redo()
+    {
+        ModelHistory history = ModelHistory.getInstance();
+
+        if (history.isRedoHistoryEmpty())
+        {
+            return false;
+        }
+        else 
+        {
+            DiagramModel old = history.redo();
+            this.diagram = old.diagram;
+            this.relationships = old.relationships;
+            return true;
+        }
+    }
+
+    private void snapshot()
+    {
+        ModelHistory history = ModelHistory.getInstance();
+        history.snapshotModel(new DiagramModel(this));
     }
 }
