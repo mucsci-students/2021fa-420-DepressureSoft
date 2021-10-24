@@ -57,16 +57,21 @@ public class ModelHistory {
         undoHistory.push(model);
         redoHistory.clear();
     }
+    
+    public void clearHistory() {
+    	undoHistory.clear();
+    	redoHistory.clear();
+    }
 
     /**
      * Gets the last snapshot that was pushed onto the undo stack.
      * Behind the scenes it also pushes it onto the redo stack.
      * @return the diagram model that was retrieved off the undo stack
      */
-    public DiagramModel undo(){
+    public DiagramModel undo(DiagramModel currentModel){
         // Anytime we undo, push the redo stack
         DiagramModel model = undoHistory.pop();
-        redoHistory.push(model);
+        redoHistory.push(currentModel);
         return model;
     }
     /**
@@ -79,10 +84,10 @@ public class ModelHistory {
     }
 
     public boolean isUndoHistoryEmpty(){
-        return undoHistory.isEmpty();
+        return undoHistory.empty();
     }
 
     public boolean isRedoHistoryEmpty(){
-        return redoHistory.isEmpty();
+        return redoHistory.empty();
     }
 }

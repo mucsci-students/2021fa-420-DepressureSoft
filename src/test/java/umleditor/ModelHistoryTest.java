@@ -12,6 +12,8 @@ class ModelHistoryTest {
     void setUp()
     {
         model = new DiagramModel();
+        // Need to clear history between tests, otherwise singleton will persist
+        ModelHistory.getInstance().clearHistory();
     }
 
     @Test
