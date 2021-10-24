@@ -25,6 +25,7 @@ public class classBox {
     private HashMap<String, ArrayList<String>> params;
     private HashMap<String,JLabel> fields;
 
+
     public classBox(String name){
         className = new JLabel(name);
         fields = new HashMap();
