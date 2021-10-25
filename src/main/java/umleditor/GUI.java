@@ -824,9 +824,9 @@ public class GUI {
         String getClass = className.getText();
 		String field = fieldName.getText();
 
-         model.deleteField(getClass, field); 
-         box = boxMap.get(getClass);
-         box.removeField(field);
+        model.deleteField(getClass, field); 
+        box = boxMap.get(getClass);
+        box.removeField(field);
         action.dispose();
         updateButtons();
     }
@@ -906,11 +906,13 @@ public class GUI {
     
     /**
      * Updates the availability of buttons based on the conditions of the model.
+     * If the conditions of the model prevent a button from functioning properly when clicked, that 
+     * button is grayed out and unclickable. 
      */
     public void updateButtons() {
     	//All adds
     	//addRelationship
-    	if (model.numberOfClasses() < 2) {
+    	if (model.numberOfClasses() == 0) {
     		addRelationship.setEnabled(false);
     	}
     	else {
