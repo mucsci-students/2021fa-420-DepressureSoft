@@ -164,7 +164,20 @@ public class Controller {
 					} else {
 						view.print("Unrecognized command. Type \"help display\" for more info.");
 					}
-					
+
+				} else if(checkKeyword(commands, 0, "undo")) {
+					if (model.undo()){
+						view.print("Most recent change was undone.");
+					} else {
+						view.print("Undo could not be completed.");
+					}
+				} else if (checkKeyword(commands, 0, "redo")) {
+					if (model.redo()){
+						view.print("Most recent change was redone.");
+					} else {
+						view.print("Redo could not be completed.");
+					}
+
 				} else if(checkKeyword(commands, 0, "help")) {
 					if(checkKeyword(commands, 1, "add")) {
 						view.print(ADD_HELP);

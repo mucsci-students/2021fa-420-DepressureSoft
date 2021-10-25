@@ -20,6 +20,15 @@ public class Method {
     }
 
     /**
+     * Creates new method based on existing one (copy constructor)
+     * @param other - the other method
+     */
+    public Method(Method other){
+        this.methodName = other.methodName;
+        this.parameters = new ArrayList(other.parameters);
+    }
+
+    /**
      * Returns the name of the method.
      * @return The method name.
      */
