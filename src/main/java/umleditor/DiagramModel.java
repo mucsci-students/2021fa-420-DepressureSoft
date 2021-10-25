@@ -71,6 +71,7 @@ public class DiagramModel {
     /**
      * Adds a new class to the diagram, checking to ensure that a class with the same name does not already exist,
      *  and that the name conforms to the standards set forth in javax.lang.model.SourceVersion.isIdentifier().
+     * Is supported as an undoable operation
      * @param name The name of the new class.
      */
     public void addClass(String name){
@@ -94,11 +95,13 @@ public class DiagramModel {
 
     /**
      * Deletes a new class from the diagram, checking that the name entered exists in the diagram.
+     * Is supported as an undoable operation
      * @param entry The name of the class to delete.
      */
     public void deleteClass(String entry){
         if(classExists(entry))
         {
+            snapshot();
             for(int i = 0; i < relationships.size(); i++)
             {
                 Relationship holder = relationships.get(i);
@@ -333,6 +336,7 @@ public class DiagramModel {
 
     /**
      * Adds a method to a class diagram as long as class exists and method does not already exist.
+     * Is supported as an undoable operation
      * @param className
      * @param methodName
      */
@@ -344,6 +348,7 @@ public class DiagramModel {
             {
                 if(!parentClass.methodExists(methodName))
                 {
+                    snapshot();
                     parentClass.addMethod(methodName);
                 }
                 else
@@ -366,6 +371,7 @@ public class DiagramModel {
     
     /**
      * Removes an existing method from the diagram, as long as class exists.
+     * Is supported as an undoable operation
      * @param className
      * @param methodName
      */
@@ -375,6 +381,7 @@ public class DiagramModel {
         {
             if(parentClass.methodExists(methodName))
             {
+                snapshot();
                 parentClass.removeMethod(methodName);
             }
             else
@@ -407,6 +414,7 @@ public class DiagramModel {
 
     /**
      * Renames a method as long as it already exists.
+     * Is supported as an undoable operation
      * @param oldMethodName
      * @param newMethodName
      */
@@ -416,6 +424,7 @@ public class DiagramModel {
         {
             if(parentClass != null){
                 if(parentClass.methodExists(oldMethodName)){
+                    snapshot();
                     parentClass.renameMethod(oldMethodName, newMethodName);
                 }
                 else
@@ -438,6 +447,7 @@ public class DiagramModel {
 
     /**
      * Adds parameter to a method if the method and class exist. 
+     * Is supported as an undoable operation
      * @param className
      * @param methodName
      * @param name
@@ -451,7 +461,8 @@ public class DiagramModel {
                 Method parentMethod = parentClass.getMethod(methodName);
                 if(parentClass.methodExists(methodName))
                 {
-                parentMethod.addParameter(pName);
+                    snapshot();
+                    parentMethod.addParameter(pName);
                 }
                 else
                 {
@@ -473,6 +484,7 @@ public class DiagramModel {
 
     /**
      * Removes parameter to a method if the method and class exist.
+     * Is supported as an undoable operation
      * @param className
      * @param methodName
      * @param pName
@@ -483,6 +495,7 @@ public class DiagramModel {
             Method parentMethod = parentClass.getMethod(methodName);
             if(parentClass.methodExists(methodName)){
                 if(parentMethod.parameterExists(pName)){
+                    snapshot();
                     parentMethod.removeParameter(pName);
                 }
             }
@@ -499,6 +512,7 @@ public class DiagramModel {
 
     /**
      * Renames parameter if class and method exist. 
+     * Is supported as an undoable operation
      * @param className
      * @param methodName
      * @param oldPName
@@ -515,6 +529,7 @@ public class DiagramModel {
                 {
                     if(parentMethod.parameterExists(oldPName))
                     {
+                        snapshot();
                         parentMethod.renameParameter(oldPName, newPName);
                     }
                     else{
@@ -540,6 +555,7 @@ public class DiagramModel {
 
     /**
      * Removes all parameters if the method and class exist.
+     * Is supported as an undoable operation
      * @param className
      * @param methodName
      */
@@ -548,6 +564,7 @@ public class DiagramModel {
         if(parentClass != null){
             Method parentMethod = parentClass.getMethod(methodName);
             if(parentClass.methodExists(methodName)){
+                snapshot();
                 parentMethod.removeAllParameters();
             }
             else{
@@ -562,6 +579,7 @@ public class DiagramModel {
     /**
      * Adds a class relationship to the diagram, checking to ensure that both classes exist, a relationship
      *  does not already exist between the two classes, and that the relationship is not recursive.
+     * Is supported as an undoable operation
      * @param from The "parent" of the relationship.
      * @param to The "child" of the relationship.
      * @param type The type of the relationship. Can be one of AGGREGATION, COMPOSITION, INHERITANCE, 
@@ -632,6 +650,7 @@ public class DiagramModel {
     /**
      * Deletes a class relationship from the diagram, checking to ensure that both classes exist and
      *  a relationship exists between those two classes in the correct order.
+     * Is supported as an undoable operation
      * @param from The "parent" of the relationship.
      * @param to The "child" of the relationship.
      */
@@ -648,6 +667,7 @@ public class DiagramModel {
             for(int i = 0; i < relationships.size(); i++){
                 Relationship holder = relationships.get(i);
                 if(holder.getFrom().getName().equals(from) && holder.getTo().getName().equals(to)){
+                    snapshot();
                     relationships.remove(i);
                     relationshipExists = true;
                 }
@@ -675,6 +695,7 @@ public class DiagramModel {
 
     /**
      * Changes the type of the relationship between class "from" and class "to".
+     * Is supported as an undoable operation
      * @param from The "from" end of the relationship.
      * @param to The "to" end of the relationship.
      * @param newType The new type to assign the relationship to.
@@ -692,6 +713,7 @@ public class DiagramModel {
                 Relationship holder = relationships.get(i);
 
                 if(holder.getFrom().getName().equals(from) && holder.getTo().getName().equals(to)){
+                    snapshot();
                     holder.setType(newType);
                     relationshipExists = true;
                 }
@@ -749,6 +771,7 @@ public class DiagramModel {
     /**
      * Renames a class in the diagram, checking to ensure that the specified class exists and that the new 
      *  class name conforms to the standards set forth in javax.lang.model.SourceVersion.isIdentifier().
+     * Is supported as an undoable operation
      * @param oldName The name of the class to rename.
      * @param newName The new name of the specified class.
      */
@@ -763,6 +786,7 @@ public class DiagramModel {
         if(oldClassExists && !newClassExists)
         {
             UMLClass renamedClass = diagram.get(oldName);
+            snapshot();
             renamedClass.renameClass(newName);
             diagram.remove(oldName);
             diagram.put(newName, renamedClass);
@@ -797,6 +821,7 @@ public class DiagramModel {
 
     /**
      * Adds a field to a class, given that the class exists and that the field is not a duplicate.
+     * Is supported as an undoable operation
      * @param className The name of the class to add a field to.
      * @param fieldName The name of the field to be added.
      */
@@ -811,6 +836,7 @@ public class DiagramModel {
 
            if(!fieldExists)
            {
+               snapshot();
                parentClass.addField(fieldName);
            }
            else
@@ -832,6 +858,7 @@ public class DiagramModel {
 
     /**
      * Deletes a field from a class, given that the class and field both exist.
+     * Is supported as an undoable operation
      * @param className The name of the class to delete a field from.
      * @param fieldName The name of the field to be deleted.
      */
@@ -846,6 +873,7 @@ public class DiagramModel {
 
            if(fieldExists)
            {
+               snapshot();
                parentClass.removeField(fieldName);
            }
            else
@@ -864,6 +892,7 @@ public class DiagramModel {
     /**
      * Renames a field from a class, given that the class exists, the field exists, and the new 
      *  field name does not exist.
+     * Is supported as an undoable operation
      * @param className The name of the class to add an field to.
      * @param oldFieldName The name of the field to be renamed.
      * @param newFieldName The name that oldFieldName will be renamed to.
@@ -880,6 +909,7 @@ public class DiagramModel {
 
            if(oldFieldExists && !newFieldExists)
            {
+               snapshot();
                parentClass.renameField(oldFieldName, newFieldName);
            }
            else if(!oldFieldExists)
@@ -914,6 +944,10 @@ public class DiagramModel {
     	return diagram.size();
     }
 
+    /**
+     *  Undos the most recent undoable operation. 
+     * @return Whether or not the undo was successful (false in the case where the undo history is empty)
+     */
     public boolean undo()
     {
         ModelHistory history = ModelHistory.getInstance();
@@ -931,6 +965,10 @@ public class DiagramModel {
         }
     }
 
+    /**
+     *  Redos the most recent undo, restoring the state to what it was. 
+     * @return Whether or not the redo was successful (false in the case where the redo history is empty)
+     */
     public boolean redo()
     {
         ModelHistory history = ModelHistory.getInstance();
@@ -948,6 +986,9 @@ public class DiagramModel {
         }
     }
 
+    /**
+    * Snapshots the current state of the model to be pushed onto the undo stack. 
+    */
     private void snapshot()
     {
         ModelHistory history = ModelHistory.getInstance();

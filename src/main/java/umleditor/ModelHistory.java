@@ -66,6 +66,7 @@ public class ModelHistory {
     /**
      * Gets the last snapshot that was pushed onto the undo stack.
      * Behind the scenes it also pushes it onto the redo stack.
+     * @param currentModel - the current state of the diagram model
      * @return the diagram model that was retrieved off the undo stack
      */
     public DiagramModel undo(DiagramModel currentModel){
@@ -76,6 +77,7 @@ public class ModelHistory {
     }
     /**
      * Gets the last redo snapshot that was pushed onto the redo stack.
+     * @param currentModel - the current state of the diagram model
      * @return the diagram model that was retrieved off the redo stack
      */
     public DiagramModel redo(DiagramModel currentModel){
