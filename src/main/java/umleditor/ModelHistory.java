@@ -7,7 +7,7 @@ public class ModelHistory {
     /** 
     * Singelton instance of the model history
     */
-    private static ModelHistory historySingleton;
+    private static ModelHistory historySingleton = null;
 
     /** 
     * Stack representing the history of all diagram models. 
@@ -27,7 +27,6 @@ public class ModelHistory {
     * Private constructor cuz its a singleton
     */
     private ModelHistory() {
-        historySingleton = new ModelHistory();
         undoHistory = new Stack<DiagramModel>();
         redoHistory = new Stack<DiagramModel>();
     }
@@ -58,32 +57,40 @@ public class ModelHistory {
         undoHistory.push(model);
         redoHistory.clear();
     }
+    
+    public void clearHistory() {
+    	undoHistory.clear();
+    	redoHistory.clear();
+    }
 
     /**
      * Gets the last snapshot that was pushed onto the undo stack.
      * Behind the scenes it also pushes it onto the redo stack.
+     * @param currentModel - the current state of the diagram model
      * @return the diagram model that was retrieved off the undo stack
      */
-    public DiagramModel undo(){
+    public DiagramModel undo(DiagramModel currentModel){
         // Anytime we undo, push the redo stack
         DiagramModel model = undoHistory.pop();
-        redoHistory.push(model);
+        redoHistory.push(currentModel);
         return model;
     }
     /**
      * Gets the last redo snapshot that was pushed onto the redo stack.
+     * @param currentModel - the current state of the diagram model
      * @return the diagram model that was retrieved off the redo stack
      */
-    public DiagramModel redo(){
+    public DiagramModel redo(DiagramModel currentModel){
         DiagramModel model = redoHistory.pop();
+        undoHistory.push(currentModel);
         return model;
     }
 
     public boolean isUndoHistoryEmpty(){
-        return undoHistory.isEmpty();
+        return undoHistory.empty();
     }
 
     public boolean isRedoHistoryEmpty(){
-        return redoHistory.isEmpty();
+        return redoHistory.empty();
     }
 }
