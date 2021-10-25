@@ -3,11 +3,14 @@ package umleditor;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.io.IOException;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
+import javax.swing.UIManager;
 
 public class GUI { 
     
@@ -26,7 +29,8 @@ public class GUI {
 
     JTextField textBoxClassAdd;
     JTextField className,className2,methodName,fieldName,parameterName,relationType,renamer;
-    JList classes,fields,methods;
+
+    JComboBox classNames,classNamesX,methodNames,fieldNames,paramNames;
 
     private DiagramModel model = new DiagramModel();
     private HashMap<String,classBox> boxMap = new HashMap();
@@ -38,10 +42,15 @@ public class GUI {
     
     public static void main(String[] args){
         GUI test = new GUI(); 
-
-        test.drawGUI();
-
+        try {
+            UIManager.setLookAndFeel(
+            UIManager.getCrossPlatformLookAndFeelClassName());
+         } catch (Exception e) { 
+      }
+         JFrame.setDefaultLookAndFeelDecorated(true);
+         test.drawGUI();
     }
+
 
     public void drawGUI(){
         frame = new JFrame("UML Editor");
@@ -51,8 +60,7 @@ public class GUI {
         createInterface();
         frame.setJMenuBar(menuBar);
         pane = new JPanel();
-        pane.setLayout(new GridBagLayout());
-
+        pane.setLayout(new DragLayout());
         frame.add(pane);
         frame.setVisible(true);
     }
@@ -116,12 +124,6 @@ public class GUI {
         menuBar.add(Box.createHorizontalGlue());
         menuBar.add(help);
 
-        classes = new JList();
-        fields = new JList();
-        methods = new JList();
-        classes.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-        fields.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-        methods.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         /**
          * Opens the Add Class Window
          */
@@ -320,14 +322,18 @@ public class GUI {
 
         actionPane = new JPanel(new FlowLayout());
 
-        className = new JTextField("", 18);
-        className2 = new JTextField("", 18);
+        classNames = new JComboBox(model.getClassNames().toArray());
+        classNames.setMaximumSize(classNames.getPreferredSize());
+
+        classNamesX = new JComboBox(model.getClassNames().toArray());
+        classNamesX.setMaximumSize(classNamesX.getPreferredSize());
+
         relationType = new JTextField("", 18);
 
         actionPane.add(classN);
-        actionPane.add(className);
+        actionPane.add(classNames);
         actionPane.add(classN2);
-        actionPane.add(className2);
+        actionPane.add(classNamesX);
         actionPane.add(relationshipType);
         actionPane.add(relationType);
         actionPane.add(classAddButton);
@@ -342,7 +348,7 @@ public class GUI {
         action.setResizable(false);
         action.setLocationRelativeTo(frame);
 
-        JLabel classLabel = new JLabel("Enter Class Name: ");
+        JLabel classLabel = new JLabel("Select Class: ");
         JLabel fieldLabel = new JLabel("Enter Field Name: ");
         JButton classAddButton = new JButton("Add");
         
@@ -354,12 +360,13 @@ public class GUI {
          });
 
         actionPane = new JPanel(new FlowLayout());
-
-        className = new JTextField("", 18);
         fieldName = new JTextField("", 18);
+
+        classNames = new JComboBox(model.getClassNames().toArray());
+        classNames.setSize(200, classNames.getPreferredSize().height);
         
         actionPane.add(classLabel);
-        actionPane.add(className);
+        actionPane.add(classNames);
         actionPane.add(fieldLabel);
         actionPane.add(fieldName);
 
@@ -375,7 +382,7 @@ public class GUI {
         action.setResizable(false);
         action.setLocationRelativeTo(frame);
 
-        JLabel classLabel = new JLabel("Enter Class Name: ");
+        JLabel classLabel = new JLabel("Select Class: ");
         JLabel methodLabel = new JLabel("Enter Method Name: ");
 
         JButton classAddButton = new JButton("Add");
@@ -388,11 +395,13 @@ public class GUI {
 
         actionPane = new JPanel(new FlowLayout());
 
-        className = new JTextField("", 18);
+        classNames = new JComboBox(model.getClassNames().toArray());
+        classNames.setMaximumSize(classNames.getPreferredSize());
+
         methodName = new JTextField("", 18);
 
         actionPane.add(classLabel);
-        actionPane.add(className);
+        actionPane.add(classNames);
         actionPane.add(methodLabel);
         actionPane.add(methodName);
 
@@ -419,16 +428,36 @@ public class GUI {
             }
          });
 
-        actionPane = new JPanel(new FlowLayout());
+         classNames = new JComboBox(model.getClassNames().toArray());
+         classNames.setMaximumSize(classNames.getPreferredSize());
 
+         methodNames = new JComboBox();
+         methodNames.setMaximumSize(classNames.getPreferredSize());
+         
+         classNames.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                String holder = classNames.getSelectedItem().toString();
+                methodNames.removeAllItems();
+                for(String s: model.getUML(holder).getStringMethods()){
+                    methodNames.addItem(s.toString());
+                }
+                
+                
+            }
+        });   
+
+
+        actionPane = new JPanel(new FlowLayout());
+         
         className = new JTextField("", 18);
         methodName = new JTextField("", 18);
         parameterName = new JTextField("", 18);
 
         actionPane.add(classLabel);
-        actionPane.add(className);
+        actionPane.add(classNames);
         actionPane.add(methodLabel);
-        actionPane.add(methodName);
+        actionPane.add(methodNames);
         actionPane.add(paramLabel);
         actionPane.add(parameterName);
 
@@ -436,6 +465,14 @@ public class GUI {
         action.add(actionPane);
 
         action.setVisible(true);
+
+        if(classNames.getItemCount() >= 1){
+        String holder = classNames.getSelectedItem().toString();
+        methodNames.removeAllItems();
+        for(String s: model.getUML(holder).getStringMethods()){
+            methodNames.addItem(s.toString());
+        }
+    }
     }
 
     public void deleteClass(){
@@ -444,7 +481,7 @@ public class GUI {
         action.setResizable(false);
         action.setLocationRelativeTo(frame);
 
-        JLabel classNameDelete = new JLabel("Enter Class Name: ");
+        JLabel classNameDelete = new JLabel("Select Class: ");
         JButton classDeleteButton = new JButton("Delete");
 
         classDeleteButton.addActionListener(new ActionListener() {
@@ -454,10 +491,12 @@ public class GUI {
          });
 
         actionPane = new JPanel(new FlowLayout());
-        className = new JTextField("", 18);
+
+        classNames = new JComboBox(model.getClassNames().toArray());
+        classNames.setMaximumSize(classNames.getPreferredSize());
 
         actionPane.add(classNameDelete);
-        actionPane.add(className);
+        actionPane.add(classNames);
         actionPane.add(classDeleteButton);
         action.add(actionPane);
 
@@ -482,13 +521,16 @@ public class GUI {
          });
         actionPane = new JPanel(new FlowLayout());
 
-        className = new JTextField("", 18);
-        className2 = new JTextField("", 18);
+        classNames = new JComboBox(model.getClassNames().toArray());
+        classNames.setMaximumSize(classNames.getPreferredSize());
+        
+        classNamesX = new JComboBox(model.getClassNames().toArray());
+        classNamesX.setMaximumSize(classNames.getPreferredSize());
 
         actionPane.add(classN);
-        actionPane.add(className);
+        actionPane.add(classNames);
         actionPane.add(classN2);
-        actionPane.add(className2);
+        actionPane.add(classNamesX);
         actionPane.add(classDeleteButton);
         action.add(actionPane);
 
@@ -513,18 +555,45 @@ public class GUI {
 
         actionPane = new JPanel(new FlowLayout());
 
-        className = new JTextField("", 18);
+        classNames = new JComboBox(model.getClassNames().toArray());
+        classNames.setMaximumSize(classNames.getPreferredSize());
+
+        fieldNames = new JComboBox();
+        fieldNames.setMaximumSize(classNames.getPreferredSize());
+
+        classNames.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                String holder = classNames.getSelectedItem().toString();
+                fieldNames.removeAllItems();
+                System.out.println( model.getUML(holder).getFields().size());
+                for(String s: model.getUML(holder).getFields()){
+                    fieldNames.addItem(s.toString());
+                }
+                
+                
+            }
+        });   
+
         fieldName = new JTextField("", 18);
 
         actionPane.add(classLabel);
-        actionPane.add(className);
+        actionPane.add(classNames);
         actionPane.add(fieldLabel);
-        actionPane.add(fieldName);
+        actionPane.add(fieldNames);
 
         actionPane.add(classDeleteButton);
         action.add(actionPane);
 
         action.setVisible(true);
+
+        if(classNames.getItemCount() >= 1){
+        String holder = classNames.getSelectedItem().toString();
+        fieldNames.removeAllItems();
+        for(String s: model.getUML(holder).getFields()){
+            fieldNames.addItem(s.toString());
+        }
+        }  
     }
 
     public void deleteMethod(){
@@ -545,18 +614,43 @@ public class GUI {
 
         actionPane = new JPanel(new FlowLayout());
 
-        className = new JTextField("", 18);
-        methodName = new JTextField("", 18);
+        classNames = new JComboBox(model.getClassNames().toArray());
+        classNames.setMaximumSize(classNames.getPreferredSize());
+
+        methodNames = new JComboBox();
+        methodNames.setMaximumSize(classNames.getPreferredSize());
+        
+        classNames.addItemListener(new ItemListener() {
+           @Override
+           public void itemStateChanged(ItemEvent e) {
+               String holder = classNames.getSelectedItem().toString();
+               methodNames.removeAllItems();
+               for(String s: model.getUML(holder).getStringMethods()){
+                   methodNames.addItem(s.toString());
+               }
+               
+               
+           }
+       });   
+
+
 
         actionPane.add(classLabel);
-        actionPane.add(className);
+        actionPane.add(classNames);
         actionPane.add(methodLabel);
-        actionPane.add(methodName);
+        actionPane.add(methodNames);
 
         actionPane.add(classDeleteButton);
         action.add(actionPane);
 
         action.setVisible(true);
+        if(classNames.getItemCount() >= 1){
+        String holder = classNames.getSelectedItem().toString();
+        methodNames.removeAllItems();
+        for(String s: model.getUML(holder).getStringMethods()){
+            methodNames.addItem(s.toString());
+        }
+        }
     }
    
     public void deleteParameter(){
@@ -578,21 +672,60 @@ public class GUI {
 
         actionPane = new JPanel(new FlowLayout());
 
-        className = new JTextField("", 18);
-        methodName = new JTextField("", 18);
-        parameterName = new JTextField("", 18);
+        classNames = new JComboBox(model.getClassNames().toArray());
+        classNames.setMaximumSize(classNames.getPreferredSize());
+
+        methodNames = new JComboBox();
+        methodNames.setMaximumSize(classNames.getPreferredSize());
+
+        paramNames = new JComboBox();
+        paramNames.setMaximumSize(classNames.getPreferredSize());
+        
+        classNames.addItemListener(new ItemListener() {
+           @Override
+           public void itemStateChanged(ItemEvent e) {
+               String holder = classNames.getSelectedItem().toString();
+               methodNames.removeAllItems();
+               for(String s: model.getUML(holder).getStringMethods()){
+                   methodNames.addItem(s.toString());
+               }
+               
+               
+           }
+       });
+          
+       methodNames.addItemListener(new ItemListener() {
+        @Override
+        public void itemStateChanged(ItemEvent e) {
+            String holder = classNames.getSelectedItem().toString();
+            String holderV2 = methodNames.getSelectedItem().toString();
+            paramNames.removeAllItems();
+            for(String s: model.getUML(holder).getMethod(holderV2).getParamList()){
+                paramNames.addItem(s.toString());
+            }
+        }
+    });
+
 
         actionPane.add(classLabel);
-        actionPane.add(className);
+        actionPane.add(classNames);
         actionPane.add(methodLabel);
-        actionPane.add(methodName);
+        actionPane.add(methodNames);
         actionPane.add(paramLabel);
-        actionPane.add(parameterName);
+        actionPane.add(paramNames);
 
         actionPane.add(classDeleteButton);
         action.add(actionPane);
 
         action.setVisible(true);
+
+        if(classNames.getItemCount() >= 1){
+        String holder = classNames.getSelectedItem().toString();
+        methodNames.removeAllItems();
+        for(String s: model.getUML(holder).getStringMethods()){
+            methodNames.addItem(s.toString());
+        }
+        }
     }
 
     public void renameClass(){
@@ -612,11 +745,13 @@ public class GUI {
          });
 
         actionPane = new JPanel(new FlowLayout());
-        className = new JTextField("", 18);
+        classNames = new JComboBox(model.getClassNames().toArray());
+        classNames.setMaximumSize(classNames.getPreferredSize());
+
         className2 = new JTextField("", 18);
 
         actionPane.add(classNameLabel);
-        actionPane.add(className);
+        actionPane.add(classNames);
         actionPane.add(classRenameLabel);
         actionPane.add(className2);
         actionPane.add(classAddButton);
@@ -646,14 +781,31 @@ public class GUI {
 
         actionPane = new JPanel(new FlowLayout());
 
-        className = new JTextField("", 18);
-        fieldName = new JTextField("", 18);
+        classNames = new JComboBox(model.getClassNames().toArray());
+        classNames.setMaximumSize(classNames.getPreferredSize());
+
+        fieldNames = new JComboBox();
+        fieldNames.setMaximumSize(classNames.getPreferredSize());
+
+        classNames.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                String holder = classNames.getSelectedItem().toString();
+                fieldNames.removeAllItems();
+                for(String s: model.getUML(holder).getFields()){
+                    fieldNames.addItem(s.toString());
+                }
+                
+                
+            }
+        });   
+
         renamer = new JTextField("", 18);
 
         actionPane.add(classLabel);
-        actionPane.add(className);
+        actionPane.add(classNames);
         actionPane.add(fieldLabel);
-        actionPane.add(fieldName);
+        actionPane.add(fieldNames);
         actionPane.add(fieldRenameLabel);
         actionPane.add(renamer);
 
@@ -661,6 +813,15 @@ public class GUI {
         action.add(actionPane);
 
         action.setVisible(true);
+
+        //Grabs box elements when user first opens selection window. 
+        if(classNames.getItemCount() >= 1){
+            String holder = classNames.getSelectedItem().toString();
+            fieldNames.removeAllItems();
+            for(String s: model.getUML(holder).getFields()){
+                fieldNames.addItem(s.toString());
+            }
+            }  
     }
 
     public void renameMethod(){
@@ -682,14 +843,31 @@ public class GUI {
 
         actionPane = new JPanel(new FlowLayout());
 
-        className = new JTextField("", 18);
-        methodName = new JTextField("", 18);
+        classNames = new JComboBox(model.getClassNames().toArray());
+        classNames.setMaximumSize(classNames.getPreferredSize());
+
+        methodNames = new JComboBox();
+        methodNames.setMaximumSize(classNames.getPreferredSize());
+        
+        classNames.addItemListener(new ItemListener() {
+           @Override
+           public void itemStateChanged(ItemEvent e) {
+               String holder = classNames.getSelectedItem().toString();
+               methodNames.removeAllItems();
+               for(String s: model.getUML(holder).getStringMethods()){
+                   methodNames.addItem(s.toString());
+               }
+               
+               
+           }
+       });   
+
         renamer = new JTextField("", 18);
 
         actionPane.add(classLabel);
-        actionPane.add(className);
+        actionPane.add(classNames);
         actionPane.add(methodLabel);
-        actionPane.add(methodName);
+        actionPane.add(methodNames);
         actionPane.add(methodRenameLabel);
         actionPane.add(renamer);
 
@@ -697,6 +875,14 @@ public class GUI {
         action.add(actionPane);
 
         action.setVisible(true);
+
+        if(classNames.getItemCount() >= 1){
+            String holder = classNames.getSelectedItem().toString();
+            methodNames.removeAllItems();
+            for(String s: model.getUML(holder).getStringMethods()){
+                methodNames.addItem(s.toString());
+            }
+            }
     }
 
     public void renameParameter(){
@@ -720,17 +906,49 @@ public class GUI {
 
         actionPane = new JPanel(new FlowLayout());
 
-        className = new JTextField("", 18);
-        methodName = new JTextField("", 18);
-        parameterName = new JTextField("", 18);
+        classNames = new JComboBox(model.getClassNames().toArray());
+        classNames.setMaximumSize(classNames.getPreferredSize());
+
+        methodNames = new JComboBox();
+        methodNames.setMaximumSize(classNames.getPreferredSize());
+
+        paramNames = new JComboBox();
+        paramNames.setMaximumSize(classNames.getPreferredSize());
+        
+        classNames.addItemListener(new ItemListener() {
+           @Override
+           public void itemStateChanged(ItemEvent e) {
+               String holder = classNames.getSelectedItem().toString();
+               methodNames.removeAllItems();
+               for(String s: model.getUML(holder).getStringMethods()){
+                   methodNames.addItem(s.toString());
+               }
+               
+               
+           }
+       });  
+
+       methodNames.addItemListener(new ItemListener() {
+        @Override
+        public void itemStateChanged(ItemEvent e) {
+            String holder = classNames.getSelectedItem().toString();
+            String holderV2 = methodNames.getSelectedItem().toString();
+            paramNames.removeAllItems();
+            for(String s: model.getUML(holder).getMethod(holderV2).getParamList()){
+                paramNames.addItem(s.toString());
+            }
+        }
+    });
+
+
         renamer = new JTextField("", 18);
 
         actionPane.add(classLabel);
-        actionPane.add(className);
+        actionPane.add(classNames);
         actionPane.add(methodLabel);
-        actionPane.add(methodName);
+        actionPane.add(methodNames);
         actionPane.add(paramLabel);
-        actionPane.add(parameterName);
+        actionPane.add(paramNames);
         actionPane.add(paramRenameLabel);
         actionPane.add(renamer);
 
@@ -738,6 +956,14 @@ public class GUI {
         action.add(actionPane);
 
         action.setVisible(true);
+
+        if(classNames.getItemCount() >= 1){
+            String holder = classNames.getSelectedItem().toString();
+            methodNames.removeAllItems();
+            for(String s: model.getUML(holder).getStringMethods()){
+                methodNames.addItem(s.toString());
+            }
+            }
     }
 
     /**
@@ -745,6 +971,7 @@ public class GUI {
      */
     public void addClassAction(){
         String newClass = className.getText();
+        if(!duplicateClass(newClass)){
         model.addClass(newClass);
         box = new classBox(newClass);
         boxMap.put(newClass,box);
@@ -753,49 +980,78 @@ public class GUI {
         frame.setVisible(true);
         action.dispose();
         updateButtons();
+        }
+        else{
+            JLabel error = new JLabel("Class already exists.");
+            actionPane.add(error);
+            actionPane.validate();
+        }
     }
 
     public void addFieldAction(){
-        String getClass = className.getText();
+        String getClass = classNames.getSelectedItem().toString();
 		String field = fieldName.getText();
 
+        if(!boxMap.get(getClass).duplicateField(field)){
         model.addField(getClass, field);
         box = boxMap.get(getClass);
         box.addField(field);
         action.dispose();
         updateButtons();
+        frame.validate();
+        }
+        else{
+            JLabel error = new JLabel("Field already exists.");
+            actionPane.add(error);
+            actionPane.validate();
+        }
     }
 
     public void addMethodAction(){
-        String getClass = className.getText();
+        String getClass = classNames.getSelectedItem().toString();
 		String method = methodName.getText();
 
-        model.addMethod(getClass, method);
+        if(!boxMap.get(getClass).duplicateMethod(method)){
+        model.addMethod(getClass,method);
         box = boxMap.get(getClass);
         box.addMethod(method);
         action.dispose();
-        frame.repaint();
+        frame.validate();
         updateButtons();
+         }
+        else{
+        JLabel error = new JLabel("Method already exists.");
+        actionPane.add(error);
+        actionPane.validate();
+        }
     }
 
     public void addParameterAction(){
-        String getClass = className.getText();
-		String method = methodName.getText();
+        String getClass = classNames.getSelectedItem().toString();
+		String method = methodNames.getSelectedItem().toString();
         String parameter = parameterName.getText();
 
+        if(!boxMap.get(getClass).duplicateParameter(method,parameter)){
         model.addParameter(getClass,method,parameter);
-        boxMap.get(getClass).addParameter(parameter,method);
+        box = boxMap.get(getClass);
+        box.addParameter(parameter,method);
         action.dispose();
         frame.repaint();
         updateButtons();
+        }
+        else{
+        JLabel error = new JLabel("Parameter already exists.");
+        actionPane.add(error);
+        actionPane.validate();
+        }
     }
 
     public void addRelationshipAction(){
-        String classOne = className.getText();
-        String classTwo = className2.getText();
+        String classOne = classNames.getSelectedItem().toString();
+        String classTwo = classNamesX.getSelectedItem().toString();
         String relationT = relationType.getText();
 
-        //model.addRelationship(classOne,classTwo,relationType);
+       // model.addRelationship(classOne,classTwo,relationType);
         action.dispose();
         updateButtons();
     }
@@ -803,7 +1059,7 @@ public class GUI {
      * Delete Actions
      */
     public void deleteClassAction(){
-        String remClass = className.getText();
+        String remClass = classNames.getSelectedItem().toString();
 
         model.deleteClass(remClass);
         pane.remove(boxMap.get(remClass).getClassPanel());
@@ -813,16 +1069,16 @@ public class GUI {
         updateButtons();
     }
     public void deleteRelationshipAction(){
-        String classOne = className.getText();
-        String classTwo = className2.getText();
+        String classOne = classNames.getSelectedItem().toString();
+        String classTwo = classNamesX.getSelectedItem().toString();
 
         model.deleteRelationship(classOne,classTwo);
         action.dispose();
         updateButtons();
     }
     public void deleteFieldAction(){
-        String getClass = className.getText();
-		String field = fieldName.getText();
+        String getClass = classNames.getSelectedItem().toString();
+		String field = fieldNames.getSelectedItem().toString();
 
         model.deleteField(getClass, field); 
         box = boxMap.get(getClass);
@@ -831,8 +1087,8 @@ public class GUI {
         updateButtons();
     }
     public void deleteMethodAction(){
-        String getClass = className.getText();
-		String method = methodName.getText();
+        String getClass = classNames.getSelectedItem().toString();
+		String method = methodNames.getSelectedItem().toString();
 
         box = boxMap.get(getClass);
         box.removeMethod(method);
@@ -840,14 +1096,14 @@ public class GUI {
         action.dispose();
         updateButtons();
     }
-    public void deleteParameterAction(){ // param not implemented in this version 
-        String getClass = className.getText();
-        String method = methodName.getText();
-        String param = parameterName.getText();
+    public void deleteParameterAction(){ 
+        String getClass = classNames.getSelectedItem().toString();
+        String method = methodNames.getSelectedItem().toString();
+        String param = paramNames.getSelectedItem().toString();
 
-       // model.removeParameter(getClass, method, param ); this follows proper syntax of what it will be 
+       model.deleteParameter(getClass, method, param );
        box = boxMap.get(getClass);
-       box.removeParameter(method,param);
+       box.removeParameter(param,method);
        action.dispose();
        updateButtons();
     }
@@ -855,9 +1111,10 @@ public class GUI {
     * Rename Functions
     */
     public void renameClassAction(){
-        String oldClass = className.getText();
+        String oldClass = classNames.getSelectedItem().toString();
         String newClass = className2.getText();
 
+        if(!duplicateClass(newClass)){
         model.renameUMLClass(oldClass,newClass);
         box = boxMap.get(oldClass);
         box.renameClass(newClass);
@@ -865,37 +1122,65 @@ public class GUI {
         boxMap.put(newClass,box);
         action.dispose();
         updateButtons();
+        }
+        else{
+
+        }
     }
     public void renameFieldAction(){
-        String getClass = className.getText();
-		String field = fieldName.getText();
+        String getClass = classNames.getSelectedItem().toString();
+		String field = fieldNames.getSelectedItem().toString();
         String newField = renamer.getText();
 
+        if(!boxMap.get(getClass).duplicateField(newField)){
         box = boxMap.get(getClass);
         box.renameField(field,newField);
         model.renameField(getClass,field,newField);
         action.dispose();
         updateButtons();
+        }
+        else{
+        JLabel error = new JLabel("Field already exists.");
+        actionPane.add(error);
+        actionPane.validate();
+         }
     }
     public void renameMethodAction(){
-        String getClass = className.getText();
-		String method = methodName.getText();
+        String getClass = classNames.getSelectedItem().toString();
+		String method = methodNames.getSelectedItem().toString();
         String newMethod = renamer.getText();
 
+        if(!boxMap.get(getClass).duplicateMethod(newMethod)){
         box = boxMap.get(getClass);
         box.renameMethod(method,newMethod);
         model.renameMethod(getClass,method,newMethod);
         action.dispose();
         updateButtons();
+        }
+        else{
+            JLabel error = new JLabel("Method already exists.");
+            actionPane.add(error);
+            actionPane.validate();
+        }
     }
     public void renameParameterAction(){
-        String getClass = className.getText();
-		String method = fieldName.getText();
-        String oldParam = parameterName.getText();
-        String newparam = renamer.getText();
+        String getClass = classNames.getSelectedItem().toString();
+		String method = methodNames.getSelectedItem().toString();
+        String oldParam = paramNames.getSelectedItem().toString();
+        String newParam = renamer.getText();
 
-        //model.renameParameter(getclass, method, oldParam, newParam) not implemented this version but follows this syntax
+        if(!boxMap.get(getClass).duplicateParameter(method,newParam)){
+        model.renameParameter(getClass, method,oldParam,newParam);
+        box = boxMap.get(getClass);
+        box.renameParameter(oldParam,newParam,method);
+        action.dispose();
         updateButtons();
+        }
+        else{
+        JLabel error = new JLabel("Parameter already exists.");
+        actionPane.add(error);
+        actionPane.validate();
+        }
     }
     public void save(){
        // model.save();
@@ -1010,5 +1295,12 @@ public class GUI {
     	else {
     		renameParameter.setEnabled(true);
     	}
+    }
+
+    public boolean duplicateClass(String className){
+        if(boxMap.containsKey(className))
+        return true;
+        else
+        return false;
     }
 }

@@ -123,6 +123,13 @@ public class UMLClass {
         return methods;
     }
 
+    public ArrayList<String> getStringMethods(){
+       ArrayList<String> holder = new ArrayList<String>();
+        for(Method m: methods){
+            holder.add(m.getMethodName());
+        };
+        return holder;
+    }
     /**
      * Adds a new parameter to the class representation.
      * @param methodName The name of the method to add the parameter to.
