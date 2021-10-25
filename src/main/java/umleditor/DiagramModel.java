@@ -953,4 +953,12 @@ public class DiagramModel {
         ModelHistory history = ModelHistory.getInstance();
         history.snapshotModel(new DiagramModel(this));
     }
+  
+    public ArrayList<String> getClassNames(){
+        ArrayList<String> listOfKeys
+        = new ArrayList<String>(diagram.keySet());
+
+        return listOfKeys;
+    }
+    
 }
