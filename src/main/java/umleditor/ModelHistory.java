@@ -78,8 +78,9 @@ public class ModelHistory {
      * Gets the last redo snapshot that was pushed onto the redo stack.
      * @return the diagram model that was retrieved off the redo stack
      */
-    public DiagramModel redo(){
+    public DiagramModel redo(DiagramModel currentModel){
         DiagramModel model = redoHistory.pop();
+        undoHistory.push(currentModel);
         return model;
     }
 

@@ -941,7 +941,7 @@ public class DiagramModel {
         }
         else 
         {
-            DiagramModel old = history.redo();
+            DiagramModel old = history.redo(new DiagramModel(this));
             this.diagram = old.diagram;
             this.relationships = old.relationships;
             return true;
