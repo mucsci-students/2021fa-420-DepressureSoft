@@ -544,8 +544,6 @@ public class DiagramModel {
 
         if(fromClassExists && toClassExists)
         {
-            if(!from.equals(to))
-            {
                 boolean relationshipExists = false;
 
                 // Iterate for relationship existence
@@ -575,12 +573,6 @@ public class DiagramModel {
                     System.out.println("The relationship between \"" + from + "\" and \"" + to + 
                         "\" cannot be added, as a relationship already exists between those classes.");
                 }
-            }
-            // If recursive relationship
-            else
-            {
-                System.out.println("The relationship cannot be added, as the source and destination class are the same.");
-            }
         }
         // If either class DNE
         else
