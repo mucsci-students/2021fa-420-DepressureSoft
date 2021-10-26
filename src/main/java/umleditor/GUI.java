@@ -11,7 +11,6 @@ import javax.swing.*;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.UIManager;
 
 public class GUI { 
     
@@ -29,9 +28,9 @@ public class GUI {
     JPanel pane,boxPane,actionPane;
 
     JTextField textBoxClassAdd;
-    JTextField className,className2,methodName,fieldName,parameterName,relationType,renamer;
+    JTextField className,className2,methodName,fieldName,parameterName,renamer;
 
-    JComboBox classNames,classNamesX,methodNames,fieldNames,paramNames;
+    JComboBox classNames,classNamesX,methodNames,fieldNames,paramNames, relationType;
 
     private DiagramModel model = new DiagramModel();
     private HashMap<String,classBox> boxMap = new HashMap();
@@ -369,14 +368,18 @@ public class GUI {
          });
 
         actionPane = new JPanel(new FlowLayout());
-
+        
+        String[] relTypes = {"Aggregation", "Composition", "Inheritance", "Realization"};
+        
         classNames = new JComboBox(model.getClassNames().toArray());
         classNames.setMaximumSize(classNames.getPreferredSize());
 
         classNamesX = new JComboBox(model.getClassNames().toArray());
         classNamesX.setMaximumSize(classNamesX.getPreferredSize());
 
-        relationType = new JTextField("", 18);
+        relationType = new JComboBox(relTypes);
+        relationType.setMaximumSize(relationType.getPreferredSize());
+        
 
         actionPane.add(classN);
         actionPane.add(classNames);
@@ -1093,9 +1096,8 @@ public class GUI {
     public void addRelationshipAction(){
         String classOne = classNames.getSelectedItem().toString();
         String classTwo = classNamesX.getSelectedItem().toString();
-        String relationT = relationType.getText();
-
-       // model.addRelationship(classOne,classTwo,relationType);
+        String relationT = relationType.getSelectedItem().toString();
+        model.addRelationship(classOne,classTwo, getRelTypeFromString(relationT));
         action.dispose();
     }
     /**
@@ -1224,5 +1226,24 @@ public class GUI {
         else
         return false;
     }
-
+    
+    /**
+     * Helper method that returns a value from the RelationshipType enum that matches the input string.
+     * @param input The input string.
+     * @return The correct RelationshipType enum value if input equals "aggregation", "composition", "inheritance", 
+     *  or "realization", null if not.
+     */
+    private static Relationship.RelationshipType getRelTypeFromString(String input) {
+        if (input.equalsIgnoreCase("aggregation")) {
+            return Relationship.RelationshipType.AGGREGATION;
+        } else if (input.equalsIgnoreCase("composition")) {
+            return Relationship.RelationshipType.COMPOSITION;
+        } else if (input.equalsIgnoreCase("inheritance")) {
+            return Relationship.RelationshipType.INHERITANCE;
+        } else if (input.equalsIgnoreCase("realization")) {
+            return Relationship.RelationshipType.REALIZATION;
+        } else {
+        	return null;
+        }
+    }
 }
