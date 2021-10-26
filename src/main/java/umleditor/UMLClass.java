@@ -19,7 +19,7 @@ public class UMLClass {
     /**
      * The fields of the class (does not include methods).
      */
-    private ArrayList<String> fields = new ArrayList<String>();
+    private ArrayList<Field> fields = new ArrayList<Field>();
     /**
      * Names of the classes that this class is related to.
      */
@@ -171,8 +171,8 @@ public class UMLClass {
      * Adds a new field the class representation.
      * @param newField The name of the new field.
      */
-    public void addField(String newField){
-        fields.add(newField);
+    public void addField(String fieldName, String fieldType){
+        fields.add(new Field(fieldName, fieldType));
     }
 
     /**
@@ -180,7 +180,11 @@ public class UMLClass {
      * @param removedField The name of the field to delete.
      */
     public void removeField(String removedField){
-        fields.remove(removedField);
+        for(int index = 0; index < fields.size(); index++) {
+            if (fields.get(index).getFieldName().equals(removedField)) {
+                fields.remove(index);
+            }
+        }
     }
 
     /**
@@ -189,15 +193,30 @@ public class UMLClass {
      * @param newName New name for the field.
      */
     public void renameField(String oldName, String newName){
-        int index = fields.indexOf(oldName);
-        fields.set(index, newName);
+        if(getField(oldName) != null) {
+            getField(oldName).renameField(newName);
+        }
     }
 
     /**
-     * Returns an ArrayList<String> of all the class representation's fields.
+     * Returns the Field named fieldName if it exists.
+     * @param fieldName
+     * @return
+     */
+    public Field getField(String fieldName) {
+        for(int index = 0; index < fields.size(); index++) {
+            if (fields.get(index).getFieldName().equals(fieldName)) {
+                return fields.get(index);
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Returns an ArrayList<Field> of all the class representation's fields.
      * @return The fields ArrayList.
      */
-    public  ArrayList<String> getFields(){
+    public  ArrayList<Field> getFields(){
         return fields;
     }
 
