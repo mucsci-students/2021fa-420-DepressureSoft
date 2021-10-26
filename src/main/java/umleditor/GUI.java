@@ -10,6 +10,7 @@ import java.util.*;
 import javax.swing.*;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
+import umleditor.Relationship.RelationshipType;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.UIManager;
 
@@ -29,9 +30,9 @@ public class GUI {
     JPanel pane,boxPane,actionPane;
 
     JTextField textBoxClassAdd;
-    JTextField className,className2,methodName,fieldName,parameterName,relationType,renamer;
+    JTextField className,className2,methodName,methodType,fieldName,fieldType,parameterName,parameterType,renamer;
 
-    JComboBox classNames,classNamesX,methodNames,fieldNames,paramNames;
+    JComboBox classNames,classNamesX,methodNames,fieldNames,paramNames,relationshipTypes;
 
     private DiagramModel model = new DiagramModel();
     private HashMap<String,classBox> boxMap = new HashMap();
@@ -272,7 +273,7 @@ public class GUI {
         JLabel classNameAdd = new JLabel("Enter Class Name: ");
         JButton classAddButton = new JButton("Add");
 
-        actionPane = new JPanel(new FlowLayout());
+        actionPane = new JPanel(new GridLayout(4,1));
         className = new JTextField("", 18);
 
         classAddButton.addActionListener(new ActionListener() {
@@ -333,9 +334,15 @@ public class GUI {
         action.setResizable(false);
         action.setLocationRelativeTo(frame);
 
-        JLabel classN = new JLabel("Enter First Class Name: ");
-        JLabel classN2 = new JLabel("Enter Second Class Name: ");
-        JLabel relationshipType = new JLabel("Enter Relationship Type: (A, C, I, R)");
+        JLabel classN = new JLabel("Select First Class: ");
+        JLabel classN2 = new JLabel("Select Second Class: ");
+        JLabel relationshipType = new JLabel("Select Relationship Type: ");
+
+        relationshipTypes = new JComboBox();
+        relationshipTypes.addItem("Aggregation");
+        relationshipTypes.addItem("Composition");
+        relationshipTypes.addItem("Inheritance");
+        relationshipTypes.addItem("Realization");
 
         JButton classAddButton = new JButton("Add");
         classAddButton.addActionListener(new ActionListener() {
@@ -344,7 +351,7 @@ public class GUI {
             }
          });
 
-        actionPane = new JPanel(new FlowLayout());
+        actionPane = new JPanel(new GridLayout(8,1));
 
         classNames = new JComboBox(model.getClassNames().toArray());
         classNames.setMaximumSize(classNames.getPreferredSize());
@@ -352,14 +359,12 @@ public class GUI {
         classNamesX = new JComboBox(model.getClassNames().toArray());
         classNamesX.setMaximumSize(classNamesX.getPreferredSize());
 
-        relationType = new JTextField("", 18);
-
         actionPane.add(classN);
         actionPane.add(classNames);
         actionPane.add(classN2);
         actionPane.add(classNamesX);
         actionPane.add(relationshipType);
-        actionPane.add(relationType);
+        actionPane.add(relationshipTypes);
         actionPane.add(classAddButton);
         action.add(actionPane);
 
@@ -368,12 +373,13 @@ public class GUI {
 
     public void addField(){
         action = new JFrame("UML Editor");
-        action.setSize(250, 175);
+        action.setSize(250, 225);
         action.setResizable(false);
         action.setLocationRelativeTo(frame);
 
         JLabel classLabel = new JLabel("Select Class: ");
         JLabel fieldLabel = new JLabel("Enter Field Name: ");
+        JLabel fieldTLabel = new JLabel("Enter Field Type: ");
         JButton classAddButton = new JButton("Add");
         
 
@@ -383,8 +389,9 @@ public class GUI {
             }
          });
 
-        actionPane = new JPanel(new FlowLayout());
+         actionPane = new JPanel(new GridLayout(8,1));
         fieldName = new JTextField("", 18);
+        fieldType = new JTextField("", 18);
 
         classNames = new JComboBox(model.getClassNames().toArray());
         classNames.setSize(200, classNames.getPreferredSize().height);
@@ -393,6 +400,8 @@ public class GUI {
         actionPane.add(classNames);
         actionPane.add(fieldLabel);
         actionPane.add(fieldName);
+        actionPane.add(fieldTLabel);
+        actionPane.add(fieldType);
 
         actionPane.add(classAddButton);
         action.add(actionPane);
@@ -402,12 +411,13 @@ public class GUI {
 
     public void addMethod(){
         action = new JFrame("UML Editor");
-        action.setSize(250, 175);
+        action.setSize(250, 225);
         action.setResizable(false);
         action.setLocationRelativeTo(frame);
 
         JLabel classLabel = new JLabel("Select Class: ");
         JLabel methodLabel = new JLabel("Enter Method Name: ");
+        JLabel methodTLabel = new JLabel("Enter Method Type: ");
 
         JButton classAddButton = new JButton("Add");
 
@@ -417,17 +427,20 @@ public class GUI {
             }
          });
 
-        actionPane = new JPanel(new FlowLayout());
+         actionPane = new JPanel(new GridLayout(8,1));
 
         classNames = new JComboBox(model.getClassNames().toArray());
         classNames.setMaximumSize(classNames.getPreferredSize());
 
         methodName = new JTextField("", 18);
+        methodType = new JTextField("", 18);
 
         actionPane.add(classLabel);
         actionPane.add(classNames);
         actionPane.add(methodLabel);
         actionPane.add(methodName);
+        actionPane.add(methodTLabel);
+        actionPane.add(methodType);
 
         actionPane.add(classAddButton);
         action.add(actionPane);
@@ -437,13 +450,16 @@ public class GUI {
    
     public void addParameter(){
         action = new JFrame("UML Editor");
-        action.setSize(250, 225);
+        action.setSize(250, 275);
         action.setResizable(false);
         action.setLocationRelativeTo(frame);
 
-        JLabel classLabel = new JLabel("Enter Class Name: ");
-        JLabel methodLabel = new JLabel("Enter Method Name: ");
+        JLabel classLabel = new JLabel("Select Class: ");
+        JLabel methodLabel = new JLabel("Select Method: ");
         JLabel paramLabel = new JLabel("Enter Parameter Name: ");
+        JLabel paramTLabel = new JLabel("Enter Parameter Type: ");
+
+        actionPane = new JPanel(new GridLayout(10,1));
 
         JButton classAddButton = new JButton("Add");
         classAddButton.addActionListener(new ActionListener() {
@@ -471,12 +487,11 @@ public class GUI {
             }
         });   
 
-
-        actionPane = new JPanel(new FlowLayout());
          
         className = new JTextField("", 18);
         methodName = new JTextField("", 18);
         parameterName = new JTextField("", 18);
+        parameterType = new JTextField("", 18);
 
         actionPane.add(classLabel);
         actionPane.add(classNames);
@@ -484,6 +499,9 @@ public class GUI {
         actionPane.add(methodNames);
         actionPane.add(paramLabel);
         actionPane.add(parameterName);
+        actionPane.add(paramTLabel);
+        actionPane.add(parameterType);
+
 
         actionPane.add(classAddButton);
         action.add(actionPane);
@@ -514,7 +532,7 @@ public class GUI {
             }
          });
 
-        actionPane = new JPanel(new FlowLayout());
+        actionPane = new JPanel(new GridLayout(4,1));
 
         classNames = new JComboBox(model.getClassNames().toArray());
         classNames.setMaximumSize(classNames.getPreferredSize());
@@ -534,8 +552,8 @@ public class GUI {
         action.setResizable(false);
         action.setLocationRelativeTo(frame);
 
-        JLabel classN = new JLabel("Enter First Class Name: ");
-        JLabel classN2 = new JLabel("Enter Second Class Name: ");
+        JLabel classN = new JLabel("Select Class: ");
+        JLabel classN2 = new JLabel("Select Second Class: ");
 
         JButton classDeleteButton = new JButton("Delete");
         classDeleteButton.addActionListener(new ActionListener() {
@@ -543,7 +561,7 @@ public class GUI {
                 deleteRelationshipAction();
             }
          });
-        actionPane = new JPanel(new FlowLayout());
+        actionPane = new JPanel(new GridLayout(6,1));
 
         classNames = new JComboBox(model.getClassNames().toArray());
         classNames.setMaximumSize(classNames.getPreferredSize());
@@ -567,8 +585,8 @@ public class GUI {
         action.setResizable(false);
         action.setLocationRelativeTo(frame);
 
-        JLabel classLabel = new JLabel("Enter Class Name: ");
-        JLabel fieldLabel = new JLabel("Enter Field Name: ");
+        JLabel classLabel = new JLabel("Select Class: ");
+        JLabel fieldLabel = new JLabel("Select Field: ");
 
         JButton classDeleteButton = new JButton("Delete");
         classDeleteButton.addActionListener(new ActionListener() {
@@ -577,7 +595,7 @@ public class GUI {
             }
          });
 
-        actionPane = new JPanel(new FlowLayout());
+        actionPane = new JPanel(new GridLayout(6,1));
 
         classNames = new JComboBox(model.getClassNames().toArray());
         classNames.setMaximumSize(classNames.getPreferredSize());
@@ -626,8 +644,8 @@ public class GUI {
         action.setResizable(false);
         action.setLocationRelativeTo(frame);
 
-        JLabel classLabel = new JLabel("Enter Class Name: ");
-        JLabel methodLabel = new JLabel("Enter Method Name: ");
+        JLabel classLabel = new JLabel("Select Class: ");
+        JLabel methodLabel = new JLabel("Select Method: ");
 
         JButton classDeleteButton = new JButton("Delete");
         classDeleteButton.addActionListener(new ActionListener() {
@@ -636,7 +654,7 @@ public class GUI {
             }
          });
 
-        actionPane = new JPanel(new FlowLayout());
+        actionPane = new JPanel(new GridLayout(6,1));
 
         classNames = new JComboBox(model.getClassNames().toArray());
         classNames.setMaximumSize(classNames.getPreferredSize());
@@ -683,9 +701,9 @@ public class GUI {
         action.setResizable(false);
         action.setLocationRelativeTo(frame);
 
-        JLabel classLabel = new JLabel("Enter Class Name: ");
-        JLabel methodLabel = new JLabel("Enter Method Name: ");
-        JLabel paramLabel = new JLabel("Enter Parameter Name: ");
+        JLabel classLabel = new JLabel("Select Class: ");
+        JLabel methodLabel = new JLabel("Select Method: ");
+        JLabel paramLabel = new JLabel("Select Parameter: ");
 
         JButton classDeleteButton = new JButton("Delete");
         classDeleteButton.addActionListener(new ActionListener() {
@@ -694,7 +712,7 @@ public class GUI {
             }
          });
 
-        actionPane = new JPanel(new FlowLayout());
+        actionPane = new JPanel(new GridLayout(8,1));
 
         classNames = new JComboBox(model.getClassNames().toArray());
         classNames.setMaximumSize(classNames.getPreferredSize());
@@ -758,7 +776,7 @@ public class GUI {
         action.setResizable(false);
         action.setLocationRelativeTo(frame);
 
-        JLabel classNameLabel = new JLabel("Enter Class Name: ");
+        JLabel classNameLabel = new JLabel("Select Class: ");
         JLabel classRenameLabel = new JLabel("Enter NEW Class Name: ");
         JButton classAddButton = new JButton("Rename");
 
@@ -768,7 +786,7 @@ public class GUI {
             }
          });
 
-        actionPane = new JPanel(new FlowLayout());
+        actionPane = new JPanel(new GridLayout(6,1));
         classNames = new JComboBox(model.getClassNames().toArray());
         classNames.setMaximumSize(classNames.getPreferredSize());
 
@@ -791,8 +809,8 @@ public class GUI {
         action.setResizable(false);
         action.setLocationRelativeTo(frame);
 
-        JLabel classLabel = new JLabel("Enter Class Name: ");
-        JLabel fieldLabel = new JLabel("Enter Field Name: ");
+        JLabel classLabel = new JLabel("Select Class: ");
+        JLabel fieldLabel = new JLabel("Select Field: ");
         JLabel fieldRenameLabel = new JLabel("Enter NEW Field Name: ");
 
         JButton classAddButton = new JButton("Rename");
@@ -803,7 +821,7 @@ public class GUI {
          });
 
 
-        actionPane = new JPanel(new FlowLayout());
+        actionPane = new JPanel(new GridLayout(8,1));
 
         classNames = new JComboBox(model.getClassNames().toArray());
         classNames.setMaximumSize(classNames.getPreferredSize());
@@ -854,8 +872,8 @@ public class GUI {
         action.setResizable(false);
         action.setLocationRelativeTo(frame);
 
-        JLabel classLabel = new JLabel("Enter Class Name: ");
-        JLabel methodLabel = new JLabel("Enter Method Name: ");
+        JLabel classLabel = new JLabel("Select Class: ");
+        JLabel methodLabel = new JLabel("Select Method: ");
         JLabel methodRenameLabel = new JLabel("Enter NEW Method Name: ");
 
         JButton classAddButton = new JButton("Rename");
@@ -865,7 +883,7 @@ public class GUI {
             }
          });
 
-        actionPane = new JPanel(new FlowLayout());
+        actionPane = new JPanel(new GridLayout(8,1));
 
         classNames = new JComboBox(model.getClassNames().toArray());
         classNames.setMaximumSize(classNames.getPreferredSize());
@@ -915,9 +933,9 @@ public class GUI {
         action.setResizable(false);
         action.setLocationRelativeTo(frame);
 
-        JLabel classLabel = new JLabel("Enter Class Name: ");
-        JLabel methodLabel = new JLabel("Enter Method Name: ");
-        JLabel paramLabel = new JLabel("Enter Parameter Name: ");
+        JLabel classLabel = new JLabel("Select Class: ");
+        JLabel methodLabel = new JLabel("Select Method: ");
+        JLabel paramLabel = new JLabel("Select Parameter: ");
         JLabel paramRenameLabel = new JLabel("Enter NEW Parameter Name: ");
 
         JButton classAddButton = new JButton("Rename");
@@ -928,7 +946,7 @@ public class GUI {
          });
 
 
-        actionPane = new JPanel(new FlowLayout());
+        actionPane = new JPanel(new GridLayout(10,1));
 
         classNames = new JComboBox(model.getClassNames().toArray());
         classNames.setMaximumSize(classNames.getPreferredSize());
@@ -1015,11 +1033,12 @@ public class GUI {
     public void addFieldAction(){
         String getClass = classNames.getSelectedItem().toString();
 		String field = fieldName.getText();
+        String fieldT = fieldType.getText();
 
         if(!boxMap.get(getClass).duplicateField(field)){
         model.addField(getClass, field);
         box = boxMap.get(getClass);
-        box.addField(field);
+        box.addField(field,fieldT);
         action.dispose();
         updateButtons();
         frame.validate();
@@ -1034,11 +1053,12 @@ public class GUI {
     public void addMethodAction(){
         String getClass = classNames.getSelectedItem().toString();
 		String method = methodName.getText();
+        String methodT = methodType.getText();
 
         if(!boxMap.get(getClass).duplicateMethod(method)){
         model.addMethod(getClass,method);
         box = boxMap.get(getClass);
-        box.addMethod(method);
+        box.addMethod(method,methodT);
         action.dispose();
         frame.validate();
         updateButtons();
@@ -1054,6 +1074,7 @@ public class GUI {
         String getClass = classNames.getSelectedItem().toString();
 		String method = methodNames.getSelectedItem().toString();
         String parameter = parameterName.getText();
+        //String parameterT = parameterType.getText();
 
         if(!boxMap.get(getClass).duplicateParameter(method,parameter)){
         model.addParameter(getClass,method,parameter);
@@ -1073,9 +1094,21 @@ public class GUI {
     public void addRelationshipAction(){
         String classOne = classNames.getSelectedItem().toString();
         String classTwo = classNamesX.getSelectedItem().toString();
-        String relationT = relationType.getText();
+        String relationT = relationshipTypes.getSelectedItem().toString();
 
-       // model.addRelationship(classOne,classTwo,relationType);
+        if(relationT.equals("Aggregation")){
+            model.addRelationship(classOne,classTwo,RelationshipType.AGGREGATION);
+        }
+        else if(relationT.equals("Compositon")){
+        model.addRelationship(classOne,classTwo,RelationshipType.COMPOSITION);
+        }
+        else if(relationT.equals("Inheritance")){
+        model.addRelationship(classOne,classTwo,RelationshipType.INHERITANCE);
+        }
+        else if(relationT.equals("Realization")){
+        model.addRelationship(classOne,classTwo,RelationshipType.REALIZATION);
+        }
+
         action.dispose();
         updateButtons();
     }
