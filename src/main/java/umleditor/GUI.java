@@ -19,8 +19,8 @@ public class GUI {
 
     JMenuBar menuBar;
 
-    JMenu add,delete,rename, file;
-    JMenuItem help,save,load;
+    JMenu add,delete,rename,file;
+    JMenuItem help,save,load, undo,redo;
     JMenuItem addClass,addRelationship,addField,addMethod,addParameter;
     JMenuItem deleteClass,deleteRelationship,deleteField,deleteMethod,deleteParameter;
     JMenuItem renameClass,renameField,renameMethod,renameParameter;
@@ -75,6 +75,10 @@ public class GUI {
         delete = new JMenu("Delete");
         rename = new JMenu("Rename");
         file = new JMenu("File");
+        undo = new JMenuItem("<=");
+        undo.setMaximumSize(new Dimension(30,30));
+        redo = new JMenuItem("=>");
+        redo.setMaximumSize(new Dimension(30,30));
 
         addClass = new JMenuItem("Class");
         addRelationship = new JMenuItem("Relationship");
@@ -121,6 +125,8 @@ public class GUI {
         menuBar.add(add);
         menuBar.add(delete);
         menuBar.add(rename);
+        menuBar.add(undo);
+        menuBar.add(redo);
         menuBar.add(Box.createHorizontalGlue());
         menuBar.add(help);
 
