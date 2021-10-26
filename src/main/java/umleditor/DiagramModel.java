@@ -802,18 +802,18 @@ public class DiagramModel {
      * @param className The name of the class to add a field to.
      * @param fieldName The name of the field to be added.
      */
-    public void addField(String className, String fieldName)
+    public void addField(String className, String fieldName, String fieldType)
     {
         UMLClass parentClass = getUML(className);
         boolean parentExists = classExists(className);
         if(SourceVersion.isIdentifier(fieldName)){
         if(parentExists)
         {
-           boolean fieldExists = parentClass.getFields().contains(fieldName); 
+           boolean fieldExists = parentClass.getField(fieldName).getFieldName().equals(fieldName);
 
            if(!fieldExists)
            {
-               parentClass.addField(fieldName);
+               parentClass.addField(fieldName, fieldType);
            }
            else
            {
@@ -844,7 +844,7 @@ public class DiagramModel {
     
         if(parentExists)
         {
-           boolean fieldExists = parentClass.getFields().contains(fieldName); 
+           boolean fieldExists = parentClass.getField(fieldName).getFieldName().equals(fieldName);
 
            if(fieldExists)
            {
@@ -877,8 +877,8 @@ public class DiagramModel {
         if(SourceVersion.isIdentifier(newFieldName)){
         if(parentExists)
         {
-           boolean oldFieldExists = parentClass.getFields().contains(oldFieldName); 
-           boolean newFieldExists = parentClass.getFields().contains(newFieldName); 
+           boolean oldFieldExists = parentClass.getField(oldFieldName).getFieldName().equals(oldFieldName); 
+           boolean newFieldExists = parentClass.getField(newFieldName).getFieldName().equals(newFieldName);
 
            if(oldFieldExists && !newFieldExists)
            {
