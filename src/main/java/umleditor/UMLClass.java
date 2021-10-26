@@ -65,8 +65,8 @@ public class UMLClass {
      * Adds a new method to the class representation.
      * @param methodName The name of the new method.
      */
-    public void addMethod(String methodName){
-        methods.add(new Method(methodName));
+    public void addMethod(String methodName, String methodType){
+        methods.add(new Method(methodName, methodType));
     }
 
     /**
@@ -128,9 +128,9 @@ public class UMLClass {
      * @param methodName The name of the method to add the parameter to.
      * @param pName The name of the parameter to add.
      */
-    public void addParameter(String methodName, String pName){
+    public void addParameter(String methodName, String pName, String pType){
         if (getMethod(methodName) != null) {
-            getMethod(methodName).addParameter(pName);
+            getMethod(methodName).addParameter(pName, pType);
         }
     }
 
@@ -156,36 +156,14 @@ public class UMLClass {
     }
 
     /**
-     * Adds a type for a method if the method exists in the class representation.
-     * @param methodName
-     * @param typeName
-     */
-    public void addMethodType(String methodName, String typeName){
-        if(getMethod(methodName) != null){
-            getMethod(methodName).addType(typeName);
-        }
-    }
-
-    /**
-     * Removes the type for a method if it exists in the class representation. 
-     * @param methodName
-     * @param typeName
-     */
-    public void removeMethodType(String methodName, String typeName){
-        if(getMethod(methodName) != null){
-            getMethod(methodName).removeType(typeName);
-        }
-    }
-
-    /**
      * Renames the type of a method if the method exists in the class representation.
      * @param methodName
      * @param oldTypeName
      * @param newTypeName
      */
-    public void renameMethodType(String methodName, String oldTypeName, String newTypeName){
+    public void renameMethodType(String methodName, String newTypeName){
         if(getMethod(methodName) != null){
-            getMethod(methodName).renameType(oldTypeName, newTypeName);
+            getMethod(methodName).renameMethodType(newTypeName);
         }
     }
 

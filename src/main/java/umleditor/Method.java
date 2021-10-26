@@ -9,15 +9,16 @@ import java.util.ArrayList;
 public class Method {
 
     private String methodName;
-    private ArrayList<String> type = new ArrayList<String>();
-    private ArrayList<String> parameters = new ArrayList<String>();
+    private String methodType;
+    private ArrayList<Parameters> parameters = new ArrayList<Parameters>();
 
     /**
      * Creates a new method.
      * @param methodName
      */
-    public Method(String methodName){
+    public Method(String methodName, String methodType){
         this.methodName = methodName;
+        this.methodType = methodType;
     }
 
     /**
@@ -26,6 +27,22 @@ public class Method {
      */
     public String getMethodName(){
         return this.methodName;
+    }
+
+    /**
+     * Returns the type of the method. 
+     * @return
+     */
+    public String getMethodType(){
+        return this.methodType;
+    }
+
+    /**
+     * Renames/sets the type of a method.
+     * @param newMethodType
+     */
+    public void renameMethodType(String newMethodType){
+        this.methodType = newMethodType;
     }
 
     /**
@@ -40,8 +57,8 @@ public class Method {
      * Adds a parameter to the method.
      * @param pName the name of the parameter to add.
      */
-    public void addParameter(String pName){
-        parameters.add(pName);
+    public void addParameter(String pName, String pType){
+        parameters.add(new Parameters(pName, pType));
     }
 
     /**
@@ -49,7 +66,11 @@ public class Method {
      * @param pName the name of the parameter to remove.
      */
     public void removeParameter(String pName){
-        parameters.remove(pName);
+        for(int index = 0; index < parameters.size(); index++) {
+            if (parameters.get(index).getParamName().equals(pName)) {
+                parameters.remove(index);
+            }
+        }
     }
 
     /**
@@ -59,9 +80,23 @@ public class Method {
      */
     public void renameParameter(String oldPName, String newPName){
         if(parameterExists(oldPName)){
-            int index = parameters.indexOf(oldPName);
-            parameters.set(index, newPName);
+           getParam(oldPName).renameParameter(newPName);
         }
+    }
+
+
+    /**
+     * Returns the parameter if it exists.
+     * @param pName
+     * @return
+     */
+    public Parameters getParam(String pName){
+        for(int index = 0; index < parameters.size(); index++) {
+            if (parameters.get(index).getParamName().equals(pName)) {
+                return parameters.get(index);
+            }
+        }
+        return null;
     }
 
     /**
@@ -77,7 +112,7 @@ public class Method {
      * @return
      */
     public boolean parameterExists(String pName){
-        return (parameters.contains(pName));
+        return (getParam(pName) != null);
     }
 
     /**
@@ -92,69 +127,7 @@ public class Method {
      * Returns ArrayList of the parameters.
      * @return ArrayList of parameters
      */
-    public ArrayList<String> getParamList(){
+    public ArrayList<Parameters> getParamList(){
         return parameters;
-    }
-
-    /**
-     * Assigns a return type for the method.
-     * @param typeName
-     */
-    public void addType(String typeName){
-        type.add(typeName);
-    }
-
-    /**
-     * Removes an assigned return type from a method. 
-     * @param typeName
-     */
-    public void removeType(String typeName){
-        type.remove(typeName);
-    }
-
-    /**
-     * Changes a method type if the method and type exist in the class.
-     * @param oldType
-     * @param newType
-     */
-    public void renameType(String oldType, String newType){
-        if (typeExists(oldType)){
-            int index = type.indexOf(oldType);
-            type.set(index, newType);
-        }
-    }
-
-    /**
-     * Checks to see if the type exists.
-     * @param typeName
-     * @return
-     */
-    public boolean typeExists(String typeName){
-        return type.contains(typeName);
-    }
-
-    /**
-     * Returns String of type(s).
-     * @return
-     */
-    public String getTypeName(){
-        return type.toString();
-    }
-
-    /**
-     * Checks to see if the type exists.
-     * @param typeName
-     * @return
-     */
-    public boolean methodTypeExists(String typeName){
-        return (type.contains(typeName));
-    }
-
-    /**
-     * Returns ArrayList of the types.
-     * @return
-     */
-    public ArrayList<String> getTypeList(){
-        return type;
     }
 }

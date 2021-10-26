@@ -150,8 +150,8 @@ public class DiagramModel {
             result.append("          \"name\": \"" + method.getMethodName() + "\",\n");
             result.append("          \"return_type\": \"n/a\",\n");
             result.append("          \"params\": [\n");
-            ArrayList<String> parameters = method.getParamList();
-            for(String param : parameters) {
+            ArrayList<Parameters> parameters = method.getParamList();
+            for(Parameters param : parameters) {
                 result.append("            { \"name\": \"" + param + "\", \"type\": \"n/a\"},\n");
             }
             if (!parameters.isEmpty()) {
@@ -305,7 +305,7 @@ public class DiagramModel {
      * @param className
      * @param methodName
      */
-    public void addMethod(String className, String methodName){
+    public void addMethod(String className, String methodName, String methodType){
         UMLClass parentClass = getUML(className);
         if(SourceVersion.isIdentifier(methodName)) 
         {
@@ -313,7 +313,7 @@ public class DiagramModel {
             {
                 if(!parentClass.methodExists(methodName))
                 {
-                    parentClass.addMethod(methodName);
+                    parentClass.addMethod(methodName, methodType);
                 }
                 else
                 {
@@ -411,7 +411,7 @@ public class DiagramModel {
      * @param methodName
      * @param name
      */
-    public void addParameter(String className, String methodName, String pName){
+    public void addParameter(String className, String methodName, String pName, String pType){
         UMLClass parentClass = getUML(className);
         if(SourceVersion.isIdentifier(pName))
         {
@@ -420,7 +420,7 @@ public class DiagramModel {
                 Method parentMethod = parentClass.getMethod(methodName);
                 if(parentClass.methodExists(methodName))
                 {
-                parentMethod.addParameter(pName);
+                parentMethod.addParameter(pName, pType);
                 }
                 else
                 {
