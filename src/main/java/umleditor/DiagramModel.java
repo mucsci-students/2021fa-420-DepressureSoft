@@ -128,7 +128,7 @@ public class DiagramModel {
      * @param fileName The name of the file. Must not include the .json extension, which is appended
      *  automatically.
      */
-    public void save(String directory, String fileName){
+    public void save(String fileLocation){
         StringBuilder jsonTxt = new StringBuilder();
         
         jsonTxt.append("{\n  \"classes\": [\n");
@@ -149,7 +149,12 @@ public class DiagramModel {
         }  
         jsonTxt.append("  ]\n}");
         try {
-            String filePath = directory + fileName + ".json";
+        	String filePath;
+        	if (fileLocation.substring(fileLocation.length() - 5, fileLocation.length()).equals(".json")) {
+        		filePath = fileLocation;
+        	} else {
+        		filePath = fileLocation + ".json";
+        	}
             FileWriter fw1 = new FileWriter(filePath);
             fw1.write(jsonTxt.toString());
             fw1.close();
