@@ -47,9 +47,11 @@ public class UMLInterface {
                     boolean moreFields = true;
                     while(moreFields)
                     {
-                        System.out.println("Please enter the name of the field you would like to add.");
+                        System.out.println("Please enter the name and the type of the field you would like to add.");
                         userEntry4 = sc.nextLine();
                         userEntry4 = userEntry4.trim();
+                        userEntry5 = sc.nextLine();
+                        userEntry5 = userEntry5.trim();
                         controller.command(userEntry, userEntry2, userEntry3, userEntry4, userEntry5, userEntry6);
                         System.out.println("Would you like to add another field to the class? 'yes' or 'no'");
                         userEntry4 = sc.nextLine();
@@ -67,9 +69,11 @@ public class UMLInterface {
                     userEntry3 = sc.nextLine();
                     userEntry3 = userEntry3.trim();
                   
-                    System.out.println("Please enter the name of the method you would like to add.");
+                    System.out.println("Please enter the name and the type of the method you would like to add.");
                     userEntry4 = sc.nextLine();
                     userEntry4 = userEntry4.trim();
+                    userEntry5 = sc.nextLine();
+                    userEntry5 = userEntry5.trim();
                     controller.command(userEntry, userEntry2, userEntry3, userEntry4, userEntry5, userEntry6);
                     
                 }
@@ -84,9 +88,11 @@ public class UMLInterface {
                     userEntry4 = sc.nextLine();
                     userEntry4 = userEntry4.trim();
 
-                    System.out.println("Please enter the name of the parameter you would like to add.");
+                    System.out.println("Please enter the name and the type of the parameter you would like to add.");
                     userEntry5 = sc.nextLine();
                     userEntry5 = userEntry5.trim();
+                    userEntry6 = sc.nextLine();
+                    userEntry6.trim();
                     controller.command(userEntry, userEntry2, userEntry3, userEntry4, userEntry5, userEntry6);
                     
                 }
