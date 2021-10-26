@@ -135,9 +135,9 @@ public class DiagramModel {
         result.append("    {\n");
         result.append("      \"name\": \"" + theClass.getName() + "\",\n");
         result.append("      \"fields\": [\n");
-        ArrayList<String> fields = theClass.getFields();
-        for(String field : fields) {
-            result.append("        { \"name\": \"" + field + "\", \"type\": \"N/A\" },\n"); 
+        ArrayList<Field> fields = theClass.getFields();
+        for(Field field : fields) {
+            result.append("        { \"name\": \"" + field.getFieldName() + "\", \"type\": \"" + field.getFieldType() + "\" },\n"); 
         }
         if(!fields.isEmpty()) {
             result.deleteCharAt(result.length() - 2);
@@ -148,11 +148,11 @@ public class DiagramModel {
         for(Method method : methods) {
             result.append("        {\n");
             result.append("          \"name\": \"" + method.getMethodName() + "\",\n");
-            result.append("          \"return_type\": \"n/a\",\n");
+            result.append("          \"return_type\": \"" + method.getMethodType() + "\",\n");
             result.append("          \"params\": [\n");
             ArrayList<Parameters> parameters = method.getParamList();
             for(Parameters param : parameters) {
-                result.append("            { \"name\": \"" + param + "\", \"type\": \"n/a\"},\n");
+                result.append("            { \"name\": \"" + param + "\", \"type\": \"" + param.getParamType() + "\"},\n");
             }
             if (!parameters.isEmpty()) {
                 result.deleteCharAt(result.length() - 2);
@@ -190,20 +190,23 @@ public class DiagramModel {
                 Iterator<JSONObject> fieldIterator = fieldList.iterator();
                 while(fieldIterator.hasNext()) {
                     String currentFieldName = (String) fieldIterator.next().get("name");
-                    this.addField(currentClassName, currentFieldName);
+                    String currentFieldType = (String) fieldIterator.next().get("fieldType");
+                    this.addField(currentClassName, currentFieldName, currentFieldType);
                 }
                 JSONArray methodList = (JSONArray) currentClass.get("methods");
                 Iterator<JSONObject> methodIterator = methodList.iterator();
                 while(methodIterator.hasNext()) {
                     JSONObject currentMethod = methodIterator.next();
                     String currentMethodName = (String) currentMethod.get("name");
-                    this.addMethod(currentClassName, currentMethodName);
+                    String currentMethodType = (String) currentMethod.get("methodType");
+                    this.addMethod(currentClassName, currentMethodName, currentMethodType);
                     JSONArray parameterList = (JSONArray) currentMethod.get("params");
                     Iterator<JSONObject> parameterIterator = parameterList.iterator();
                     while(parameterIterator.hasNext()) {
                         JSONObject currentParameter = parameterIterator.next();
                         String currentParameterName = (String) currentParameter.get("name");
-                        this.addParameter(currentClassName, currentMethodName, currentParameterName);
+                        String currentParameterType = (String) currentParameter.get("paramType");
+                        this.addParameter(currentClassName, currentMethodName, currentParameterName, currentParameterType);
                     }
                 }
             }

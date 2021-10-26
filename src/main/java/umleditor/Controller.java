@@ -22,13 +22,13 @@ public class Controller {
 				holder.addClass(input3);
 				break;
 			case "field":
-				holder.addField(input3, input4);
+				holder.addField(input3, input4, input5);
 				break;
 			case "method":
-				holder.addMethod(input3, input4);
+				holder.addMethod(input3, input4, input5);
 				break;
 			case "parameter":
-				holder.addParameter(input3, input4, input5);
+				holder.addParameter(input3, input4, input5, input6);
 				break;
 			case "relationship":
 				holder.addRelationship(input3, input4, getRelTypeFromString(input5));
