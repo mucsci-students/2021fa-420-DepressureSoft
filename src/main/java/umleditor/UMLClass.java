@@ -36,6 +36,16 @@ public class UMLClass {
     public UMLClass(String name) {
         this.dName = name;
     }
+
+    public UMLClass(UMLClass other){
+        this.dName = other.dName;
+        this.fields = new ArrayList(other.fields);
+        this.relationship = new ArrayList(other.relationship);
+        for(Method m : other.methods){
+            Method methodCopy = new Method(m);
+            methods.add(methodCopy);
+        }
+    }
     
     /**
      * Renames the class representation.
@@ -123,6 +133,13 @@ public class UMLClass {
         return methods;
     }
 
+    public ArrayList<String> getStringMethods(){
+       ArrayList<String> holder = new ArrayList<String>();
+        for(Method m: methods){
+            holder.add(m.getMethodName());
+        };
+        return holder;
+    }
     /**
      * Adds a new parameter to the class representation.
      * @param methodName The name of the method to add the parameter to.

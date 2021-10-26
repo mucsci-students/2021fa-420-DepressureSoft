@@ -1,9 +1,10 @@
 package umleditor;
 
 import javax.swing.*;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.LineBorder;
+import javax.swing.event.MouseInputAdapter;
+
+import java.awt.event.MouseEvent;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -24,6 +25,7 @@ public class classBox {
     private HashMap<String, ArrayList<String>> params;
     private HashMap<String,JLabel> fields;
 
+
     public classBox(String name){
         className = new JLabel(name);
         fields = new HashMap();
@@ -36,15 +38,31 @@ public class classBox {
     }
 
     public void initialize(){
-        panel = new JPanel(new GridLayout(1,1));
+        panel = new JPanel();
 		panel.setBorder(new LineBorder(new Color(20, 20, 20), 1));
         panel.add(className);
         methodPanel = new JPanel();
         fieldPanel = new JPanel();
-        methodPanel.setLayout(new GridLayout(4,1));
-		fieldPanel.setLayout(new GridLayout(4,1));
+        methodPanel.setLayout(new GridLayout(4,2));
+		fieldPanel.setLayout(new GridLayout(4,2));
         panel.add(methodPanel);
         panel.add(fieldPanel);
+
+        MouseInputAdapter movement = new MouseInputAdapter (){
+			private int x;
+			private int y;
+			public void mousePressed(MouseEvent e) {
+				this.x = e.getX();
+				this.y = e.getY();
+			}
+			public void mouseDragged(MouseEvent e) {
+				panel.setLocation(panel.getX() + (e.getX() - this.x), panel.getY() + (e.getY() - this.y));
+			}
+		};
+	
+		panel.addMouseListener(movement);
+		panel.addMouseMotionListener(movement);
+		
     }
     
     public String getClassName(){
@@ -59,29 +77,51 @@ public class classBox {
      * Add Element Functions 
      */
 
-     public void addField(String fieldName){
+     public void addField(String fieldName,String fieldT){
         JLabel field = new JLabel(fieldName);
 		fields.put(fieldName,field);
 		fieldPanel.add(field);
 		fieldPanel.repaint();
+        fields.get(fieldName).setText(fieldName + ":" + fieldT);
      }
-     public void addMethod(String methodName){
+
+     public void addMethod(String methodName, String methodType){
         JLabel method = new JLabel(methodName);
 		methods.put(methodName,method);
 		methodPanel.add(method);
 		methodPanel.repaint();
+        methods.get(methodName).setText(methodType + " : " + methodName);
      }
+
      public void addParameter(String parameter,String method){
+
+        JLabel temp = methods.get(method);
+        String holderv = temp.getText();
+        String[] holderv2z = holderv.split(":");
+
+        String param = holderv2z[0]+ ": " + method + "(";
+
         if(params.containsKey(method)){
-            ArrayList<String> temp = params.get(method);
-            temp.add(parameter);
+            ArrayList<String> holder = params.get(method);
+            String holderV2 = parameter;
+            holder.add(holderV2);
+            params.put(method,holder);
         }
         else{
-            ArrayList<String> temp = new ArrayList<String>();
-            temp.add(parameter);
-            params.put(method,temp);
+            ArrayList<String> holder = new ArrayList<String>();
+            String holderV2 = parameter;
+            holder.add(holderV2);
+            params.put(method,holder);
         }
+        
+        for(String x : params.get(method)){
+            param = param + x + ", ";
+        }
+        param = param + ")";
+        methods.get(method).setText(param);
+        methodPanel.repaint();
      }
+
     /**
      * Remove Element Functions
      */
@@ -90,48 +130,118 @@ public class classBox {
         fields.remove(removes);
         fieldPanel.repaint();
     }
+    
      public void removeMethod(String removes){
         methodPanel.remove(methods.get(removes));
         methods.remove(removes);
         methodPanel.repaint();
      }
+     
      public void removeParameter(String removes, String method){
-         ArrayList<String> temp = params.get(method);
-         
-         for(String t : temp){
-             if (t == removes){
-                 temp.remove(t);
-             }
-         }
-         methodPanel.repaint();
+        JLabel temp = methods.get(method);
+        String holderv = temp.getText();
+        String[] holderv2v = holderv.split(":");
+
+        String param = holderv2v[0] + ": " + method + "(";
+
+        ArrayList<String> holder = params.get(method);
+        holder.remove(removes);
+        for(String x : params.get(method)){
+            param = param + x + ", ";
+        }
+        param = param + ")";
+        methods.get(method).setText(param);
+        methodPanel.repaint();
      }
      /**
       * Rename Element Functions
       */
-      public void renameClass(String newName){
+     public void renameClass(String newName){
           className.setText(newName);
           panel.repaint();
       }
+    
      public void renameField(String oldName, String newName){
         JLabel temp = fields.get(oldName);
-        temp.setText(newName);
+        String holderv2 = temp.getText();
+        String[] holder = holderv2.split(":");
+
+        String newField = newName + ":" + holder[1];
+        temp.setText(newField);
+
+        fields.remove(oldName);
+        fields.put(newName,temp);
         fieldPanel.repaint();
     }
+    
      public void renameMethod(String oldName, String newName){
         JLabel temp = methods.get(oldName);
-        temp.setText(newName);
-        methodPanel.repaint();
-     }
-     public void renameParameter(String oldParameter, String method, String newParameter){
-        ArrayList<String> temp = params.get(method);
+        methods.put(newName,temp);
 
-        for(String p : temp){
-            if(p == oldParameter)
-            {
-                oldParameter = newParameter;
+        String holderv2 = temp.getText();
+        String[] holder = holderv2.split(":");
+
+        String method = holder[0] + ": " + newName;
+
+        if(params.containsKey(oldName)){
+            method = method + "(";
+            params.put(newName,params.get(oldName));
+            for(String x : params.get(oldName)){
+                method = method + x + ", ";
             }
+            method = method + ")";
+            params.remove(oldName);
         }
+
+        temp.setText(method);
+        methods.remove(oldName);
+        methodPanel.repaint();
+     }
+    
+     public void renameParameter(String oldParameter, String newParameter, String method){
+
+        JLabel temp = methods.get(method);
+        String holderv = temp.getText();
+        String[] holderv2v = holderv.split(":");
+
+        String param = holderv2v[0] + ": " + method + "(";
+
+        ArrayList<String> holder = params.get(method);
+        int holderV2 = holder.indexOf(oldParameter);
+        holder.set(holderV2,newParameter);
+        for(String x : params.get(method)){
+            param = param + x + ", ";
+        }
+        param = param + ")";
+        methods.get(method).setText(param);
         methodPanel.repaint();
      }
 
+
+     /**
+      * Existence Checkers 
+      */
+    public boolean duplicateField(String fieldName){
+        if(fields.containsKey(fieldName))
+        return true;
+        else
+        return false;
+    }
+    public boolean duplicateMethod(String methodName){
+        if(methods.containsKey(methodName))
+        return true;
+        else
+        return false;
+    }
+    public boolean duplicateParameter(String method, String parameterName){
+        ArrayList<String> holder = params.get(method);
+        if(holder != null){
+        if(holder.contains(parameterName))
+        return true;
+        else
+        return false;
+        }
+        else
+        return false;
+    }
 }
