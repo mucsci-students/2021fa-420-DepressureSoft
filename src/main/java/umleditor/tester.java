@@ -19,8 +19,8 @@ public class tester {
 
             System.out.println("Actual: ");
             holder.addClass("Diagram1");
-            holder.getUML("Diagram1").addField("Field1");
-            holder.getUML("Diagram1").addField("Field2");
+            holder.getUML("Diagram1").addField("Field1", "Type1");
+            holder.getUML("Diagram1").addField("Field2", "Type2");
             holder.addClass("Diagram2");
             holder.addClass("Diagram3");
             holder.listClasses();
@@ -48,7 +48,7 @@ public class tester {
             System.out.println("");
             
             System.out.println("Actual: ");
-            holder.addField("diagram444","field123");
+            holder.addField("diagram444","field123", "type123");
             holder.deleteField("diagram1","field123");
             holder.renameField("diagram1","fieldttt","fieldneww");
 
