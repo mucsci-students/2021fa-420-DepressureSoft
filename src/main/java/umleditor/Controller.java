@@ -1,117 +1,223 @@
 package umleditor;
 
+import java.util.ArrayList;
+
 public class Controller {
-	DiagramModel holder = new DiagramModel();
-	UMLInterface view = new UMLInterface();
 	
-	/**
-	 * Controls access to model based on inputs.
-	 * @param input1
-	 * @param input2
-	 * @param input3
-	 * @param input4
-	 */
-	public void command(String input1, String input2, String input3, String input4, String input5, String input6)
-	{
-		switch(input1)
-		{
-		case "add":
-			switch(input2)
-			{
-			case "class":
-				holder.addClass(input3);
-				break;
-			case "field":
-				holder.addField(input3, input4);
-				break;
-			case "method":
-				holder.addMethod(input3, input4);
-				break;
-			case "parameter":
-				holder.addParameter(input3, input4, input5);
-				break;
-			case "relationship":
-				holder.addRelationship(input3, input4, getRelTypeFromString(input5));
-				break;
-			default:
-				break;
-			}
-			break;
-			
-		case "rename":
-			switch(input2)
-			{
-			case "class":
-				holder.renameUMLClass(input3, input4);
-				break;
-			case "field":
-				holder.renameField(input3, input4, input5);
-				break;
-			case "method":
-				holder.renameMethod(input3, input4, input5);
-				break;
-			case "parameter":
-				holder.renameParameter(input3, input4, input5, input6);
-				break;
-			default:
-				break;
-			}
-			break;
-			
-		case "delete":
-			switch(input2)
-			{
-			case "class":
-				holder.deleteClass(input3);
-				break;
-			case "field":
-				holder.deleteField(input3, input4);
-				break;
-			case "method":
-				holder.deleteMethod(input3, input4);
-				break;
-			case "parameter":
-				switch(input5)
-				{
-				case "one":
-					holder.deleteParameter(input3, input4, input6);
-					break;
-				case "all":
-					holder.deleteAllParameters(input3, input4);
-					break;
+	private static final String ADD_HELP = "ADD: Adds a class, method, field, parameter, or relationship to the diagram.\nadd class <class>\nadd method <class> <method>\nadd field <class> <field>\nadd parameter <class> <method> <parameter>\nadd relationship <source_class> <destination_class> {aggregation|composition|inheritance|realization}";
+	private static final String DELETE_HELP = "DELETE: Deletes a class, method, field, parameter, or relationship from the diagram.\ndelete class <class>\ndelete method <class> <method>\ndelete field <class> <field>\ndelete parameter <class> <method> <parameter>\ndelete relationship <source_class> <destination_class>";
+	private static final String RENAME_HELP = "RENAME: Renames a class, method, field, or parameter.\nrename class <class> <new_name>\nrename method <class> <method> <new_name>\nrename field <class> <field> <new_name>\nrename parameter <class> <method> <parameter> <new_name>";
+	private static final String SAVE_HELP = "SAVE: Saves the current class diagram to a json file. Directory and file name must exist. \".json\" extension is automatically appended to file name.\nsave <directory> <file_name>";
+	private static final String LOAD_HELP = "LOAD: Loads a class diagram from a json file. File path must exist.\nload <file_path>";
+	private static final String CHANGETYPE_HELP = "CHANGETYPE: Changes the type of a field, method, parameter, or relationship.\nchangetype field <class> <field> <new_type>\n changetype al;fkproiauejf;jdf";
+	private static final String DISPLAY_HELP = "DISPLAY: Displays the class diagram in various ways.\ndisplay class <classname>\ndisplay {all|relationships}";
+	private static final String HELP_MENU = "----------| HELP MENU |----------\n"
+			+ "Type help <command> for additional information about each command.\n"
+			+ "add {class|method|field|parameter|relationship}\n"
+			+ "delete {class|method|field|parameter|relationship}\n"
+			+ "rename {class|method|field|parameter|relationship}\n"
+			+ "save <directory> <filename>\n"
+			+ "load <file_path>\n"
+			+ "changetype {field|method|relationship}\n"
+			+ "display {class|all|relationships}\n"
+			+ "";
+	
+	public static void main(String[] args) {
+		DiagramModel model = new DiagramModel();
+		UMLInterface view = new UMLInterface();
+		view.displayWelcome();
+		boolean userInputLoop = true;
+		ArrayList<String> commands;
+		while(userInputLoop) {
+			commands = view.getInput("Command > ");
+			try {
+				if(checkKeyword(commands, 0, "exit")) {
+					userInputLoop = false;
+				} else if(checkKeyword(commands, 0, "add")) {
+					if(checkKeyword(commands, 1, "class")) {
+						if (commands.size() > 2) {
+							model.addClass(commands.get(2));
+						} else {
+							view.print("Class name required.");
+						}
+					} else if(checkKeyword(commands, 1, "method")) {
+						if (commands.size() > 3) {
+							model.addMethod(commands.get(2), commands.get(3));
+						} else {
+							view.print("Class and method names required.");
+						}
+					} else if(checkKeyword(commands, 1, "field")) {
+						if (commands.size() > 3) {
+							model.addField(commands.get(2), commands.get(3));
+						} else {
+							view.print("Class and field names required.");
+						}
+					} else if(checkKeyword(commands, 1, "parameter")) {
+						if(commands.size() > 4) {
+							model.addParameter(commands.get(2), commands.get(3), commands.get(4));
+						} else {
+							view.print("Class, method, and parameter names required.");
+						}
+					} else if(checkKeyword(commands, 1, "relationship")) {
+						if(commands.size() == 4) {
+							view.print("Please specify a relationship type. {aggregation|composition|inheritance|realization}");
+							ArrayList<String> typeInput;
+							typeInput = view.getInput("Relationship Type > ");
+							model.addRelationship(commands.get(2), commands.get(3), getRelTypeFromString(typeInput.get(0)));
+						} else if(commands.size() > 4) {
+							model.addRelationship(commands.get(2), commands.get(3), getRelTypeFromString(commands.get(4)));
+						} else {
+							view.print("Source class and destination class names required.");
+						}
+					} else {
+						view.print("Unrecognized command. Type \"help add\" for more info.");
+					}	
+				} else if(checkKeyword(commands, 0, "delete")) {
+					if(checkKeyword(commands, 1, "class")) {
+						if(commands.size() > 2) {
+							model.deleteClass(commands.get(2));
+						} else {
+							view.print("Class name required.");
+						}
+					} else if(checkKeyword(commands, 1, "field")) {
+						if(commands.size() > 3) {
+							model.deleteField(commands.get(2), commands.get(3));
+						} else {
+							view.print("Class and field name required.");
+						}
+					} else if(checkKeyword(commands, 1, "method")) {
+						if(commands.size() > 3) {
+							model.deleteMethod(commands.get(2), commands.get(3));
+						} else {
+							view.print("Class and method name required.");
+						}
+					} else if(checkKeyword(commands, 1, "parameter")) {
+						if(commands.size() > 4) {
+							model.deleteParameter(commands.get(2), commands.get(3), commands.get(4));
+						} else {
+							view.print("Class, method, and parameter names required.");
+						}
+					} else if(checkKeyword(commands, 1, "relationship")) {
+						if(commands.size() > 3) {
+							model.deleteRelationship(commands.get(2), commands.get(3));
+						} else {
+							view.print("Source and destination class names required.");
+						}
+					} else {
+						view.print("Unrecognized command. Type \"help delete\" for more info.");
+					}
+				} else if(checkKeyword(commands, 0, "rename")) {
+					if(checkKeyword(commands, 1, "class")) {
+						if (commands.size() > 3) {
+							model.renameUMLClass(commands.get(2), commands.get(3));
+						} else {
+							view.print("Class name and new name required.");
+						}
+					} else if(checkKeyword(commands, 1, "method")) {
+						if (commands.size() > 4) {
+							model.renameMethod(commands.get(2), commands.get(3), commands.get(4));
+						} else {
+							view.print("Class name, method name, and new method name required.");
+						}
+					} else if(checkKeyword(commands, 1, "field")) {
+						if (commands.size() > 4) {
+							model.renameField(commands.get(2), commands.get(3), commands.get(4));
+						} else {
+							view.print("Class name, field name, and new field name required.");
+						}
+					} else if(checkKeyword(commands, 1, "parameter")) {
+						if(commands.size() > 5) {
+							model.renameParameter(commands.get(2), commands.get(3), commands.get(4), commands.get(5));
+						} else {
+							view.print("Class name, method name, parameter name, and new name required.");
+						}
+					} else {
+						view.print("Unrecognized command. Type \"help rename\" for more info.");
+					}
+				} else if(checkKeyword(commands, 0, "save")) {
+					if(commands.size() > 2) {
+						model.save(commands.get(1), commands.get(2));
+					} else {
+						view.print("Save requires a directory and file name. Type \"help save\" for more info.");
+					}
+				} else if (checkKeyword(commands, 0, "load")) {
+					if(commands.size() > 1) {
+						if(UMLInterface.yesNoDialog("Are you sure you want to load? All unsaved changes will be lost.")) {
+							model.load(commands.get(1));
+						}
+					} else {
+						view.print("Load requires a file path to load the file from. Type \"help load\" for more info.");
+					}
+				} else if (checkKeyword(commands, 0, "changetype")) {
+					view.print("Types are not yet implemented. Check back later!");
+				} else if(checkKeyword(commands, 0, "display")) {
+					if(checkKeyword(commands, 1, "all")) {
+						model.listClasses();
+					} else if(checkKeyword(commands, 1, "class")) {
+						if(commands.size() > 2) {
+							model.listClass(commands.get(2));
+						} else {
+							view.print("Class name required.");
+						}
+					} else if(checkKeyword(commands, 1, "relationships")) {
+						model.listRelationships();
+					} else {
+						view.print("Unrecognized command. Type \"help display\" for more info.");
+					}
+
+				} else if(checkKeyword(commands, 0, "undo")) {
+					if (model.undo()){
+						view.print("Most recent change was undone.");
+					} else {
+						view.print("Undo could not be completed.");
+					}
+				} else if (checkKeyword(commands, 0, "redo")) {
+					if (model.redo()){
+						view.print("Most recent change was redone.");
+					} else {
+						view.print("Redo could not be completed.");
+					}
+
+				} else if(checkKeyword(commands, 0, "help")) {
+					if(checkKeyword(commands, 1, "add")) {
+						view.print(ADD_HELP);
+					} else if(checkKeyword(commands, 1, "delete")) {
+						view.print(DELETE_HELP);
+					} else if(checkKeyword(commands, 1, "rename")) {
+						view.print(RENAME_HELP);
+					} else if(checkKeyword(commands, 1, "save")) {
+						view.print(SAVE_HELP);
+					} else if(checkKeyword(commands, 1, "load")) {
+						view.print(LOAD_HELP);
+					} else if(checkKeyword(commands, 1, "changetype")) {
+						view.print(CHANGETYPE_HELP);
+					} else if(checkKeyword(commands, 1, "display")) {
+						view.print(DISPLAY_HELP);
+					} else {
+						view.print(HELP_MENU);
+					}
+					
+				} else {
+					view.print("Unrecognized command. Type \"help\" to view commands.");
 				}
-				break;
-			case "relationship":
-				holder.deleteRelationship(input3, input4);
-				break;
-			default:
-				break;
 			}
-			break;
-		
-		case "changeType":
-			holder.changeRelationshipType(input2, input3, getRelTypeFromString(input4));
-			break;
-			
-		case "display":
-			switch(input2)
-			{
-			case "one":
-				holder.listClass(input3);
-				break;
-			case "all":
-				holder.listClasses();
-				break;
-			case "relationships":
-				System.out.println("in rels");
-				holder.listRelationships();
-				break;
-			default:
-				break;
+			catch (Exception error) {
+				System.out.println(error.getMessage());
 			}
-			break;
 		}
 	}
+	
+	
+	/**
+	 * Checks that a string in a list of strings exists at the specified index.
+	 * @param index The index of the list to look at.
+	 * @param keyword The string to compare with the string at the index.
+	 * @return If the string in the list matches "keyword", returns true, returns false otherwise.
+	 */
+	private static boolean checkKeyword(ArrayList<String> commandList, int index, String keyword) {
+		return (commandList.size() > index) && (commandList.get(index).equalsIgnoreCase(keyword));
+	}
+	
 	
     /**
      * Helper method that returns a value from the RelationshipType enum that matches the input string.
@@ -119,7 +225,7 @@ public class Controller {
      * @return The correct RelationshipType enum value if input equals "aggregation", "composition", "inheritance", 
      *  or "realization", null if not.
      */
-    private static Relationship.RelationshipType getRelTypeFromString(String input) {
+    private static Relationship.RelationshipType getRelTypeFromString(String input) throws Exception {
         if (input.equalsIgnoreCase("aggregation")) {
             return Relationship.RelationshipType.AGGREGATION;
         } else if (input.equalsIgnoreCase("composition")) {
@@ -129,7 +235,7 @@ public class Controller {
         } else if (input.equalsIgnoreCase("realization")) {
             return Relationship.RelationshipType.REALIZATION;
         } else {
-            return null;
+            throw new Exception(input + " is not a valid relationship type.");
         }
     }
 }
