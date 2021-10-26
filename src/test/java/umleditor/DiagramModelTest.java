@@ -87,7 +87,7 @@ class DiagramModelTest {
 		assertEquals(1, testDiagram.numberOfClasses(), 
 				"Diagram should include only added 'trial' class");
 		
-		testDiagram.addMethod("trial", "testMethod");
+		testDiagram.addMethod("trial", "testMethod", "testType");
 		
 		assertEquals(true, testDiagram.methodExists("trial", "testMethod"),
 				"testMethod should exist");
@@ -101,7 +101,7 @@ class DiagramModelTest {
 		assertEquals(1, testDiagram.numberOfClasses(), 
 				"Diagram should include only added 'trial' class");
 		
-		testDiagram.addMethod("trial", "testMethod");
+		testDiagram.addMethod("trial", "testMethod", "testType");
 		
 		assertEquals(true, testDiagram.methodExists("trial", "testMethod"),
 				"testMethod should exist");
