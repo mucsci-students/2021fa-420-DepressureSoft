@@ -66,7 +66,7 @@ public class GUI {
         frame.setVisible(true);
     }
     /**
-     * Intializes Action Listeners and Start Menu
+     * Initializes Action Listeners and Start Menu
      */
     public void createInterface(){
         menuBar = new JMenuBar();
@@ -137,7 +137,6 @@ public class GUI {
         addClass.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 addClassWindow();
-                
             }
          });
          /**
@@ -252,12 +251,12 @@ public class GUI {
                 helpWindow();
             }
          });
-        
         save.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
         		saveWindow();
         	}
         });
+      updateButtons();
     }
 
     /**
@@ -1004,6 +1003,7 @@ public class GUI {
         frame.add(pane);
         frame.setVisible(true);
         action.dispose();
+        updateButtons();
         }
         else{
             JLabel error = new JLabel("Class already exists.");
@@ -1021,6 +1021,7 @@ public class GUI {
         box = boxMap.get(getClass);
         box.addField(field);
         action.dispose();
+        updateButtons();
         frame.validate();
         }
         else{
@@ -1040,6 +1041,7 @@ public class GUI {
         box.addMethod(method);
         action.dispose();
         frame.validate();
+        updateButtons();
          }
         else{
         JLabel error = new JLabel("Method already exists.");
@@ -1059,6 +1061,7 @@ public class GUI {
         box.addParameter(parameter,method);
         action.dispose();
         frame.repaint();
+        updateButtons();
         }
         else{
         JLabel error = new JLabel("Parameter already exists.");
@@ -1074,6 +1077,7 @@ public class GUI {
 
        // model.addRelationship(classOne,classTwo,relationType);
         action.dispose();
+        updateButtons();
     }
     /**
      * Delete Actions
@@ -1086,6 +1090,7 @@ public class GUI {
         boxMap.remove(remClass);
         action.dispose();
         pane.repaint();
+        updateButtons();
     }
     public void deleteRelationshipAction(){
         String classOne = classNames.getSelectedItem().toString();
@@ -1093,15 +1098,17 @@ public class GUI {
 
         model.deleteRelationship(classOne,classTwo);
         action.dispose();
+        updateButtons();
     }
     public void deleteFieldAction(){
         String getClass = classNames.getSelectedItem().toString();
 		String field = fieldNames.getSelectedItem().toString();
 
-         model.deleteField(getClass, field); 
-         box = boxMap.get(getClass);
-         box.removeField(field);
+        model.deleteField(getClass, field); 
+        box = boxMap.get(getClass);
+        box.removeField(field);
         action.dispose();
+        updateButtons();
     }
     public void deleteMethodAction(){
         String getClass = classNames.getSelectedItem().toString();
@@ -1111,6 +1118,7 @@ public class GUI {
         box.removeMethod(method);
         model.deleteMethod(getClass,method);
         action.dispose();
+        updateButtons();
     }
     public void deleteParameterAction(){ 
         String getClass = classNames.getSelectedItem().toString();
@@ -1121,7 +1129,7 @@ public class GUI {
        box = boxMap.get(getClass);
        box.removeParameter(param,method);
        action.dispose();
-
+       updateButtons();
     }
    /**
     * Rename Functions
@@ -1137,6 +1145,7 @@ public class GUI {
         boxMap.remove(newClass);
         boxMap.put(newClass,box);
         action.dispose();
+        updateButtons();
         }
         else{
 
@@ -1152,6 +1161,7 @@ public class GUI {
         box.renameField(field,newField);
         model.renameField(getClass,field,newField);
         action.dispose();
+        updateButtons();
         }
         else{
         JLabel error = new JLabel("Field already exists.");
@@ -1169,6 +1179,7 @@ public class GUI {
         box.renameMethod(method,newMethod);
         model.renameMethod(getClass,method,newMethod);
         action.dispose();
+        updateButtons();
         }
         else{
             JLabel error = new JLabel("Method already exists.");
@@ -1187,6 +1198,7 @@ public class GUI {
         box = boxMap.get(getClass);
         box.renameParameter(oldParam,newParam,method);
         action.dispose();
+        updateButtons();
         }
         else{
         JLabel error = new JLabel("Parameter already exists.");
@@ -1200,6 +1212,114 @@ public class GUI {
     public void load(){
        // model.load();
     }
+    
+    /**
+     * Updates the availability of buttons based on the conditions of the model.
+     * If the conditions of the model prevent a button from functioning properly when clicked, that 
+     * button is grayed out and unclickable. 
+     */
+    public void updateButtons() {
+    	//All adds
+    	//addRelationship
+    	if (model.numberOfClasses() == 0) {
+    		addRelationship.setEnabled(false);
+    	}
+    	else {
+    		addRelationship.setEnabled(true);
+    	}
+    	
+    	//addField, addMethod
+    	if (model.numberOfClasses() == 0) {
+    		addField.setEnabled(false);
+    		addMethod.setEnabled(false);
+    	}
+    	else {
+    		addField.setEnabled(true);
+    		addMethod.setEnabled(true);
+    	}
+    	
+    	//addParameter
+    	if (model.methodsPresent() == false) {
+    		addParameter.setEnabled(false);
+    	}
+    	else {
+    		addParameter.setEnabled(true);
+    	}
+    	
+    	//All deletes
+    	//deleteClass
+    	if (model.numberOfClasses() == 0) {
+    		deleteClass.setEnabled(false);
+    	}
+    	else {
+    		deleteClass.setEnabled(true);
+    	}
+    	
+    	//deleteRelationship
+    	if (model.relationshipsPresent() == false) {
+    		deleteRelationship.setEnabled(false);
+    	}
+    	else {
+    		deleteRelationship.setEnabled(true);
+    	}
+    	
+    	//deleteField
+    	if (model.fieldsPresent() == false) {
+    		deleteField.setEnabled(false);
+    	}
+    	else {
+    		deleteField.setEnabled(true);
+    	}
+    	
+    	//deleteMethod
+    	if (model.methodsPresent() == false) {
+    		deleteMethod.setEnabled(false);
+    	}
+    	else {
+    		deleteMethod.setEnabled(true);
+    	}
+    	
+    	//deleteParameter
+    	if (model.paramsPresent() == false) {
+    		deleteParameter.setEnabled(false);
+    	}
+    	else {
+    		deleteParameter.setEnabled(true);
+    	}
+    	
+    	//All renames
+    	//renameClass
+    	if (model.numberOfClasses() == 0) {
+    		renameClass.setEnabled(false);
+    	}
+    	else {
+    		renameClass.setEnabled(true);
+    	}
+    	
+    	//renameField
+    	if (model.fieldsPresent() == false) {
+    		renameField.setEnabled(false);
+    	}
+    	else {
+    		renameField.setEnabled(true);
+    	}
+    	
+    	//renameMethod
+    	if (model.methodsPresent() == false) {
+    		renameMethod.setEnabled(false);
+    	}
+    	else {
+    		renameMethod.setEnabled(true);
+    	}
+    	
+    	//renameParameter
+    	if (model.paramsPresent() == false) {
+    		renameParameter.setEnabled(false);
+    	}
+    	else {
+    		renameParameter.setEnabled(true);
+    	}
+    }
 
     public boolean duplicateClass(String className){
         if(boxMap.containsKey(className))
@@ -1207,5 +1327,4 @@ public class GUI {
         else
         return false;
     }
-
 }
