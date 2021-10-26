@@ -1074,4 +1074,40 @@ public class DiagramModel {
         return listOfKeys;
     }
     
+    /**
+     * Returns a boolean based on whether undo can be currently used
+     * @return a boolean determined by if undo can be currently used
+     */
+    public boolean canUndo()
+    {
+    	ModelHistory history = ModelHistory.getInstance();
+    	
+    	if (history.isUndoHistoryEmpty())
+    	{
+    		return false;
+    	}
+    	else 
+    	{
+    		return true;
+    	}
+    }
+    
+    /**
+     * Returns a boolean based on whether redo can be currently used
+     * @return a boolean determined by if redo can be currently used
+     */
+    public boolean canRedo()
+    {
+    	ModelHistory history = ModelHistory.getInstance();
+    	
+    	if (history.isRedoHistoryEmpty())
+    	{
+    		return false;
+    	}
+    	else 
+    	{
+    		return true;
+    	}
+    }
+    
 }
