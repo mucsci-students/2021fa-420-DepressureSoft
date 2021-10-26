@@ -11,6 +11,8 @@ public class Controller {
 	private static final String LOAD_HELP = "LOAD: Loads a class diagram from a json file. File path must exist.\nload <file_path>";
 	private static final String CHANGETYPE_HELP = "CHANGETYPE: Changes the type of a field, method, parameter, or relationship.\nchangetype field <class> <field> <new_type>\n changetype al;fkproiauejf;jdf";
 	private static final String DISPLAY_HELP = "DISPLAY: Displays the class diagram in various ways.\ndisplay class <classname>\ndisplay {all|relationships}";
+	private static final String UNDO_HELP = "UNDO: Reverts to the program state before the most recent change.";
+	private static final String REDO_HELP = "REDO: If undo has been called, reverts to the state of the program before change was undone.";
 	private static final String HELP_MENU = "----------| HELP MENU |----------\n"
 			+ "Type help <command> for additional information about each command.\n"
 			+ "add {class|method|field|parameter|relationship}\n"
@@ -20,6 +22,8 @@ public class Controller {
 			+ "load <file_path>\n"
 			+ "changetype {field|method|relationship}\n"
 			+ "display {class|all|relationships}\n"
+			+ "undo\n"
+			+ "redo\n"
 			+ "";
 	
 	public static void main(String[] args) {
@@ -193,6 +197,10 @@ public class Controller {
 						view.print(CHANGETYPE_HELP);
 					} else if(checkKeyword(commands, 1, "display")) {
 						view.print(DISPLAY_HELP);
+					} else if(checkKeyword(commands, 1, "undo")){
+						view.print(UNDO_HELP);
+					} else if (checkKeyword(commands, 1, "redo")){
+						view.print(REDO_HELP);
 					} else {
 						view.print(HELP_MENU);
 					}
