@@ -142,6 +142,15 @@ public class Method {
     }
 
     /**
+     * Checks to see if the type exists.
+     * @param typeName
+     * @return
+     */
+    public boolean methodTypeExists(String typeName){
+        return (type.contains(typeName));
+    }
+
+    /**
      * Returns ArrayList of the types.
      * @return
      */

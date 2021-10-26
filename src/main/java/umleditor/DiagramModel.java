@@ -527,6 +527,108 @@ public class DiagramModel {
             System.out.println("The parameter(s) cannot be removed, as the parent class \"" + className + "\" does not exist.");
         }
     }
+
+    /**
+     * Adds a type to a method if the method and class exist. 
+     * @param className
+     * @param methodName
+     * @param typeName
+     */
+    public void addMethodType(String className, String methodName, String typeName){
+        UMLClass parentClass = getUML(className);
+        if(SourceVersion.isIdentifier(typeName))
+        {
+            if(parentClass != null)
+            {
+                Method parentMethod = parentClass.getMethod(methodName);
+                if(parentClass.methodExists(methodName))
+                {
+                parentMethod.addType(typeName);
+                }
+                else
+                {
+                        System.out.println("The type \"" + typeName + 
+                            "\" cannot be added, as the method \"" + methodName + "does not exist.");
+                }
+            }
+            else
+            {
+                System.out.println("The type \"" + typeName + 
+                    "\" cannot be added, as the parent class \"" + className + "\" does not exist.");  
+            }
+        }
+        else
+        {
+            System.out.println("\"" + typeName + "\" is not a valid type.");
+        }
+    }
+
+      /**
+     * Removes method type of a method if the method and class exist.
+     * @param className
+     * @param methodName
+     * @param typeName
+     */
+    public void removeMethodType(String className, String methodName, String typeName) {
+        UMLClass parentClass = getUML(className);
+        if(parentClass != null){
+            Method parentMethod = parentClass.getMethod(methodName);
+            if(parentClass.methodExists(methodName)){
+                if(parentMethod.methodTypeExists(typeName)){
+                    parentMethod.removeType(typeName);
+                }
+            }
+            else{
+                System.out.println("The type \"" + typeName + 
+                        "\" cannot be removed, as the method \"" + methodName + "does not exist.");
+            }
+        }
+        else{
+            System.out.println("The type \"" + typeName + 
+                "\" cannot be removed, as the parent class \"" + className + "\" does not exist.");
+        }
+    }
+
+    /**
+     * Renames method type if class and method exist. 
+     * @param className
+     * @param methodName
+     * @param oldTypeName
+     * @param newTypeName
+     */
+    public void renameMethodType(String className, String methodName, String oldTypeName, String newTypeName){
+        UMLClass parentClass = getUML(className);
+        if(SourceVersion.isIdentifier(newTypeName))
+        {
+            if(parentClass != null)
+            {
+                Method parentMethod = parentClass.getMethod(methodName);
+                if(parentClass.methodExists(methodName))
+                {
+                    if(parentMethod.methodTypeExists(oldTypeName))
+                    {
+                        parentMethod.renameType(oldTypeName, newTypeName);
+                    }
+                    else{
+                        System.out.println("The type \"" + oldTypeName + 
+                            "\" cannot be renamed, as it does not exist.");
+                    }
+                }
+                else{
+                    System.out.println("The type \"" + oldTypeName + 
+                            "\" cannot be renamed, as the method \"" + methodName + "does not exist.");
+                }
+            }
+            else{
+                System.out.println("The type \"" + oldTypeName + 
+                    "\" cannot be renamed, as the parent class \"" + className + "\" does not exist.");
+            }
+        }
+        else
+        {
+            System.out.println("\"" + newTypeName + "\" is not a valid type.");
+        }
+    }
     
     /**
      * Adds a class relationship to the diagram, checking to ensure that both classes exist, a relationship

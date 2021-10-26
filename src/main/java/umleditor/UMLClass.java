@@ -156,6 +156,40 @@ public class UMLClass {
     }
 
     /**
+     * Adds a type for a method if the method exists in the class representation.
+     * @param methodName
+     * @param typeName
+     */
+    public void addMethodType(String methodName, String typeName){
+        if(getMethod(methodName) != null){
+            getMethod(methodName).addType(typeName);
+        }
+    }
+
+    /**
+     * Removes the type for a method if it exists in the class representation. 
+     * @param methodName
+     * @param typeName
+     */
+    public void removeMethodType(String methodName, String typeName){
+        if(getMethod(methodName) != null){
+            getMethod(methodName).removeType(typeName);
+        }
+    }
+
+    /**
+     * Renames the type of a method if the method exists in the class representation.
+     * @param methodName
+     * @param oldTypeName
+     * @param newTypeName
+     */
+    public void renameMethodType(String methodName, String oldTypeName, String newTypeName){
+        if(getMethod(methodName) != null){
+            getMethod(methodName).renameType(oldTypeName, newTypeName);
+        }
+    }
+
+    /**
      * Adds a new field the class representation.
      * @param newField The name of the new field.
      */
