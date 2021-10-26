@@ -252,10 +252,20 @@ public class GUI {
                 helpWindow();
             }
          });
-        
+        /**
+         * Opens save window.
+         */
         save.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
         		saveWindow();
+        	}
+        });
+        /**
+         * Opens load window.
+         */
+        load.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		loadWindow();
         	}
         });
     }
@@ -293,7 +303,7 @@ public class GUI {
     
     public void saveWindow() {
     	JFileChooser chooser = new JFileChooser();
-    	FileNameExtensionFilter jsonOnly = new FileNameExtensionFilter(".json files", "json");
+    	FileNameExtensionFilter jsonOnly = new FileNameExtensionFilter("JSON files", "json");
     	chooser.addChoosableFileFilter(jsonOnly);
     	chooser.setAcceptAllFileFilterUsed(false);
     	chooser.setDialogTitle("Save diagram as JSON");
@@ -301,6 +311,19 @@ public class GUI {
     	if(s == JFileChooser.APPROVE_OPTION) {
     		model.save(chooser.getSelectedFile().getAbsolutePath());
     	}
+    }
+    
+    public void loadWindow() {
+    	JFileChooser chooser = new JFileChooser();
+    	FileNameExtensionFilter jsonOnly = new FileNameExtensionFilter("JSON files", "json");
+    	chooser.addChoosableFileFilter(jsonOnly);
+    	chooser.setAcceptAllFileFilterUsed(false);
+    	chooser.setDialogTitle("Load diagram from JSON");
+    	int s = chooser.showOpenDialog(null);
+    	if(s == JFileChooser.APPROVE_OPTION) {
+    		model.load(chooser.getSelectedFile().getAbsolutePath());
+    	}
+    	
     }
 
     public void helpWindow(){
@@ -1194,13 +1217,7 @@ public class GUI {
         actionPane.validate();
         }
     }
-    public void save(){
-       // model.save();
-    }
-    public void load(){
-       // model.load();
-    }
-
+    
     public boolean duplicateClass(String className){
         if(boxMap.containsKey(className))
         return true;
