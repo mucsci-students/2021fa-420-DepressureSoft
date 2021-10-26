@@ -10,6 +10,7 @@ import java.util.*;
 import javax.swing.*;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.UIManager;
 
 public class GUI { 
@@ -19,8 +20,8 @@ public class GUI {
 
     JMenuBar menuBar;
 
-    JMenu add,delete,rename, file;
-    JMenuItem help,save,load;
+    JMenu add,delete,rename,file;
+    JMenuItem help,save,load, undo,redo;
     JMenuItem addClass,addRelationship,addField,addMethod,addParameter;
     JMenuItem deleteClass,deleteRelationship,deleteField,deleteMethod,deleteParameter;
     JMenuItem renameClass,renameField,renameMethod,renameParameter;
@@ -75,6 +76,10 @@ public class GUI {
         delete = new JMenu("Delete");
         rename = new JMenu("Rename");
         file = new JMenu("File");
+        undo = new JMenuItem("<=");
+        undo.setMaximumSize(new Dimension(30,30));
+        redo = new JMenuItem("=>");
+        redo.setMaximumSize(new Dimension(30,30));
 
         addClass = new JMenuItem("Class");
         addRelationship = new JMenuItem("Relationship");
@@ -121,6 +126,8 @@ public class GUI {
         menuBar.add(add);
         menuBar.add(delete);
         menuBar.add(rename);
+        menuBar.add(undo);
+        menuBar.add(redo);
         menuBar.add(Box.createHorizontalGlue());
         menuBar.add(help);
 
@@ -244,7 +251,12 @@ public class GUI {
                 helpWindow();
             }
          });
-        updateButtons();
+        save.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		saveWindow();
+        	}
+        });
+      updateButtons();
     }
 
     /**
@@ -276,6 +288,18 @@ public class GUI {
 
         action.setVisible(true);
 
+    }
+    
+    public void saveWindow() {
+    	JFileChooser chooser = new JFileChooser();
+    	FileNameExtensionFilter jsonOnly = new FileNameExtensionFilter(".json files", "json");
+    	chooser.addChoosableFileFilter(jsonOnly);
+    	chooser.setAcceptAllFileFilterUsed(false);
+    	chooser.setDialogTitle("Save diagram as JSON");
+    	int s = chooser.showSaveDialog(null);
+    	if(s == JFileChooser.APPROVE_OPTION) {
+    		model.save(chooser.getSelectedFile().getAbsolutePath());
+    	}
     }
 
     public void helpWindow(){
@@ -929,8 +953,8 @@ public class GUI {
        });  
 
        methodNames.addItemListener(new ItemListener() {
-        @Override
-        public void itemStateChanged(ItemEvent e) {
+       @Override
+       public void itemStateChanged(ItemEvent e) {
             String holder = classNames.getSelectedItem().toString();
             String holderV2 = methodNames.getSelectedItem().toString();
             paramNames.removeAllItems();

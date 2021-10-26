@@ -39,4 +39,4 @@ java -jar .\build\libs\umleditor-v2.0.0-all.jar
 
 1. Singleton - ModelHistory.java:41-49
 
-2. Snapshot - ModelHistory.java:56-60
+2. Memento - ModelHistory.java:56-60

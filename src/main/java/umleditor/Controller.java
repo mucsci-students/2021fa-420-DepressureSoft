@@ -7,19 +7,23 @@ public class Controller {
 	private static final String ADD_HELP = "ADD: Adds a class, method, field, parameter, or relationship to the diagram.\nadd class <class>\nadd method <class> <method>\nadd field <class> <field>\nadd parameter <class> <method> <parameter>\nadd relationship <source_class> <destination_class> {aggregation|composition|inheritance|realization}";
 	private static final String DELETE_HELP = "DELETE: Deletes a class, method, field, parameter, or relationship from the diagram.\ndelete class <class>\ndelete method <class> <method>\ndelete field <class> <field>\ndelete parameter <class> <method> <parameter>\ndelete relationship <source_class> <destination_class>";
 	private static final String RENAME_HELP = "RENAME: Renames a class, method, field, or parameter.\nrename class <class> <new_name>\nrename method <class> <method> <new_name>\nrename field <class> <field> <new_name>\nrename parameter <class> <method> <parameter> <new_name>";
-	private static final String SAVE_HELP = "SAVE: Saves the current class diagram to a json file. Directory and file name must exist. \".json\" extension is automatically appended to file name.\nsave <directory> <file_name>";
+	private static final String SAVE_HELP = "SAVE: Saves the current class diagram to a json file. Directory and file name must exist. \".json\" extension is optional and will be appended automatically if not included in file name.\nsave <directory> <file_name>";
 	private static final String LOAD_HELP = "LOAD: Loads a class diagram from a json file. File path must exist.\nload <file_path>";
 	private static final String CHANGETYPE_HELP = "CHANGETYPE: Changes the type of a field, method, parameter, or relationship.\nchangetype field <class> <field> <new_type>\n changetype al;fkproiauejf;jdf";
 	private static final String DISPLAY_HELP = "DISPLAY: Displays the class diagram in various ways.\ndisplay class <classname>\ndisplay {all|relationships}";
+	private static final String UNDO_HELP = "UNDO: Reverts to the program state before the most recent change.";
+	private static final String REDO_HELP = "REDO: If undo has been called, reverts to the state of the program before change was undone.";
 	private static final String HELP_MENU = "----------| HELP MENU |----------\n"
 			+ "Type help <command> for additional information about each command.\n"
 			+ "add {class|method|field|parameter|relationship}\n"
 			+ "delete {class|method|field|parameter|relationship}\n"
 			+ "rename {class|method|field|parameter|relationship}\n"
-			+ "save <directory> <filename>\n"
+			+ "save <file_path>\n"
 			+ "load <file_path>\n"
 			+ "changetype {field|method|relationship}\n"
 			+ "display {class|all|relationships}\n"
+			+ "undo\n"
+			+ "redo\n"
 			+ "";
 	
 	public static void main(String[] args) {
@@ -136,7 +140,7 @@ public class Controller {
 					}
 				} else if(checkKeyword(commands, 0, "save")) {
 					if(commands.size() > 2) {
-						model.save(commands.get(1), commands.get(2));
+						model.save(commands.get(1) + commands.get(2));
 					} else {
 						view.print("Save requires a directory and file name. Type \"help save\" for more info.");
 					}
@@ -164,7 +168,20 @@ public class Controller {
 					} else {
 						view.print("Unrecognized command. Type \"help display\" for more info.");
 					}
-					
+
+				} else if(checkKeyword(commands, 0, "undo")) {
+					if (model.undo()){
+						view.print("Most recent change was undone.");
+					} else {
+						view.print("Undo could not be completed.");
+					}
+				} else if (checkKeyword(commands, 0, "redo")) {
+					if (model.redo()){
+						view.print("Most recent change was redone.");
+					} else {
+						view.print("Redo could not be completed.");
+					}
+
 				} else if(checkKeyword(commands, 0, "help")) {
 					if(checkKeyword(commands, 1, "add")) {
 						view.print(ADD_HELP);
@@ -180,6 +197,10 @@ public class Controller {
 						view.print(CHANGETYPE_HELP);
 					} else if(checkKeyword(commands, 1, "display")) {
 						view.print(DISPLAY_HELP);
+					} else if(checkKeyword(commands, 1, "undo")){
+						view.print(UNDO_HELP);
+					} else if (checkKeyword(commands, 1, "redo")){
+						view.print(REDO_HELP);
 					} else {
 						view.print(HELP_MENU);
 					}
@@ -194,7 +215,6 @@ public class Controller {
 		}
 	}
 	
-	
 	/**
 	 * Checks that a string in a list of strings exists at the specified index.
 	 * @param index The index of the list to look at.
@@ -204,7 +224,6 @@ public class Controller {
 	private static boolean checkKeyword(ArrayList<String> commandList, int index, String keyword) {
 		return (commandList.size() > index) && (commandList.get(index).equalsIgnoreCase(keyword));
 	}
-	
 	
     /**
      * Helper method that returns a value from the RelationshipType enum that matches the input string.
