@@ -10,9 +10,8 @@ import java.util.*;
 import javax.swing.*;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
-
 import umleditor.Relationship.RelationshipType;
-
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.UIManager;
 
 public class GUI { 
@@ -254,6 +253,12 @@ public class GUI {
                 helpWindow();
             }
          });
+        
+        save.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		saveWindow();
+        	}
+        });
     }
 
     /**
@@ -285,6 +290,18 @@ public class GUI {
 
         action.setVisible(true);
 
+    }
+    
+    public void saveWindow() {
+    	JFileChooser chooser = new JFileChooser();
+    	FileNameExtensionFilter jsonOnly = new FileNameExtensionFilter(".json files", "json");
+    	chooser.addChoosableFileFilter(jsonOnly);
+    	chooser.setAcceptAllFileFilterUsed(false);
+    	chooser.setDialogTitle("Save diagram as JSON");
+    	int s = chooser.showSaveDialog(null);
+    	if(s == JFileChooser.APPROVE_OPTION) {
+    		model.save(chooser.getSelectedFile().getAbsolutePath());
+    	}
     }
 
     public void helpWindow(){
@@ -955,8 +972,8 @@ public class GUI {
        });  
 
        methodNames.addItemListener(new ItemListener() {
-        @Override
-        public void itemStateChanged(ItemEvent e) {
+       @Override
+       public void itemStateChanged(ItemEvent e) {
             String holder = classNames.getSelectedItem().toString();
             String holderV2 = methodNames.getSelectedItem().toString();
             paramNames.removeAllItems();
