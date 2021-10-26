@@ -300,6 +300,9 @@ public class GUI {
 
     }
     
+    /**
+     * Opens up a file chooser to save the file.
+     */
     public void saveWindow() {
     	JFileChooser chooser = new JFileChooser();
     	FileNameExtensionFilter jsonOnly = new FileNameExtensionFilter("JSON files", "json");
@@ -312,6 +315,9 @@ public class GUI {
     	}
     }
     
+    /**
+     * Opens up a file chooser to load a file, only showing JSON files.
+     */
     public void loadWindow() {
     	JFileChooser chooser = new JFileChooser();
     	FileNameExtensionFilter jsonOnly = new FileNameExtensionFilter("JSON files", "json");
@@ -322,7 +328,10 @@ public class GUI {
     	if(s == JFileChooser.APPROVE_OPTION) {
     		model.load(chooser.getSelectedFile().getAbsolutePath());
     	}
-    	
+    	/*
+    	 * In progress: this method updates the model but not the view. 
+    	 * Need some way to "sync" class boxes with model.
+    	 */
     }
 
     public void helpWindow(){
@@ -358,9 +367,9 @@ public class GUI {
 
         JLabel classN = new JLabel("Enter First Class Name: ");
         JLabel classN2 = new JLabel("Enter Second Class Name: ");
-        JLabel relationshipType = new JLabel("Enter Relationship Type: (A, C, I, R)");
-
+        JLabel relationshipType = new JLabel("Relationship Type: ");
         JButton classAddButton = new JButton("Add");
+        
         classAddButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 addRelationshipAction();
@@ -380,7 +389,6 @@ public class GUI {
         relationType = new JComboBox(relTypes);
         relationType.setMaximumSize(relationType.getPreferredSize());
         
-
         actionPane.add(classN);
         actionPane.add(classNames);
         actionPane.add(classN2);
@@ -1097,7 +1105,7 @@ public class GUI {
         String classOne = classNames.getSelectedItem().toString();
         String classTwo = classNamesX.getSelectedItem().toString();
         String relationT = relationType.getSelectedItem().toString();
-        model.addRelationship(classOne,classTwo, getRelTypeFromString(relationT));
+        model.addRelationship(classOne,classTwo, Relationship.getRelTypeFromString(relationT));
         action.dispose();
     }
     /**
@@ -1225,25 +1233,5 @@ public class GUI {
         return true;
         else
         return false;
-    }
-    
-    /**
-     * Helper method that returns a value from the RelationshipType enum that matches the input string.
-     * @param input The input string.
-     * @return The correct RelationshipType enum value if input equals "aggregation", "composition", "inheritance", 
-     *  or "realization", null if not.
-     */
-    private static Relationship.RelationshipType getRelTypeFromString(String input) {
-        if (input.equalsIgnoreCase("aggregation")) {
-            return Relationship.RelationshipType.AGGREGATION;
-        } else if (input.equalsIgnoreCase("composition")) {
-            return Relationship.RelationshipType.COMPOSITION;
-        } else if (input.equalsIgnoreCase("inheritance")) {
-            return Relationship.RelationshipType.INHERITANCE;
-        } else if (input.equalsIgnoreCase("realization")) {
-            return Relationship.RelationshipType.REALIZATION;
-        } else {
-        	return null;
-        }
     }
 }

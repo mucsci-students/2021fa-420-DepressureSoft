@@ -70,11 +70,24 @@ public class Relationship {
     public void setType(RelationshipType newType) {
         this.type = newType;
     }
-
-    // temporary
-    public void printRelationship() {
-        System.out.println(from.getName());
-        System.out.println(to.getName());
-        System.out.println(type);
+    
+    /**
+     * Helper method that returns a value from the RelationshipType enum that matches the input string.
+     * @param input The input string.
+     * @return The correct RelationshipType enum value if input equals "aggregation", "composition", "inheritance", 
+     *  or "realization", null if not.
+     */
+    public static Relationship.RelationshipType getRelTypeFromString(String input) {
+        if (input.equalsIgnoreCase("aggregation")) {
+            return Relationship.RelationshipType.AGGREGATION;
+        } else if (input.equalsIgnoreCase("composition")) {
+            return Relationship.RelationshipType.COMPOSITION;
+        } else if (input.equalsIgnoreCase("inheritance")) {
+            return Relationship.RelationshipType.INHERITANCE;
+        } else if (input.equalsIgnoreCase("realization")) {
+            return Relationship.RelationshipType.REALIZATION;
+        } else {
+        	return null;
+        }
     }
 }
