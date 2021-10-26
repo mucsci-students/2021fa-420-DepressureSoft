@@ -311,14 +311,14 @@ public class DiagramModel {
         {
             if(parentClass != null)
             {
-                if(!parentClass.methodExists(methodName))
+                if(parentClass.getMethod(methodName).getMethodType() != methodType)
                 {
-                    parentClass.addMethod(methodName);
+                    parentClass.addMethod(methodName, methodType);
                 }
                 else
                 {
                         System.out.println("The method \"" + methodName + 
-                            "\" cannot be added, as it already exists in the parent class \"" + className + "\".");
+                            "\" cannot be added, as the method type \"" + methodType + "\" is the same.");
                 }
             }
             else
