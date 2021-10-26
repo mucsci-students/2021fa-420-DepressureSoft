@@ -77,22 +77,30 @@ public class classBox {
      * Add Element Functions 
      */
 
-     public void addField(String fieldName){
+     public void addField(String fieldName,String fieldT){
         JLabel field = new JLabel(fieldName);
 		fields.put(fieldName,field);
 		fieldPanel.add(field);
 		fieldPanel.repaint();
+        fields.get(fieldName).setText(fieldName + ":" + fieldT);
      }
 
-     public void addMethod(String methodName){
+     public void addMethod(String methodName, String methodType){
         JLabel method = new JLabel(methodName);
 		methods.put(methodName,method);
 		methodPanel.add(method);
 		methodPanel.repaint();
+        methods.get(methodName).setText(methodType + " : " + methodName);
      }
 
      public void addParameter(String parameter,String method){
-        String param = method + "(";
+
+        JLabel temp = methods.get(method);
+        String holderv = temp.getText();
+        String[] holderv2z = holderv.split(":");
+
+        String param = holderv2z[0]+ ": " + method + "(";
+
         if(params.containsKey(method)){
             ArrayList<String> holder = params.get(method);
             String holderV2 = parameter;
@@ -130,7 +138,12 @@ public class classBox {
      }
      
      public void removeParameter(String removes, String method){
-        String param = method + "(";
+        JLabel temp = methods.get(method);
+        String holderv = temp.getText();
+        String[] holderv2v = holderv.split(":");
+
+        String param = holderv2v[0] + ": " + method + "(";
+
         ArrayList<String> holder = params.get(method);
         holder.remove(removes);
         for(String x : params.get(method)){
@@ -150,7 +163,12 @@ public class classBox {
     
      public void renameField(String oldName, String newName){
         JLabel temp = fields.get(oldName);
-        temp.setText(newName);
+        String holderv2 = temp.getText();
+        String[] holder = holderv2.split(":");
+
+        String newField = newName + ":" + holder[1];
+        temp.setText(newField);
+
         fields.remove(oldName);
         fields.put(newName,temp);
         fieldPanel.repaint();
@@ -159,8 +177,14 @@ public class classBox {
      public void renameMethod(String oldName, String newName){
         JLabel temp = methods.get(oldName);
         methods.put(newName,temp);
-        String method = newName + "(";
+
+        String holderv2 = temp.getText();
+        String[] holder = holderv2.split(":");
+
+        String method = holder[0] + ": " + newName;
+
         if(params.containsKey(oldName)){
+            method = method + "(";
             params.put(newName,params.get(oldName));
             for(String x : params.get(oldName)){
                 method = method + x + ", ";
@@ -175,7 +199,13 @@ public class classBox {
      }
     
      public void renameParameter(String oldParameter, String newParameter, String method){
-        String param = method + "(";
+
+        JLabel temp = methods.get(method);
+        String holderv = temp.getText();
+        String[] holderv2v = holderv.split(":");
+
+        String param = holderv2v[0] + ": " + method + "(";
+
         ArrayList<String> holder = params.get(method);
         int holderV2 = holder.indexOf(oldParameter);
         holder.set(holderV2,newParameter);
