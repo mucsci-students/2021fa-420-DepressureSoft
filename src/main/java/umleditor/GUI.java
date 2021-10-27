@@ -46,7 +46,7 @@ public class GUI {
         GUI test = new GUI(); 
         try {
             UIManager.setLookAndFeel(
-            UIManager.getCrossPlatformLookAndFeelClassName());
+            UIManager.getSystemLookAndFeelClassName());
          } catch (Exception e) { 
       }
          JFrame.setDefaultLookAndFeelDecorated(true);
