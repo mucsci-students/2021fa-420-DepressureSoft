@@ -73,32 +73,34 @@ public class DiagramModel {
      *  and that the name conforms to the standards set forth in javax.lang.model.SourceVersion.isIdentifier().
      * Is supported as an undoable operation
      * @param name The name of the new class.
+     * @return null if action is successful, appropriate error message if not
      */
-    public void addClass(String name){
+    public String addClass(String name){
         if(SourceVersion.isIdentifier(name)){
             if(!classExists(name))
             {
                 snapshot();
                 UMLClass holder = new UMLClass(name);
                 diagram.put(name, holder);  
+                return null;
             }
             else
             {
-                System.out.println("The class \"" + name + "\" already exists.");
+                return "The class \"" + name + "\" already exists.";
             }
         }
         else{
-            System.out.println(name + "\" is not a proper name.");
+            return name + "\" is not a proper name.";
         }
-
     }
 
     /**
      * Deletes a new class from the diagram, checking that the name entered exists in the diagram.
      * Is supported as an undoable operation
      * @param entry The name of the class to delete.
+     * @return null if action is successful, appropriate error message if not
      */
-    public void deleteClass(String entry){
+    public String deleteClass(String entry){
         if(classExists(entry))
         {
             snapshot();
@@ -111,10 +113,11 @@ public class DiagramModel {
                 }
             }
             diagram.remove(entry);
+            return null;
         }
         else
         {
-            System.out.println("The class \"" + entry + "\" cannot be deleted, as it does not exist");
+            return "The class \"" + entry + "\" cannot be deleted, as it does not exist";
         }
     }
 
@@ -127,8 +130,9 @@ public class DiagramModel {
      *  and be a valid path.
      * @param fileName The name of the file. Must not include the .json extension, which is appended
      *  automatically.
+     * @return null if action is successful, appropriate error message if not
      */
-    public void save(String fileLocation){
+    public String save(String fileLocation){
         StringBuilder jsonTxt = new StringBuilder();
         
         jsonTxt.append("{\n  \"classes\": [\n");
@@ -158,9 +162,9 @@ public class DiagramModel {
             FileWriter fw1 = new FileWriter(filePath);
             fw1.write(jsonTxt.toString());
             fw1.close();
+            return null;
         } catch (IOException e) {
-            System.out.println("An error occurred while trying to write json file:");
-            System.out.println(e);
+            return "An error occurred while trying to write json file:" + e.toString();
         } 
     }
 
@@ -211,8 +215,9 @@ public class DiagramModel {
      * Loads a class diagram from a JSON file formatted using the format specified by the CSCI 420 fall 2021 
      * standardization committee.
      * @param fileLocation the directory of the json file to load.
+     * @return null if action is successful, appropriate error message if not
      */
-    public void load(String fileLocation){
+    public String load(String fileLocation){
         this.diagram.clear();
         this.relationships.clear();
         JSONParser parser = new JSONParser();
@@ -268,84 +273,76 @@ public class DiagramModel {
                 }
                 this.addRelationship(source, destination, relType);
             }
-            
+            return null;
         }
         catch (Exception e) {
-            System.out.println("An error occurred: \n" + e.toString());
-            e.printStackTrace();
+            return "An error occurred: \n" + e.toString();
         }
-        
-
     }
 
     /**
-     * Prints out the contents of a single class to the console, checking first to make sure the given
-     *  class name exists in the diagram.
+     * Returns a String representation of a single class.
      * @param className The name of the class to display.
+     * @return String representation of the class, or an error message if the class does not exist.
      */
-    public void listClass(String className)
-    {
-    	
-        if(classExists(className))
-        {
+    public String listClass(String className) {
+    	StringBuilder bob = new StringBuilder();
+        if(classExists(className)) {
             UMLClass input = diagram.get(className);
-
-            System.out.println("\nName: " + input.getName());
-            System.out.print("Fields: ");
+            bob.append("\nName: " + input.getName() + "\n");
+            bob.append("Fields: ");
 
             /** Prints fields, prints special message if none */
-            if (input.getFields().size() == 0)
-            {
-                System.out.println("There are no fields in this class.");
-            }
-            else
-            {
+            if (input.getFields().size() == 0) {
+                bob.append("There are no fields in this class.\n");
+            } else {
                 StringBuilder fieldBuilder = new StringBuilder();
-                for (int i = 0; i < input.getFields().size(); i++)
-                { 
+                for (int i = 0; i < input.getFields().size(); i++) { 
                     if(i != 0) {
                         fieldBuilder.append(", ");
                     }
                     fieldBuilder.append(input.getFields().get(i));
                 }
-                System.out.println(fieldBuilder.toString());
+                bob.append((fieldBuilder.toString()) + "\n");
             }
             /** Prints methods, prints special message if no methods in UML class */
-            System.out.println("Methods: ");
-            if(input.getMethods().size() == 0)
-            {
-                System.out.println("There are no methods in this class.");
-            }
-            else
-            {
-                for(int i = 0; i < input.getMethods().size(); i++)
-                {
-                    System.out.println(input.getMethods().get(i).getMethodName() + 
-                        input.getMethods().get(i).getPName().replace("[", "(").replace("]", ")"));
+            bob.append("Methods:\n");
+            if(input.getMethods().size() == 0) {
+                bob.append("There are no methods in this class.\n");
+            } else {
+                for(int i = 0; i < input.getMethods().size(); i++) {
+                    bob.append(input.getMethods().get(i).getMethodName() + 
+                        input.getMethods().get(i).getPName().replace("[", "(").replace("]", ")") + "\n");
                 }
             }
         }
-        else
-        {
-            System.out.println("The class \"" + className + "\" cannot be displayed, as it does not exist");
+        else {
+            bob.append("The class \"" + className + "\" cannot be displayed, as it does not exist.\n");
         }
-        System.out.println();
+        return bob.toString();
     }
 
     /**
-     * Prints the contents of every class in the diagram to the console.
+     * Returns a string representation of the entire class diagram.
+     * @return String of entire class diagram.
      */
-    public void listClasses(){
-        diagram.forEach((k,v) -> listClass(k));
+    public String listClasses(){
+    	StringBuilder bob = new StringBuilder();
+    	if(diagram.size() == 0) {
+    		return "There are no classes in the diagram.";
+    	}
+        diagram.forEach((k,v) -> bob.append(listClass(k)));
+        return bob.toString();
     }
 
     /**
      * Adds a method to a class diagram as long as class exists and method does not already exist.
-     * Is supported as an undoable operation
+     * Is supported as an undoable operation.
      * @param className
      * @param methodName
+     * @return null if action is successful, appropriate error message if not.
      */
-    public void addMethod(String className, String methodName){
+    public String addMethod(String className, String methodName){
         UMLClass parentClass = getUML(className);
         if(SourceVersion.isIdentifier(methodName)) 
         {
@@ -355,22 +352,24 @@ public class DiagramModel {
                 {
                     snapshot();
                     parentClass.addMethod(methodName);
+                    return null;
                 }
                 else
                 {
-                        System.out.println("The method \"" + methodName + 
-                            "\" cannot be added, as it already exists in the parent class \"" + className + "\".");
+                        return ("The method \"" + methodName + 
+                            "\" cannot be added, as it already exists "
+                            + "in the parent class \"" + className + "\".");
                 }
             }
             else
             {
-                System.out.println("The method \"" + methodName + 
+                return ("The method \"" + methodName + 
                     "\" cannot be added, as the parent class \"" + className + "\" does not exist.");  
             }
         }
         else
         {
-            System.out.println("\"" + methodName + "\" is not a valid method name.");
+            return ("\"" + methodName + "\" is not a valid method name.");
         }
     }
     
@@ -379,8 +378,9 @@ public class DiagramModel {
      * Is supported as an undoable operation
      * @param className
      * @param methodName
+     * @return null if action is successful, appropriate error message if not
      */
-    public void deleteMethod(String className, String methodName){
+    public String deleteMethod(String className, String methodName){
         UMLClass parentClass = getUML(className);
         if(parentClass != null)
         {
@@ -388,26 +388,28 @@ public class DiagramModel {
             {
                 snapshot();
                 parentClass.removeMethod(methodName);
+                return null;
             }
             else
             {
-                    System.out.println("The method \"" + methodName + 
-                        "\" cannot be removed, as it does not exist.");
+                return ("The method \"" + methodName + 
+                    "\" cannot be removed, as it does not exist.");
             }
         }
         else
         {
-            System.out.println("The method \"" + methodName + 
-                "\" cannot be removed, as the parent class \"" + className + "\" does not exist.");  
+            return ("The method \"" + methodName + 
+                "\" cannot be removed, as the parent class \"" + 
+                className + "\" does not exist.");  
         }
     }
 
 
     /**
-     * Returns true if the method called exists in the class diagram.
-     * @param className
-     * @param methodName
-     * @return
+     * Returns true if a method exists in the class diagram.
+     * @param className The name of the class to search for the method in. 
+     * @param methodName The name of the method to look for.
+     * @return true if method exists, false if it does not exist.
      */
     public boolean methodExists(String className, String methodName){
         UMLClass parentClass = getUML(className);
@@ -420,10 +422,12 @@ public class DiagramModel {
     /**
      * Renames a method as long as it already exists.
      * Is supported as an undoable operation
-     * @param oldMethodName
-     * @param newMethodName
+     * @param className The name of the class the method resides in.
+     * @param oldMethodName The name of the method to rename.
+     * @param newMethodName The new name for the method.
+     * @return null if action is successful, appropriate error message if not.
      */
-    public void renameMethod(String className, String oldMethodName, String newMethodName){
+    public String renameMethod(String className, String oldMethodName, String newMethodName){
         UMLClass parentClass = getUML(className);
         if (SourceVersion.isIdentifier(newMethodName)) 
         {
@@ -431,22 +435,23 @@ public class DiagramModel {
                 if(parentClass.methodExists(oldMethodName)){
                     snapshot();
                     parentClass.renameMethod(oldMethodName, newMethodName);
+                    return null;
                 }
                 else
                 {
-                        System.out.println("The method \"" + oldMethodName + 
-                            "\" cannot be renamed, as it does not exist.");
+                    return ("The method \"" + oldMethodName + 
+                        "\" cannot be renamed, as it does not exist.");
                 }
             }
             else
             {
-                System.out.println("The method \"" + oldMethodName + 
+                return ("The method \"" + oldMethodName + 
                     "\" cannot be renamed, as the parent class \"" + className + "\" does not exist.");  
             }
         }
         else
         {
-            System.out.println("\"" + newMethodName + "\" is not a valid method name.");
+            return ("\"" + newMethodName + "\" is not a valid method name.");
         }
     }
 
@@ -456,8 +461,9 @@ public class DiagramModel {
      * @param className
      * @param methodName
      * @param name
+     * @return null if action is successful, appropriate error message if not
      */
-    public void addParameter(String className, String methodName, String pName){
+    public String addParameter(String className, String methodName, String pName){
         UMLClass parentClass = getUML(className);
         if(SourceVersion.isIdentifier(pName))
         {
@@ -468,22 +474,25 @@ public class DiagramModel {
                 {
                     snapshot();
                     parentMethod.addParameter(pName);
+                    return null;
                 }
                 else
                 {
-                        System.out.println("The parameter(s) \"" + pName + 
-                            "\" cannot be added, as the method \"" + methodName + "does not exist.");
+                        return ("The parameter(s) \"" + pName + 
+                            "\" cannot be added, as the method \"" + 
+                        	methodName + "does not exist.");
                 }
             }
             else
             {
-                System.out.println("The parameter(s) \"" + pName + 
-                    "\" cannot be added, as the parent class \"" + className + "\" does not exist.");  
+                return ("The parameter(s) \"" + pName + 
+                    "\" cannot be added, as the parent class \"" + 
+                	className + "\" does not exist.");  
             }
         }
         else
         {
-            System.out.println("\"" + pName + "\" is not a valid parameter name.");
+            return ("\"" + pName + "\" is not a valid parameter name.");
         }
     }
 
@@ -493,8 +502,9 @@ public class DiagramModel {
      * @param className
      * @param methodName
      * @param pName
+     * @return null if action is successful, appropriate error message if not
      */
-    public void deleteParameter(String className, String methodName, String pName) {
+    public String deleteParameter(String className, String methodName, String pName) {
         UMLClass parentClass = getUML(className);
         if(parentClass != null){
             Method parentMethod = parentClass.getMethod(methodName);
@@ -502,16 +512,21 @@ public class DiagramModel {
                 if(parentMethod.parameterExists(pName)){
                     snapshot();
                     parentMethod.removeParameter(pName);
+                    return null;
+                } else {
+                	return ("The parameter \"" + pName + "\" cannot be removed, as it does not exist.");
                 }
             }
-            else{
-                System.out.println("The parameter(s) \"" + pName + 
-                        "\" cannot be removed, as the method \"" + methodName + "does not exist.");
+            else {
+                return ("The parameter \"" + pName + 
+                        "\" cannot be removed, as the method \"" + 
+                		methodName + "does not exist.");
             }
         }
-        else{
-            System.out.println("The parameter(s) \"" + pName + 
-                "\" cannot be removed, as the parent class \"" + className + "\" does not exist.");
+        else {
+            return ("The parameter \"" + pName + 
+                "\" cannot be removed, as the parent class \"" + 
+            	className + "\" does not exist.");
         }
     }
 
@@ -522,8 +537,9 @@ public class DiagramModel {
      * @param methodName
      * @param oldPName
      * @param newPName
+     * @return null if action is successful, appropriate error message if not
      */
-    public void renameParameter(String className, String methodName, String oldPName, String newPName){
+    public String renameParameter(String className, String methodName, String oldPName, String newPName){
         UMLClass parentClass = getUML(className);
         if(SourceVersion.isIdentifier(newPName))
         {
@@ -536,25 +552,26 @@ public class DiagramModel {
                     {
                         snapshot();
                         parentMethod.renameParameter(oldPName, newPName);
+                        return null;
                     }
                     else{
-                        System.out.println("The parameter(s) \"" + oldPName + 
+                        return ("The parameter \"" + oldPName + 
                             "\" cannot be renamed, as it does not exist.");
                     }
                 }
                 else{
-                    System.out.println("The parameter(s) \"" + oldPName + 
+                    return ("The parameter \"" + oldPName + 
                             "\" cannot be renamed, as the method \"" + methodName + "does not exist.");
                 }
             }
             else{
-                System.out.println("The parameter(s) \"" + oldPName + 
+                return ("The parameter \"" + oldPName + 
                     "\" cannot be renamed, as the parent class \"" + className + "\" does not exist.");
             }
         }
         else
         {
-            System.out.println("\"" + newPName + "\" is not a valid parameter name.");
+            return ("\"" + newPName + "\" is not a valid parameter name.");
         }
     }
 
@@ -563,21 +580,23 @@ public class DiagramModel {
      * Is supported as an undoable operation
      * @param className
      * @param methodName
+     * @return null if action is successful, appropriate error message if not
      */
-    public void deleteAllParameters(String className, String methodName){
+    public String deleteAllParameters(String className, String methodName){
         UMLClass parentClass = getUML(className);
         if(parentClass != null){
             Method parentMethod = parentClass.getMethod(methodName);
             if(parentClass.methodExists(methodName)){
                 snapshot();
                 parentMethod.removeAllParameters();
+                return null;
             }
             else{
-                System.out.println("The parameter(s) cannot be removed, as the method \"" + methodName + "does not exist.");
+                return ("The parameters cannot be removed, as the method \"" + methodName + "does not exist.");
             }
         }
         else{
-            System.out.println("The parameter(s) cannot be removed, as the parent class \"" + className + "\" does not exist.");
+            return ("The parameters cannot be removed, as the parent class \"" + className + "\" does not exist.");
         }
     }
     
@@ -589,8 +608,9 @@ public class DiagramModel {
      * @param to The "child" of the relationship.
      * @param type The type of the relationship. Can be one of AGGREGATION, COMPOSITION, INHERITANCE, 
      *  or REALIZATION.
+     * @return null if action is successful, appropriate error message if not
      */
-    public void addRelationship(String from, String to, Relationship.RelationshipType type)
+    public String addRelationship(String from, String to, Relationship.RelationshipType type)
     {
         boolean fromClassExists = classExists(from);
         boolean toClassExists = classExists(to);
@@ -620,27 +640,33 @@ public class DiagramModel {
                     UMLClass toClass = getUML(to);
                     Relationship newRelationship = new Relationship(fromClass, toClass, type);
                     relationships.add(newRelationship);
+                    return null;
                 }
                 // If relationship exists already
                 else
                 {
-                    System.out.println("The relationship between \"" + from + "\" and \"" + to + 
+                    return ("The relationship between \"" + from + "\" and \"" + to + 
                         "\" cannot be added, as a relationship already exists between those classes.");
                 }
         }
         // If either class DNE
         else
         {
+        	if(!fromClassExists && !toClassExists)
+        	{
+        		return ("The relationship cannot be added, as both the source class \"" + from + 
+        				" and destination class \"" + to + " do not exist.");
+        	}
             if(!fromClassExists)
             {
-                System.out.println("The relationship cannot be added, as the source class \"" + from + 
+                return ("The relationship cannot be added, as the source class \"" + from + 
                     "\" does not exist");
             }
-            else if(!toClassExists)
+            else /*if (!toClassExists)*/
             {
-                System.out.println("The relationship cannot be added, as the destination class \"" + to + 
+                return ("The relationship cannot be added, as the destination class \"" + to + 
                 "\" does not exist");
-            }
+            } 
         }
     }
 
@@ -651,7 +677,7 @@ public class DiagramModel {
      * @param from The "parent" of the relationship.
      * @param to The "child" of the relationship.
      */
-    public void deleteRelationship(String from, String to)
+    public String deleteRelationship(String from, String to)
     {
         boolean fromClassExists = classExists(from);
         boolean toClassExists = classExists(to);
@@ -667,25 +693,34 @@ public class DiagramModel {
                     snapshot();
                     relationships.remove(i);
                     relationshipExists = true;
+                    return null;
                 }
             }
             // If relationship did not exist prior
             if(!relationshipExists)
             {
-                System.out.println("The relationship between \"" + from + "\" and \"" + to + 
+                return ("The relationship between \"" + from + "\" and \"" + to + 
                     "\" cannot be deleted, as it does not exist");
+            } 
+            else 
+            {
+            	return "An unknown error occurred."; // impossible code path
             }
         }
         // If either class DNE
         else
         {
-            if(!fromClassExists)
+        	if (!fromClassExists && !toClassExists)
+        	{
+        		return ("Both the source class and destination class do not exist");
+        	}
+        	else if(!fromClassExists)
             {
-                System.out.println("The source class \"" + from + "\" does not exist");
+                return ("The source class \"" + from + "\" does not exist");
             }
-            else if(!toClassExists)
+            else /*if(!toClassExists)*/
             {
-                System.out.println("The destination class \"" + to + "\" does not exist");
+                return ("The destination class \"" + to + "\" does not exist");
             }
         }
     }
@@ -696,8 +731,9 @@ public class DiagramModel {
      * @param from The "from" end of the relationship.
      * @param to The "to" end of the relationship.
      * @param newType The new type to assign the relationship to.
+     * @return null if action is successful, appropriate error message if not
      */
-    public void changeRelationshipType(String from, String to, Relationship.RelationshipType newType) {
+    public String changeRelationshipType(String from, String to, Relationship.RelationshipType newType) {
         boolean fromClassExists = classExists(from);
         boolean toClassExists = classExists(to);
 
@@ -713,25 +749,33 @@ public class DiagramModel {
                     snapshot();
                     holder.setType(newType);
                     relationshipExists = true;
+                    return null;
                 }
             }
             // If relationship did not exist prior
             if(!relationshipExists)
             {
-                System.out.println("The type of the relationship between \"" + from + "\" and \"" + to + 
+            	return ("The type of the relationship between \"" + from + "\" and \"" + to + 
                     "\" cannot be changed, as the relationship does not exist");
+            }
+            else 
+            {
+            	return "An unknown error occurred."; // impossible code path
             }
         }
         // If either class DNE
         else
         {
-            if(!fromClassExists)
+        	if (!fromClassExists && !toClassExists) {
+        		return "Both the source class and destination class do not exist";
+        	}
+        	else if(!fromClassExists)
             {
-                System.out.println("The source class \"" + from + "\" does not exist");
+                return ("The source class \"" + from + "\" does not exist");
             }
-            else if(!toClassExists)
+            else /*if(!toClassExists)*/
             {
-                System.out.println("The destination class \"" + to + "\" does not exist");
+                return ("The destination class \"" + to + "\" does not exist");
             }
         }
     }
@@ -739,11 +783,12 @@ public class DiagramModel {
     /**
      * Prints all the relationships in the class diagram.
      */
-    public void listRelationships()
+    public String listRelationships()
     {
+    	StringBuilder bob = new StringBuilder();
         ListIterator<Relationship>iterator = relationships.listIterator();
         if (relationships.isEmpty()) {
-            System.out.println("There are no relationships to display.");
+            bob.append("There are no relationships to display.");
         }
       
         while (iterator.hasNext())
@@ -751,9 +796,10 @@ public class DiagramModel {
             Relationship current = iterator.next();
             UMLClass from = current.getFrom();
             UMLClass to = current.getTo();
-            System.out.println("From: " + from.getName() + " To: " + to.getName() + " Type: " + 
-                current.getRelationshipType());
+            bob.append("From: " + from.getName() + " To: " + to.getName() + " Type: " + 
+                current.getRelationshipType() + "\n");
         }
+        return bob.toString();
     }
 
     /**
@@ -771,40 +817,41 @@ public class DiagramModel {
      * Is supported as an undoable operation
      * @param oldName The name of the class to rename.
      * @param newName The new name of the specified class.
+     * @return null if action is successful, appropriate error message if not
      */
-    public void renameUMLClass(String oldName, String newName)
+    public String renameUMLClass(String oldName, String newName)
     {
         if(SourceVersion.isIdentifier(newName)){
 
-        
-        boolean oldClassExists = classExists(oldName);
-        boolean newClassExists = classExists(newName);
+        	boolean oldClassExists = classExists(oldName);
+        	boolean newClassExists = classExists(newName);
 
-        if(oldClassExists && !newClassExists)
-        {
-            UMLClass renamedClass = diagram.get(oldName);
-            snapshot();
-            renamedClass.renameClass(newName);
-            diagram.remove(oldName);
-            diagram.put(newName, renamedClass);
-        }
-        else
-        {
-            if(!oldClassExists)
-            {
-                System.out.println("The class \"" + oldName + "\" cannot be renamed, as it does not exist.");
-            }
-            else if(newClassExists)
-            {
-                System.out.println("The class \"" + oldName + "\" cannot be renamed to \"" + newName + 
-                    "\", as \"" + newName + "\" already exists as a class.");
-            }
-        }
+		    if(oldClassExists && !newClassExists)
+		    {
+		        UMLClass renamedClass = diagram.get(oldName);
+		        snapshot();
+		        renamedClass.renameClass(newName);
+		        diagram.remove(oldName);
+		        diagram.put(newName, renamedClass);
+		        return null;
+		    }
+		    else
+		    {
+		        if(!oldClassExists)
+		        {
+		            return ("The class \"" + oldName + "\" cannot be renamed, as it does not exist.");
+		        }
+		        else if(newClassExists)
+		        {
+		            return ("The class \"" + oldName + "\" cannot be renamed to \"" + newName + 
+		                "\", as \"" + newName + "\" already exists as a class.");
+		        }
+		    }
         }
         else{
-            System.out.println(newName + "\" is not a proper name.");
+            return (newName + "\" is not a proper name.");
         }
-
+        return "An unknown error occurred.";
     }
 
     /**
@@ -822,35 +869,36 @@ public class DiagramModel {
      * @param className The name of the class to add a field to.
      * @param fieldName The name of the field to be added.
      */
-    public void addField(String className, String fieldName)
+    public String addField(String className, String fieldName)
     {
         UMLClass parentClass = getUML(className);
         boolean parentExists = classExists(className);
         if(SourceVersion.isIdentifier(fieldName)){
-        if(parentExists)
-        {
-           boolean fieldExists = parentClass.getFields().contains(fieldName); 
-
-           if(!fieldExists)
-           {
-               snapshot();
-               parentClass.addField(fieldName);
-           }
-           else
-           {
-                System.out.println("The field \"" + fieldName + 
-                    "\" cannot be added, as it already exists in the parent class \"" + className + "\".");
-           }
-        }
-        else
-        {
-            System.out.println("The field \"" + fieldName + 
-                "\" cannot be added, as the parent class \"" + className + "\" does not exist.");  
-        }
-    }
-    else{
-        System.out.println(fieldName + "\" is not a proper name.");
-    }
+	        if(parentExists)
+	        {
+	           boolean fieldExists = parentClass.getFields().contains(fieldName); 
+	
+	           if(!fieldExists)
+	           {
+	               snapshot();
+	               parentClass.addField(fieldName);
+	               return null;
+	           }
+	           else
+	           {
+	                return ("The field \"" + fieldName + 
+	                    "\" cannot be added, as it already exists in the parent class \"" + className + "\".");
+	           }
+	        }
+	        else
+	        {
+	            return ("The field \"" + fieldName + 
+	                "\" cannot be added, as the parent class \"" + className + "\" does not exist.");  
+	        }
+	    }
+	    else{
+	        return (fieldName + "\" is not a proper name.");
+	    }
     }
 
     /**
@@ -858,8 +906,9 @@ public class DiagramModel {
      * Is supported as an undoable operation
      * @param className The name of the class to delete a field from.
      * @param fieldName The name of the field to be deleted.
+     * @return null if action is successful, appropriate error message if not
      */
-    public void deleteField(String className, String fieldName)
+    public String deleteField(String className, String fieldName)
     {
         UMLClass parentClass = getUML(className);
         boolean parentExists = classExists(className);
@@ -872,16 +921,17 @@ public class DiagramModel {
            {
                snapshot();
                parentClass.removeField(fieldName);
+               return null;
            }
            else
            {
-                System.out.println("The field \"" + fieldName + 
+                return ("The field \"" + fieldName + 
                     "\" cannot be deleted, as it does not exist in the parent class \"" + className + "\".");
            }
         }
         else
         {
-            System.out.println("The field \"" + fieldName + 
+            return ("The field \"" + fieldName + 
                 "\" cannot be deleted, as the parent class \"" + className + "\" does not exist.");  
         }
     }
@@ -894,42 +944,44 @@ public class DiagramModel {
      * @param oldFieldName The name of the field to be renamed.
      * @param newFieldName The name that oldFieldName will be renamed to.
      */
-    public void renameField(String className, String oldFieldName, String newFieldName)
+    public String renameField(String className, String oldFieldName, String newFieldName)
     {
         UMLClass parentClass = getUML(className);
         boolean parentExists = classExists(className);
         if(SourceVersion.isIdentifier(newFieldName)){
-        if(parentExists)
-        {
-           boolean oldFieldExists = parentClass.getFields().contains(oldFieldName); 
-           boolean newFieldExists = parentClass.getFields().contains(newFieldName); 
-
-           if(oldFieldExists && !newFieldExists)
-           {
-               snapshot();
-               parentClass.renameField(oldFieldName, newFieldName);
-           }
-           else if(!oldFieldExists)
-           {
-                System.out.println("The field \"" + oldFieldName + 
-                    "\" cannot be renamed, as it does not exist in the parent class \"" + className + "\".");
-           }
-           else if(oldFieldExists)
-           {
-                System.out.println("The field \"" + oldFieldName + 
-                    "\" cannot be renamed to \"" + newFieldName + "\", as \"" + newFieldName + 
-                    "\" already exists in the parent class \"" + className + "\".");
-           }
-        }
-        else
-        {
-            System.out.println("The field \"" + oldFieldName + 
-                "\" cannot be renamed, as the parent class \"" + className + "\" does not exist.");  
-        }
+	        if(parentExists)
+	        {
+	           boolean oldFieldExists = parentClass.getFields().contains(oldFieldName); 
+	           boolean newFieldExists = parentClass.getFields().contains(newFieldName); 
+	
+	           if(oldFieldExists && !newFieldExists)
+	           {
+	               snapshot();
+	               parentClass.renameField(oldFieldName, newFieldName);
+	               return null;
+	           }
+	           else if(!oldFieldExists)
+	           {
+	                return ("The field \"" + oldFieldName + 
+	                    "\" cannot be renamed, as it does not exist in the parent class \"" + className + "\".");
+	           }
+	           else if(oldFieldExists)
+	           {
+	                return ("The field \"" + oldFieldName + 
+	                    "\" cannot be renamed to \"" + newFieldName + "\", as \"" + newFieldName + 
+	                    "\" already exists in the parent class \"" + className + "\".");
+	           }
+	        }
+	        else
+	        {
+	            return ("The field \"" + oldFieldName + 
+	                "\" cannot be renamed, as the parent class \"" + className + "\" does not exist.");  
+	        }
         }
         else{
-            System.out.println(newFieldName + "\" is not a proper name.");
+            return (newFieldName + "\" is not a proper name.");
         }
+        return "An unknown error occurred.";
     }
     
     /**
