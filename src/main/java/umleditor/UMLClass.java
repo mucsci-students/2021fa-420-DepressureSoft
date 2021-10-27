@@ -235,6 +235,19 @@ public class UMLClass {
      */
     public  ArrayList<Field> getFields(){
         return fields;
+    } 
+
+    /**
+     * Returns ArrayList<String> of the fields.
+     * @return
+     */
+    public ArrayList<String> getFieldsString(){
+        ArrayList<String> fieldString = new ArrayList<String>();
+        for(int i = 0; i < fields.size(); i++ ){
+            String holder = fields.get(i).getFieldName();
+            fieldString.add(holder);  
+        }
+        return fieldString;
     }
 
     /**
