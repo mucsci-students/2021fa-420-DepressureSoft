@@ -1245,6 +1245,14 @@ public class GUI {
     public void load(){
        // model.load();
     }
+    public void undoAction() {
+    	// undo implementation here
+    	updateButtons();
+    }
+    public void redoAction() {
+    	// redo implementation here
+    	updateButtons();
+    }
     
     /**
      * Updates the availability of buttons based on the conditions of the model.
@@ -1351,6 +1359,23 @@ public class GUI {
     	}
     	else {
     		renameParameter.setEnabled(true);
+    	}
+    	
+    	//Undo-Redo
+    	//Undo
+    	if (!model.canUndo()) {
+    		undo.setEnabled(false);
+    	}
+    	else {
+    		undo.setEnabled(true);
+    	}
+    	
+    	//Redo
+    	if (!model.canRedo()) {
+    		redo.setEnabled(false);
+    	}
+    	else {
+    		redo.setEnabled(true);
     	}
     }
 
