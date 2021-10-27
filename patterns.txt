@@ -1,1 +1,5 @@
+## Design Patterns
 
+1. Singleton - ModelHistory.java:41-49
+
+2. Memento - ModelHistory.java:56-60
