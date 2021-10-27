@@ -40,7 +40,7 @@ class MethodTest {
 	@DisplayName("Adding a parameter to a method")
 	void testAddParam() 
 	{
-		testMethod.addParameter("testParam");
+		testMethod.addParameter("testParam", "typeTest");
 		
 		assertEquals(true, testMethod.parameterExists("testParam"), 
 				"'testParam' should exist");
@@ -50,7 +50,7 @@ class MethodTest {
 	@DisplayName("Removing a parameter from a method")
 	void testRemoveParam() 
 	{
-		testMethod.addParameter("testParam");
+		testMethod.addParameter("testParam", "typeTest");
 		
 		assertEquals(true, testMethod.parameterExists("testParam"), 
 				"'testParam' should exist");
@@ -65,7 +65,7 @@ class MethodTest {
 	@DisplayName("Renaming a parameter in a method")
 	void testRenameParam() 
 	{
-		testMethod.addParameter("testParam");
+		testMethod.addParameter("testParam", "typeTest");
 		
 		assertEquals(true, testMethod.parameterExists("testParam"), 
 				"'testParam' should exist");
@@ -82,12 +82,12 @@ class MethodTest {
 	@DisplayName("Removing all parameters from a method")
 	void testRemoveAllParam() 
 	{
-		testMethod.addParameter("testParam");
+		testMethod.addParameter("testParam", "typeTest");
 		
 		assertEquals(true, testMethod.parameterExists("testParam"), 
 				"'testParam' should exist");
 		
-		testMethod.addParameter("testParam2");
+		testMethod.addParameter("testParam2", "typeTest");
 		
 		assertEquals(true, testMethod.parameterExists("testParam2"), 
 				"'testParam2' should exist");

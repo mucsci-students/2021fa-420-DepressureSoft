@@ -45,10 +45,10 @@ public class Controller {
 							view.print("Class name required.");
 						}
 					} else if(checkKeyword(commands, 1, "method")) {
-						if (commands.size() > 3) {
-							model.addMethod(commands.get(2), commands.get(3));
+						if (commands.size() > 4) {
+							model.addMethod(commands.get(2), commands.get(3), commands.get(4));
 						} else {
-							view.print("Class and method names required.");
+							view.print("Class and method names, and return type required.");
 						}
 					} else if(checkKeyword(commands, 1, "field")) {
 						if (commands.size() > 3) {
@@ -57,10 +57,10 @@ public class Controller {
 							view.print("Class and field names required.");
 						}
 					} else if(checkKeyword(commands, 1, "parameter")) {
-						if(commands.size() > 4) {
-							model.addParameter(commands.get(2), commands.get(3), commands.get(4));
+						if(commands.size() > 5) {
+							model.addParameter(commands.get(2), commands.get(3), commands.get(4), commands.get(5));
 						} else {
-							view.print("Class, method, and parameter names required.");
+							view.print("Class, method, and parameter names, and parameter type required.");
 						}
 					} else if(checkKeyword(commands, 1, "relationship")) {
 						if(commands.size() == 4) {

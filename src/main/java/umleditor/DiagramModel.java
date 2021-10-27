@@ -174,9 +174,9 @@ public class DiagramModel {
         result.append("    {\n");
         result.append("      \"name\": \"" + theClass.getName() + "\",\n");
         result.append("      \"fields\": [\n");
-        ArrayList<String> fields = theClass.getFields();
-        for(String field : fields) {
-            result.append("        { \"name\": \"" + field + "\", \"type\": \"N/A\" },\n"); 
+        ArrayList<Field> fields = theClass.getFields();
+        for(Field field : fields) {
+            result.append("        { \"name\": \"" + field.getFieldName() + "\", \"type\": \"N/A\" },\n"); 
         }
         if(!fields.isEmpty()) {
             result.deleteCharAt(result.length() - 2);
@@ -189,9 +189,9 @@ public class DiagramModel {
             result.append("          \"name\": \"" + method.getMethodName() + "\",\n");
             result.append("          \"return_type\": \"n/a\",\n");
             result.append("          \"params\": [\n");
-            ArrayList<String> parameters = method.getParamList();
-            for(String param : parameters) {
-                result.append("            { \"name\": \"" + param + "\", \"type\": \"n/a\"},\n");
+            ArrayList<Parameter> parameters = method.getParamList();
+            for(Parameter param : parameters) {
+                result.append("            { \"name\": \"" + param.getParamName() + "\", \"type\": \"n/a\"},\n");
             }
             if (!parameters.isEmpty()) {
                 result.deleteCharAt(result.length() - 2);
@@ -236,13 +236,15 @@ public class DiagramModel {
                 while(methodIterator.hasNext()) {
                     JSONObject currentMethod = methodIterator.next();
                     String currentMethodName = (String) currentMethod.get("name");
-                    this.addMethod(currentClassName, currentMethodName);
+                    String currentMethodType = (String) currentMethod.get("type");
+                    this.addMethod(currentClassName, currentMethodName, currentMethodType);
                     JSONArray parameterList = (JSONArray) currentMethod.get("params");
                     Iterator<JSONObject> parameterIterator = parameterList.iterator();
                     while(parameterIterator.hasNext()) {
                         JSONObject currentParameter = parameterIterator.next();
                         String currentParameterName = (String) currentParameter.get("name");
-                        this.addParameter(currentClassName, currentMethodName, currentParameterName);
+                        String currentParameterType = (String) currentParameter.get("type");
+                        this.addParameter(currentClassName, currentMethodName, currentParameterName, currentParameterType);
                     }
                 }
             }
@@ -345,7 +347,7 @@ public class DiagramModel {
      * @param className
      * @param methodName
      */
-    public void addMethod(String className, String methodName){
+    public void addMethod(String className, String methodName, String methodType){
         UMLClass parentClass = getUML(className);
         if(SourceVersion.isIdentifier(methodName)) 
         {
@@ -354,7 +356,7 @@ public class DiagramModel {
                 if(!parentClass.methodExists(methodName))
                 {
                     snapshot();
-                    parentClass.addMethod(methodName);
+                    parentClass.addMethod(methodName, methodType);
                 }
                 else
                 {
@@ -457,7 +459,7 @@ public class DiagramModel {
      * @param methodName
      * @param name
      */
-    public void addParameter(String className, String methodName, String pName){
+    public void addParameter(String className, String methodName, String pName, String pType){
         UMLClass parentClass = getUML(className);
         if(SourceVersion.isIdentifier(pName))
         {
@@ -467,7 +469,7 @@ public class DiagramModel {
                 if(parentClass.methodExists(methodName))
                 {
                     snapshot();
-                    parentMethod.addParameter(pName);
+                    parentMethod.addParameter(pName, pType);
                 }
                 else
                 {

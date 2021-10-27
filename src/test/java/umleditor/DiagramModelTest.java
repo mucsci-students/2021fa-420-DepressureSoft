@@ -147,7 +147,7 @@ class DiagramModelTest {
 		assertEquals(true, testDiagram.methodExists("trial", "testMethod"),
 				"testMethod should exist");
 		
-		testDiagram.addParameter("trial", "testMethod", "testParam");
+		testDiagram.addParameter("trial", "testMethod", "testParam", "typeTest");
 		UMLClass testClass = testDiagram.getUML("trial");
 		Method dummyMethod = testClass.getMethod("testMethod");
 		
@@ -168,7 +168,7 @@ class DiagramModelTest {
 		assertEquals(true, testDiagram.methodExists("trial", "testMethod"),
 				"testMethod should exist");
 		
-		testDiagram.addParameter("trial", "testMethod", "testParam");
+		testDiagram.addParameter("trial", "testMethod", "testParam", "typeTest");
 		UMLClass testClass = testDiagram.getUML("trial");
 		Method dummyMethod = testClass.getMethod("testMethod");
 		
@@ -194,7 +194,7 @@ class DiagramModelTest {
 		assertEquals(true, testDiagram.methodExists("trial", "testMethod"),
 				"testMethod should exist");
 		
-		testDiagram.addParameter("trial", "testMethod", "testParam");
+		testDiagram.addParameter("trial", "testMethod", "testParam", "typeTest");
 		UMLClass testClass = testDiagram.getUML("trial");
 		Method dummyMethod = testClass.getMethod("testMethod");
 		
@@ -223,14 +223,14 @@ class DiagramModelTest {
 		assertEquals(true, testDiagram.methodExists("trial", "testMethod"),
 				"testMethod should exist");
 		
-		testDiagram.addParameter("trial", "testMethod", "testParam");
+		testDiagram.addParameter("trial", "testMethod", "testParam", "typeTest");
 		UMLClass testClass = testDiagram.getUML("trial");
 		Method dummyMethod = testClass.getMethod("testMethod");
 		
 		assertEquals(true, dummyMethod.parameterExists("testParam"),
 				"testParam should exist");
 		
-		testDiagram.addParameter("trial", "testMethod", "param2");
+		testDiagram.addParameter("trial", "testMethod", "param2", "typeTest");
 		
 		assertEquals(true, dummyMethod.parameterExists("param2"),
 				"param2 should exist");

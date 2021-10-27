@@ -9,14 +9,16 @@ import java.util.ArrayList;
 public class Method {
 
     private String methodName;
-    private ArrayList<String> parameters = new ArrayList<String>();
+    private String methodType;
+    private ArrayList<Parameter> parameters = new ArrayList<Parameter>();
 
     /**
      * Creates a new method.
      * @param methodName
      */
-    public Method(String methodName){
+    public Method(String methodName, String methodType){
         this.methodName = methodName;
+        this.methodType = methodType;
     }
 
     /**
@@ -36,6 +38,10 @@ public class Method {
         return this.methodName;
     }
 
+    public String getMethodType(){
+        return this.methodType;
+    }
+
     /**
      * Rename method if it exists in the class diagram.
      * @param newName The new name for the method.
@@ -48,8 +54,8 @@ public class Method {
      * Adds a parameter to the method.
      * @param pName the name of the parameter to add.
      */
-    public void addParameter(String pName){
-        parameters.add(pName);
+    public void addParameter(String pName, String pType){
+        parameters.add(new Parameter(pName, pType));
     }
 
     /**
@@ -67,8 +73,7 @@ public class Method {
      */
     public void renameParameter(String oldPName, String newPName){
         if(parameterExists(oldPName)){
-            int index = parameters.indexOf(oldPName);
-            parameters.set(index, newPName);
+            getParam(oldPName).renameParameter(newPName);
         }
     }
 
@@ -85,7 +90,16 @@ public class Method {
      * @return
      */
     public boolean parameterExists(String pName){
-        return (parameters.contains(pName));
+        return (getParam(pName) != null);
+    }
+
+    public Parameter getParam(String pName){
+        for(int index = 0; index < parameters.size(); index++) {
+            if (parameters.get(index).getParamName().equals(pName)) {
+                return parameters.get(index);
+            }
+        }
+        return null;
     }
 
     /**
@@ -100,7 +114,7 @@ public class Method {
      * Returns ArrayList of the parameters.
      * @return ArrayList of parameters
      */
-    public ArrayList<String> getParamList(){
+    public ArrayList<Parameter> getParamList(){
         return parameters;
     }
 }
