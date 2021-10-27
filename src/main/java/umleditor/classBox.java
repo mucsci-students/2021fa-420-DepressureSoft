@@ -39,12 +39,14 @@ public class classBox {
 
     public void initialize(){
         panel = new JPanel();
-		panel.setBorder(new LineBorder(new Color(20, 20, 20), 1));
+		panel.setBorder(new LineBorder(new Color(20, 20, 20), 2));
         panel.add(className);
         methodPanel = new JPanel();
         fieldPanel = new JPanel();
         methodPanel.setLayout(new GridLayout(4,2));
+        methodPanel.setBorder(new LineBorder(new Color(20, 20, 20), 1));
 		fieldPanel.setLayout(new GridLayout(4,2));
+        fieldPanel.setBorder(new LineBorder(new Color(20, 20, 20), 1));
         panel.add(methodPanel);
         panel.add(fieldPanel);
 
