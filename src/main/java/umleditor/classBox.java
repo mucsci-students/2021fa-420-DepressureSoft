@@ -86,7 +86,7 @@ public class classBox {
 		fields.put(fieldName,field);
 		fieldPanel.add(field);
 		fieldPanel.repaint();
-        fields.get(fieldName).setText(fieldName + ":" + fieldT);
+        fields.get(fieldName).setText(fieldName + " : " + fieldT);
      }
 
      public void addMethod(String methodName, String methodType){
