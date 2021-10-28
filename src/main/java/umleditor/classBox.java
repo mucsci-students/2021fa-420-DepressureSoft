@@ -48,8 +48,9 @@ public class classBox {
         methodPanel.setBorder(new LineBorder(new Color(20, 20, 20), 1));
 		fieldPanel.setLayout(new GridLayout(4,2));
         fieldPanel.setBorder(new LineBorder(new Color(20, 20, 20), 1));
-        panel.add(methodPanel);
         panel.add(fieldPanel);
+        panel.add(methodPanel);
+
 
         MouseInputAdapter movement = new MouseInputAdapter (){
 			private int x;
