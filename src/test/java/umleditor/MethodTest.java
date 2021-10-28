@@ -15,7 +15,7 @@ class MethodTest {
 	@BeforeEach
 	void setUp()
 	{
-		testMethod = new Method("testMethod");
+		testMethod = new Method("testMethod", "testType");
 	}
 
 	@Test

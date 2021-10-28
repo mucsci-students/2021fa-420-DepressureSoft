@@ -212,6 +212,10 @@ public class UMLClass {
         return null;
     }
 
+    public boolean fieldExists(String fieldName) {
+        return (getField(fieldName) != null);
+    }
+
     /**
      * Returns an ArrayList<String> of all the class representation's fields.
      * @return The fields ArrayList.
