@@ -39,8 +39,10 @@ public class classBox {
 
     public void initialize(){
         panel = new JPanel();
+
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-		panel.setBorder(new LineBorder(new Color(20, 20, 20), 1));
+    		panel.setBorder(new LineBorder(new Color(20, 20, 20), 1));
+
         panel.add(className);
         methodPanel = new JPanel();
         fieldPanel = new JPanel();
