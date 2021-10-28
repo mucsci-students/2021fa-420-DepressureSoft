@@ -1,18 +1,24 @@
 package umleditor;
 
 import java.awt.*;
+import java.util.*;
+import javax.swing.*;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.io.IOException;
-import java.util.*;
-import javax.swing.*;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
+
+import java.io.IOException;
+
 import umleditor.Relationship.RelationshipType;
+
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.UIManager;
+
+import javax.lang.model.SourceVersion;
 
 public class GUI { 
     
@@ -21,8 +27,8 @@ public class GUI {
 
     JMenuBar menuBar;
 
-    JMenu add,delete,rename,file;
-    JMenuItem help,save,load, undo,redo;
+    JMenu add,delete,rename,file,edit;
+    JMenuItem help,save,load,undo,redo;
     JMenuItem addClass,addRelationship,addField,addMethod,addParameter;
     JMenuItem deleteClass,deleteRelationship,deleteField,deleteMethod,deleteParameter;
     JMenuItem renameClass,renameField,renameMethod,renameParameter;
@@ -31,6 +37,8 @@ public class GUI {
 
     JTextField textBoxClassAdd;
     JTextField className,className2,methodName,methodType,fieldName,fieldType,parameterName,parameterType,renamer;
+
+    JLabel errorMessage;
 
     JComboBox classNames,classNamesX,methodNames,fieldNames,paramNames,relationshipTypes;
 
@@ -77,10 +85,12 @@ public class GUI {
         delete = new JMenu("Delete");
         rename = new JMenu("Rename");
         file = new JMenu("File");
-        undo = new JMenuItem("<=");
-        undo.setMaximumSize(new Dimension(30,30));
-        redo = new JMenuItem("=>");
-        redo.setMaximumSize(new Dimension(30,30));
+        edit = new JMenu("Edit");
+
+        undo = new JMenuItem("Undo");
+        undo.setAccelerator(KeyStroke.getKeyStroke('Z', Toolkit.getDefaultToolkit ().getMenuShortcutKeyMaskEx()));
+        redo = new JMenuItem("Redo");
+        redo.setAccelerator(KeyStroke.getKeyStroke('Y', Toolkit.getDefaultToolkit ().getMenuShortcutKeyMaskEx()));
 
         addClass = new JMenuItem("Class");
         addRelationship = new JMenuItem("Relationship");
@@ -100,7 +110,11 @@ public class GUI {
         renameParameter = new JMenuItem("Parameter");
 
         save = new JMenuItem("Save");
+        save.setAccelerator(KeyStroke.getKeyStroke('S', Toolkit.getDefaultToolkit ().getMenuShortcutKeyMaskEx()));
         load = new JMenuItem("Load");
+        load.setAccelerator(KeyStroke.getKeyStroke('L', Toolkit.getDefaultToolkit ().getMenuShortcutKeyMaskEx()));
+
+        errorMessage = new JLabel("");
 
         add.add(addClass);
         add.add(addRelationship);
@@ -123,12 +137,14 @@ public class GUI {
         file.add(save);
         file.add(load);
 
+        edit.add(undo);
+        edit.add(redo);
+
         menuBar.add(file);
         menuBar.add(add);
         menuBar.add(delete);
         menuBar.add(rename);
-        menuBar.add(undo);
-        menuBar.add(redo);
+        menuBar.add(edit);
         menuBar.add(Box.createHorizontalGlue());
         menuBar.add(help);
 
@@ -257,6 +273,16 @@ public class GUI {
         		saveWindow();
         	}
         });
+        undo.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		undoAction();
+        	}
+        });
+        redo.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		redoAction();
+        	}
+        });
       updateButtons();
     }
 
@@ -275,6 +301,7 @@ public class GUI {
 
         actionPane = new JPanel(new GridLayout(4,1));
         className = new JTextField("", 18);
+        errorMessage.setText("");
 
         classAddButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -285,6 +312,7 @@ public class GUI {
         actionPane.add(classNameAdd);
         actionPane.add(className);
         actionPane.add(classAddButton);
+        actionPane.add(errorMessage);
         action.add(actionPane);
 
         action.setVisible(true);
@@ -366,6 +394,7 @@ public class GUI {
         actionPane.add(relationshipType);
         actionPane.add(relationshipTypes);
         actionPane.add(classAddButton);
+        actionPane.add(errorMessage);
         action.add(actionPane);
 
         action.setVisible(true);
@@ -381,6 +410,9 @@ public class GUI {
         JLabel fieldLabel = new JLabel("Enter Field Name: ");
         JLabel fieldTLabel = new JLabel("Enter Field Type: ");
         JButton classAddButton = new JButton("Add");
+
+        //Ensures No Error Message is showing prior to user input.
+        errorMessage.setText("");
         
 
         classAddButton.addActionListener(new ActionListener() {
@@ -404,6 +436,7 @@ public class GUI {
         actionPane.add(fieldType);
 
         actionPane.add(classAddButton);
+        actionPane.add(errorMessage);
         action.add(actionPane);
 
         action.setVisible(true);
@@ -417,9 +450,12 @@ public class GUI {
 
         JLabel classLabel = new JLabel("Select Class: ");
         JLabel methodLabel = new JLabel("Enter Method Name: ");
-        JLabel methodTLabel = new JLabel("Enter Method Type: ");
+        JLabel methodTLabel = new JLabel("Enter Method Return Type: ");
 
         JButton classAddButton = new JButton("Add");
+
+        //Ensures No Error Message is showing prior to user input.
+        errorMessage.setText("");
 
         classAddButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -443,6 +479,7 @@ public class GUI {
         actionPane.add(methodType);
 
         actionPane.add(classAddButton);
+        actionPane.add(errorMessage);
         action.add(actionPane);
 
         action.setVisible(true);
@@ -461,6 +498,9 @@ public class GUI {
 
         actionPane = new JPanel(new GridLayout(10,1));
 
+        //Ensures No Error Message is showing prior to user input.
+        errorMessage.setText("");
+        
         JButton classAddButton = new JButton("Add");
         classAddButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -504,6 +544,7 @@ public class GUI {
 
 
         actionPane.add(classAddButton);
+        actionPane.add(errorMessage);
         action.add(actionPane);
 
         action.setVisible(true);
@@ -780,6 +821,9 @@ public class GUI {
         JLabel classRenameLabel = new JLabel("Enter NEW Class Name: ");
         JButton classAddButton = new JButton("Rename");
 
+        //Ensures No Error Message is showing prior to user input.
+        errorMessage.setText("");
+
         classAddButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 renameClassAction();
@@ -797,6 +841,7 @@ public class GUI {
         actionPane.add(classRenameLabel);
         actionPane.add(className2);
         actionPane.add(classAddButton);
+        actionPane.add(errorMessage);
         action.add(actionPane);
 
         action.setVisible(true);
@@ -812,6 +857,9 @@ public class GUI {
         JLabel classLabel = new JLabel("Select Class: ");
         JLabel fieldLabel = new JLabel("Select Field: ");
         JLabel fieldRenameLabel = new JLabel("Enter NEW Field Name: ");
+
+        //Ensures No Error Message is showing prior to user input.
+        errorMessage.setText("");
 
         JButton classAddButton = new JButton("Rename");
         classAddButton.addActionListener(new ActionListener() {
@@ -852,6 +900,7 @@ public class GUI {
         actionPane.add(renamer);
 
         actionPane.add(classAddButton);
+        actionPane.add(errorMessage);
         action.add(actionPane);
 
         action.setVisible(true);
@@ -875,6 +924,9 @@ public class GUI {
         JLabel classLabel = new JLabel("Select Class: ");
         JLabel methodLabel = new JLabel("Select Method: ");
         JLabel methodRenameLabel = new JLabel("Enter NEW Method Name: ");
+
+        //Ensures No Error Message is showing prior to user input.
+        errorMessage.setText("");
 
         JButton classAddButton = new JButton("Rename");
         classAddButton.addActionListener(new ActionListener() {
@@ -914,6 +966,7 @@ public class GUI {
         actionPane.add(renamer);
 
         actionPane.add(classAddButton);
+        actionPane.add(errorMessage);
         action.add(actionPane);
 
         action.setVisible(true);
@@ -937,6 +990,9 @@ public class GUI {
         JLabel methodLabel = new JLabel("Select Method: ");
         JLabel paramLabel = new JLabel("Select Parameter: ");
         JLabel paramRenameLabel = new JLabel("Enter NEW Parameter Name: ");
+
+        //Ensures No Error Message is showing prior to user input.
+        errorMessage.setText("");
 
         JButton classAddButton = new JButton("Rename");
         classAddButton.addActionListener(new ActionListener() {
@@ -995,6 +1051,7 @@ public class GUI {
         actionPane.add(renamer);
 
         actionPane.add(classAddButton);
+        actionPane.add(errorMessage);
         action.add(actionPane);
 
         action.setVisible(true);
@@ -1013,19 +1070,25 @@ public class GUI {
      */
     public void addClassAction(){
         String newClass = className.getText();
-        if(!duplicateClass(newClass)){
-        model.addClass(newClass);
-        box = new classBox(newClass);
-        boxMap.put(newClass,box);
-        pane.add(box.getClassPanel());
-        frame.add(pane);
-        frame.setVisible(true);
-        action.dispose();
-        updateButtons();
+        if(SourceVersion.isIdentifier(newClass)){
+            if(!duplicateClass(newClass)){
+                model.addClass(newClass);
+                box = new classBox(newClass);
+                boxMap.put(newClass,box);
+                pane.add(box.getClassPanel());
+                frame.add(pane);
+                frame.setVisible(true);
+                action.dispose();
+                updateButtons();
+                errorMessage.setText("");
+            }
+            else{
+                errorMessage.setText("Class already exists.");
+                actionPane.validate();
+            }
         }
         else{
-            JLabel error = new JLabel("Class already exists.");
-            actionPane.add(error);
+            errorMessage.setText("Improper Name.");
             actionPane.validate();
         }
     }
@@ -1034,18 +1097,23 @@ public class GUI {
         String getClass = classNames.getSelectedItem().toString();
 		String field = fieldName.getText();
         String fieldT = fieldType.getText();
-
-        if(!boxMap.get(getClass).duplicateField(field)){
-        model.addField(getClass, field);
-        box = boxMap.get(getClass);
-        box.addField(field,fieldT);
-        action.dispose();
-        updateButtons();
-        frame.validate();
+        if(SourceVersion.isIdentifier(field)){
+            if(!boxMap.get(getClass).duplicateField(field)){
+                model.addField(getClass, field);
+                box = boxMap.get(getClass);
+                box.addField(field,fieldT);
+                action.dispose();
+                updateButtons();
+                frame.validate();
+                errorMessage.setText("");
+            }
+            else{
+                errorMessage.setText("Field already exists.");
+                actionPane.validate();
+            }
         }
         else{
-            JLabel error = new JLabel("Field already exists.");
-            actionPane.add(error);
+            errorMessage.setText("Improper Name.");
             actionPane.validate();
         }
     }
@@ -1054,19 +1122,24 @@ public class GUI {
         String getClass = classNames.getSelectedItem().toString();
 		String method = methodName.getText();
         String methodT = methodType.getText();
-
-        if(!boxMap.get(getClass).duplicateMethod(method)){
-        model.addMethod(getClass,method);
-        box = boxMap.get(getClass);
-        box.addMethod(method,methodT);
-        action.dispose();
-        frame.validate();
-        updateButtons();
-         }
+        if(SourceVersion.isIdentifier(method)){
+            if(!boxMap.get(getClass).duplicateMethod(method)){
+                model.addMethod(getClass,method);
+                box = boxMap.get(getClass);
+                box.addMethod(method,methodT);
+                action.dispose();
+                frame.validate();
+                updateButtons();
+                errorMessage.setText("");
+            }
+            else{
+            errorMessage.setText("Method already exists.");
+            actionPane.validate();
+            }
+        }
         else{
-        JLabel error = new JLabel("Method already exists.");
-        actionPane.add(error);
-        actionPane.validate();
+            errorMessage.setText("Improper Name.");
+            actionPane.validate();
         }
     }
 
@@ -1076,18 +1149,24 @@ public class GUI {
         String parameter = parameterName.getText();
         //String parameterT = parameterType.getText();
 
-        if(!boxMap.get(getClass).duplicateParameter(method,parameter)){
-        model.addParameter(getClass,method,parameter);
-        box = boxMap.get(getClass);
-        box.addParameter(parameter,method);
-        action.dispose();
-        frame.repaint();
-        updateButtons();
+        if(SourceVersion.isIdentifier(parameter)){
+            if(!boxMap.get(getClass).duplicateParameter(method,parameter)){
+                model.addParameter(getClass,method,parameter);
+                box = boxMap.get(getClass);
+                box.addParameter(parameter,method);
+                action.dispose();
+                frame.repaint();
+                updateButtons();
+                errorMessage.setText("");
+            }
+            else{
+            errorMessage.setText("Parameter already exists.");
+            actionPane.validate();
+            }
         }
         else{
-        JLabel error = new JLabel("Parameter already exists.");
-        actionPane.add(error);
-        actionPane.validate();
+            errorMessage.setText("Improper Name.");
+            actionPane.validate();
         }
     }
 
@@ -1125,6 +1204,7 @@ public class GUI {
         pane.repaint();
         updateButtons();
     }
+  
     public void deleteRelationshipAction(){
         String classOne = classNames.getSelectedItem().toString();
         String classTwo = classNamesX.getSelectedItem().toString();
@@ -1133,6 +1213,7 @@ public class GUI {
         action.dispose();
         updateButtons();
     }
+   
     public void deleteFieldAction(){
         String getClass = classNames.getSelectedItem().toString();
 		String field = fieldNames.getSelectedItem().toString();
@@ -1143,6 +1224,7 @@ public class GUI {
         action.dispose();
         updateButtons();
     }
+    
     public void deleteMethodAction(){
         String getClass = classNames.getSelectedItem().toString();
 		String method = methodNames.getSelectedItem().toString();
@@ -1153,6 +1235,7 @@ public class GUI {
         action.dispose();
         updateButtons();
     }
+   
     public void deleteParameterAction(){ 
         String getClass = classNames.getSelectedItem().toString();
         String method = methodNames.getSelectedItem().toString();
@@ -1170,85 +1253,116 @@ public class GUI {
     public void renameClassAction(){
         String oldClass = classNames.getSelectedItem().toString();
         String newClass = className2.getText();
-
-        if(!duplicateClass(newClass)){
-        model.renameUMLClass(oldClass,newClass);
-        box = boxMap.get(oldClass);
-        box.renameClass(newClass);
-        boxMap.remove(newClass);
-        boxMap.put(newClass,box);
-        action.dispose();
-        updateButtons();
+        if(SourceVersion.isIdentifier(newClass)){
+            if(!duplicateClass(newClass)){
+                model.renameUMLClass(oldClass,newClass);
+                box = boxMap.get(oldClass);
+                box.renameClass(newClass);
+                boxMap.remove(newClass);
+                boxMap.put(newClass,box);
+                action.dispose();
+                updateButtons();
+                errorMessage.setText("");
+            }
+            else{
+                errorMessage.setText("Class already exists.");
+                actionPane.validate();
+            }
         }
         else{
-
+            errorMessage.setText("Improper Name.");
+            actionPane.validate();
         }
     }
+   
     public void renameFieldAction(){
         String getClass = classNames.getSelectedItem().toString();
 		String field = fieldNames.getSelectedItem().toString();
         String newField = renamer.getText();
-
-        if(!boxMap.get(getClass).duplicateField(newField)){
-        box = boxMap.get(getClass);
-        box.renameField(field,newField);
-        model.renameField(getClass,field,newField);
-        action.dispose();
-        updateButtons();
+        if(SourceVersion.isIdentifier(newField)){
+            if(!boxMap.get(getClass).duplicateField(newField)){
+                box = boxMap.get(getClass);
+                box.renameField(field,newField);
+                model.renameField(getClass,field,newField);
+                action.dispose();
+                updateButtons();
+                errorMessage.setText("");
+            }
+            else{
+                errorMessage.setText("Field already exists.");
+                actionPane.validate();
+            }
         }
         else{
-        JLabel error = new JLabel("Field already exists.");
-        actionPane.add(error);
-        actionPane.validate();
-         }
+            errorMessage.setText("Improper Name.");
+            actionPane.validate();
+        }
     }
+    
     public void renameMethodAction(){
         String getClass = classNames.getSelectedItem().toString();
 		String method = methodNames.getSelectedItem().toString();
         String newMethod = renamer.getText();
-
-        if(!boxMap.get(getClass).duplicateMethod(newMethod)){
-        box = boxMap.get(getClass);
-        box.renameMethod(method,newMethod);
-        model.renameMethod(getClass,method,newMethod);
-        action.dispose();
-        updateButtons();
+        if(SourceVersion.isIdentifier(newMethod)){
+            if(!boxMap.get(getClass).duplicateMethod(newMethod)){
+                box = boxMap.get(getClass);
+                box.renameMethod(method,newMethod);
+                model.renameMethod(getClass,method,newMethod);
+                action.dispose();
+                updateButtons();
+                errorMessage.setText("");
+            }
+            else{
+                errorMessage.setText("Method already exists.");
+                actionPane.validate();
+            }
         }
         else{
-            JLabel error = new JLabel("Method already exists.");
-            actionPane.add(error);
+            errorMessage.setText("Improper Name.");
             actionPane.validate();
         }
     }
+   
     public void renameParameterAction(){
         String getClass = classNames.getSelectedItem().toString();
 		String method = methodNames.getSelectedItem().toString();
         String oldParam = paramNames.getSelectedItem().toString();
         String newParam = renamer.getText();
 
-        if(!boxMap.get(getClass).duplicateParameter(method,newParam)){
-        model.renameParameter(getClass, method,oldParam,newParam);
-        box = boxMap.get(getClass);
-        box.renameParameter(oldParam,newParam,method);
-        action.dispose();
-        updateButtons();
-        }
+        //Checks if the new name is proper and that the entry isn't a duplicate.
+        if(SourceVersion.isIdentifier(newParam)){
+            if(!boxMap.get(getClass).duplicateParameter(method,newParam)){
+                model.renameParameter(getClass, method,oldParam,newParam);
+                box = boxMap.get(getClass);
+                box.renameParameter(oldParam,newParam,method);
+                action.dispose();
+                updateButtons();
+                errorMessage.setText("");
+            }
+            else{
+                errorMessage.setText("Parameter already exists.");
+                actionPane.validate();
+            }
+         }
         else{
-        JLabel error = new JLabel("Parameter already exists.");
-        actionPane.add(error);
-        actionPane.validate();
+            errorMessage.setText("Improper Name.");
+            actionPane.validate();
         }
     }
+
     public void save(){
        // model.save();
     }
+   
     public void load(){
        // model.load();
     }
+  
     public void undoAction() {
     	// undo implementation here
     	updateButtons();
     }
+  
     public void redoAction() {
     	// redo implementation here
     	updateButtons();
