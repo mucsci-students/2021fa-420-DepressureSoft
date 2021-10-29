@@ -1,20 +1,19 @@
 package umleditor;
 
 import java.util.Stack;
-import java.util.HashMap;
 
 public class GUIHistory {
 
     private static GUIHistory guiHistorySingleton = null;
 
-    private Stack<HashMap<String,classBox>> undoHistory;
+    private Stack<GUI> undoHistory;
 
-    private Stack<HashMap<String,classBox>> redoHistory;
+    private Stack<GUI> redoHistory;
 
 
     private GUIHistory(){
-        undoHistory = new Stack<HashMap<String,classBox>>();
-        redoHistory = new Stack<HashMap<String,classBox>>();
+        undoHistory = new Stack<GUI>();
+        redoHistory = new Stack<GUI>();
     }
 
     public static GUIHistory getInstance(){
@@ -27,21 +26,21 @@ public class GUIHistory {
         }
     }
 
-    public void snapshotModel(HashMap<String,classBox> classBoxes){
+    public void snapshotModel(GUI classBoxes){
         // Anytime we change state we want to clear the redo history
         undoHistory.push(classBoxes);
         redoHistory.clear();
     }
 
-    public HashMap<String,classBox> undo(HashMap<String,classBox> currentClassBoxes){
+    public GUI undo(GUI currentClassBoxes){
         // Anytime we undo, push the redo stack
-        HashMap<String,classBox> model = undoHistory.pop();
+        GUI model = undoHistory.pop();
         redoHistory.push(currentClassBoxes);
         return model;
     }
 
-    public HashMap<String,classBox> redo(HashMap<String,classBox> currentClassBoxes){
-        HashMap<String,classBox> model = redoHistory.pop();
+    public GUI redo(GUI currentClassBoxes){
+        GUI model = redoHistory.pop();
         undoHistory.push(currentClassBoxes);
         return model;
     }
