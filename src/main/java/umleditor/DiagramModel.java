@@ -366,6 +366,13 @@ public class DiagramModel {
                 {
                     snapshot();
                     parentClass.addMethod(methodName, methodType);
+                } else if(parentClass.methodExists(methodName)){
+                    if(!parentClass.getMethod(methodName).getMethodType().equals(methodType)){
+                        snapshot();
+                        parentClass.addMethod(methodName, methodType);
+                    }else{
+                        System.out.println("The method \"" + methodName + "\" cannot be added, as it has the same return type.");
+                    }
                 }
                 else
                 {

@@ -153,7 +153,25 @@ public class Controller {
 						view.print("Load requires a file path to load the file from. Type \"help load\" for more info.");
 					}
 				} else if (checkKeyword(commands, 0, "changetype")) {
-					view.print("Types are not yet implemented. Check back later!");
+					if(checkKeyword(commands, 1, "field")){
+						if(commands.size() > 4){
+							model.renameFieldType(commands.get(2), commands.get(3), commands.get(4));
+						} else{
+							view.print("Class name, field name, and new field type required.");
+						}
+					}
+					} else if(checkKeyword(commands, 1, "method")){
+						if(commands.size() > 4){
+							model.renameMethodType(commands.get(2), commands.get(3), commands.get(4));
+						} else{
+							view.print("Class name, method name, and new method return type required.");
+						}
+					} else if(checkKeyword(commands, 1, "parameter")){
+						if(commands.size() > 5){
+							model.renameParameterType(commands.get(1), commands.get(2), commands.get(3), commands.get(4));
+						} else{
+							view.print("Class name, method name, parameter name, and new parameter type required.");
+						}
 				} else if(checkKeyword(commands, 0, "display")) {
 					if(checkKeyword(commands, 1, "all")) {
 						model.listClasses();
