@@ -71,6 +71,7 @@ public class classBox {
         }
         
         this.panel = other.panel;
+        panel.setLocation(other.getClassPanel().getX(), other.getClassPanel().getY());
         this.fieldPanel = other.fieldPanel;
         this.gl_panel = other.gl_panel;
 
