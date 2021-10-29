@@ -26,22 +26,22 @@ public class GUIHistory {
         }
     }
 
-    public void snapshotModel(GUI classBoxes){
+    public void snapshotModel(GUI currentGUI){
         // Anytime we change state we want to clear the redo history
-        undoHistory.push(classBoxes);
+        undoHistory.push(currentGUI);
         redoHistory.clear();
     }
 
-    public GUI undo(GUI currentClassBoxes){
+    public GUI undo(GUI currentGUI){
         // Anytime we undo, push the redo stack
         GUI model = undoHistory.pop();
-        redoHistory.push(currentClassBoxes);
+        redoHistory.push(currentGUI);
         return model;
     }
 
-    public GUI redo(GUI currentClassBoxes){
+    public GUI redo(GUI currentGUI){
         GUI model = redoHistory.pop();
-        undoHistory.push(currentClassBoxes);
+        undoHistory.push(currentGUI);
         return model;
     }
 
