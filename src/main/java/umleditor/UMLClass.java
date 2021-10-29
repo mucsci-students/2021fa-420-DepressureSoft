@@ -1,8 +1,4 @@
 package umleditor;
-/**
- * Authors: Jeffrey Flynn, Jeffrey Cutcher, David Jachimowicz, Alex Balagurak, Jon Brennan
- * Date: 9/15/21
- */
 
 import java.util.ArrayList;
 
@@ -19,15 +15,22 @@ public class UMLClass {
     /**
      * The fields of the class (does not include methods).
      */
-    private ArrayList<String> fields = new ArrayList<String>();
+    private ArrayList<String> fields;
     /**
      * Names of the classes that this class is related to.
+     * @deprecated Relationships are now defined in DiagramModel objects.
      */
-    private ArrayList<String> relationship = new ArrayList<String>();
+    @Deprecated
+    private ArrayList<String> relationship;
     /**
      * The methods of the class.
      */
-    private ArrayList<Method> methods = new ArrayList<Method>();
+    private ArrayList<Method> methods;
+    /**
+     * 
+     */
+    private int xPosition;
+    private int yPosition;
   
     /**
      * Main constructor that sets the name of the new class.
@@ -35,12 +38,34 @@ public class UMLClass {
      */
     public UMLClass(String name) {
         this.dName = name;
+        this.fields = new ArrayList<String>();
+        this.relationship = new ArrayList<String>();
+        this.methods = new ArrayList<Method>();
+        this.xPosition = 0;
+        this.yPosition = 0;
+    }
+    
+    /**
+     * Main constructor that sets the name of the new class, as well as its x and y positions.
+     * @param name The name of the new class.
+     * @param xPos The x position of the class on the diagram.
+     * @param yPos The y position of the class on the diagram.
+     */
+    public UMLClass(String name, int xPos, int yPos) {
+        this.dName = name;
+        this.fields = new ArrayList<String>();
+        this.methods = new ArrayList<Method>();
+        this.xPosition = xPos;
+        this.yPosition = yPos;
     }
 
+    /**
+     * Copy constructor.
+     * @param other Other class to copy into this class.
+     */
     public UMLClass(UMLClass other){
         this.dName = other.dName;
-        this.fields = new ArrayList(other.fields);
-        this.relationship = new ArrayList(other.relationship);
+        this.fields = new ArrayList<String>(other.fields);
         for(Method m : other.methods){
             Method methodCopy = new Method(m);
             methods.add(methodCopy);
@@ -54,19 +79,55 @@ public class UMLClass {
     public void renameClass(String newName){
         this.dName = newName;
     }
+    
+    /**
+     * Returns the x position of this class.
+     * @return The x position of this class.
+     */
+    public int getXPosition() {
+    	return this.xPosition;
+    }
+    
+    /**
+     * Returns the y position of this class.
+     * @return The y position of this class.
+     */
+    public int getYPosition() {
+    	return this.yPosition;
+    }
+    
+    /**
+     * Sets the x position of this class.
+     * @param newX The new x position.
+     */
+    public void setXPosition(int newX) {
+    	this.xPosition = newX;
+    }
+    
+    /**
+     * Sets the y position of this class.
+     * @param newY The new y position.
+     */
+    public void setYPosition(int newY) {
+    	this.yPosition = newY;
+    }
 
     /**
-     * Adds a relationship to the class representation.
+     * Adds a relationship to the class representation. (Deprecated)
      * @param newRelation The name of the class that this class will be related to.
+     * @deprecated Relationships are now defined in DiagramModel objects.
      */
+    @Deprecated
     public void addRelationship(String newRelation){
         relationship.add(newRelation);
     }
 
     /**
-     * Deletes a relationship to the class representation.
+     * Deletes a relationship to the class representation. (Deprecated)
      * @param deleteRelation The name of the class that this class is related to that will be deleted.
+     * @deprecated Relationships are now defined in DiagramModel objects.
      */
+    @Deprecated
     public void deleteRelationship(String deleteRelation){
         relationship.remove(deleteRelation);
     }

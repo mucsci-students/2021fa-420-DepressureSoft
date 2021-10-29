@@ -141,7 +141,7 @@ public class DiagramModel {
             jsonTxt.append("    {\n");
             jsonTxt.append("      \"source\": \"" + relationship.getFrom().getName() + "\",\n");
             jsonTxt.append("      \"destination\": \"" + relationship.getTo().getName() + "\",\n");
-            jsonTxt.append("      \"type\": \"" + relationship.getRelationshipType() + "\"\n");
+            jsonTxt.append("      \"type\": \"" + relationship.getRelationshipTypeString() + "\"\n");
             jsonTxt.append("    },\n");
         }
         if (!relationships.isEmpty()) {
@@ -173,6 +173,8 @@ public class DiagramModel {
         StringBuilder result = new StringBuilder();
         result.append("    {\n");
         result.append("      \"name\": \"" + theClass.getName() + "\",\n");
+        result.append("      \"x_position\": \"" + theClass.getXPosition() + "\",\n");
+        result.append("      \"y_position\": \"" + theClass.getYPosition() + "\",\n");
         result.append("      \"fields\": [\n");
         ArrayList<String> fields = theClass.getFields();
         for(String field : fields) {
@@ -274,8 +276,6 @@ public class DiagramModel {
             System.out.println("An error occurred: \n" + e.toString());
             e.printStackTrace();
         }
-        
-
     }
 
     /**

@@ -62,7 +62,26 @@ public class Relationship {
     public RelationshipType getRelationshipType() {
         return this.type;
     }
-
+    
+    /**
+     * Returns a String of the current relationship's type.
+     * @return A string containing one of {Aggregation|Composition|Inheritance|Realization}, or null if this relationship
+     * 	type is null.
+     */
+    public String getRelationshipTypeString() {
+    	if (this.type.equals(RelationshipType.AGGREGATION)) {
+    		return "Aggregation";
+    	} else if (this.type.equals(RelationshipType.COMPOSITION)) {
+    		return "Composition";
+    	} else if (this.type.equals(RelationshipType.INHERITANCE)) {
+    		return "Inheritance";
+    	} else if (this.type.equals(RelationshipType.REALIZATION)) {
+    		return "Realization";
+    	} else {
+    		return null;
+    	}
+    }
+ 
     /**
      * Changes the type of the relationship.
      * @param newType The new type of the relationship.
