@@ -67,7 +67,11 @@ public class Method {
      * @param pName the name of the parameter to remove.
      */
     public void removeParameter(String pName){
-        parameters.remove(pName);
+        for(int index = 0; index < parameters.size(); index++) {
+            if (parameters.get(index).getParamName().equals(pName)) {
+                parameters.remove(index);
+            }
+        }
     }
 
     /**

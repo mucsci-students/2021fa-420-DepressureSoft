@@ -233,6 +233,18 @@ public class UMLClass {
     public  ArrayList<Field> getFields(){
         return fields;
     }
+    
+    /**
+     * Returns ArrayList<String> of the field names.
+     * @return
+     */
+    public ArrayList<String> getStringFields(){
+        ArrayList<String> holder = new ArrayList<String>();
+         for(Field f: fields){
+             holder.add(f.getFieldName());
+         };
+         return holder;
+     }
 
     /**
      * Returns an ArrayList<String> of all the classes related to this class.

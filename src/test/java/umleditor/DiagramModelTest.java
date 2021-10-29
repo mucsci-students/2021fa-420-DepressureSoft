@@ -274,7 +274,7 @@ class DiagramModelTest {
 		ArrayList<String> fieldTest = new ArrayList<String>();
 		fieldTest.add("testField");
 		
-		assertEquals(fieldTest, testClass.getFields(), 
+		assertEquals(fieldTest, testClass.getStringFields(), 
 				"Added fields should be in fields arraylist");
 	}
 	
@@ -291,14 +291,14 @@ class DiagramModelTest {
 		ArrayList<String> fieldTest = new ArrayList<String>();
 		fieldTest.add("testField");
 		
-		assertEquals(fieldTest, testClass.getFields(), 
+		assertEquals(fieldTest, testClass.getStringFields(), 
 				"Added fields should be in fields arraylist");
 		
 		testDiagram.deleteField("trial", "testField");
 		
 		fieldTest.remove("testField");
 		
-		assertEquals(fieldTest, testClass.getFields(), 
+		assertEquals(fieldTest, testClass.getStringFields(), 
 				"Removed fields shouldn't be in fields arraylist");
 	}
 	
@@ -315,7 +315,7 @@ class DiagramModelTest {
 		ArrayList<String> fieldTest = new ArrayList<String>();
 		fieldTest.add("testField");
 		
-		assertEquals(fieldTest, testClass.getFields(), 
+		assertEquals(fieldTest, testClass.getStringFields(), 
 				"Added fields should be in fields arraylist");
 		
 		testDiagram.renameField("trial", "testField", "renamedField");
@@ -323,7 +323,7 @@ class DiagramModelTest {
 		fieldTest.remove("testField");
 		fieldTest.add("renamedField");
 		
-		assertEquals(fieldTest, testClass.getFields(), 
+		assertEquals(fieldTest, testClass.getStringFields(), 
 				"Renamed fields should be in fields arraylist");
 	}
 }

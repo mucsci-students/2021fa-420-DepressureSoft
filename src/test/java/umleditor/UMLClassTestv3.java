@@ -57,7 +57,7 @@ class UMLClassTestv3 {
 		fieldTest.add("fieldA");
 		fieldTest.add("fieldB");
 		
-		assertEquals(fieldTest, testClass.getFields(), 
+		assertEquals(fieldTest, testClass.getStringFields(), 
 				"Added fields should be in fields arraylist");
 	}
 	
@@ -72,7 +72,7 @@ class UMLClassTestv3 {
 		ArrayList<String> fieldTest = new ArrayList<String>();
 		fieldTest.add("fieldB");
 		
-		assertEquals(fieldTest, testClass.getFields(), 
+		assertEquals(fieldTest, testClass.getStringFields(), 
 				"Removed fields should not be in fields arraylist");
 	}
 	
@@ -88,7 +88,7 @@ class UMLClassTestv3 {
 		fieldTest.add("renamedField");
 		fieldTest.add("fieldB");
 		
-		assertEquals(fieldTest, testClass.getFields(), 
+		assertEquals(fieldTest, testClass.getStringFields(), 
 				"Renamed fields should be updated in fields arraylist");
 	}
 
