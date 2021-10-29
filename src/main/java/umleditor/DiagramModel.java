@@ -173,6 +173,8 @@ public class DiagramModel {
         StringBuilder result = new StringBuilder();
         result.append("    {\n");
         result.append("      \"name\": \"" + theClass.getName() + "\",\n");
+        result.append("      \"x_position\": \"" + theClass.getXPosition() + "\",\n");
+        result.append("      \"y_position\": \"" + theClass.getYPosition() + "\",\n");
         result.append("      \"fields\": [\n");
         ArrayList<String> fields = theClass.getFields();
         for(String field : fields) {
