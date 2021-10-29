@@ -321,11 +321,19 @@ public class DiagramModel {
             }
             else
             {
+                StringBuilder methodPrint = new StringBuilder();
                 for(int i = 0; i < input.getMethods().size(); i++)
                 {
-                    System.out.println(input.getMethods().get(i).getMethodName() + "(" + 
-                        input.getMethods().get(i).getParamList().get(i).getParamName() + ")");
+                    methodPrint.append(input.getMethods().get(i).getMethodName() + "(");
+                        for(int j = 0; j < input.getMethods().get(i).getParamList().size(); j++){
+                            if(j != 0){
+                                methodPrint.append(", ");
+                            }
+                            methodPrint.append(input.getMethods().get(i).getParamList().get(j).getParamName() + "");
+                        }
+                    methodPrint.append(")");
                 }
+                System.out.println(methodPrint);
             }
         }
         else
