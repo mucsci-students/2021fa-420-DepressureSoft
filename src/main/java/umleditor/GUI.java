@@ -282,9 +282,20 @@ public class GUI {
                 helpWindow();
             }
          });
+        /**
+         * Opens the save window.
+         */
         save.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
         		saveWindow();
+        	}
+        });
+        /**
+         * Opens the load window.
+         */
+        load.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		loadWindow();
         	}
         });
         undo.addActionListener(new ActionListener() {
@@ -335,7 +346,7 @@ public class GUI {
     
     public void saveWindow() {
     	JFileChooser chooser = new JFileChooser();
-    	FileNameExtensionFilter jsonOnly = new FileNameExtensionFilter(".json files", "json");
+    	FileNameExtensionFilter jsonOnly = new FileNameExtensionFilter("JSON files", "json");
     	chooser.addChoosableFileFilter(jsonOnly);
     	chooser.setAcceptAllFileFilterUsed(false);
     	chooser.setDialogTitle("Save diagram as JSON");
@@ -344,6 +355,21 @@ public class GUI {
     		model.save(chooser.getSelectedFile().getAbsolutePath());
     	}
     }
+    
+    public void loadWindow() {
+    	JFileChooser chooser = new JFileChooser();
+    	FileNameExtensionFilter jsonOnly = new FileNameExtensionFilter("JSON files", "json");
+    	chooser.addChoosableFileFilter(jsonOnly);
+    	chooser.setAcceptAllFileFilterUsed(false);
+    	chooser.setDialogTitle("Load diagram from JSON");
+    	int s = chooser.showOpenDialog(null);
+    	if(s == JFileChooser.APPROVE_OPTION) {
+    		model.load(chooser.getSelectedFile().getAbsolutePath());
+    	}
+
+    }
+    
+    
 
     public void helpWindow(){
         action = new JFrame("UML Editor");
@@ -1193,13 +1219,13 @@ public class GUI {
             model.addRelationship(classOne,classTwo,RelationshipType.AGGREGATION);
         }
         else if(relationT.equals("Compositon")){
-        model.addRelationship(classOne,classTwo,RelationshipType.COMPOSITION);
+        	model.addRelationship(classOne,classTwo,RelationshipType.COMPOSITION);
         }
         else if(relationT.equals("Inheritance")){
-        model.addRelationship(classOne,classTwo,RelationshipType.INHERITANCE);
+        	model.addRelationship(classOne,classTwo,RelationshipType.INHERITANCE);
         }
         else if(relationT.equals("Realization")){
-        model.addRelationship(classOne,classTwo,RelationshipType.REALIZATION);
+        	model.addRelationship(classOne,classTwo,RelationshipType.REALIZATION);
         }
 
         action.dispose();
@@ -1362,14 +1388,6 @@ public class GUI {
             errorMessage.setText("Improper Name.");
             actionPane.validate();
         }
-    }
-
-    public void save(){
-       // model.save();
-    }
-   
-    public void load(){
-       // model.load();
     }
   
     public void undoAction() {

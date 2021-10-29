@@ -71,11 +71,19 @@ public class Controller {
 							view.print("Please specify a relationship type. {aggregation|composition|inheritance|realization}");
 							ArrayList<String> typeInput;
 							typeInput = view.getInput("Relationship Type > ");
-							m = model.addRelationship(commands.get(2), commands.get(3), getRelTypeFromString(typeInput.get(0)));
-							if (m == null) m = "Added relationship.";
+							if(Relationship.getRelTypeFromString(typeInput.get(0)) != null) {
+								m = model.addRelationship(commands.get(2), commands.get(3), Relationship.getRelTypeFromString(typeInput.get(0)));
+								if (m == null) m = "Added relationship.";
+							} else {
+								view.print("Relationship type must be one of {aggregation|composition|inheritance|realization}");
+							}
 						} else if(commands.size() > 4) {
-							m = model.addRelationship(commands.get(2), commands.get(3), getRelTypeFromString(commands.get(4)));
-							if (m == null) m = "Added relationship.";
+							if(Relationship.getRelTypeFromString(commands.get(4)) != null) {
+								m = model.addRelationship(commands.get(2), commands.get(3), Relationship.getRelTypeFromString(commands.get(4)));
+								if (m == null) m = "Added relationship.";
+							} else {
+								view.print("Relationship type must be one of {aggregation|composition|inheritance|realization}");
+							}
 						} else {
 							view.print("Source class and destination class names required.");
 						}
@@ -245,24 +253,4 @@ public class Controller {
 	private static boolean checkKeyword(ArrayList<String> commandList, int index, String keyword) {
 		return (commandList.size() > index) && (commandList.get(index).equalsIgnoreCase(keyword));
 	}
-	
-    /**
-     * Helper method that returns a value from the RelationshipType enum that matches the input string.
-     * @param input The input string.
-     * @return The correct RelationshipType enum value if input equals "aggregation", "composition", "inheritance", 
-     *  or "realization", null if not.
-     */
-    private static Relationship.RelationshipType getRelTypeFromString(String input) throws Exception {
-        if (input.equalsIgnoreCase("aggregation")) {
-            return Relationship.RelationshipType.AGGREGATION;
-        } else if (input.equalsIgnoreCase("composition")) {
-            return Relationship.RelationshipType.COMPOSITION;
-        } else if (input.equalsIgnoreCase("inheritance")) {
-            return Relationship.RelationshipType.INHERITANCE;
-        } else if (input.equalsIgnoreCase("realization")) {
-            return Relationship.RelationshipType.REALIZATION;
-        } else {
-            throw new Exception(input + " is not a valid relationship type.");
-        }
-    }
 }

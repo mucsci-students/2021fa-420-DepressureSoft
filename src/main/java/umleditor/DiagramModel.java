@@ -1,8 +1,4 @@
 package umleditor;
-/**
- * Authors: Jeffrey Flynn, David Jachimowicz, Jeff Cutcher, Alex Balagurak, Jon Brennan
- * Date: 9/15/21
- */
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -145,7 +141,7 @@ public class DiagramModel {
             jsonTxt.append("    {\n");
             jsonTxt.append("      \"source\": \"" + relationship.getFrom().getName() + "\",\n");
             jsonTxt.append("      \"destination\": \"" + relationship.getTo().getName() + "\",\n");
-            jsonTxt.append("      \"type\": \"" + relationship.getRelationshipType() + "\"\n");
+            jsonTxt.append("      \"type\": \"" + relationship.getRelationshipTypeString() + "\"\n");
             jsonTxt.append("    },\n");
         }
         if (!relationships.isEmpty()) {
