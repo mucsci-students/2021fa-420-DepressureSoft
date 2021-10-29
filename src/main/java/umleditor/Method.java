@@ -55,6 +55,14 @@ public class Method {
     }
 
     /**
+     * Sets the method return type to a new type.
+     * @param newType
+     */
+    public void renameMethodType(String newType){
+        this.methodType = newType;
+    }
+
+    /**
      * Adds a parameter to the method.
      * @param pName the name of the parameter to add.
      */
@@ -82,6 +90,17 @@ public class Method {
     public void renameParameter(String oldPName, String newPName){
         if(parameterExists(oldPName)){
             getParam(oldPName).renameParameter(newPName);
+        }
+    }
+
+    /**
+     * Renames a parameter type in the method.
+     * @param pName
+     * @param newType
+     */
+    public void renameParameterType(String pName, String newType){
+        if(parameterExists(pName)){
+            getParam(pName).renameParameterType(newType);
         }
     }
 

@@ -462,6 +462,32 @@ public class DiagramModel {
     }
 
     /**
+     * Renames the method return type if the method and class exist.
+     * @param className
+     * @param methodName
+     * @param newMethodType
+     */
+    public void renameMethodType(String className, String methodName, String newMethodType){
+        UMLClass parentClass = getUML(className);
+            if(parentClass != null){
+                if(parentClass.methodExists(methodName)){
+                    snapshot();
+                    parentClass.renameMethodType(methodName, newMethodType);
+                }
+                else
+                {
+                        System.out.println("The method \"" + methodName + 
+                            "\" type cannot be renamed, as it does not exist.");
+                }
+            }
+            else
+            {
+                System.out.println("The method \"" + methodName + 
+                    "\" type cannot be renamed, as the parent class \"" + className + "\" does not exist.");  
+            }
+    }  
+
+    /**
      * Adds parameter to a method if the method and class exist. 
      * Is supported as an undoable operation
      * @param className
@@ -567,6 +593,41 @@ public class DiagramModel {
         {
             System.out.println("\"" + newPName + "\" is not a valid parameter name.");
         }
+    }
+
+    /**
+     * Renames parameter type if the class and method exist.
+     * @param className
+     * @param methodName
+     * @param paramName
+     * @param newPType
+     */
+    public void renameParameterType(String className, String methodName, String paramName, String newPType){
+        UMLClass parentClass = getUML(className);
+            if(parentClass != null)
+            {
+                Method parentMethod = parentClass.getMethod(methodName);
+                if(parentClass.methodExists(methodName))
+                {
+                    if(parentMethod.parameterExists(paramName))
+                    {
+                        snapshot();
+                        parentMethod.renameParameterType(paramName, newPType);
+                    }
+                    else{
+                        System.out.println("The parameter \"" + paramName + 
+                            "\" type cannot be renamed, as it does not exist.");
+                    }
+                }
+                else{
+                    System.out.println("The parameter \"" + paramName + 
+                            "\" type cannot be renamed, as the method \"" + methodName + "does not exist.");
+                }
+            }
+            else{
+                System.out.println("The parameter \"" + paramName + 
+                    "\" type cannot be renamed, as the parent class \"" + className + "\" does not exist.");
+            }
     }
 
     /**
@@ -934,6 +995,32 @@ public class DiagramModel {
         else{
             System.out.println(newFieldName + "\" is not a proper name.");
         }
+    }
+
+    /**
+     * Renames the field type if it exists in the class. 
+     * @param className
+     * @param fieldName
+     * @param newFieldType
+     */
+    public void renameFieldType(String className, String fieldName, String newFieldType){
+        UMLClass parentClass = getUML(className);
+            if(parentClass != null){
+                if(parentClass.fieldExists(fieldName)){
+                    snapshot();
+                    parentClass.renameFieldType(fieldName, newFieldType);
+                }
+                else
+                {
+                        System.out.println("The field \"" + fieldName + 
+                            "\" type cannot be renamed, as it does not exist.");
+                }
+            }
+            else
+            {
+                System.out.println("The field \"" + fieldName + 
+                    "\" cannot be renamed, as the parent class \"" + className + "\" does not exist.");  
+            }
     }
     
     /**

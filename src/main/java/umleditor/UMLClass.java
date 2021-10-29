@@ -103,6 +103,17 @@ public class UMLClass {
     }
 
     /**
+     * Sets the method return type to a new type in the class representation. 
+     * @param currentMethod
+     * @param newMethodType
+     */
+    public void renameMethodType(String currentMethod, String newMethodType){
+        if(getMethod(currentMethod) != null){
+            getMethod(currentMethod).renameMethodType(newMethodType);
+        }
+    }
+
+    /**
      * Returns true if the method called methodName exists in this class.
      * @param methodName The name of the method to look for.
      * @return True if method exists, false if not.
@@ -200,6 +211,17 @@ public class UMLClass {
     public void renameField(String oldName, String newName){
         if(getField(oldName) != null) {
             getField(oldName).renameField(newName);
+        }
+    }
+
+    /**
+     * Sets the current field type to a new type in the class representation.
+     * @param fieldName
+     * @param newType
+     */
+    public void renameFieldType(String fieldName, String newType){
+        if(getField(fieldName) != null){
+            getField(fieldName).renameFieldType(newType);
         }
     }
 
