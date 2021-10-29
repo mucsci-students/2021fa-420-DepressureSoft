@@ -309,26 +309,25 @@ public class DiagramModel {
                 bob.append((fieldBuilder.toString()) + "\n");
             }
             /** Prints methods, prints special message if no methods in UML class */
-            System.out.println("Methods: ");
+            bob.append("Methods: " + "\n");
             if(input.getMethods().size() == 0)
             {
-                System.out.println("There are no methods in this class.");
+                bob.append("There are no methods in this class.");
             }
             else
             {
-                StringBuilder methodPrint = new StringBuilder();
                 for(int i = 0; i < input.getMethods().size(); i++)
                 {
-                    methodPrint.append(input.getMethods().get(i).getMethodName() + "(");
+                    bob.append(input.getMethods().get(i).getMethodName() + "(");
                         for(int j = 0; j < input.getMethods().get(i).getParamList().size(); j++){
                             if(j != 0){
-                                methodPrint.append(", ");
+                                bob.append(", ");
                             }
-                            methodPrint.append(input.getMethods().get(i).getParamList().get(j).getParamName() + "");
+                            bob.append(input.getMethods().get(i).getParamList().get(j).getParamName() + "");
                         }
-                    methodPrint.append(")");
+                    bob.append(")");
+                    bob.append("\n");
                 }
-                System.out.println(methodPrint);
             }
         }
         else {
