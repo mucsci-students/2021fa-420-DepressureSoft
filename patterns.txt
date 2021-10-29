@@ -3,3 +3,8 @@
 1. Singleton - ModelHistory.java:41-49
 
 2. Memento - ModelHistory.java:56-60
+
+3. Iterator
+  - Implemented to create a diagram model from an existing diagram model
+  - File: DiagramModel.java
+  - Line #: 49-55
