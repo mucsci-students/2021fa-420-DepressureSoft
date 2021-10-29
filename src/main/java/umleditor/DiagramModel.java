@@ -831,10 +831,8 @@ public class DiagramModel {
         boolean parentExists = classExists(className);
         if(SourceVersion.isIdentifier(fieldName)){
         if(parentExists)
-        {
-           boolean fieldExists = parentClass.getFields().contains(fieldName); 
-
-           if(!fieldExists)
+        { 
+           if(!parentClass.fieldExists(fieldName))
            {
                snapshot();
                parentClass.addField(fieldName, fieldType);
@@ -869,9 +867,7 @@ public class DiagramModel {
     
         if(parentExists)
         {
-           boolean fieldExists = parentClass.getFields().contains(fieldName); 
-
-           if(fieldExists)
+           if(parentClass.fieldExists(fieldName))
            {
                snapshot();
                parentClass.removeField(fieldName);
@@ -904,20 +900,17 @@ public class DiagramModel {
         if(SourceVersion.isIdentifier(newFieldName)){
         if(parentExists)
         {
-           boolean oldFieldExists = parentClass.getFields().contains(oldFieldName); 
-           boolean newFieldExists = parentClass.getFields().contains(newFieldName); 
-
-           if(oldFieldExists && !newFieldExists)
+           if(parentClass.fieldExists(oldFieldName) && !parentClass.fieldExists(newFieldName))
            {
                snapshot();
                parentClass.renameField(oldFieldName, newFieldName);
            }
-           else if(!oldFieldExists)
+           else if(!parentClass.fieldExists(oldFieldName))
            {
                 System.out.println("The field \"" + oldFieldName + 
                     "\" cannot be renamed, as it does not exist in the parent class \"" + className + "\".");
            }
-           else if(oldFieldExists)
+           else if(parentClass.fieldExists(newFieldName))
            {
                 System.out.println("The field \"" + oldFieldName + 
                     "\" cannot be renamed to \"" + newFieldName + "\", as \"" + newFieldName + 
