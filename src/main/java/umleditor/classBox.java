@@ -9,6 +9,8 @@ import java.awt.event.MouseEvent;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Iterator;
 
 public class classBox {
 
@@ -27,7 +29,7 @@ public class classBox {
 
 
     public classBox(String name){
-        className = new JLabel(name);
+        className = new JLabel(name,SwingConstants.CENTER);
         fields = new HashMap();
         params = new HashMap();
         methods = new HashMap();
@@ -37,9 +39,53 @@ public class classBox {
         initialize();
     }
 
+    public classBox(classBox other){
+        this.className = other.className;
+
+        methods = new HashMap<String, JLabel>();
+        Iterator methodIter = other.methods.entrySet().iterator();
+        while (methodIter.hasNext()){
+            Map.Entry elem = (Map.Entry) methodIter.next();
+            String keyCopy = (String) elem.getKey();
+            JLabel labelCopy = new JLabel(((JLabel) elem.getValue()).getText());
+            methods.put(keyCopy, labelCopy);
+        }
+
+        params = new HashMap<String, ArrayList<String>>();
+        Iterator paramIter = other.params.entrySet().iterator();
+        while (paramIter.hasNext()){
+            Map.Entry elem = (Map.Entry) paramIter.next();
+            String keyCopy = (String) elem.getKey();
+            ArrayList<String> elemArray = new ArrayList<String>();
+            elemArray = ((ArrayList<String>) elem.getValue());
+            params.put(keyCopy, elemArray);
+        }
+
+        fields = new HashMap<String, JLabel>();
+        Iterator fieldIter = other.fields.entrySet().iterator();
+        while (fieldIter.hasNext()){
+            Map.Entry elem = (Map.Entry) fieldIter.next();
+            String keyCopy = (String) elem.getKey();
+            JLabel labelCopy = new JLabel(((JLabel) elem.getValue()).getText());
+            fields.put(keyCopy, labelCopy);
+        }
+        
+        this.panel = other.panel;
+        panel.setLocation(other.getClassPanel().getX(), other.getClassPanel().getY());
+
+
+        this.fieldPanel = other.fieldPanel;
+        this.gl_panel = other.gl_panel;
+
+        initialize();
+    }
+
     public void initialize(){
         panel = new JPanel();
-		panel.setBorder(new LineBorder(new Color(20, 20, 20), 2));
+
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+    		panel.setBorder(new LineBorder(new Color(20, 20, 20), 1));
+
         panel.add(className);
         methodPanel = new JPanel();
         fieldPanel = new JPanel();
@@ -47,8 +93,9 @@ public class classBox {
         methodPanel.setBorder(new LineBorder(new Color(20, 20, 20), 1));
 		fieldPanel.setLayout(new GridLayout(4,2));
         fieldPanel.setBorder(new LineBorder(new Color(20, 20, 20), 1));
-        panel.add(methodPanel);
         panel.add(fieldPanel);
+        panel.add(methodPanel);
+
 
         MouseInputAdapter movement = new MouseInputAdapter (){
 			private int x;
@@ -84,7 +131,7 @@ public class classBox {
 		fields.put(fieldName,field);
 		fieldPanel.add(field);
 		fieldPanel.repaint();
-        fields.get(fieldName).setText(fieldName + ":" + fieldT);
+        fields.get(fieldName).setText(fieldName + " : " + fieldT);
      }
 
      public void addMethod(String methodName, String methodType){
@@ -119,6 +166,7 @@ public class classBox {
         for(String x : params.get(method)){
             param = param + x + ", ";
         }
+        param = param.substring(0,param.length()-2);
         param = param + ")";
         methods.get(method).setText(param);
         methodPanel.repaint();
@@ -151,6 +199,7 @@ public class classBox {
         for(String x : params.get(method)){
             param = param + x + ", ";
         }
+        param = param.substring(0,param.length()-2);
         param = param + ")";
         methods.get(method).setText(param);
         methodPanel.repaint();
@@ -191,6 +240,7 @@ public class classBox {
             for(String x : params.get(oldName)){
                 method = method + x + ", ";
             }
+            method = method.substring(0,method.length()-2);
             method = method + ")";
             params.remove(oldName);
         }
@@ -214,6 +264,7 @@ public class classBox {
         for(String x : params.get(method)){
             param = param + x + ", ";
         }
+        param = param.substring(0,param.length()-2);
         param = param + ")";
         methods.get(method).setText(param);
         methodPanel.repaint();

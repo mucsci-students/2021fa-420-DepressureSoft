@@ -9,13 +9,13 @@ public class Controller {
 	private static final String RENAME_HELP = "RENAME: Renames a class, method, field, or parameter.\nrename class <class> <new_name>\nrename method <class> <method> <new_name>\nrename field <class> <field> <new_name>\nrename parameter <class> <method> <parameter> <new_name>";
 	private static final String SAVE_HELP = "SAVE: Saves the current class diagram to a json file. Directory and file name must exist. \".json\" extension is optional and will be appended automatically if not included in file name.\nsave <directory> <file_name>";
 	private static final String LOAD_HELP = "LOAD: Loads a class diagram from a json file. File path must exist.\nload <file_path>";
-	private static final String CHANGETYPE_HELP = "CHANGETYPE: Changes the type of a field, method, parameter, or relationship.\nchangetype field <class> <field> <new_type>\n changetype al;fkproiauejf;jdf";
+	private static final String CHANGETYPE_HELP = "CHANGETYPE: Changes the type of a field, method, parameter, or relationship.\nchangetype field <class> <field> <new_type>\nchangetype method <class> <method> <type> <new_type>\nchangetype relationship <source_class> <destination_class> {aggregation|composition|inheritance|realization}";
 	private static final String DISPLAY_HELP = "DISPLAY: Displays the class diagram in various ways.\ndisplay class <classname>\ndisplay {all|relationships}";
-	private static final String UNDO_HELP = "UNDO: Reverts to the program state before the most recent change.";
-	private static final String REDO_HELP = "REDO: If undo has been called, reverts to the state of the program before change was undone.";
+	private static final String UNDO_HELP = "UNDO: Reverts to the program state before the most recent change.\nundo";
+	private static final String REDO_HELP = "REDO: If undo has been called, reverts to the state of the program before change was undone.\nundo";
 	private static final String HELP_MENU = "----------| HELP MENU |----------\n"
 			+ "Type help <command> for additional information about each command.\n"
-			+ "add {class|method|field|parameter|relationship}\n"
+			+ "add {class|method|field|parameter|relationship} \n"
 			+ "delete {class|method|field|parameter|relationship}\n"
 			+ "rename {class|method|field|parameter|relationship}\n"
 			+ "save <file_path>\n"
@@ -23,8 +23,7 @@ public class Controller {
 			+ "changetype {field|method|relationship}\n"
 			+ "display {class|all|relationships}\n"
 			+ "undo\n"
-			+ "redo\n"
-			+ "";
+			+ "redo\n";
 	
 	public static void main(String[] args) {
 		DiagramModel model = new DiagramModel();
@@ -35,30 +34,35 @@ public class Controller {
 		while(userInputLoop) {
 			commands = view.getInput("Command > ");
 			try {
+				String m = "";
 				if(checkKeyword(commands, 0, "exit")) {
 					userInputLoop = false;
 				} else if(checkKeyword(commands, 0, "add")) {
 					if(checkKeyword(commands, 1, "class")) {
 						if (commands.size() > 2) {
-							model.addClass(commands.get(2));
+							m = model.addClass(commands.get(2));
+							if (m == null) m = "Added class.";
 						} else {
 							view.print("Class name required.");
 						}
 					} else if(checkKeyword(commands, 1, "method")) {
 						if (commands.size() > 4) {
-							model.addMethod(commands.get(2), commands.get(3), commands.get(4));
+							m = model.addMethod(commands.get(2), commands.get(3), commands.get(4));
+							if (m == null) m = "Added method.";
 						} else {
 							view.print("Class and method names, and return type required.");
 						}
 					} else if(checkKeyword(commands, 1, "field")) {
 						if (commands.size() > 4) {
-							model.addField(commands.get(2), commands.get(3), commands.get(4));
+							m = model.addField(commands.get(2), commands.get(3), commands.get(4));
+							if (m == null) m = "Added field.";
 						} else {
 							view.print("Class and field names required.");
 						}
 					} else if(checkKeyword(commands, 1, "parameter")) {
 						if(commands.size() > 5) {
-							model.addParameter(commands.get(2), commands.get(3), commands.get(4), commands.get(5));
+							m = model.addParameter(commands.get(2), commands.get(3), commands.get(4), commands.get(5));
+							if (m == null) m = "Added parameter.";
 						} else {
 							view.print("Class, method, and parameter names, and parameter type required.");
 						}
@@ -67,9 +71,11 @@ public class Controller {
 							view.print("Please specify a relationship type. {aggregation|composition|inheritance|realization}");
 							ArrayList<String> typeInput;
 							typeInput = view.getInput("Relationship Type > ");
-							model.addRelationship(commands.get(2), commands.get(3), getRelTypeFromString(typeInput.get(0)));
+							m = model.addRelationship(commands.get(2), commands.get(3), getRelTypeFromString(typeInput.get(0)));
+							if (m == null) m = "Added relationship.";
 						} else if(commands.size() > 4) {
-							model.addRelationship(commands.get(2), commands.get(3), getRelTypeFromString(commands.get(4)));
+							m = model.addRelationship(commands.get(2), commands.get(3), getRelTypeFromString(commands.get(4)));
+							if (m == null) m = "Added relationship.";
 						} else {
 							view.print("Source class and destination class names required.");
 						}
@@ -79,31 +85,36 @@ public class Controller {
 				} else if(checkKeyword(commands, 0, "delete")) {
 					if(checkKeyword(commands, 1, "class")) {
 						if(commands.size() > 2) {
-							model.deleteClass(commands.get(2));
+							m = model.deleteClass(commands.get(2));
+							if (m == null) m = "Deleted class.";
 						} else {
 							view.print("Class name required.");
 						}
 					} else if(checkKeyword(commands, 1, "field")) {
 						if(commands.size() > 3) {
-							model.deleteField(commands.get(2), commands.get(3));
+							m = model.deleteField(commands.get(2), commands.get(3));
+							if (m == null) m = "Deleted field.";
 						} else {
 							view.print("Class and field name required.");
 						}
 					} else if(checkKeyword(commands, 1, "method")) {
 						if(commands.size() > 3) {
-							model.deleteMethod(commands.get(2), commands.get(3));
+							m = model.deleteMethod(commands.get(2), commands.get(3));
+							if (m == null) m = "Deleted method.";
 						} else {
 							view.print("Class and method name required.");
 						}
 					} else if(checkKeyword(commands, 1, "parameter")) {
 						if(commands.size() > 4) {
-							model.deleteParameter(commands.get(2), commands.get(3), commands.get(4));
+							m = model.deleteParameter(commands.get(2), commands.get(3), commands.get(4));
+							if (m == null) m = "Deleted parameter.";
 						} else {
 							view.print("Class, method, and parameter names required.");
 						}
 					} else if(checkKeyword(commands, 1, "relationship")) {
 						if(commands.size() > 3) {
-							model.deleteRelationship(commands.get(2), commands.get(3));
+							m = model.deleteRelationship(commands.get(2), commands.get(3));
+							if (m == null) m = "Deleted relationship.";
 						} else {
 							view.print("Source and destination class names required.");
 						}
@@ -113,25 +124,29 @@ public class Controller {
 				} else if(checkKeyword(commands, 0, "rename")) {
 					if(checkKeyword(commands, 1, "class")) {
 						if (commands.size() > 3) {
-							model.renameUMLClass(commands.get(2), commands.get(3));
+							m = model.renameUMLClass(commands.get(2), commands.get(3));
+							if (m == null) m = "Renamed class.";
 						} else {
 							view.print("Class name and new name required.");
 						}
 					} else if(checkKeyword(commands, 1, "method")) {
 						if (commands.size() > 4) {
-							model.renameMethod(commands.get(2), commands.get(3), commands.get(4));
+							m = model.renameMethod(commands.get(2), commands.get(3), commands.get(4));
+							if (m == null) m = "Renamed method.";
 						} else {
 							view.print("Class name, method name, and new method name required.");
 						}
 					} else if(checkKeyword(commands, 1, "field")) {
 						if (commands.size() > 4) {
-							model.renameField(commands.get(2), commands.get(3), commands.get(4));
+							m = model.renameField(commands.get(2), commands.get(3), commands.get(4));
+							if (m == null) m = "Renamed field.";
 						} else {
 							view.print("Class name, field name, and new field name required.");
 						}
 					} else if(checkKeyword(commands, 1, "parameter")) {
 						if(commands.size() > 5) {
-							model.renameParameter(commands.get(2), commands.get(3), commands.get(4), commands.get(5));
+							m = model.renameParameter(commands.get(2), commands.get(3), commands.get(4), commands.get(5));
+							if (m == null) m = "Renamed parameter.";
 						} else {
 							view.print("Class name, method name, parameter name, and new name required.");
 						}
@@ -140,14 +155,17 @@ public class Controller {
 					}
 				} else if(checkKeyword(commands, 0, "save")) {
 					if(commands.size() > 2) {
-						model.save(commands.get(1) + commands.get(2));
+						m = model.save(commands.get(1) + commands.get(2));
+						if (m == null) m = ("Saved successfully to " + commands.get(1) + commands.get(2));
 					} else {
 						view.print("Save requires a directory and file name. Type \"help save\" for more info.");
 					}
 				} else if (checkKeyword(commands, 0, "load")) {
 					if(commands.size() > 1) {
 						if(UMLInterface.yesNoDialog("Are you sure you want to load? All unsaved changes will be lost.")) {
-							model.load(commands.get(1));
+							m = model.load(commands.get(1));
+							if (m == null) m = "File loaded successfully.";
+							view.print(model.listClasses());
 						}
 					} else {
 						view.print("Load requires a file path to load the file from. Type \"help load\" for more info.");
@@ -174,15 +192,15 @@ public class Controller {
 						}
 				} else if(checkKeyword(commands, 0, "display")) {
 					if(checkKeyword(commands, 1, "all")) {
-						model.listClasses();
+						view.print(model.listClasses());
 					} else if(checkKeyword(commands, 1, "class")) {
 						if(commands.size() > 2) {
-							model.listClass(commands.get(2));
+							view.print(model.listClass(commands.get(2)));
 						} else {
 							view.print("Class name required.");
 						}
 					} else if(checkKeyword(commands, 1, "relationships")) {
-						model.listRelationships();
+						view.print(model.listRelationships());
 					} else {
 						view.print("Unrecognized command. Type \"help display\" for more info.");
 					}
@@ -226,6 +244,9 @@ public class Controller {
 				} else {
 					view.print("Unrecognized command. Type \"help\" to view commands.");
 				}
+				
+				if (!m.equals("")) view.print(m);
+				
 			}
 			catch (Exception error) {
 				System.out.println(error.getMessage());
