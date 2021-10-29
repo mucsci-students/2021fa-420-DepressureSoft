@@ -9,6 +9,8 @@ import java.awt.event.MouseEvent;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Iterator;
 
 public class classBox {
 
@@ -34,6 +36,44 @@ public class classBox {
         panel = null;
         fieldPanel = null;
         methodPanel = null;
+        initialize();
+    }
+
+    public classBox(classBox other){
+        this.className = other.className;
+
+        methods = new HashMap<String, JLabel>();
+        Iterator methodIter = other.methods.entrySet().iterator();
+        while (methodIter.hasNext()){
+            Map.Entry elem = (Map.Entry) methodIter.next();
+            String keyCopy = (String) elem.getKey();
+            JLabel labelCopy = new JLabel(((JLabel) elem.getValue()).getText());
+            methods.put(keyCopy, labelCopy);
+        }
+
+        params = new HashMap<String, ArrayList<String>>();
+        Iterator paramIter = other.params.entrySet().iterator();
+        while (paramIter.hasNext()){
+            Map.Entry elem = (Map.Entry) paramIter.next();
+            String keyCopy = (String) elem.getKey();
+            ArrayList<String> elemArray = new ArrayList<String>();
+            elemArray = ((ArrayList<String>) elem.getValue());
+            params.put(keyCopy, elemArray);
+        }
+
+        fields = new HashMap<String, JLabel>();
+        Iterator fieldIter = other.fields.entrySet().iterator();
+        while (fieldIter.hasNext()){
+            Map.Entry elem = (Map.Entry) fieldIter.next();
+            String keyCopy = (String) elem.getKey();
+            JLabel labelCopy = new JLabel(((JLabel) elem.getValue()).getText());
+            fields.put(keyCopy, labelCopy);
+        }
+        
+        this.panel = other.panel;
+        this.fieldPanel = other.fieldPanel;
+        this.gl_panel = other.gl_panel;
+
         initialize();
     }
 
