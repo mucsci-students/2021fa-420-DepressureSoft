@@ -33,4 +33,5 @@
   - The user interacts with the CLI or GUI, both of which are facades providing a screen from the rest of the application implementation. 
   - Fles: UserInterface.java, GUI.java
   
-  
+9. MVC 
+  - MVC design pattern used to differentiate model, view, and controller functionality.
