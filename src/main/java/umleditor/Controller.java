@@ -51,8 +51,8 @@ public class Controller {
 							view.print("Class and method names, and return type required.");
 						}
 					} else if(checkKeyword(commands, 1, "field")) {
-						if (commands.size() > 3) {
-							model.addField(commands.get(2), commands.get(3));
+						if (commands.size() > 4) {
+							model.addField(commands.get(2), commands.get(3), commands.get(4));
 						} else {
 							view.print("Class and field names required.");
 						}

@@ -229,7 +229,8 @@ public class DiagramModel {
                 Iterator<JSONObject> fieldIterator = fieldList.iterator();
                 while(fieldIterator.hasNext()) {
                     String currentFieldName = (String) fieldIterator.next().get("name");
-                    this.addField(currentClassName, currentFieldName);
+                    String currentFieldType = (String) fieldIterator.next().get("type");
+                    this.addField(currentClassName, currentFieldName, currentFieldType);
                 }
                 JSONArray methodList = (JSONArray) currentClass.get("methods");
                 Iterator<JSONObject> methodIterator = methodList.iterator();
@@ -824,7 +825,7 @@ public class DiagramModel {
      * @param className The name of the class to add a field to.
      * @param fieldName The name of the field to be added.
      */
-    public void addField(String className, String fieldName)
+    public void addField(String className, String fieldName, String fieldType)
     {
         UMLClass parentClass = getUML(className);
         boolean parentExists = classExists(className);
@@ -836,7 +837,7 @@ public class DiagramModel {
            if(!fieldExists)
            {
                snapshot();
-               parentClass.addField(fieldName);
+               parentClass.addField(fieldName, fieldType);
            }
            else
            {

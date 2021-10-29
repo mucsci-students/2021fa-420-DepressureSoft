@@ -176,8 +176,8 @@ public class UMLClass {
      * Adds a new field the class representation.
      * @param newField The name of the new field.
      */
-    public void addField(String newField){
-        fields.add(new Field(newField));
+    public void addField(String newField, String fieldType){
+        fields.add(new Field(newField, fieldType));
     }
 
     /**
