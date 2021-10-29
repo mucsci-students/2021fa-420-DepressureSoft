@@ -38,6 +38,10 @@ public class Method {
         return this.methodName;
     }
 
+    /**
+     * Return the method return type.
+     * @return
+     */
     public String getMethodType(){
         return this.methodType;
     }
@@ -93,6 +97,11 @@ public class Method {
         return (getParam(pName) != null);
     }
 
+    /**
+     * Returns the parameter of the method.
+     * @param pName
+     * @return
+     */
     public Parameter getParam(String pName){
         for(int index = 0; index < parameters.size(); index++) {
             if (parameters.get(index).getParamName().equals(pName)) {

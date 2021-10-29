@@ -203,6 +203,11 @@ public class UMLClass {
         }
     }
 
+    /**
+     * Returns the field in the UML Class.
+     * @param fieldName
+     * @return field
+     */
     public Field getField(String fieldName){
         for(int index = 0; index < fields.size(); index++) {
             if (fields.get(index).getFieldName().equals(fieldName)) {
@@ -212,6 +217,11 @@ public class UMLClass {
         return null;
     }
 
+    /**
+     * Checks to see if the field exists in the UML Class.
+     * @param fieldName
+     * @return
+     */
     public boolean fieldExists(String fieldName) {
         return (getField(fieldName) != null);
     }

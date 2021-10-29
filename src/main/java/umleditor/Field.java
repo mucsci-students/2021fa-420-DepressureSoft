@@ -1,5 +1,9 @@
 package umleditor;
 
+/**
+ * Fields in the UML Class Diagram.
+ */
+
 public class Field {
     
     private String fieldName;

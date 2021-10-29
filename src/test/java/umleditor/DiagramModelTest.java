@@ -269,7 +269,7 @@ class DiagramModelTest {
 		assertEquals(1, testDiagram.numberOfClasses(), 
 				"Diagram should include only added 'trial' class");
 		
-		testDiagram.addField("trial", "testField");
+		testDiagram.addField("trial", "testField", "testType");
 		UMLClass testClass = testDiagram.getUML("trial");
 		ArrayList<String> fieldTest = new ArrayList<String>();
 		fieldTest.add("testField");
@@ -286,7 +286,7 @@ class DiagramModelTest {
 		assertEquals(1, testDiagram.numberOfClasses(), 
 				"Diagram should include only added 'trial' class");
 		
-		testDiagram.addField("trial", "testField");
+		testDiagram.addField("trial", "testField", "testType");
 		UMLClass testClass = testDiagram.getUML("trial");
 		ArrayList<String> fieldTest = new ArrayList<String>();
 		fieldTest.add("testField");
@@ -310,7 +310,7 @@ class DiagramModelTest {
 		assertEquals(1, testDiagram.numberOfClasses(), 
 				"Diagram should include only added 'trial' class");
 		
-		testDiagram.addField("trial", "testField");
+		testDiagram.addField("trial", "testField", "testType");
 		UMLClass testClass = testDiagram.getUML("trial");
 		ArrayList<String> fieldTest = new ArrayList<String>();
 		fieldTest.add("testField");

@@ -50,8 +50,8 @@ class UMLClassTestv3 {
 	@DisplayName("Added fields should appear in class")
 	void testAddField() 
 	{		
-		testClass.addField("fieldA");
-		testClass.addField("fieldB");
+		testClass.addField("fieldA", "typeA");
+		testClass.addField("fieldB", "typeB");
 		
 		ArrayList<String> fieldTest = new ArrayList<String>();
 		fieldTest.add("fieldA");
@@ -65,8 +65,8 @@ class UMLClassTestv3 {
 	@DisplayName("Removed fields should disappear from class")
 	void testRemoveField() 
 	{		
-		testClass.addField("fieldA");
-		testClass.addField("fieldB");
+		testClass.addField("fieldA", "typeA");
+		testClass.addField("fieldB", "typeB");
 		testClass.removeField("fieldA");
 		
 		ArrayList<String> fieldTest = new ArrayList<String>();
@@ -80,8 +80,8 @@ class UMLClassTestv3 {
 	@DisplayName("Renamed fields should be renamed in the class")
 	void testRenameField() 
 	{		
-		testClass.addField("fieldA");
-		testClass.addField("fieldB");
+		testClass.addField("fieldA", "typeA");
+		testClass.addField("fieldB", "typeB");
 		testClass.renameField("fieldA", "renamedField");
 		
 		ArrayList<String> fieldTest = new ArrayList<String>();

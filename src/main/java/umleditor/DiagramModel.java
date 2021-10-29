@@ -309,7 +309,7 @@ public class DiagramModel {
                     if(i != 0) {
                         fieldBuilder.append(", ");
                     }
-                    fieldBuilder.append(input.getFields().get(i));
+                    fieldBuilder.append(input.getFields().get(i).getFieldName());
                 }
                 System.out.println(fieldBuilder.toString());
             }
@@ -323,8 +323,8 @@ public class DiagramModel {
             {
                 for(int i = 0; i < input.getMethods().size(); i++)
                 {
-                    System.out.println(input.getMethods().get(i).getMethodName() + 
-                        input.getMethods().get(i).getPName().replace("[", "(").replace("]", ")"));
+                    System.out.println(input.getMethods().get(i).getMethodName() + "(" + 
+                        input.getMethods().get(i).getParamList().get(i).getParamName() + ")");
                 }
             }
         }
