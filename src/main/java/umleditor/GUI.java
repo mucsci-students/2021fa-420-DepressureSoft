@@ -47,7 +47,21 @@ public class GUI {
     private classBox box;
 
     public GUI(){
-
+    	
+    }
+    
+    public GUI(GUI other) {
+    	this.model = new DiagramModel(other.model);
+    	this.boxMap = new HashMap<String, classBox>();
+    	Iterator boxIter = other.boxMap.entrySet().iterator();
+    	while(boxIter.hasNext()) {
+    		Map.Entry element = (Map.Entry) boxIter.next();
+    		String keyCopy = (String) element.getKey();
+    		classBox boxCopy = new classBox((classBox) element.getValue());
+    		this.boxMap.put(keyCopy, boxCopy);
+    	}
+    	
+    	this.box = new classBox(other.box);
     }
     
     public static void main(String[] args){
@@ -1359,13 +1373,39 @@ public class GUI {
     }
   
     public void undoAction() {
-    	// undo implementation here
+    	GUIHistory history = GUIHistory.getInstance();
+    	if(history.isUndoHistoryEmpty()) {
+    		return;
+    	}
+    	else {
+    		GUI old = history.undo(new GUI(this));
+    		this.model = old.model;
+    		this.boxMap = old.boxMap;
+    		this.box = old.box;
+    	}
+    	
     	updateButtons();
     }
   
     public void redoAction() {
-    	// redo implementation here
+    	GUIHistory history = GUIHistory.getInstance();
+    	if(history.isRedoHistoryEmpty()) {
+    		return;
+    	}
+    	else {
+    		GUI old = history.redo(new GUI(this));
+    		this.model = old.model;
+    		this.boxMap = old.boxMap;
+    		this.box = old.box;
+    	}
+    	
     	updateButtons();
+    }
+    
+    private void snapshot()
+    {
+        GUIHistory history = GUIHistory.getInstance();
+        history.snapshotModel(new GUI(this));
     }
     
     /**
