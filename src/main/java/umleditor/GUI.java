@@ -61,7 +61,7 @@ public class GUI {
     		this.boxMap.put(keyCopy, boxCopy);
     	}
     	
-    	this.box = new classBox(other.box);
+
     }
     
     public static void main(String[] args){
@@ -1086,6 +1086,7 @@ public class GUI {
         String newClass = className.getText();
         if(SourceVersion.isIdentifier(newClass)){
             if(!duplicateClass(newClass)){
+                snapshot();
                 model.addClass(newClass);
                 box = new classBox(newClass);
                 boxMap.put(newClass,box);
@@ -1113,6 +1114,7 @@ public class GUI {
         String fieldT = fieldType.getText();
         if(SourceVersion.isIdentifier(field)){
             if(!boxMap.get(getClass).duplicateField(field)){
+                snapshot();
                 model.addField(getClass, field);
                 box = boxMap.get(getClass);
                 box.addField(field,fieldT);
@@ -1138,6 +1140,7 @@ public class GUI {
         String methodT = methodType.getText();
         if(SourceVersion.isIdentifier(method)){
             if(!boxMap.get(getClass).duplicateMethod(method)){
+                snapshot();
                 model.addMethod(getClass,method);
                 box = boxMap.get(getClass);
                 box.addMethod(method,methodT);
@@ -1165,6 +1168,7 @@ public class GUI {
 
         if(SourceVersion.isIdentifier(parameter)){
             if(!boxMap.get(getClass).duplicateParameter(method,parameter)){
+                snapshot();
                 model.addParameter(getClass,method,parameter);
                 box = boxMap.get(getClass);
                 box.addParameter(parameter,method);
@@ -1188,7 +1192,7 @@ public class GUI {
         String classOne = classNames.getSelectedItem().toString();
         String classTwo = classNamesX.getSelectedItem().toString();
         String relationT = relationshipTypes.getSelectedItem().toString();
-
+        snapshot();
         if(relationT.equals("Aggregation")){
             model.addRelationship(classOne,classTwo,RelationshipType.AGGREGATION);
         }
@@ -1211,6 +1215,7 @@ public class GUI {
     public void deleteClassAction(){
         String remClass = classNames.getSelectedItem().toString();
 
+        snapshot();
         model.deleteClass(remClass);
         pane.remove(boxMap.get(remClass).getClassPanel());
         boxMap.remove(remClass);
@@ -1222,7 +1227,7 @@ public class GUI {
     public void deleteRelationshipAction(){
         String classOne = classNames.getSelectedItem().toString();
         String classTwo = classNamesX.getSelectedItem().toString();
-
+        snapshot();
         model.deleteRelationship(classOne,classTwo);
         action.dispose();
         updateButtons();
@@ -1231,7 +1236,7 @@ public class GUI {
     public void deleteFieldAction(){
         String getClass = classNames.getSelectedItem().toString();
 		String field = fieldNames.getSelectedItem().toString();
-
+        snapshot();
         model.deleteField(getClass, field); 
         box = boxMap.get(getClass);
         box.removeField(field);
@@ -1242,7 +1247,7 @@ public class GUI {
     public void deleteMethodAction(){
         String getClass = classNames.getSelectedItem().toString();
 		String method = methodNames.getSelectedItem().toString();
-
+        snapshot();
         box = boxMap.get(getClass);
         box.removeMethod(method);
         model.deleteMethod(getClass,method);
@@ -1254,7 +1259,7 @@ public class GUI {
         String getClass = classNames.getSelectedItem().toString();
         String method = methodNames.getSelectedItem().toString();
         String param = paramNames.getSelectedItem().toString();
-
+        snapshot();
        model.deleteParameter(getClass, method, param );
        box = boxMap.get(getClass);
        box.removeParameter(param,method);
@@ -1269,6 +1274,7 @@ public class GUI {
         String newClass = className2.getText();
         if(SourceVersion.isIdentifier(newClass)){
             if(!duplicateClass(newClass)){
+                snapshot();
                 model.renameUMLClass(oldClass,newClass);
                 box = boxMap.get(oldClass);
                 box.renameClass(newClass);
@@ -1295,6 +1301,7 @@ public class GUI {
         String newField = renamer.getText();
         if(SourceVersion.isIdentifier(newField)){
             if(!boxMap.get(getClass).duplicateField(newField)){
+                snapshot();
                 box = boxMap.get(getClass);
                 box.renameField(field,newField);
                 model.renameField(getClass,field,newField);
@@ -1319,6 +1326,7 @@ public class GUI {
         String newMethod = renamer.getText();
         if(SourceVersion.isIdentifier(newMethod)){
             if(!boxMap.get(getClass).duplicateMethod(newMethod)){
+                snapshot();
                 box = boxMap.get(getClass);
                 box.renameMethod(method,newMethod);
                 model.renameMethod(getClass,method,newMethod);
@@ -1346,6 +1354,7 @@ public class GUI {
         //Checks if the new name is proper and that the entry isn't a duplicate.
         if(SourceVersion.isIdentifier(newParam)){
             if(!boxMap.get(getClass).duplicateParameter(method,newParam)){
+                snapshot();
                 model.renameParameter(getClass, method,oldParam,newParam);
                 box = boxMap.get(getClass);
                 box.renameParameter(oldParam,newParam,method);
@@ -1381,9 +1390,18 @@ public class GUI {
     		GUI old = history.undo(new GUI(this));
     		this.model = old.model;
     		this.boxMap = old.boxMap;
-    		this.box = old.box;
+            JPanel oPane = new JPanel();
+            oPane.setLayout(new DragLayout());
+            for(classBox value: boxMap.values()){
+                value.getClassPanel().setLocation(value.getClassPanel().getX(),value.getClassPanel().getY());
+                oPane.add(value.getClassPanel());
+            }
+            frame.remove(pane);
+            this.pane = oPane;
     	}
-    	
+    	this.pane.repaint();
+        frame.add(pane);
+        frame.setVisible(true);
     	updateButtons();
     }
   
@@ -1404,7 +1422,7 @@ public class GUI {
     
     private void snapshot()
     {
-        GUIHistory history = GUIHistory.getInstance();
+       GUIHistory history = GUIHistory.getInstance();
         history.snapshotModel(new GUI(this));
     }
     
@@ -1517,7 +1535,9 @@ public class GUI {
     	
     	//Undo-Redo
     	//Undo
-    	if (!model.canUndo()) {
+
+        GUIHistory instance = GUIHistory.getInstance();
+    	if (instance.isUndoHistoryEmpty()) {
     		undo.setEnabled(false);
     	}
     	else {
