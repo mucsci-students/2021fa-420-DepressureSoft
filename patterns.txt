@@ -1,8 +1,21 @@
 ## Design Patterns
 
-1. Singleton - ModelHistory.java:41-49
+1. Singleton 
+- ModelHistory acts such that only a single instance of it can ever exist, which is in historySingleton.
+getInstance() acts as its constructor, and returns the private static singleton if it is not null. This provides history for the CLI.
+- GUIHistory acts similarly so that only one guiHistorySingleton can exist. This holds GUI history.
+- File: ModelHistory.java
+- Line #: 10, 40-48
+- File: GUIHistory.java
+- Line #: 7, 19-27
 
-2. Memento - ModelHistory.java:56-60
+2. Memento 
+- Allows implementation of undo and redo functionality. Prior to a change being made to the CLI model
+or the GUI, the current state of the model is snapshotted and pushed onto an undo stack for access.
+- File: ModelHistory.java
+- Line #: 55-59
+- File: GUIHistory.java
+- Line #: 29-33
 
 3. Iterator
   - Implemented to create a diagram model from an existing diagram model
