@@ -64,7 +64,7 @@ public class Controller {
 							m = model.addParameter(commands.get(2), commands.get(3), commands.get(4), commands.get(5));
 							if (m == null) m = "Added parameter.";
 						} else {
-							view.print("Class, method, and parameter names, and parameter type required.");
+							view.print("Class, method, parameter names, and parameter type is required.");
 						}
 					} else if(checkKeyword(commands, 1, "relationship")) {
 						if(commands.size() == 4) {
