@@ -19,7 +19,7 @@ public class UMLClass {
     /**
      * The fields of the class (does not include methods).
      */
-    private ArrayList<String> fields = new ArrayList<String>();
+    private ArrayList<Field> fields = new ArrayList<Field>();
     /**
      * Names of the classes that this class is related to.
      */
@@ -75,8 +75,8 @@ public class UMLClass {
      * Adds a new method to the class representation.
      * @param methodName The name of the new method.
      */
-    public void addMethod(String methodName){
-        methods.add(new Method(methodName));
+    public void addMethod(String methodName, String methodType){
+        methods.add(new Method(methodName, methodType));
     }
 
     /**
@@ -99,6 +99,17 @@ public class UMLClass {
     public void renameMethod(String currentMethod, String newMethodName){
         if(getMethod(currentMethod) != null) {
             getMethod(currentMethod).renameMethod(newMethodName);
+        }
+    }
+
+    /**
+     * Sets the method return type to a new type in the class representation. 
+     * @param currentMethod
+     * @param newMethodType
+     */
+    public void renameMethodType(String currentMethod, String newMethodType){
+        if(getMethod(currentMethod) != null){
+            getMethod(currentMethod).renameMethodType(newMethodType);
         }
     }
 
@@ -145,9 +156,9 @@ public class UMLClass {
      * @param methodName The name of the method to add the parameter to.
      * @param pName The name of the parameter to add.
      */
-    public void addParameter(String methodName, String pName){
+    public void addParameter(String methodName, String pName, String pType){
         if (getMethod(methodName) != null) {
-            getMethod(methodName).addParameter(pName);
+            getMethod(methodName).addParameter(pName, pType);
         }
     }
 
@@ -176,8 +187,8 @@ public class UMLClass {
      * Adds a new field the class representation.
      * @param newField The name of the new field.
      */
-    public void addField(String newField){
-        fields.add(newField);
+    public void addField(String newField, String fieldType){
+        fields.add(new Field(newField, fieldType));
     }
 
     /**
@@ -185,7 +196,11 @@ public class UMLClass {
      * @param removedField The name of the field to delete.
      */
     public void removeField(String removedField){
-        fields.remove(removedField);
+        for(int index = 0; index < fields.size(); index++) {
+            if (fields.get(index).getFieldName().equals(removedField)) {
+                fields.remove(index);
+            }
+        }
     }
 
     /**
@@ -194,17 +209,64 @@ public class UMLClass {
      * @param newName New name for the field.
      */
     public void renameField(String oldName, String newName){
-        int index = fields.indexOf(oldName);
-        fields.set(index, newName);
+        if(getField(oldName) != null) {
+            getField(oldName).renameField(newName);
+        }
+    }
+
+    /**
+     * Sets the current field type to a new type in the class representation.
+     * @param fieldName
+     * @param newType
+     */
+    public void renameFieldType(String fieldName, String newType){
+        if(getField(fieldName) != null){
+            getField(fieldName).renameFieldType(newType);
+        }
+    }
+
+    /**
+     * Returns the field in the UML Class.
+     * @param fieldName
+     * @return field
+     */
+    public Field getField(String fieldName){
+        for(int index = 0; index < fields.size(); index++) {
+            if (fields.get(index).getFieldName().equals(fieldName)) {
+                return fields.get(index);
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Checks to see if the field exists in the UML Class.
+     * @param fieldName
+     * @return
+     */
+    public boolean fieldExists(String fieldName) {
+        return (getField(fieldName) != null);
     }
 
     /**
      * Returns an ArrayList<String> of all the class representation's fields.
      * @return The fields ArrayList.
      */
-    public  ArrayList<String> getFields(){
+    public  ArrayList<Field> getFields(){
         return fields;
     }
+    
+    /**
+     * Returns ArrayList<String> of the field names.
+     * @return
+     */
+    public ArrayList<String> getStringFields(){
+        ArrayList<String> holder = new ArrayList<String>();
+         for(Field f: fields){
+             holder.add(f.getFieldName());
+         };
+         return holder;
+     }
 
     /**
      * Returns an ArrayList<String> of all the classes related to this class.
