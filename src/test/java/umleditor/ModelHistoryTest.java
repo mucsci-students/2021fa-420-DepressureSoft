@@ -23,10 +23,10 @@ class ModelHistoryTest {
         model.addClass("MyClass1");
         model.addClass("MyClass2");
         model.addClass("MyClass3");
-        model.addField("MyClass1", "MyField1");
-        model.addField("MyClass1", "MyField2");
-        model.addMethod("MyClass2", "MyMethod1");
-        model.addParameter("MyClass2", "MyMethod1", "MyParameter");
+        model.addField("MyClass1", "MyField1", "myType1");
+        model.addField("MyClass1", "MyField2", "myType2");
+        model.addMethod("MyClass2", "MyMethod1", "myType1");
+        model.addParameter("MyClass2", "MyMethod1", "MyParameter", "myType1");
         model.addRelationship("MyClass1", "MyClass2", Relationship.RelationshipType.AGGREGATION);
         model.addRelationship("MyClass2", "MyClass1", Relationship.RelationshipType.INHERITANCE);
 

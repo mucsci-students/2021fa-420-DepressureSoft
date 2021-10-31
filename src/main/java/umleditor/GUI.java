@@ -664,7 +664,7 @@ public class GUI {
                 String holder = classNames.getSelectedItem().toString();
                 fieldNames.removeAllItems();
                 System.out.println( model.getUML(holder).getFields().size());
-                for(String s: model.getUML(holder).getFields()){
+                for(String s: model.getUML(holder).getStringFields()){
                     fieldNames.addItem(s.toString());
                 }
                 
@@ -687,7 +687,7 @@ public class GUI {
         if(classNames.getItemCount() >= 1){
         String holder = classNames.getSelectedItem().toString();
         fieldNames.removeAllItems();
-        for(String s: model.getUML(holder).getFields()){
+        for(String s: model.getUML(holder).getStringFields()){
             fieldNames.addItem(s.toString());
         }
         }  
@@ -797,7 +797,8 @@ public class GUI {
             String holder = classNames.getSelectedItem().toString();
             String holderV2 = methodNames.getSelectedItem().toString();
             paramNames.removeAllItems();
-            for(String s: model.getUML(holder).getMethod(holderV2).getParamList()){
+            for(int i = 0; i < model.getUML(holder).getMethods().size(); i++){
+                String s = model.getUML(holder).getMethod(holderV2).getParamList().get(i).getParamName();
                 paramNames.addItem(s.toString());
             }
         }
@@ -896,7 +897,7 @@ public class GUI {
             public void itemStateChanged(ItemEvent e) {
                 String holder = classNames.getSelectedItem().toString();
                 fieldNames.removeAllItems();
-                for(String s: model.getUML(holder).getFields()){
+                for(String s: model.getUML(holder).getStringFields()){
                     fieldNames.addItem(s.toString());
                 }
                 
@@ -923,7 +924,7 @@ public class GUI {
         if(classNames.getItemCount() >= 1){
             String holder = classNames.getSelectedItem().toString();
             fieldNames.removeAllItems();
-            for(String s: model.getUML(holder).getFields()){
+            for(String s: model.getUML(holder).getStringFields()){
                 fieldNames.addItem(s.toString());
             }
             }  
@@ -1046,7 +1047,8 @@ public class GUI {
             String holder = classNames.getSelectedItem().toString();
             String holderV2 = methodNames.getSelectedItem().toString();
             paramNames.removeAllItems();
-            for(String s: model.getUML(holder).getMethod(holderV2).getParamList()){
+            for(int i = 0; i < model.getUML(holder).getMethods().size(); i++){
+                String s = model.getUML(holder).getMethod(holderV2).getParamList().get(i).getParamName();
                 paramNames.addItem(s.toString());
             }
         }
@@ -1113,7 +1115,7 @@ public class GUI {
         String fieldT = fieldType.getText();
         if(SourceVersion.isIdentifier(field)){
             if(!boxMap.get(getClass).duplicateField(field)){
-                model.addField(getClass, field);
+                model.addField(getClass, field, fieldT);
                 box = boxMap.get(getClass);
                 box.addField(field,fieldT);
                 action.dispose();
@@ -1138,7 +1140,7 @@ public class GUI {
         String methodT = methodType.getText();
         if(SourceVersion.isIdentifier(method)){
             if(!boxMap.get(getClass).duplicateMethod(method)){
-                model.addMethod(getClass,method);
+                model.addMethod(getClass,method, methodT);
                 box = boxMap.get(getClass);
                 box.addMethod(method,methodT);
                 action.dispose();
@@ -1161,11 +1163,11 @@ public class GUI {
         String getClass = classNames.getSelectedItem().toString();
 		String method = methodNames.getSelectedItem().toString();
         String parameter = parameterName.getText();
-        //String parameterT = parameterType.getText();
+        String parameterT = parameterType.getText();
 
         if(SourceVersion.isIdentifier(parameter)){
             if(!boxMap.get(getClass).duplicateParameter(method,parameter)){
-                model.addParameter(getClass,method,parameter);
+                model.addParameter(getClass,method,parameter, parameterT);
                 box = boxMap.get(getClass);
                 box.addParameter(parameter,method);
                 action.dispose();
