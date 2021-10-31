@@ -180,7 +180,7 @@ public class DiagramModel {
         result.append("      \"fields\": [\n");
         ArrayList<Field> fields = theClass.getFields();
         for(Field field : fields) {
-            result.append("        { \"name\": \"" + field.getFieldName() + "\", \"type\": \"N/A\" },\n"); 
+            result.append("        { \"name\": \"" + field.getFieldName() + "\", \"type\": \"" + field.getFieldType() + "\" },\n"); 
         }
         if(!fields.isEmpty()) {
             result.deleteCharAt(result.length() - 2);
@@ -191,11 +191,11 @@ public class DiagramModel {
         for(Method method : methods) {
             result.append("        {\n");
             result.append("          \"name\": \"" + method.getMethodName() + "\",\n");
-            result.append("          \"return_type\": \"n/a\",\n");
+            result.append("          \"return_type\": \"" + method.getMethodType() + "\",\n");
             result.append("          \"params\": [\n");
             ArrayList<Parameter> parameters = method.getParamList();
             for(Parameter param : parameters) {
-                result.append("            { \"name\": \"" + param.getParamName() + "\", \"type\": \"n/a\"},\n");
+                result.append("            { \"name\": \"" + param.getParamName() + "\", \"type\": \"" + param.getParamType() + "\"},\n");
             }
             if (!parameters.isEmpty()) {
                 result.deleteCharAt(result.length() - 2);
