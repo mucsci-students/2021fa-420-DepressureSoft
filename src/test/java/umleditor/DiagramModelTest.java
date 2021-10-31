@@ -87,7 +87,7 @@ class DiagramModelTest {
 		assertEquals(1, testDiagram.numberOfClasses(), 
 				"Diagram should include only added 'trial' class");
 		
-		testDiagram.addMethod("trial", "testMethod");
+		testDiagram.addMethod("trial", "testMethod", "testType");
 		
 		assertEquals(true, testDiagram.methodExists("trial", "testMethod"),
 				"testMethod should exist");
@@ -101,7 +101,7 @@ class DiagramModelTest {
 		assertEquals(1, testDiagram.numberOfClasses(), 
 				"Diagram should include only added 'trial' class");
 		
-		testDiagram.addMethod("trial", "testMethod");
+		testDiagram.addMethod("trial", "testMethod", "testType");
 		
 		assertEquals(true, testDiagram.methodExists("trial", "testMethod"),
 				"testMethod should exist");
@@ -120,7 +120,7 @@ class DiagramModelTest {
 		assertEquals(1, testDiagram.numberOfClasses(), 
 				"Diagram should include only added 'trial' class");
 		
-		testDiagram.addMethod("trial", "testMethod");
+		testDiagram.addMethod("trial", "testMethod", "testType");
 		
 		assertEquals(true, testDiagram.methodExists("trial", "testMethod"),
 				"testMethod should exist");
@@ -142,12 +142,12 @@ class DiagramModelTest {
 		assertEquals(1, testDiagram.numberOfClasses(), 
 				"Diagram should include only added 'trial' class");
 		
-		testDiagram.addMethod("trial", "testMethod");
+		testDiagram.addMethod("trial", "testMethod", "testType");
 		
 		assertEquals(true, testDiagram.methodExists("trial", "testMethod"),
 				"testMethod should exist");
 		
-		testDiagram.addParameter("trial", "testMethod", "testParam");
+		testDiagram.addParameter("trial", "testMethod", "testParam", "typeTest");
 		UMLClass testClass = testDiagram.getUML("trial");
 		Method dummyMethod = testClass.getMethod("testMethod");
 		
@@ -163,12 +163,12 @@ class DiagramModelTest {
 		assertEquals(1, testDiagram.numberOfClasses(), 
 				"Diagram should include only added 'trial' class");
 		
-		testDiagram.addMethod("trial", "testMethod");
+		testDiagram.addMethod("trial", "testMethod", "testType");
 		
 		assertEquals(true, testDiagram.methodExists("trial", "testMethod"),
 				"testMethod should exist");
 		
-		testDiagram.addParameter("trial", "testMethod", "testParam");
+		testDiagram.addParameter("trial", "testMethod", "testParam", "typeTest");
 		UMLClass testClass = testDiagram.getUML("trial");
 		Method dummyMethod = testClass.getMethod("testMethod");
 		
@@ -189,12 +189,12 @@ class DiagramModelTest {
 		assertEquals(1, testDiagram.numberOfClasses(), 
 				"Diagram should include only added 'trial' class");
 		
-		testDiagram.addMethod("trial", "testMethod");
+		testDiagram.addMethod("trial", "testMethod", "testType");
 		
 		assertEquals(true, testDiagram.methodExists("trial", "testMethod"),
 				"testMethod should exist");
 		
-		testDiagram.addParameter("trial", "testMethod", "testParam");
+		testDiagram.addParameter("trial", "testMethod", "testParam", "typeTest");
 		UMLClass testClass = testDiagram.getUML("trial");
 		Method dummyMethod = testClass.getMethod("testMethod");
 		
@@ -218,19 +218,19 @@ class DiagramModelTest {
 		assertEquals(1, testDiagram.numberOfClasses(), 
 				"Diagram should include only added 'trial' class");
 		
-		testDiagram.addMethod("trial", "testMethod");
+		testDiagram.addMethod("trial", "testMethod", "testType");
 		
 		assertEquals(true, testDiagram.methodExists("trial", "testMethod"),
 				"testMethod should exist");
 		
-		testDiagram.addParameter("trial", "testMethod", "testParam");
+		testDiagram.addParameter("trial", "testMethod", "testParam", "typeTest");
 		UMLClass testClass = testDiagram.getUML("trial");
 		Method dummyMethod = testClass.getMethod("testMethod");
 		
 		assertEquals(true, dummyMethod.parameterExists("testParam"),
 				"testParam should exist");
 		
-		testDiagram.addParameter("trial", "testMethod", "param2");
+		testDiagram.addParameter("trial", "testMethod", "param2", "typeTest");
 		
 		assertEquals(true, dummyMethod.parameterExists("param2"),
 				"param2 should exist");
@@ -269,12 +269,12 @@ class DiagramModelTest {
 		assertEquals(1, testDiagram.numberOfClasses(), 
 				"Diagram should include only added 'trial' class");
 		
-		testDiagram.addField("trial", "testField");
+		testDiagram.addField("trial", "testField", "testType");
 		UMLClass testClass = testDiagram.getUML("trial");
 		ArrayList<String> fieldTest = new ArrayList<String>();
 		fieldTest.add("testField");
 		
-		assertEquals(fieldTest, testClass.getFields(), 
+		assertEquals(fieldTest, testClass.getStringFields(), 
 				"Added fields should be in fields arraylist");
 	}
 	
@@ -286,19 +286,19 @@ class DiagramModelTest {
 		assertEquals(1, testDiagram.numberOfClasses(), 
 				"Diagram should include only added 'trial' class");
 		
-		testDiagram.addField("trial", "testField");
+		testDiagram.addField("trial", "testField", "testType");
 		UMLClass testClass = testDiagram.getUML("trial");
 		ArrayList<String> fieldTest = new ArrayList<String>();
 		fieldTest.add("testField");
 		
-		assertEquals(fieldTest, testClass.getFields(), 
+		assertEquals(fieldTest, testClass.getStringFields(), 
 				"Added fields should be in fields arraylist");
 		
 		testDiagram.deleteField("trial", "testField");
 		
 		fieldTest.remove("testField");
 		
-		assertEquals(fieldTest, testClass.getFields(), 
+		assertEquals(fieldTest, testClass.getStringFields(), 
 				"Removed fields shouldn't be in fields arraylist");
 	}
 	
@@ -310,12 +310,12 @@ class DiagramModelTest {
 		assertEquals(1, testDiagram.numberOfClasses(), 
 				"Diagram should include only added 'trial' class");
 		
-		testDiagram.addField("trial", "testField");
+		testDiagram.addField("trial", "testField", "testType");
 		UMLClass testClass = testDiagram.getUML("trial");
 		ArrayList<String> fieldTest = new ArrayList<String>();
 		fieldTest.add("testField");
 		
-		assertEquals(fieldTest, testClass.getFields(), 
+		assertEquals(fieldTest, testClass.getStringFields(), 
 				"Added fields should be in fields arraylist");
 		
 		testDiagram.renameField("trial", "testField", "renamedField");
@@ -323,7 +323,7 @@ class DiagramModelTest {
 		fieldTest.remove("testField");
 		fieldTest.add("renamedField");
 		
-		assertEquals(fieldTest, testClass.getFields(), 
+		assertEquals(fieldTest, testClass.getStringFields(), 
 				"Renamed fields should be in fields arraylist");
 	}
 }
