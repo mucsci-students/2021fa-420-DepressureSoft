@@ -483,22 +483,23 @@ public class DiagramModel {
      * @param methodName
      * @param newMethodType
      */
-    public void renameMethodType(String className, String methodName, String newMethodType){
+    public String renameMethodType(String className, String methodName, String newMethodType){
         UMLClass parentClass = getUML(className);
             if(parentClass != null){
                 if(parentClass.methodExists(methodName)){
                     snapshot();
                     parentClass.renameMethodType(methodName, newMethodType);
+                    return null;
                 }
                 else
                 {
-                        System.out.println("The method \"" + methodName + 
+                        return ("The method \"" + methodName + 
                             "\" type cannot be renamed, as it does not exist.");
                 }
             }
             else
             {
-                System.out.println("The method \"" + methodName + 
+                return ("The method \"" + methodName + 
                     "\" type cannot be renamed, as the parent class \"" + className + "\" does not exist.");  
             }
     }  
@@ -630,7 +631,7 @@ public class DiagramModel {
      * @param paramName
      * @param newPType
      */
-    public void renameParameterType(String className, String methodName, String paramName, String newPType){
+    public String renameParameterType(String className, String methodName, String paramName, String newPType){
         UMLClass parentClass = getUML(className);
             if(parentClass != null)
             {
@@ -641,19 +642,20 @@ public class DiagramModel {
                     {
                         snapshot();
                         parentMethod.renameParameterType(paramName, newPType);
+                        return null;
                     }
                     else{
-                        System.out.println("The parameter \"" + paramName + 
+                        return ("The parameter \"" + paramName + 
                             "\" type cannot be renamed, as it does not exist.");
                     }
                 }
                 else{
-                    System.out.println("The parameter \"" + paramName + 
+                    return ("The parameter \"" + paramName + 
                             "\" type cannot be renamed, as the method \"" + methodName + "does not exist.");
                 }
             }
             else{
-                System.out.println("The parameter \"" + paramName + 
+                return ("The parameter \"" + paramName + 
                     "\" type cannot be renamed, as the parent class \"" + className + "\" does not exist.");
             }
     }
@@ -1066,22 +1068,23 @@ public class DiagramModel {
      * @param fieldName
      * @param newFieldType
      */
-    public void renameFieldType(String className, String fieldName, String newFieldType){
+    public String renameFieldType(String className, String fieldName, String newFieldType){
         UMLClass parentClass = getUML(className);
             if(parentClass != null){
                 if(parentClass.fieldExists(fieldName)){
                     snapshot();
                     parentClass.renameFieldType(fieldName, newFieldType);
+                    return null;
                 }
                 else
                 {
-                        System.out.println("The field \"" + fieldName + 
+                        return ("The field \"" + fieldName + 
                             "\" type cannot be renamed, as it does not exist.");
                 }
             }
             else
             {
-                System.out.println("The field \"" + fieldName + 
+                return ("The field \"" + fieldName + 
                     "\" cannot be renamed, as the parent class \"" + className + "\" does not exist.");  
             }
     }
