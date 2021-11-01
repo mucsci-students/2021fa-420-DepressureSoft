@@ -309,7 +309,7 @@ public class DiagramModel {
                 bob.append((fieldBuilder.toString()) + "\n");
             }
             /** Prints methods, prints special message if no methods in UML class */
-            bob.append("Methods: " + "\n");
+            bob.append("Methods: ");
             if(input.getMethods().size() == 0)
             {
                 bob.append("There are no methods in this class.");
