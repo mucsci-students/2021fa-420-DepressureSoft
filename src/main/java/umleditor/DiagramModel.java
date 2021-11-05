@@ -1,9 +1,4 @@
 package umleditor;
-/**
- * Authors: Jeffrey Flynn, David Jachimowicz, Jeff Cutcher, Alex Balagurak, Jon Brennan
- * Date: 9/15/21
- */
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ListIterator;
@@ -17,6 +12,7 @@ import org.json.simple.parser.JSONParser;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -134,7 +130,6 @@ public class DiagramModel {
      */
     public String save(String fileLocation){
         StringBuilder jsonTxt = new StringBuilder();
-        
         jsonTxt.append("{\n  \"classes\": [\n");
         diagram.forEach((k,v) -> jsonTxt.append(jsonTxtClassMaker(v)));
         if (!diagram.isEmpty()) {
