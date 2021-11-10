@@ -1,9 +1,4 @@
 package umleditor;
-/**
- * Authors: Jeffrey Flynn, David Jachimowicz, Jeff Cutcher, Alex Balagurak, Jon Brennan
- * Date: 9/15/21
- */
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ListIterator;
@@ -17,6 +12,7 @@ import org.json.simple.parser.JSONParser;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -134,7 +130,6 @@ public class DiagramModel {
      */
     public String save(String fileLocation){
         StringBuilder jsonTxt = new StringBuilder();
-        
         jsonTxt.append("{\n  \"classes\": [\n");
         diagram.forEach((k,v) -> jsonTxt.append(jsonTxtClassMaker(v)));
         if (!diagram.isEmpty()) {
@@ -292,8 +287,9 @@ public class DiagramModel {
     	StringBuilder bob = new StringBuilder();
         if(classExists(className)) {
             UMLClass input = diagram.get(className);
-            bob.append("\nName: " + input.getName() + "\n");
-            bob.append("Fields: ");
+            bob.append("-----------------------\n");
+            bob.append("Name: " + input.getName() + "\n");
+            bob.append("-----------------------\n");
 
             /** Prints fields, prints special message if none */
             if (input.getFields().size() == 0) {
@@ -304,15 +300,16 @@ public class DiagramModel {
                     if(i != 0) {
                         fieldBuilder.append(", ");
                     }
-                    fieldBuilder.append(input.getFields().get(i).getFieldName());
+                    fieldBuilder.append(input.getFields().get(i).getFieldName() + " : "
+                    		+ input.getFields().get(i).getFieldType());
                 }
                 bob.append((fieldBuilder.toString()) + "\n");
             }
+            bob.append("-----------------------\n");
             /** Prints methods, prints special message if no methods in UML class */
-            bob.append("Methods: " + "\n");
             if(input.getMethods().size() == 0)
             {
-                bob.append("There are no methods in this class.");
+                bob.append("There are no methods in this class.\n");
             }
             else
             {
@@ -323,12 +320,13 @@ public class DiagramModel {
                             if(j != 0){
                                 bob.append(", ");
                             }
-                            bob.append(input.getMethods().get(i).getParamList().get(j).getParamName() + "");
+                            bob.append(input.getMethods().get(i).getParamList().get(j).getParamName() + " : "
+                            		+ input.getMethods().get(i).getParamList().get(j).getParamType());
                         }
-                    bob.append(")");
-                    bob.append("\n");
+                    bob.append(") : " + input.getMethods().get(i).getMethodType() + "\n");
                 }
             }
+            bob.append("-----------------------\n");
         }
         else {
             bob.append("The class \"" + className + "\" cannot be displayed, as it does not exist.\n");
@@ -345,7 +343,29 @@ public class DiagramModel {
     	if(diagram.size() == 0) {
     		return "There are no classes in the diagram.";
     	}
-        diagram.forEach((k,v) -> bob.append(listClass(k)));
+    	bob.append("\n");
+        diagram.forEach((k,v) -> bob.append(listClass(k) + "\n"));
+        return bob.toString();
+    }
+    
+    /**
+     * Prints all the relationships in the class diagram.
+     * @return A String representation of the relationships.
+     */
+    public String listRelationships()
+    {
+    	StringBuilder bob = new StringBuilder();
+        ListIterator<Relationship>iterator = relationships.listIterator();
+        if (relationships.isEmpty()) {
+            bob.append("There are no relationships to display.");
+        }
+      
+        while (iterator.hasNext())
+        {
+            Relationship current = iterator.next();
+            bob.append(current.getFrom().getName() + " --" + current.getRelationshipType() + "---> " 
+            		+ current.getTo().getName() + "\n");
+        }
         return bob.toString();
     }
 
@@ -863,28 +883,6 @@ public class DiagramModel {
                 return ("The destination class \"" + to + "\" does not exist");
             }
         }
-    }
-  
-    /**
-     * Prints all the relationships in the class diagram.
-     */
-    public String listRelationships()
-    {
-    	StringBuilder bob = new StringBuilder();
-        ListIterator<Relationship>iterator = relationships.listIterator();
-        if (relationships.isEmpty()) {
-            bob.append("There are no relationships to display.");
-        }
-      
-        while (iterator.hasNext())
-        {
-            Relationship current = iterator.next();
-            UMLClass from = current.getFrom();
-            UMLClass to = current.getTo();
-            bob.append("From: " + from.getName() + " To: " + to.getName() + " Type: " + 
-                current.getRelationshipType() + "\n");
-        }
-        return bob.toString();
     }
 
     /**
