@@ -3,6 +3,7 @@ package umleditor;
 import java.awt.*;
 import java.util.*;
 import javax.swing.*;
+import javax.imageio.ImageIO;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,6 +13,8 @@ import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 
 import java.io.IOException;
+import java.io.File;
+import java.awt.image.BufferedImage;
 
 import umleditor.Relationship.RelationshipType;
 
