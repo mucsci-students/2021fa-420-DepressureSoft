@@ -1,6 +1,9 @@
 # Created by https://www.toptal.com/developers/gitignore/api/java,gradle,eclipse,macos,linux,windows,visualstudiocode
 # Edit at https://www.toptal.com/developers/gitignore?templates=java,gradle,eclipse,macos,linux,windows,visualstudiocode
 
+# Export images
+*.jpg
+
 ### Eclipse ###
 .metadata
 bin/

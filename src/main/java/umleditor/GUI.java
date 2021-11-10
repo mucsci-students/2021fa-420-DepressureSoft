@@ -302,6 +302,11 @@ public class GUI {
         		redoAction();
         	}
         });
+        export.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                exportDiagramToImage("HELLO");
+            }
+        });
       updateButtons();
     }
 
