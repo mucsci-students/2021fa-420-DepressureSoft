@@ -28,7 +28,7 @@ public class GUI {
     JMenuBar menuBar;
 
     JMenu add,delete,rename,file,edit;
-    JMenuItem help,save,load,undo,redo;
+    JMenuItem help,save,load,undo,redo,export;
     JMenuItem addClass,addRelationship,addField,addMethod,addParameter;
     JMenuItem deleteClass,deleteRelationship,deleteField,deleteMethod,deleteParameter;
     JMenuItem renameClass,renameField,renameMethod,renameParameter;
@@ -105,6 +105,7 @@ public class GUI {
         undo.setAccelerator(KeyStroke.getKeyStroke('Z', Toolkit.getDefaultToolkit ().getMenuShortcutKeyMaskEx()));
         redo = new JMenuItem("Redo");
         redo.setAccelerator(KeyStroke.getKeyStroke('Y', Toolkit.getDefaultToolkit ().getMenuShortcutKeyMaskEx()));
+        export = new JMenuItem("Export");
 
         addClass = new JMenuItem("Class");
         addRelationship = new JMenuItem("Relationship");
@@ -150,6 +151,7 @@ public class GUI {
 
         file.add(save);
         file.add(load);
+        file.add(export);
 
         edit.add(undo);
         edit.add(redo);
@@ -1540,5 +1542,19 @@ public class GUI {
         return true;
         else
         return false;
+    }
+
+    public void exportDiagramToImage(String fileName)
+    {
+        BufferedImage image = new BufferedImage(pane.getWidth(), pane.getHeight(), BufferedImage.TYPE_INT_RGB);
+        Graphics2D g = image.createGraphics();
+        pane.printAll(g);
+        g.dispose();
+        try {
+            ImageIO.write(image, "jpg", new File(fileName + ".jpg"));
+        }
+        catch(IOException e){
+            e.printStackTrace();
+        }
     }
 }
