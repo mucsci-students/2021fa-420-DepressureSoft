@@ -297,13 +297,10 @@ public class DiagramModel {
             } else {
                 StringBuilder fieldBuilder = new StringBuilder();
                 for (int i = 0; i < input.getFields().size(); i++) { 
-                    if(i != 0) {
-                        fieldBuilder.append(", ");
-                    }
                     fieldBuilder.append(input.getFields().get(i).getFieldName() + " : "
-                    		+ input.getFields().get(i).getFieldType());
+                    		+ input.getFields().get(i).getFieldType() + "\n");
                 }
-                bob.append((fieldBuilder.toString()) + "\n");
+                bob.append((fieldBuilder.toString()));
             }
             bob.append("-----------------------\n");
             /** Prints methods, prints special message if no methods in UML class */
