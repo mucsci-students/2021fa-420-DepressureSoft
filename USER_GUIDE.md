@@ -16,7 +16,7 @@ Hello! Thank you for choosing our UML Editor. You might still be a little confus
 - `add field className fieldName returnType`
   - Creates a field named "fieldName" in the class named "className" with the return type "returnType".
 - `add parameter className methodName parameterName returnType`
-  - Creates a parameter named "parameterName" in the method "methodName" within the class named "className" with the return type "returnType".
+  - Creates a parameter named "parameterName" in the method "methodName" (within the class named "className") with the return type "returnType".
 - `add relationship sourceClass destinationClass relationshipType`
   - Creates a relationship between the class "sourceClass" and the class "destinationClass" with the type "relationshipType".
   - There are four options for relationship types: aggregation, composition, inheritance, and realization.
@@ -30,8 +30,17 @@ Hello! Thank you for choosing our UML Editor. You might still be a little confus
 - `delete field className fieldName`
   - Removes the field "fieldName" from the class "className".
 - `delete parameter className methodName parameterName`
-  - Removes the parameter "parameterName" from the method "methodName" within the class "className".
+  - Removes the parameter "parameterName" from the method "methodName" (within the class "className").
 - `delete relationship sourceClass destinationClass`
   - Removes the relationship between the class "sourceClass" and the class "destinationClass".
 
+### CLI Rename Commands
 
+- `rename class className newName`
+  - Renames the class "className" to "newName".
+- `rename method className methodName newName`
+  - Renames the method "methodName" (within the class "className") to "newName".
+- `rename field className fieldName newName`
+  - Renames the field "fieldName" (within the class "className") to "newName".
+- `rename parameter className methodName parameterName newName`
+  - Renames the parameter "parameterName" (within the method "methodName", which is itself within the class "className") to "newName".
