@@ -5,11 +5,21 @@ Hello! Thank you for choosing our UML Editor. You might still be a little confus
 ## CLI First Steps 
 
 - Type ```help``` to view a list of useful commands, all of which will be further explained in this document.
-- Type ```help <command>``` to view helpful information about a specific command.
+- Type ```help command``` to view helpful information about a specific command, replacing "command" with the desired command (ex. add, delete, rename). 
 
-### CLI Basic Commands
+### CLI Add Commands
 
-- ```add class <className>```
-  - This command creates a class named "className" in the UML Diagram. The class will be initialized without methods, parameters, fields, or relationships.
-- ```add method 
+- ```add class className```
+  - Creates a class named "className" in the UML Diagram. The class will be initialized without methods, parameters, fields, or relationships.
+- ```add method className methodName returnType```
+  - Creates a method named "methodName" in the class named "className" with the return type "returnType".
+- ```add field className fieldName returnType```
+  - Creates a field named "fieldName" in the class named "className" with the return type "returnType".
+- ```add parameter className methodName parameterName returnType```
+  - Creates a parameter named "parameterName" in the method "methodName" within the class named "className" with the return type "returnType".
+- ```add relationship sourceClass destinationClass relationshipType```
+  - Creates a relationship between the class "sourceClass" and the class "destinationClass" with the type "relationshipType".
+  - There are four options for relationship types: aggregation, composition, inheritance, and realization.
+
+### CLI Delete Commands
 
