@@ -52,3 +52,37 @@ Hello! Thank you for choosing our UML Editor. You might still be a little confus
   - UML Diagram will be saved as a JSON file, and the ".json" extension will be appended automatically if not included in the "fileName".
 - `load filePath`
   - Loads a UML Diagram from the given file path "filePath". 
+
+### CLI Change Type Commands
+
+- `changetype method className methodName newType`
+  - Changes the return type of the method "methodName" (within class "className") to "newType".
+- `changetype field className fieldName newType`
+  - Changes the return type of the field "fieldName" (within class "className") to "newType".
+- `changetype parameter className methodName parameterName newType`
+  - Changes the return type of the parameter "parameterName" (within the method "methodName", which is itself within the class "className") to "newType".
+- `changetype relationship sourceClass destinationClass relationshipType`
+  - Changes the relationship type of the relationship between class "sourceClass" and class "destinationClass".
+  - There are four options for relationship types: aggregation, composition, inheritance, and realization.
+
+### CLI Display Commands
+
+- `display all`
+  - Displays all classes currently in the UML Diagram, also listing their respective fields, methods, and parameters.
+- `display class className`
+  - Displays all information about the class "className", specifically its fields, methods, and parameters.
+- `display relationships`
+  - Displays all relationships within the UML Diagram, listing the source class, destination class, and relationship type.
+
+### CLI Undo/Redo Commands
+
+- `undo`
+  - Reverts to the program state before the most recent change.
+- `redo`
+  - Reverts to the program state before "undo" was executed, if "undo" has been executed.
+
+### CLI Exit Command
+
+- `exit` 
+  - Closes the UML Editor.
+  - Will prompt the user with "Are you sure you want to exit?", to which the user can respond `y` or `n`. If `y` the program will exit, otherwise the program will resume.
