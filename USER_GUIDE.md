@@ -23,3 +23,15 @@ Hello! Thank you for choosing our UML Editor. You might still be a little confus
 
 ### CLI Delete Commands
 
+- ```delete class className```
+  - Removes the class "className" from the UML Diagram, also removing any methods, fields, and parameters within the class.
+- ```delete method className methodName```
+  - Removes the method "methodName" from the class "className", also removing any parameters contained within the method.
+- `delete field className fieldName`
+  - Removes the field "fieldName" from the class "className".
+- ```delete parameter className methodName parameterName```
+  - Removes the parameter "parameterName" from the method "methodName" within the class "className".
+- ```delete relationship sourceClass destinationClass```
+  - Removes the relationship between the class "sourceClass" and the class "destinationClass".
+
+
