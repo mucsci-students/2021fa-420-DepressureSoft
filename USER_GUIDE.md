@@ -45,7 +45,7 @@ Hello! Thank you for choosing our UML Editor. You might still be a little confus
 - `rename parameter className methodName parameterName newName`
   - Renames the parameter "parameterName" (within the method "methodName", which is itself within the class "className") to "newName".
 
-### CLI Save/Load Commands
+### CLI File Commands
 
 - `save directoryName fileName`
   - Saves the current UML Diagram in the directory "directoryName", giving it the file name "fileName".
@@ -74,7 +74,7 @@ Hello! Thank you for choosing our UML Editor. You might still be a little confus
 - `display relationships`
   - Displays all relationships within the UML Diagram, listing the source class, destination class, and relationship type.
 
-### CLI Undo/Redo Commands
+### CLI Edit Commands
 
 - `undo`
   - Reverts to the program state before the most recent change.
@@ -86,3 +86,47 @@ Hello! Thank you for choosing our UML Editor. You might still be a little confus
 - `exit` 
   - Closes the UML Editor.
   - Will prompt the user with "Are you sure you want to exit?", to which the user can respond `y` or `n`. If `y` the program will exit, otherwise the program will resume.
+
+## GUI Overview
+
+The GUI functions differently from the CLI in that all the commands listed above for the CLI have button counterparts in the GUI. To find a command in the GUI, hover over the header that the desired command is located in (as noted below). Then, select the command desired and follow the on-screen prompts to enter whatever information is required.
+
+If a command is grayed out, that command is currently unavailable because of the current state of the UML Diagram. For instance, you cannot delete a class if no class exists to be deleted, so the "Class" option under "Delete" will be grayed out until a class is added.
+
+Please reference the "Help" button to find a brief overview of available commands. 
+
+All command descriptions are identical to their CLI versions, so if you desire more detailed explanation of a command please consult the corresponding CLI command documentation above. 
+
+When wishing to terminate the program, please select the red "X" button in the upper-right corner of the window. 
+
+### GUI Button Header Structure
+
+- File
+  - Save (Also accessible via keyboard shortcut CTRL + S)
+  - Load (Also accessible via keyboard shortcut CTRL + O)
+
+- Add
+  - Class
+  - Relatioship
+  - Field
+  - Method
+  - Parameter
+
+- Delete
+  - Class
+  - Relationship
+  - Field
+  - Method
+  - Parameter
+
+- Rename
+  - Class
+  - Field
+  - Method
+  - Parameter
+
+- Edit
+  - Undo (Also accessible via keyboard shortcut CTRL + Z)
+  - Redo (Also accessible via keyboard shortcut CTRL + Y)
+
+- Help
