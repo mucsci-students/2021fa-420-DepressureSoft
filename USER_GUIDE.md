@@ -44,3 +44,11 @@ Hello! Thank you for choosing our UML Editor. You might still be a little confus
   - Renames the field "fieldName" (within the class "className") to "newName".
 - `rename parameter className methodName parameterName newName`
   - Renames the parameter "parameterName" (within the method "methodName", which is itself within the class "className") to "newName".
+
+### CLI Save/Load Commands
+
+- `save directoryName fileName`
+  - Saves the current UML Diagram in the directory "directoryName", giving it the file name "fileName".
+  - UML Diagram will be saved as a JSON file, and the ".json" extension will be appended automatically if not included in the "fileName".
+- `load filePath`
+  - Loads a UML Diagram from the given file path "filePath". 
