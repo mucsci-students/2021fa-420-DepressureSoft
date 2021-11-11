@@ -5,7 +5,11 @@ Hello! Thank you for choosing our UML Editor. You might still be a little confus
 ## CLI First Steps 
 
 - Type ```help``` to view a list of useful commands, all of which will be further explained in this document.
+- Type ```help <command>``` to view helpful information about a specific command.
 
 ### CLI Basic Commands
 
+- ```add class <className>```
+  - This command creates a class named "className" in the UML Diagram. The class will be initialized without methods, parameters, fields, or relationships.
+- ```add method 
 
