@@ -55,8 +55,7 @@ public class DiagramModel {
             UMLClass fromCopy = diagram.get(rel.getFrom().getName());
             UMLClass toCopy = diagram.get(rel.getTo().getName());
             if(toCopy == null || fromCopy == null)
-            {
-                System.out.println("How tf did we get here");
+            { 
                 return;
             }
             Relationship.RelationshipType typeCopy = rel.getRelationshipType();
@@ -954,29 +953,29 @@ public class DiagramModel {
         UMLClass parentClass = getUML(className);
         boolean parentExists = classExists(className);
         if(SourceVersion.isIdentifier(fieldName)){
-        if(parentExists)
-        { 
-           if(!parentClass.fieldExists(fieldName))
-           {
-               snapshot();
-               parentClass.addField(fieldName, fieldType);
-               return null;
-           }
-           else
-           {
+            if(parentExists)
+            { 
+               if(!parentClass.fieldExists(fieldName))
+               {
+                   snapshot();
+                   parentClass.addField(fieldName, fieldType);
+                   return null;
+               }
+               else
+               {
+                    return ("The field \"" + fieldName + 
+                        "\" cannot be added, as it already exists in the parent class \"" + className + "\".");
+               }
+            }
+            else
+            {
                 return ("The field \"" + fieldName + 
-                    "\" cannot be added, as it already exists in the parent class \"" + className + "\".");
-           }
+                    "\" cannot be added, as the parent class \"" + className + "\" does not exist.");  
+            }
         }
-        else
-        {
-            return ("The field \"" + fieldName + 
-                "\" cannot be added, as the parent class \"" + className + "\" does not exist.");  
+        else{
+            return (fieldName + "\" is not a proper name.");
         }
-    }
-    else{
-        return (fieldName + "\" is not a proper name.");
-    }
     }
 
     /**
