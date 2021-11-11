@@ -4,34 +4,34 @@ Hello! Thank you for choosing our UML Editor. You might still be a little confus
 
 ## CLI First Steps 
 
-- Type ```help``` to view a list of useful commands, all of which will be further explained in this document.
-- Type ```help command``` to view helpful information about a specific command, replacing "command" with the desired command (ex. add, delete, rename). 
+- Type `help` to view a list of useful commands, all of which will be further explained in this document.
+- Type `help command` to view helpful information about a specific command, replacing "command" with the desired command (ex. add, delete, rename). 
 
 ### CLI Add Commands
 
-- ```add class className```
+- `add class className`
   - Creates a class named "className" in the UML Diagram. The class will be initialized without methods, parameters, fields, or relationships.
-- ```add method className methodName returnType```
+- `add method className methodName returnType`
   - Creates a method named "methodName" in the class named "className" with the return type "returnType".
-- ```add field className fieldName returnType```
+- `add field className fieldName returnType`
   - Creates a field named "fieldName" in the class named "className" with the return type "returnType".
-- ```add parameter className methodName parameterName returnType```
+- `add parameter className methodName parameterName returnType`
   - Creates a parameter named "parameterName" in the method "methodName" within the class named "className" with the return type "returnType".
-- ```add relationship sourceClass destinationClass relationshipType```
+- `add relationship sourceClass destinationClass relationshipType`
   - Creates a relationship between the class "sourceClass" and the class "destinationClass" with the type "relationshipType".
   - There are four options for relationship types: aggregation, composition, inheritance, and realization.
 
 ### CLI Delete Commands
 
-- ```delete class className```
+- `delete class className`
   - Removes the class "className" from the UML Diagram, also removing any methods, fields, and parameters within the class.
-- ```delete method className methodName```
+- `delete method className methodName`
   - Removes the method "methodName" from the class "className", also removing any parameters contained within the method.
 - `delete field className fieldName`
   - Removes the field "fieldName" from the class "className".
-- ```delete parameter className methodName parameterName```
+- `delete parameter className methodName parameterName`
   - Removes the parameter "parameterName" from the method "methodName" within the class "className".
-- ```delete relationship sourceClass destinationClass```
+- `delete relationship sourceClass destinationClass`
   - Removes the relationship between the class "sourceClass" and the class "destinationClass".
 
 
