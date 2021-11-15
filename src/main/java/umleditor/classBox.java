@@ -111,6 +111,7 @@ public class classBox {
 			}
 			public void mouseDragged(MouseEvent e) {
 				panel.setLocation(panel.getX() + (e.getX() - this.x), panel.getY() + (e.getY() - this.y));
+                panel.repaint();
 			}
 		};
 	

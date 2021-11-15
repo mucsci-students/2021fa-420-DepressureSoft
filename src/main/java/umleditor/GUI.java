@@ -33,7 +33,9 @@ public class GUI {
     JMenuItem deleteClass,deleteRelationship,deleteField,deleteMethod,deleteParameter;
     JMenuItem renameClass,renameField,renameMethod,renameParameter;
 
-    JPanel pane,boxPane,actionPane;
+    public static JPanel pane;
+    public JPanel boxPane;
+    public JPanel actionPane;
 
     JTextField textBoxClassAdd;
     JTextField className,className2,methodName,methodType,fieldName,fieldType,parameterName,parameterType,renamer;
@@ -44,6 +46,7 @@ public class GUI {
 
     private DiagramModel model = new DiagramModel();
     private HashMap<String,classBox> boxMap = new HashMap();
+    private HashMap<String,Arrow> arrowMap = new HashMap();
     private classBox box;
 
     public GUI(){
@@ -1086,7 +1089,7 @@ public class GUI {
         String newClass = className.getText();
         if(SourceVersion.isIdentifier(newClass)){
             if(!duplicateClass(newClass)){
-                snapshot();
+               // snapshot();
                 model.addClass(newClass);
                 box = new classBox(newClass);
                 boxMap.put(newClass,box);
@@ -1192,22 +1195,54 @@ public class GUI {
         String classOne = classNames.getSelectedItem().toString();
         String classTwo = classNamesX.getSelectedItem().toString();
         String relationT = relationshipTypes.getSelectedItem().toString();
-        snapshot();
+     //   snapshot();
+
         if(relationT.equals("Aggregation")){
             model.addRelationship(classOne,classTwo,RelationshipType.AGGREGATION);
+            drawArrow(classOne,classTwo,"A");
         }
-        else if(relationT.equals("Compositon")){
-        model.addRelationship(classOne,classTwo,RelationshipType.COMPOSITION);
+        else if(relationT.equals("Composition")){
+            model.addRelationship(classOne,classTwo,RelationshipType.COMPOSITION);
+            drawArrow(classOne,classTwo,"C");
         }
         else if(relationT.equals("Inheritance")){
-        model.addRelationship(classOne,classTwo,RelationshipType.INHERITANCE);
+            model.addRelationship(classOne,classTwo,RelationshipType.INHERITANCE);
+            drawArrow(classOne,classTwo,"I");
         }
         else if(relationT.equals("Realization")){
-        model.addRelationship(classOne,classTwo,RelationshipType.REALIZATION);
+            model.addRelationship(classOne,classTwo,RelationshipType.REALIZATION);
+            drawArrow(classOne,classTwo,"R");
         }
 
         action.dispose();
         updateButtons();
+    }
+
+    public void drawArrow(String sourceClass, String destClass, String type) {
+		JPanel sourcePan = boxMap.get(sourceClass).getClassPanel();
+		JPanel destPan = boxMap.get(destClass).getClassPanel();
+
+		Arrow newArrow = new Arrow(sourcePan, destPan, type);
+        
+		String ID = sourceClass + ":" + destClass;
+		arrowMap.put(ID, newArrow);
+		newArrow.setVisible(true);
+		newArrow.setOpaque(false);
+        newArrow.setLocation(0, 0);
+        newArrow.setSize(5, 15);
+
+        pane.add(newArrow);
+		        
+		pane.validate();
+	}
+
+    public void deleteArrow(String classOne, String classTwo){
+        String holder = classOne + ":" + classTwo;
+
+        Arrow oldArrow = arrowMap.get(holder);
+        oldArrow.setVisible(false);
+
+        arrowMap.remove(holder);
     }
     /**
      * Delete Actions
