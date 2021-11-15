@@ -31,7 +31,7 @@ public class GUI {
     JMenuBar menuBar;
 
     JMenu add,delete,rename,file,edit;
-    JMenuItem help,save,load,undo,redo,export;
+    JMenuItem help,save,load,undo,redo,export,saveImg;
     JMenuItem addClass,addRelationship,addField,addMethod,addParameter;
     JMenuItem deleteClass,deleteRelationship,deleteField,deleteMethod,deleteParameter;
     JMenuItem renameClass,renameField,renameMethod,renameParameter;
@@ -39,7 +39,7 @@ public class GUI {
     JPanel pane,boxPane,actionPane;
 
     JTextField textBoxClassAdd;
-    JTextField className,className2,methodName,methodType,fieldName,fieldType,parameterName,parameterType,renamer;
+    JTextField className,className2,methodName,methodType,fieldName,fieldType,parameterName,parameterType,renamer,fileName;
 
     JLabel errorMessage;
 
@@ -129,6 +129,7 @@ public class GUI {
 
         save = new JMenuItem("Save");
         save.setAccelerator(KeyStroke.getKeyStroke('S', Toolkit.getDefaultToolkit ().getMenuShortcutKeyMaskEx()));
+        saveImg = new JMenuItem("Save as Image");
         load = new JMenuItem("Load");
         load.setAccelerator(KeyStroke.getKeyStroke('L', Toolkit.getDefaultToolkit ().getMenuShortcutKeyMaskEx()));
 
@@ -153,6 +154,7 @@ public class GUI {
         //delete.add();
 
         file.add(save);
+        file.add(saveImg);
         file.add(load);
         file.add(export);
 
@@ -292,6 +294,11 @@ public class GUI {
         		saveWindow();
         	}
         });
+        saveImg.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		saveImageWindow();
+        	}
+        });
         undo.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
         		undoAction();
@@ -352,6 +359,17 @@ public class GUI {
     	int s = chooser.showSaveDialog(null);
     	if(s == JFileChooser.APPROVE_OPTION) {
     		model.save(chooser.getSelectedFile().getAbsolutePath());
+    	}
+    }
+    public void saveImageWindow() {
+        JFileChooser chooser = new JFileChooser();
+    	FileNameExtensionFilter jsonOnly = new FileNameExtensionFilter(".png files", "png");
+    	chooser.addChoosableFileFilter(jsonOnly);
+    	chooser.setAcceptAllFileFilterUsed(false);
+    	chooser.setDialogTitle("Save diagram as JSON");
+    	int s = chooser.showSaveDialog(null);
+    	if(s == JFileChooser.APPROVE_OPTION) {
+    		exportDiagramToImage(chooser.getSelectedFile().getAbsolutePath());
     	}
     }
 
