@@ -38,7 +38,6 @@ public class Arrow extends JPanel{
 	public void lineLength() {
         int x = destPanel.getX() - sourcePanel.getX();
         int y = destPanel.getY() - sourcePanel.getY();
-        System.out.println(x + " " + y);
        
         if(Math.abs(x) < Math.abs(y)) {
         	right = false;
@@ -53,7 +52,6 @@ public class Arrow extends JPanel{
         		sourcePoint.y =  sourcePanel.getHeight() + sourcePanel.getY();
         		destPoint.y = destPanel.getY();
         	}
-        	//sets the x values of the source and destination
         	sourcePoint.x = (sourcePanel.getWidth() / 2) + sourcePanel.getX();
         	destPoint.x = (destPanel.getWidth() / 2) + destPanel.getX();
         }
@@ -88,7 +86,7 @@ public class Arrow extends JPanel{
 
 	    int destX = destPoint.x;
 	    int destY = destPoint.y;
-	    System.out.println(destX + " " + destY);
+
 	    g.setStroke(SOLIDLINE);
 	    
 		Polygon shape = new Polygon();
@@ -96,8 +94,6 @@ public class Arrow extends JPanel{
 		if(!left) {
 			if(!right) {
 				shape.addPoint(MIN_SIZE + destX, destY - MAX_SIZE);
-                System.out.println("test");
-
 				shape.addPoint(destX - MIN_SIZE, destY - MAX_SIZE);
 			}
 			else {
@@ -118,7 +114,9 @@ public class Arrow extends JPanel{
 				shape.addPoint(MAX_SIZE + destX, MIN_SIZE + destY);
 			}
 		}
+		
 		g.draw(shape);
+		g.fillPolygon(shape);
 	}
 	
 	//Draws the line based on the relationship
@@ -145,7 +143,7 @@ public class Arrow extends JPanel{
 			g2.setColor(Color.GREEN);
 		}
 		
-		//if the relationship is not with the same class
+
 		if(sourcePanel != destPanel) {
 			if(!right) {
 				g2.draw(new Line2D.Float(sourcePoint.x, sourcePoint.y, sourcePoint.x, (sourcePoint.y + destPoint.y) / 2));
@@ -158,15 +156,14 @@ public class Arrow extends JPanel{
 				g2.draw(new Line2D.Float((sourcePoint.x + destPoint.x) / 2, destPoint.y, destPoint.x, destPoint.y));
 			}
 		}
-		//if it is with the same class
+
 		else {
 			g2.draw(new Line2D.Float(sourcePoint.x, sourcePoint.y, Xos, sourcePoint.y));
 			g2.draw(new Line2D.Float(Xos, sourcePoint.y, Xos, Yos));
 			g2.draw(new Line2D.Float(Xos, Yos, destPoint.x, Yos));
 			g2.draw(new Line2D.Float(destPoint.x, Yos, destPoint.x, destPoint.y));
 		}
-		
-		//draw the type for the relationship
+
 		drawType(g2);
 	}
 }
