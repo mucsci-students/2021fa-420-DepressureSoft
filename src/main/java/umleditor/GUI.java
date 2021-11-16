@@ -31,7 +31,7 @@ public class GUI {
     JMenuBar menuBar;
 
     JMenu add,delete,rename,file,edit;
-    JMenuItem help,save,load,undo,redo,export,saveImg;
+    JMenuItem help,save,load,undo,redo,saveImg;
     JMenuItem addClass,addRelationship,addField,addMethod,addParameter;
     JMenuItem deleteClass,deleteRelationship,deleteField,deleteMethod,deleteParameter;
     JMenuItem renameClass,renameField,renameMethod,renameParameter;
@@ -108,7 +108,6 @@ public class GUI {
         undo.setAccelerator(KeyStroke.getKeyStroke('Z', Toolkit.getDefaultToolkit ().getMenuShortcutKeyMaskEx()));
         redo = new JMenuItem("Redo");
         redo.setAccelerator(KeyStroke.getKeyStroke('Y', Toolkit.getDefaultToolkit ().getMenuShortcutKeyMaskEx()));
-        export = new JMenuItem("Export");
 
         addClass = new JMenuItem("Class");
         addRelationship = new JMenuItem("Relationship");
@@ -156,7 +155,6 @@ public class GUI {
         file.add(save);
         file.add(saveImg);
         file.add(load);
-        file.add(export);
 
         edit.add(undo);
         edit.add(redo);
@@ -309,11 +307,6 @@ public class GUI {
         		redoAction();
         	}
         });
-        export.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                exportDiagramToImage("HELLO");
-            }
-        });
       updateButtons();
     }
 
@@ -361,15 +354,18 @@ public class GUI {
     		model.save(chooser.getSelectedFile().getAbsolutePath());
     	}
     }
+    
     public void saveImageWindow() {
         JFileChooser chooser = new JFileChooser();
-    	FileNameExtensionFilter jsonOnly = new FileNameExtensionFilter(".png files", "png");
-    	chooser.addChoosableFileFilter(jsonOnly);
+    	FileNameExtensionFilter jpgOption = new FileNameExtensionFilter(".jpg", "jpg");
+    	chooser.addChoosableFileFilter(jpgOption);
+    	
     	chooser.setAcceptAllFileFilterUsed(false);
-    	chooser.setDialogTitle("Save diagram as JSON");
+    	chooser.setDialogTitle("Save diagram as image");
     	int s = chooser.showSaveDialog(null);
     	if(s == JFileChooser.APPROVE_OPTION) {
-    		exportDiagramToImage(chooser.getSelectedFile().getAbsolutePath());
+    		File fileToSave = chooser.getSelectedFile();
+    		exportDiagramToImage(fileToSave);
     	}
     }
 
@@ -1570,16 +1566,18 @@ public class GUI {
         return false;
     }
 
-    public void exportDiagramToImage(String fileName)
+    public void exportDiagramToImage(File toSave)
     {
         BufferedImage image = new BufferedImage(pane.getWidth(), pane.getHeight(), BufferedImage.TYPE_INT_RGB);
         Graphics2D g = image.createGraphics();
         pane.printAll(g);
+
         g.dispose();
         try {
-            ImageIO.write(image, "jpg", new File(fileName + ".jpg"));
+            ImageIO.write(image, "jpg", new File(toSave.getAbsolutePath() + ".jpg"));
         }
         catch(IOException e){
+        	System.out.println("oops, something went wrong");
             e.printStackTrace();
         }
     }
