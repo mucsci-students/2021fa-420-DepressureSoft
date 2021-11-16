@@ -357,12 +357,16 @@ class DiagramModelTest {
 	}
 
 	@Test
-	@DisplayName("Renaming a parameter within a method")
-	void testRenameParameter() {
-		testDiagram.addClass("trial");
+	@DisplayName("Delete nonexistent parameter")
+	void deleteParameterNonexistent() {
+		testDiagram.addMethod("trial", "bruh", "void");
+		String output = testDiagram.deleteParameter("trial", "bruh", "nonexistent");
+		assertTrue(output != null);
+	}
 
-		assertEquals(1, testDiagram.numberOfClasses(),
-				"Diagram should include only added 'trial' class");
+	@Test
+	@DisplayName("Renaming a parameter within a method")
+	void renameParameter() {
 
 		testDiagram.addMethod("trial", "testMethod", "testType");
 
@@ -370,53 +374,40 @@ class DiagramModelTest {
 				"testMethod should exist");
 
 		testDiagram.addParameter("trial", "testMethod", "testParam", "typeTest");
-		UMLClass testClass = testDiagram.getUML("trial");
-		Method dummyMethod = testClass.getMethod("testMethod");
-
-		assertEquals(true, dummyMethod.parameterExists("testParam"),
-				"testParam should exist");
 
 		testDiagram.renameParameter("trial", "testMethod", "testParam", "renamedParam");
 
-		assertEquals(false, dummyMethod.parameterExists("testParam"),
-				"testParam shouldn't exist");
+		assertTrue(testDiagram.parameterExists("trial", "testMethod", "renamedParam"));
 
-		assertEquals(true, dummyMethod.parameterExists("renamedParam"),
-				"renamedParam should exist");
+		assertFalse(testDiagram.parameterExists("trial", "testMethod", "testParam"));
+
+	}
+
+	@Disabled
+	@Test
+	@DisplayName("Undo/redo rename parameter")
+	void renameParameterUndo() {
+		testDiagram.addMethod("trial", "cubeRoot", "double");
+		testDiagram.addParameter("trial", "cubeRoot", "num", "double");
+		testDiagram.renameParameter("trial", "cubeRoot", "num", "n");
+		assertTrue(testDiagram.parameterExists("trial", "cubeRoot", "n"));
+		testDiagram.undo();
+		assertTrue(testDiagram.parameterExists("trial", "cubeRoot", "num"));
+		testDiagram.redo();
+		assertTrue(testDiagram.parameterExists("trial", "cubeRoot", "n"));
 	}
 
 	@Test
 	@DisplayName("Deleting all parameters from a method")
-	void testDeleteAllParameters() {
-		testDiagram.addClass("trial");
-
-		assertEquals(1, testDiagram.numberOfClasses(),
-				"Diagram should include only added 'trial' class");
-
-		testDiagram.addMethod("trial", "testMethod", "testType");
-
-		assertEquals(true, testDiagram.methodExists("trial", "testMethod"),
-				"testMethod should exist");
-
-		testDiagram.addParameter("trial", "testMethod", "testParam", "typeTest");
-		UMLClass testClass = testDiagram.getUML("trial");
-		Method dummyMethod = testClass.getMethod("testMethod");
-
-		assertEquals(true, dummyMethod.parameterExists("testParam"),
-				"testParam should exist");
-
-		testDiagram.addParameter("trial", "testMethod", "param2", "typeTest");
-
-		assertEquals(true, dummyMethod.parameterExists("param2"),
-				"param2 should exist");
-
-		testDiagram.deleteAllParameters("trial", "testMethod");
-
-		assertEquals(false, dummyMethod.parameterExists("testParam"),
-				"testParam shouldn't exist");
-
-		assertEquals(false, dummyMethod.parameterExists("param2"),
-				"param2 shouldn't exist");
+	void deleteAllParameters() {
+		testDiagram.addMethod("trial", "sum", "int");
+		testDiagram.addParameter("trial", "sum", "n1", "int");
+		testDiagram.addParameter("trial", "sum", "n2", "int");
+		assertTrue(testDiagram.parameterExists("trial", "sum", "n1")
+			&& testDiagram.parameterExists("trial", "sum", "n2"));
+		testDiagram.deleteAllParameters("trial", "sum");
+		assertFalse(testDiagram.parameterExists("trial", "sum", "n1")
+			|| testDiagram.parameterExists("trial", "sum", "n2"));
 	}
 
 	@Test
