@@ -178,7 +178,6 @@ public class Controller {
 						} else {
 							view.print("Class name, field name, and new type required.");
 						}
-					}
 					} else if(checkKeyword(commands, 1, "method")){
 						if(commands.size() > 4){
 							m = model.renameMethodType(commands.get(2), commands.get(3), commands.get(4));
@@ -193,13 +192,14 @@ public class Controller {
 						} else {
 							view.print("Class name, method name, parameter name, and new type required.");
 						}
-					} else if(checkKeyword(commands, 1, "relatiobnship")) {
-						if(commands.size() > 5) {
+					} else if(checkKeyword(commands, 1, "relationship")) {
+						if(commands.size() > 4) {
 							m = model.changeRelationshipType(commands.get(2), commands.get(3), getRelTypeFromString(commands.get(4)));
 							if (m == null) m = "Changed relationship type.";
 						} else {
 							view.print("Source class name, destination class name, and new type (one of {aggregation|composition|inheritance|realization}) required.");
 						}
+					}
 				} else if(checkKeyword(commands, 0, "display")) {
 					if(checkKeyword(commands, 1, "all")) {
 						view.print(model.listClasses());
