@@ -39,17 +39,16 @@ public class Arrow extends JPanel{
         int x = destPanel.getX() - sourcePanel.getX();
         int y = destPanel.getY() - sourcePanel.getY();
         System.out.println(x + " " + y);
-        //check to see where line is pointing
+       
         if(Math.abs(x) < Math.abs(y)) {
         	right = false;
+			//if line is pointing up or down
         	if(y < 0) {
-        		//destination is at the bottom
         		left = true;
         		sourcePoint.y = sourcePanel.getY();
         		destPoint.y = destPanel.getHeight() + destPanel.getY();
         	}
         	else {
-        		//destination is at the top
         		left = false;
         		sourcePoint.y =  sourcePanel.getHeight() + sourcePanel.getY();
         		destPoint.y = destPanel.getY();
@@ -62,18 +61,18 @@ public class Arrow extends JPanel{
         else {
         	right = true;
         	if(x < 0) {
-        		//destination is to the left
+        		//left
         		left = true;
         		sourcePoint.x = sourcePanel.getX();
         		destPoint.x = destPanel.getWidth() + destPanel.getX();
         	}
         	else {
-        		//destination is to the right
+        		//right
         		left = false;
         		sourcePoint.x = sourcePanel.getWidth() + sourcePanel.getX();
         		destPoint.x = destPanel.getX();
         	}
-        	//sets the y values of the source and destination
+
         	sourcePoint.y = (sourcePanel.getHeight() / 2) + sourcePanel.getY();
         	destPoint.y = (destPanel.getHeight() / 2) + destPanel.getY();
         }
@@ -81,7 +80,7 @@ public class Arrow extends JPanel{
         drawLine(g);
 	}
 	
-	// Draws the arrow head based off of the type
+	// Draws the arrow head
 	private void drawType(Graphics2D g) {
 	    final int MAX_SIZE = 20;
 	    final int MIN_SIZE = 10;
@@ -124,8 +123,6 @@ public class Arrow extends JPanel{
 	
 	//Draws the line based on the relationship
 	public void drawLine(Graphics g) {
-       
-        //Change Logic so that based off each type it changes color, all relationships will be solid line.
 
 		super.paintComponent(g);
 		
@@ -136,7 +133,7 @@ public class Arrow extends JPanel{
 		
 
 		if(type.equals("A")) {
-            g2.setColor(Color.DARK_GRAY);
+            g2.setColor(Color.BLACK);
 		}
         else if(type.equals("R") ){
             g2.setColor(Color.BLUE);
