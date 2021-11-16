@@ -1006,6 +1006,7 @@ public class GUI {
         JLabel paramLabel = new JLabel("Select Parameter: ");
         JLabel paramRenameLabel = new JLabel("Enter NEW Parameter Name: ");
 
+        
         //Ensures No Error Message is showing prior to user input.
         errorMessage.setText("");
 
@@ -1347,6 +1348,9 @@ public class GUI {
         String newParam = renamer.getText();
 
         //Checks if the new name is proper and that the entry isn't a duplicate.
+        String[] holderv2z = oldParam.split("_");
+        String type = holderv2z[0];
+        newParam = type + "_" + newParam;
         if(SourceVersion.isIdentifier(newParam)){
             if(!boxMap.get(getClass).duplicateParameter(method,newParam)){
                 model.renameParameter(getClass, method,oldParam,newParam);
