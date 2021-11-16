@@ -1347,10 +1347,11 @@ public class GUI {
         String oldParam = paramNames.getSelectedItem().toString();
         String newParam = renamer.getText();
 
-        //Checks if the new name is proper and that the entry isn't a duplicate.
         String[] holderv2z = oldParam.split("_");
         String type = holderv2z[0];
         newParam = type + "_" + newParam;
+
+        //Checks if the new name is proper and that the entry isn't a duplicate.
         if(SourceVersion.isIdentifier(newParam)){
             if(!boxMap.get(getClass).duplicateParameter(method,newParam)){
                 model.renameParameter(getClass, method,oldParam,newParam);
