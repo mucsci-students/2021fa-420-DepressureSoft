@@ -126,7 +126,7 @@ public class GUI {
         save = new JMenuItem("Save");
         save.setAccelerator(KeyStroke.getKeyStroke('S', Toolkit.getDefaultToolkit ().getMenuShortcutKeyMaskEx()));
         load = new JMenuItem("Load");
-        load.setAccelerator(KeyStroke.getKeyStroke('L', Toolkit.getDefaultToolkit ().getMenuShortcutKeyMaskEx()));
+        load.setAccelerator(KeyStroke.getKeyStroke('O', Toolkit.getDefaultToolkit ().getMenuShortcutKeyMaskEx()));
 
         errorMessage = new JLabel("");
 
@@ -1165,11 +1165,12 @@ public class GUI {
         String parameter = parameterName.getText();
         String parameterT = parameterType.getText();
 
+        String newParam = parameterT + "_" + parameter;
         if(SourceVersion.isIdentifier(parameter)){
             if(!boxMap.get(getClass).duplicateParameter(method,parameter)){
-                model.addParameter(getClass,method,parameter, parameterT);
+                model.addParameter(getClass,method,newParam, parameterT);
                 box = boxMap.get(getClass);
-                box.addParameter(parameter,method);
+                box.addParameter(newParam,method);
                 action.dispose();
                 frame.repaint();
                 updateButtons();
