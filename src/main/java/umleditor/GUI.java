@@ -130,7 +130,7 @@ public class GUI {
         save.setAccelerator(KeyStroke.getKeyStroke('S', Toolkit.getDefaultToolkit ().getMenuShortcutKeyMaskEx()));
         saveImg = new JMenuItem("Save as Image");
         load = new JMenuItem("Load");
-        load.setAccelerator(KeyStroke.getKeyStroke('L', Toolkit.getDefaultToolkit ().getMenuShortcutKeyMaskEx()));
+        load.setAccelerator(KeyStroke.getKeyStroke('O', Toolkit.getDefaultToolkit ().getMenuShortcutKeyMaskEx()));
 
         errorMessage = new JLabel("");
 
@@ -1030,6 +1030,7 @@ public class GUI {
         JLabel paramLabel = new JLabel("Select Parameter: ");
         JLabel paramRenameLabel = new JLabel("Enter NEW Parameter Name: ");
 
+        
         //Ensures No Error Message is showing prior to user input.
         errorMessage.setText("");
 
@@ -1189,11 +1190,12 @@ public class GUI {
         String parameter = parameterName.getText();
         String parameterT = parameterType.getText();
 
+        String newParam = parameterT + "_" + parameter;
         if(SourceVersion.isIdentifier(parameter)){
             if(!boxMap.get(getClass).duplicateParameter(method,parameter)){
-                model.addParameter(getClass,method,parameter, parameterT);
+                model.addParameter(getClass,method,newParam, parameterT);
                 box = boxMap.get(getClass);
-                box.addParameter(parameter,method);
+                box.addParameter(newParam,method);
                 action.dispose();
                 frame.repaint();
                 updateButtons();
@@ -1368,6 +1370,10 @@ public class GUI {
 		String method = methodNames.getSelectedItem().toString();
         String oldParam = paramNames.getSelectedItem().toString();
         String newParam = renamer.getText();
+
+        String[] holderv2z = oldParam.split("_");
+        String type = holderv2z[0];
+        newParam = type + "_" + newParam;
 
         //Checks if the new name is proper and that the entry isn't a duplicate.
         if(SourceVersion.isIdentifier(newParam)){
