@@ -1191,19 +1191,23 @@ public class GUI {
         String classTwo = classNamesX.getSelectedItem().toString();
         String relationT = relationshipTypes.getSelectedItem().toString();
 
-        if(relationT.equals("Aggregation")){
-            model.addRelationship(classOne,classTwo,RelationshipType.AGGREGATION);
+        if (!duplicateRelationship(classOne, classTwo, relationT)){
+            if(relationT.equals("Aggregation")){
+                model.addRelationship(classOne,classTwo,RelationshipType.AGGREGATION);
+            }
+            else if(relationT.equals("Compositon")){
+            model.addRelationship(classOne,classTwo,RelationshipType.COMPOSITION);
+            }
+            else if(relationT.equals("Inheritance")){
+            model.addRelationship(classOne,classTwo,RelationshipType.INHERITANCE);
+            }
+            else if(relationT.equals("Realization")){
+            model.addRelationship(classOne,classTwo,RelationshipType.REALIZATION);
+            }
+        } else {
+            errorMessage.setText("Relationship already exists.");
+            actionPane.validate();
         }
-        else if(relationT.equals("Compositon")){
-        model.addRelationship(classOne,classTwo,RelationshipType.COMPOSITION);
-        }
-        else if(relationT.equals("Inheritance")){
-        model.addRelationship(classOne,classTwo,RelationshipType.INHERITANCE);
-        }
-        else if(relationT.equals("Realization")){
-        model.addRelationship(classOne,classTwo,RelationshipType.REALIZATION);
-        }
-
         action.dispose();
         updateButtons();
     }
@@ -1540,5 +1544,14 @@ public class GUI {
         return true;
         else
         return false;
+    }
+
+    public boolean duplicateRelationship(String classFrom, String classTo, String type){
+        Relationship holder = new Relationship(classFrom, classTo, type);
+        if(model.relationships.contains(holder)){
+            return true;
+        } else {
+            return false;
+        }
     }
 }
