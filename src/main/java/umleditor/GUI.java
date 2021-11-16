@@ -3,6 +3,7 @@ package umleditor;
 import java.awt.*;
 import java.util.*;
 import javax.swing.*;
+import javax.imageio.ImageIO;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,6 +13,8 @@ import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 
 import java.io.IOException;
+import java.io.File;
+import java.awt.image.BufferedImage;
 
 import umleditor.Relationship.RelationshipType;
 
@@ -28,7 +31,7 @@ public class GUI {
     JMenuBar menuBar;
 
     JMenu add,delete,rename,file,edit;
-    JMenuItem help,save,load,undo,redo;
+    JMenuItem help,save,load,undo,redo,saveImg;
     JMenuItem addClass,addRelationship,addField,addMethod,addParameter;
     JMenuItem deleteClass,deleteRelationship,deleteField,deleteMethod,deleteParameter;
     JMenuItem renameClass,renameField,renameMethod,renameParameter;
@@ -36,7 +39,7 @@ public class GUI {
     JPanel pane,boxPane,actionPane;
 
     JTextField textBoxClassAdd;
-    JTextField className,className2,methodName,methodType,fieldName,fieldType,parameterName,parameterType,renamer;
+    JTextField className,className2,methodName,methodType,fieldName,fieldType,parameterName,parameterType,renamer,fileName;
 
     JLabel errorMessage;
 
@@ -125,6 +128,7 @@ public class GUI {
 
         save = new JMenuItem("Save");
         save.setAccelerator(KeyStroke.getKeyStroke('S', Toolkit.getDefaultToolkit ().getMenuShortcutKeyMaskEx()));
+        saveImg = new JMenuItem("Save as Image");
         load = new JMenuItem("Load");
         load.setAccelerator(KeyStroke.getKeyStroke('L', Toolkit.getDefaultToolkit ().getMenuShortcutKeyMaskEx()));
 
@@ -149,6 +153,7 @@ public class GUI {
         //delete.add();
 
         file.add(save);
+        file.add(saveImg);
         file.add(load);
 
         edit.add(undo);
@@ -287,6 +292,11 @@ public class GUI {
         		saveWindow();
         	}
         });
+        saveImg.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		saveImageWindow();
+        	}
+        });
         undo.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
         		undoAction();
@@ -342,6 +352,20 @@ public class GUI {
     	int s = chooser.showSaveDialog(null);
     	if(s == JFileChooser.APPROVE_OPTION) {
     		model.save(chooser.getSelectedFile().getAbsolutePath());
+    	}
+    }
+    
+    public void saveImageWindow() {
+        JFileChooser chooser = new JFileChooser();
+    	FileNameExtensionFilter jpgOption = new FileNameExtensionFilter(".jpg", "jpg");
+    	chooser.addChoosableFileFilter(jpgOption);
+    	
+    	chooser.setAcceptAllFileFilterUsed(false);
+    	chooser.setDialogTitle("Save diagram as image");
+    	int s = chooser.showSaveDialog(null);
+    	if(s == JFileChooser.APPROVE_OPTION) {
+    		File fileToSave = chooser.getSelectedFile();
+    		exportDiagramToImage(fileToSave);
     	}
     }
 
@@ -1540,5 +1564,21 @@ public class GUI {
         return true;
         else
         return false;
+    }
+
+    public void exportDiagramToImage(File toSave)
+    {
+        BufferedImage image = new BufferedImage(pane.getWidth(), pane.getHeight(), BufferedImage.TYPE_INT_RGB);
+        Graphics2D g = image.createGraphics();
+        pane.printAll(g);
+
+        g.dispose();
+        try {
+            ImageIO.write(image, "jpg", new File(toSave.getAbsolutePath() + ".jpg"));
+        }
+        catch(IOException e){
+        	System.out.println("oops, something went wrong");
+            e.printStackTrace();
+        }
     }
 }
