@@ -1,11 +1,9 @@
 package umleditor;
 
 import static org.junit.jupiter.api.Assertions.*;
-
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
-
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
