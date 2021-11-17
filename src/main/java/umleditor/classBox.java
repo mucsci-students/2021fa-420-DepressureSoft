@@ -206,6 +206,7 @@ public class classBox {
         for(String x : params.get(method)){
             param = param + x + ", ";
         }
+        if(params.get(method).size() != 0)
         param = param.substring(0,param.length()-2);
         param = param + ")";
         methods.get(method).setText(param);

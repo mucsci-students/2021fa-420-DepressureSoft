@@ -3,6 +3,7 @@ package umleditor;
 import java.awt.*;
 import java.util.*;
 import javax.swing.*;
+import javax.imageio.ImageIO;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,6 +13,8 @@ import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 
 import java.io.IOException;
+import java.io.File;
+import java.awt.image.BufferedImage;
 
 import umleditor.Relationship.RelationshipType;
 
@@ -28,7 +31,7 @@ public class GUI {
     JMenuBar menuBar;
 
     JMenu add,delete,rename,file,edit;
-    JMenuItem help,save,load,undo,redo;
+    JMenuItem help,save,load,undo,redo,saveImg;
     JMenuItem addClass,addRelationship,addField,addMethod,addParameter;
     JMenuItem deleteClass,deleteRelationship,deleteField,deleteMethod,deleteParameter;
     JMenuItem renameClass,renameField,renameMethod,renameParameter;
@@ -36,7 +39,7 @@ public class GUI {
     JPanel pane,boxPane,actionPane;
 
     JTextField textBoxClassAdd;
-    JTextField className,className2,methodName,methodType,fieldName,fieldType,parameterName,parameterType,renamer;
+    JTextField className,className2,methodName,methodType,fieldName,fieldType,parameterName,parameterType,renamer,fileName;
 
     JLabel errorMessage;
 
@@ -125,8 +128,9 @@ public class GUI {
 
         save = new JMenuItem("Save");
         save.setAccelerator(KeyStroke.getKeyStroke('S', Toolkit.getDefaultToolkit ().getMenuShortcutKeyMaskEx()));
+        saveImg = new JMenuItem("Save as Image");
         load = new JMenuItem("Load");
-        load.setAccelerator(KeyStroke.getKeyStroke('L', Toolkit.getDefaultToolkit ().getMenuShortcutKeyMaskEx()));
+        load.setAccelerator(KeyStroke.getKeyStroke('O', Toolkit.getDefaultToolkit ().getMenuShortcutKeyMaskEx()));
 
         errorMessage = new JLabel("");
 
@@ -149,6 +153,7 @@ public class GUI {
         //delete.add();
 
         file.add(save);
+        file.add(saveImg);
         file.add(load);
 
         edit.add(undo);
@@ -296,6 +301,11 @@ public class GUI {
         load.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
         		loadWindow();
+          }
+        });
+        saveImg.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		saveImageWindow();
         	}
         });
         undo.addActionListener(new ActionListener() {
@@ -357,6 +367,20 @@ public class GUI {
       }
     	if(s == JFileChooser.APPROVE_OPTION) {
     		model.save(chooser.getSelectedFile().getAbsolutePath());
+    	}
+    }
+    
+    public void saveImageWindow() {
+        JFileChooser chooser = new JFileChooser();
+    	FileNameExtensionFilter jpgOption = new FileNameExtensionFilter(".jpg", "jpg");
+    	chooser.addChoosableFileFilter(jpgOption);
+    	
+    	chooser.setAcceptAllFileFilterUsed(false);
+    	chooser.setDialogTitle("Save diagram as image");
+    	int s = chooser.showSaveDialog(null);
+    	if(s == JFileChooser.APPROVE_OPTION) {
+    		File fileToSave = chooser.getSelectedFile();
+    		exportDiagramToImage(fileToSave);
     	}
     }
 
@@ -693,7 +717,7 @@ public class GUI {
                 String holder = classNames.getSelectedItem().toString();
                 fieldNames.removeAllItems();
                 System.out.println( model.getUML(holder).getFields().size());
-                for(String s: model.getUML(holder).getFields()){
+                for(String s: model.getUML(holder).getStringFields()){
                     fieldNames.addItem(s.toString());
                 }
 
@@ -716,7 +740,7 @@ public class GUI {
         if(classNames.getItemCount() >= 1){
         String holder = classNames.getSelectedItem().toString();
         fieldNames.removeAllItems();
-        for(String s: model.getUML(holder).getFields()){
+        for(String s: model.getUML(holder).getStringFields()){
             fieldNames.addItem(s.toString());
         }
         }
@@ -826,7 +850,8 @@ public class GUI {
             String holder = classNames.getSelectedItem().toString();
             String holderV2 = methodNames.getSelectedItem().toString();
             paramNames.removeAllItems();
-            for(String s: model.getUML(holder).getMethod(holderV2).getParamList()){
+            for(int i = 0; i < model.getUML(holder).getMethods().size(); i++){
+                String s = model.getUML(holder).getMethod(holderV2).getParamList().get(i).getParamName();
                 paramNames.addItem(s.toString());
             }
         }
@@ -925,7 +950,7 @@ public class GUI {
             public void itemStateChanged(ItemEvent e) {
                 String holder = classNames.getSelectedItem().toString();
                 fieldNames.removeAllItems();
-                for(String s: model.getUML(holder).getFields()){
+                for(String s: model.getUML(holder).getStringFields()){
                     fieldNames.addItem(s.toString());
                 }
 
@@ -952,7 +977,7 @@ public class GUI {
         if(classNames.getItemCount() >= 1){
             String holder = classNames.getSelectedItem().toString();
             fieldNames.removeAllItems();
-            for(String s: model.getUML(holder).getFields()){
+            for(String s: model.getUML(holder).getStringFields()){
                 fieldNames.addItem(s.toString());
             }
             }
@@ -1034,6 +1059,7 @@ public class GUI {
         JLabel paramLabel = new JLabel("Select Parameter: ");
         JLabel paramRenameLabel = new JLabel("Enter NEW Parameter Name: ");
 
+        
         //Ensures No Error Message is showing prior to user input.
         errorMessage.setText("");
 
@@ -1075,7 +1101,8 @@ public class GUI {
             String holder = classNames.getSelectedItem().toString();
             String holderV2 = methodNames.getSelectedItem().toString();
             paramNames.removeAllItems();
-            for(String s: model.getUML(holder).getMethod(holderV2).getParamList()){
+            for(int i = 0; i < model.getUML(holder).getMethods().size(); i++){
+                String s = model.getUML(holder).getMethod(holderV2).getParamList().get(i).getParamName();
                 paramNames.addItem(s.toString());
             }
         }
@@ -1142,7 +1169,7 @@ public class GUI {
         String fieldT = fieldType.getText();
         if(SourceVersion.isIdentifier(field)){
             if(!boxMap.get(getClass).duplicateField(field)){
-                model.addField(getClass, field);
+                model.addField(getClass, field, fieldT);
                 box = boxMap.get(getClass);
                 box.addField(field,fieldT);
                 action.dispose();
@@ -1167,7 +1194,7 @@ public class GUI {
         String methodT = methodType.getText();
         if(SourceVersion.isIdentifier(method)){
             if(!boxMap.get(getClass).duplicateMethod(method)){
-                model.addMethod(getClass,method);
+                model.addMethod(getClass,method, methodT);
                 box = boxMap.get(getClass);
                 box.addMethod(method,methodT);
                 action.dispose();
@@ -1190,13 +1217,14 @@ public class GUI {
         String getClass = classNames.getSelectedItem().toString();
 		String method = methodNames.getSelectedItem().toString();
         String parameter = parameterName.getText();
-        //String parameterT = parameterType.getText();
+        String parameterT = parameterType.getText();
 
+        String newParam = parameterT + "_" + parameter;
         if(SourceVersion.isIdentifier(parameter)){
             if(!boxMap.get(getClass).duplicateParameter(method,parameter)){
-                model.addParameter(getClass,method,parameter);
+                model.addParameter(getClass,method,newParam, parameterT);
                 box = boxMap.get(getClass);
-                box.addParameter(parameter,method);
+                box.addParameter(newParam,method);
                 action.dispose();
                 frame.repaint();
                 updateButtons();
@@ -1371,6 +1399,10 @@ public class GUI {
 		String method = methodNames.getSelectedItem().toString();
         String oldParam = paramNames.getSelectedItem().toString();
         String newParam = renamer.getText();
+
+        String[] holderv2z = oldParam.split("_");
+        String type = holderv2z[0];
+        newParam = type + "_" + newParam;
 
         //Checks if the new name is proper and that the entry isn't a duplicate.
         if(SourceVersion.isIdentifier(newParam)){
@@ -1559,5 +1591,21 @@ public class GUI {
         return true;
         else
         return false;
+    }
+
+    public void exportDiagramToImage(File toSave)
+    {
+        BufferedImage image = new BufferedImage(pane.getWidth(), pane.getHeight(), BufferedImage.TYPE_INT_RGB);
+        Graphics2D g = image.createGraphics();
+        pane.printAll(g);
+
+        g.dispose();
+        try {
+            ImageIO.write(image, "jpg", new File(toSave.getAbsolutePath() + ".jpg"));
+        }
+        catch(IOException e){
+        	System.out.println("oops, something went wrong");
+            e.printStackTrace();
+        }
     }
 }

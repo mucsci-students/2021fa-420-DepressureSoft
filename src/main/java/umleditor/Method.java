@@ -9,14 +9,16 @@ import java.util.ArrayList;
 public class Method {
 
     private String methodName;
-    private ArrayList<String> parameters = new ArrayList<String>();
+    private String methodType;
+    private ArrayList<Parameter> parameters = new ArrayList<Parameter>();
 
     /**
      * Creates a new method.
      * @param methodName
      */
-    public Method(String methodName){
+    public Method(String methodName, String methodType){
         this.methodName = methodName;
+        this.methodType = methodType;
     }
 
     /**
@@ -37,6 +39,14 @@ public class Method {
     }
 
     /**
+     * Return the method return type.
+     * @return
+     */
+    public String getMethodType(){
+        return this.methodType;
+    }
+
+    /**
      * Rename method if it exists in the class diagram.
      * @param newName The new name for the method.
      */
@@ -45,11 +55,19 @@ public class Method {
     }
 
     /**
+     * Sets the method return type to a new type.
+     * @param newType
+     */
+    public void renameMethodType(String newType){
+        this.methodType = newType;
+    }
+
+    /**
      * Adds a parameter to the method.
      * @param pName the name of the parameter to add.
      */
-    public void addParameter(String pName){
-        parameters.add(pName);
+    public void addParameter(String pName, String pType){
+        parameters.add(new Parameter(pName, pType));
     }
 
     /**
@@ -57,7 +75,11 @@ public class Method {
      * @param pName the name of the parameter to remove.
      */
     public void removeParameter(String pName){
-        parameters.remove(pName);
+        for(int index = 0; index < parameters.size(); index++) {
+            if (parameters.get(index).getParamName().equals(pName)) {
+                parameters.remove(index);
+            }
+        }
     }
 
     /**
@@ -67,8 +89,18 @@ public class Method {
      */
     public void renameParameter(String oldPName, String newPName){
         if(parameterExists(oldPName)){
-            int index = parameters.indexOf(oldPName);
-            parameters.set(index, newPName);
+            getParam(oldPName).renameParameter(newPName);
+        }
+    }
+
+    /**
+     * Renames a parameter type in the method.
+     * @param pName
+     * @param newType
+     */
+    public void renameParameterType(String pName, String newType){
+        if(parameterExists(pName)){
+            getParam(pName).renameParameterType(newType);
         }
     }
 
@@ -85,7 +117,21 @@ public class Method {
      * @return
      */
     public boolean parameterExists(String pName){
-        return (parameters.contains(pName));
+        return (getParam(pName) != null);
+    }
+
+    /**
+     * Returns the parameter of the method.
+     * @param pName
+     * @return
+     */
+    public Parameter getParam(String pName){
+        for(int index = 0; index < parameters.size(); index++) {
+            if (parameters.get(index).getParamName().equals(pName)) {
+                return parameters.get(index);
+            }
+        }
+        return null;
     }
 
     /**
@@ -100,7 +146,7 @@ public class Method {
      * Returns ArrayList of the parameters.
      * @return ArrayList of parameters
      */
-    public ArrayList<String> getParamList(){
+    public ArrayList<Parameter> getParamList(){
         return parameters;
     }
 }

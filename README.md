@@ -34,3 +34,5 @@ java -jar ./build/libs/umleditor-v2.0.0-all.jar
 # Windows
 java -jar .\build\libs\umleditor-v2.0.0-all.jar
 ```
+
+No arguments launches GUI by default. Add `--cli` to launch the CLI version or `--gui` to explicitly launch the GUI
