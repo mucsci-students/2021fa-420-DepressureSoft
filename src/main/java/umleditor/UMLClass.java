@@ -3,8 +3,8 @@ package umleditor;
 import java.util.ArrayList;
 
 /**
- * Represents a class in a class diagram, including the name of the class, the class's fields, and 
- *  classes related to this class. 
+ * Represents a class in a class diagram, including the name of the class, the class's fields, and
+ *  classes related to this class.
  */
 public class UMLClass {
 
@@ -33,7 +33,7 @@ public class UMLClass {
      * The y position of this class on the diagram.
      */
     private int yPosition;
-  
+
     /**
      * Main constructor that sets the name of the new class.
      * @param name The name of the new class.
@@ -44,14 +44,14 @@ public class UMLClass {
 
     public UMLClass(UMLClass other){
         this.dName = other.dName;
-        this.fields = new ArrayList<String>(other.fields);
+        this.fields = new ArrayList<Field>(other.fields);
         this.relationship = new ArrayList<String>(other.relationship);
         for(Method m : other.methods){
             Method methodCopy = new Method(m);
             methods.add(methodCopy);
         }
     }
-    
+
     /**
      * Renames the class representation.
      * @param newName The new name for the class representation.
@@ -59,7 +59,7 @@ public class UMLClass {
     public void renameClass(String newName){
         this.dName = newName;
     }
-    
+
     /**
      * Returns the x position of this class.
      * @return The x position of this class.
@@ -131,9 +131,9 @@ public class UMLClass {
     }
 
     /**
-     * Renames a method if it exists in the class representation. 
-     * @param currentMethod 
-     * @param newMethodName 
+     * Renames a method if it exists in the class representation.
+     * @param currentMethod
+     * @param newMethodName
      */
     public void renameMethod(String currentMethod, String newMethodName){
         if(getMethod(currentMethod) != null) {
@@ -142,7 +142,7 @@ public class UMLClass {
     }
 
     /**
-     * Sets the method return type to a new type in the class representation. 
+     * Sets the method return type to a new type in the class representation.
      * @param currentMethod
      * @param newMethodType
      */
@@ -294,7 +294,7 @@ public class UMLClass {
     public  ArrayList<Field> getFields(){
         return fields;
     }
-    
+
     /**
      * Returns ArrayList<String> of the field names.
      * @return

@@ -176,7 +176,7 @@ public class DiagramModel {
         result.append("      \"fields\": [\n");
         ArrayList<Field> fields = theClass.getFields();
         for(Field field : fields) {
-            result.append("        { \"name\": \"" + field.getFieldName() + "\", \"type\": \"" + field.getFieldType() + "\" },\n"); 
+            result.append("        { \"name\": \"" + field.getFieldName() + "\", \"type\": \"" + field.getFieldType() + "\" },\n");
         }
         if(!fields.isEmpty()) {
             result.deleteCharAt(result.length() - 2);
@@ -297,7 +297,7 @@ public class DiagramModel {
                 bob.append("There are no fields in this class.\n");
             } else {
                 StringBuilder fieldBuilder = new StringBuilder();
-                for (int i = 0; i < input.getFields().size(); i++) { 
+                for (int i = 0; i < input.getFields().size(); i++) {
                     fieldBuilder.append(input.getFields().get(i).getFieldName() + " : "
                     		+ input.getFields().get(i).getFieldType() + "\n");
                 }
@@ -345,7 +345,7 @@ public class DiagramModel {
         diagram.forEach((k,v) -> bob.append(listClass(k) + "\n"));
         return bob.toString();
     }
-    
+
     /**
      * Prints all the relationships in the class diagram.
      * @return A String representation of the relationships.
@@ -357,11 +357,11 @@ public class DiagramModel {
         if (relationships.isEmpty()) {
             bob.append("There are no relationships to display.");
         }
-      
+
         while (iterator.hasNext())
         {
             Relationship current = iterator.next();
-            bob.append(current.getFrom().getName() + " --" + current.getRelationshipType() + "---> " 
+            bob.append(current.getFrom().getName() + " --" + current.getRelationshipType() + "---> "
             		+ current.getTo().getName() + "\n");
         }
         return bob.toString();
@@ -511,19 +511,19 @@ public class DiagramModel {
                 }
                 else
                 {
-                        return ("The method \"" + methodName + 
+                        return ("The method \"" + methodName +
                             "\" type cannot be renamed, as it does not exist.");
                 }
             }
             else
             {
-                return ("The method \"" + methodName + 
-                    "\" type cannot be renamed, as the parent class \"" + className + "\" does not exist.");  
+                return ("The method \"" + methodName +
+                    "\" type cannot be renamed, as the parent class \"" + className + "\" does not exist.");
             }
-    }  
+    }
 
     /**
-     * Adds parameter to a method if the method and class exist. 
+     * Adds parameter to a method if the method and class exist.
      * Is supported as an undoable operation
      * @param className
      * @param methodName
@@ -663,17 +663,17 @@ public class DiagramModel {
                         return null;
                     }
                     else{
-                        return ("The parameter \"" + paramName + 
+                        return ("The parameter \"" + paramName +
                             "\" type cannot be renamed, as it does not exist.");
                     }
                 }
                 else{
-                    return ("The parameter \"" + paramName + 
+                    return ("The parameter \"" + paramName +
                             "\" type cannot be renamed, as the method \"" + methodName + "does not exist.");
                 }
             }
             else{
-                return ("The parameter \"" + paramName + 
+                return ("The parameter \"" + paramName +
                     "\" type cannot be renamed, as the parent class \"" + className + "\" does not exist.");
             }
     }
@@ -884,28 +884,6 @@ public class DiagramModel {
     }
 
     /**
-     * Prints all the relationships in the class diagram.
-     */
-    public String listRelationships()
-    {
-    	StringBuilder bob = new StringBuilder();
-        ListIterator<Relationship>iterator = relationships.listIterator();
-        if (relationships.isEmpty()) {
-            bob.append("There are no relationships to display.");
-        }
-
-        while (iterator.hasNext())
-        {
-            Relationship current = iterator.next();
-            UMLClass from = current.getFrom();
-            UMLClass to = current.getTo();
-            bob.append("From: " + from.getName() + " To: " + to.getName() + " Type: " +
-                current.getRelationshipType() + "\n");
-        }
-        return bob.toString();
-    }
-
-    /**
      * Grabs a UMLClass object from the diagram, if one by the specified name exists.
      * @param name The name of the UMLClass to grab.
      * @return The UMLClass object of the specified name.
@@ -978,7 +956,7 @@ public class DiagramModel {
         boolean parentExists = classExists(className);
         if(SourceVersion.isIdentifier(fieldName)){
         if(parentExists)
-        { 
+        {
            if(!parentClass.fieldExists(fieldName))
            {
                snapshot();
@@ -987,14 +965,14 @@ public class DiagramModel {
            }
            else
            {
-                return ("The field \"" + fieldName + 
+                return ("The field \"" + fieldName +
                     "\" cannot be added, as it already exists in the parent class \"" + className + "\".");
            }
         }
         else
         {
-            return ("The field \"" + fieldName + 
-                "\" cannot be added, as the parent class \"" + className + "\" does not exist.");  
+            return ("The field \"" + fieldName +
+                "\" cannot be added, as the parent class \"" + className + "\" does not exist.");
         }
     }
     else{
@@ -1058,20 +1036,20 @@ public class DiagramModel {
            }
            else if(!parentClass.fieldExists(oldFieldName))
            {
-                return ("The field \"" + oldFieldName + 
+                return ("The field \"" + oldFieldName +
                     "\" cannot be renamed, as it does not exist in the parent class \"" + className + "\".");
            }
            else if(parentClass.fieldExists(newFieldName))
            {
-                return ("The field \"" + oldFieldName + 
-                    "\" cannot be renamed to \"" + newFieldName + "\", as \"" + newFieldName + 
+                return ("The field \"" + oldFieldName +
+                    "\" cannot be renamed to \"" + newFieldName + "\", as \"" + newFieldName +
                     "\" already exists in the parent class \"" + className + "\".");
            }
         }
         else
         {
-            return ("The field \"" + oldFieldName + 
-                "\" cannot be renamed, as the parent class \"" + className + "\" does not exist.");  
+            return ("The field \"" + oldFieldName +
+                "\" cannot be renamed, as the parent class \"" + className + "\" does not exist.");
         }
         }
         else{
@@ -1097,9 +1075,9 @@ public class DiagramModel {
         return "The specified class " + className + " does not exist on the diagram.";
       }
     }
-  
+
     /**
-     * Renames the field type if it exists in the class. 
+     * Renames the field type if it exists in the class.
      * @param className
      * @param fieldName
      * @param newFieldType
@@ -1114,14 +1092,14 @@ public class DiagramModel {
                 }
                 else
                 {
-                        return ("The field \"" + fieldName + 
+                        return ("The field \"" + fieldName +
                             "\" type cannot be renamed, as it does not exist.");
                 }
             }
             else
             {
-                return ("The field \"" + fieldName + 
-                    "\" cannot be renamed, as the parent class \"" + className + "\" does not exist.");  
+                return ("The field \"" + fieldName +
+                    "\" cannot be renamed, as the parent class \"" + className + "\" does not exist.");
             }
     }
 

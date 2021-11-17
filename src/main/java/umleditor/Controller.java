@@ -3,7 +3,7 @@ package umleditor;
 import java.util.ArrayList;
 
 public class Controller {
-	
+
 	private static final String ADD_HELP = "ADD: Adds a class, method, field, parameter, or relationship to the diagram.\nadd class <class>\nadd method <class> <method> <return_type>\nadd field <class> <field> <type>\nadd parameter <class> <method> <parameter> <type>\nadd relationship <source_class> <destination_class> {aggregation|composition|inheritance|realization}";
 	private static final String DELETE_HELP = "DELETE: Deletes a class, method, field, parameter, or relationship from the diagram.\ndelete class <class>\ndelete method <class> <method>\ndelete field <class> <field>\ndelete parameter <class> <method> <parameter>\ndelete relationship <source_class> <destination_class>";
 	private static final String RENAME_HELP = "RENAME: Renames a class, method, field, or parameter.\nrename class <class> <new_name>\nrename method <class> <method> <new_name>\nrename field <class> <field> <new_name>\nrename parameter <class> <method> <parameter> <new_name>";
@@ -24,7 +24,7 @@ public class Controller {
 			+ "display {class|all|relationships}\n"
 			+ "undo\n"
 			+ "redo\n";
-	
+
 	public static void main(String[] args) {
 		DiagramModel model = new DiagramModel();
 		UMLInterface view = new UMLInterface();
@@ -89,7 +89,7 @@ public class Controller {
 						}
 					} else {
 						view.print("Unrecognized command. Type \"help add\" for more info.");
-					}	
+					}
 				} else if(checkKeyword(commands, 0, "delete")) {
 					if(checkKeyword(commands, 1, "class")) {
 						if(commands.size() > 2) {
@@ -202,7 +202,7 @@ public class Controller {
 						}
 					} else if(checkKeyword(commands, 1, "relationship")) {
 						if(commands.size() > 4) {
-							m = model.changeRelationshipType(commands.get(2), commands.get(3), getRelTypeFromString(commands.get(4)));
+							m = model.changeRelationshipType(commands.get(2), commands.get(3), Relationship.getRelTypeFromString(commands.get(4)));
 							if (m == null) m = "Changed relationship type.";
 						} else {
 							view.print("Source class name, destination class name, and new type (one of {aggregation|composition|inheritance|realization}) required.");
@@ -258,20 +258,20 @@ public class Controller {
 					} else {
 						view.print(HELP_MENU);
 					}
-					
+
 				} else {
 					view.print("Unrecognized command. Type \"help\" to view commands.");
 				}
-				
+
 				if (!m.equals("")) view.print(m);
-				
+
 			}
 			catch (Exception error) {
 				System.out.println(error.getMessage());
 			}
 		}
 	}
-	
+
 	/**
 	 * Checks that a string in a list of strings exists at the specified index.
 	 * @param index The index of the list to look at.
