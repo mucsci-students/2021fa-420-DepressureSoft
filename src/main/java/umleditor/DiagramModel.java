@@ -19,9 +19,8 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 
 
-
 /**
- * Represents a UML class diagram, and allows users to manipulate the diagram by 
+ * Represents a UML class diagram, and allows users to manipulate the diagram by
  *  adding/removing/renaming classes, fields, and relationships between classes.
  */
 public class DiagramModel {
@@ -77,7 +76,7 @@ public class DiagramModel {
             {
                 snapshot();
                 UMLClass holder = new UMLClass(name);
-                diagram.put(name, holder);  
+                diagram.put(name, holder);
                 return null;
             }
             else
@@ -120,7 +119,7 @@ public class DiagramModel {
 
 
     /**
-     * Saves the class diagram to a JSON file using the format specified by the CSCI 420 fall 2021 
+     * Saves the class diagram to a JSON file using the format specified by the CSCI 420 fall 2021
      * standardization committee.
      * @param directory The path relative to the root directory to save the file to. Must end with "/"
      *  and be a valid path.
@@ -130,7 +129,7 @@ public class DiagramModel {
      */
     public String save(String fileLocation){
         StringBuilder jsonTxt = new StringBuilder();
-        
+
         jsonTxt.append("{\n  \"classes\": [\n");
         diagram.forEach((k,v) -> jsonTxt.append(jsonTxtClassMaker(v)));
         if (!diagram.isEmpty()) {
@@ -146,7 +145,7 @@ public class DiagramModel {
         }
         if (!relationships.isEmpty()) {
             jsonTxt.deleteCharAt(jsonTxt.length() - 2);
-        }  
+        }
         jsonTxt.append("  ]\n}");
         try {
         	String filePath;
@@ -161,7 +160,7 @@ public class DiagramModel {
             return null;
         } catch (IOException e) {
             return "An error occurred while trying to write json file:" + e.toString();
-        } 
+        }
     }
 
     /**
@@ -178,7 +177,7 @@ public class DiagramModel {
         result.append("      \"fields\": [\n");
         ArrayList<String> fields = theClass.getFields();
         for(String field : fields) {
-            result.append("        { \"name\": \"" + field + "\", \"type\": \"N/A\" },\n"); 
+            result.append("        { \"name\": \"" + field + "\", \"type\": \"N/A\" },\n");
         }
         if(!fields.isEmpty()) {
             result.deleteCharAt(result.length() - 2);
@@ -210,7 +209,7 @@ public class DiagramModel {
     }
 
     /**
-     * Loads a class diagram from a JSON file formatted using the format specified by the CSCI 420 fall 2021 
+     * Loads a class diagram from a JSON file formatted using the format specified by the CSCI 420 fall 2021
      * standardization committee.
      * @param fileLocation the directory of the json file to load.
      * @return null if action is successful, appropriate error message if not
@@ -295,7 +294,7 @@ public class DiagramModel {
                 bob.append("There are no fields in this class.\n");
             } else {
                 StringBuilder fieldBuilder = new StringBuilder();
-                for (int i = 0; i < input.getFields().size(); i++) { 
+                for (int i = 0; i < input.getFields().size(); i++) {
                     if(i != 0) {
                         fieldBuilder.append(", ");
                     }
@@ -309,7 +308,7 @@ public class DiagramModel {
                 bob.append("There are no methods in this class.\n");
             } else {
                 for(int i = 0; i < input.getMethods().size(); i++) {
-                    bob.append(input.getMethods().get(i).getMethodName() + 
+                    bob.append(input.getMethods().get(i).getMethodName() +
                         input.getMethods().get(i).getPName().replace("[", "(").replace("]", ")") + "\n");
                 }
             }
@@ -342,7 +341,7 @@ public class DiagramModel {
      */
     public String addMethod(String className, String methodName){
         UMLClass parentClass = getUML(className);
-        if(SourceVersion.isIdentifier(methodName)) 
+        if(SourceVersion.isIdentifier(methodName))
         {
             if(parentClass != null)
             {
@@ -354,15 +353,15 @@ public class DiagramModel {
                 }
                 else
                 {
-                        return ("The method \"" + methodName + 
+                        return ("The method \"" + methodName +
                             "\" cannot be added, as it already exists "
                             + "in the parent class \"" + className + "\".");
                 }
             }
             else
             {
-                return ("The method \"" + methodName + 
-                    "\" cannot be added, as the parent class \"" + className + "\" does not exist.");  
+                return ("The method \"" + methodName +
+                    "\" cannot be added, as the parent class \"" + className + "\" does not exist.");
             }
         }
         else
@@ -370,7 +369,7 @@ public class DiagramModel {
             return ("\"" + methodName + "\" is not a valid method name.");
         }
     }
-    
+
     /**
      * Removes an existing method from the diagram, as long as class exists.
      * Is supported as an undoable operation
@@ -390,29 +389,29 @@ public class DiagramModel {
             }
             else
             {
-                return ("The method \"" + methodName + 
+                return ("The method \"" + methodName +
                     "\" cannot be removed, as it does not exist.");
             }
         }
         else
         {
-            return ("The method \"" + methodName + 
-                "\" cannot be removed, as the parent class \"" + 
-                className + "\" does not exist.");  
+            return ("The method \"" + methodName +
+                "\" cannot be removed, as the parent class \"" +
+                className + "\" does not exist.");
         }
     }
 
 
     /**
      * Returns true if a method exists in the class diagram.
-     * @param className The name of the class to search for the method in. 
+     * @param className The name of the class to search for the method in.
      * @param methodName The name of the method to look for.
      * @return true if method exists, false if it does not exist.
      */
     public boolean methodExists(String className, String methodName){
         UMLClass parentClass = getUML(className);
         if(parentClass != null){
-            return parentClass.methodExists(methodName); 
+            return parentClass.methodExists(methodName);
         }
         return false;
     }
@@ -427,7 +426,7 @@ public class DiagramModel {
      */
     public String renameMethod(String className, String oldMethodName, String newMethodName){
         UMLClass parentClass = getUML(className);
-        if (SourceVersion.isIdentifier(newMethodName)) 
+        if (SourceVersion.isIdentifier(newMethodName))
         {
             if(parentClass != null){
                 if(parentClass.methodExists(oldMethodName)){
@@ -437,14 +436,14 @@ public class DiagramModel {
                 }
                 else
                 {
-                    return ("The method \"" + oldMethodName + 
+                    return ("The method \"" + oldMethodName +
                         "\" cannot be renamed, as it does not exist.");
                 }
             }
             else
             {
-                return ("The method \"" + oldMethodName + 
-                    "\" cannot be renamed, as the parent class \"" + className + "\" does not exist.");  
+                return ("The method \"" + oldMethodName +
+                    "\" cannot be renamed, as the parent class \"" + className + "\" does not exist.");
             }
         }
         else
@@ -454,7 +453,7 @@ public class DiagramModel {
     }
 
     /**
-     * Adds parameter to a method if the method and class exist. 
+     * Adds parameter to a method if the method and class exist.
      * Is supported as an undoable operation
      * @param className
      * @param methodName
@@ -476,16 +475,16 @@ public class DiagramModel {
                 }
                 else
                 {
-                        return ("The parameter(s) \"" + pName + 
-                            "\" cannot be added, as the method \"" + 
+                        return ("The parameter(s) \"" + pName +
+                            "\" cannot be added, as the method \"" +
                         	methodName + "does not exist.");
                 }
             }
             else
             {
-                return ("The parameter(s) \"" + pName + 
-                    "\" cannot be added, as the parent class \"" + 
-                	className + "\" does not exist.");  
+                return ("The parameter(s) \"" + pName +
+                    "\" cannot be added, as the parent class \"" +
+                	className + "\" does not exist.");
             }
         }
         else
@@ -516,20 +515,20 @@ public class DiagramModel {
                 }
             }
             else {
-                return ("The parameter \"" + pName + 
-                        "\" cannot be removed, as the method \"" + 
+                return ("The parameter \"" + pName +
+                        "\" cannot be removed, as the method \"" +
                 		methodName + "does not exist.");
             }
         }
         else {
-            return ("The parameter \"" + pName + 
-                "\" cannot be removed, as the parent class \"" + 
+            return ("The parameter \"" + pName +
+                "\" cannot be removed, as the parent class \"" +
             	className + "\" does not exist.");
         }
     }
 
     /**
-     * Renames parameter if class and method exist. 
+     * Renames parameter if class and method exist.
      * Is supported as an undoable operation
      * @param className
      * @param methodName
@@ -553,17 +552,17 @@ public class DiagramModel {
                         return null;
                     }
                     else{
-                        return ("The parameter \"" + oldPName + 
+                        return ("The parameter \"" + oldPName +
                             "\" cannot be renamed, as it does not exist.");
                     }
                 }
                 else{
-                    return ("The parameter \"" + oldPName + 
+                    return ("The parameter \"" + oldPName +
                             "\" cannot be renamed, as the method \"" + methodName + "does not exist.");
                 }
             }
             else{
-                return ("The parameter \"" + oldPName + 
+                return ("The parameter \"" + oldPName +
                     "\" cannot be renamed, as the parent class \"" + className + "\" does not exist.");
             }
         }
@@ -597,14 +596,14 @@ public class DiagramModel {
             return ("The parameters cannot be removed, as the parent class \"" + className + "\" does not exist.");
         }
     }
-    
+
     /**
      * Adds a class relationship to the diagram, checking to ensure that both classes exist, a relationship
      *  does not already exist between the two classes, and that the relationship is not recursive.
      * Is supported as an undoable operation
      * @param from The "parent" of the relationship.
      * @param to The "child" of the relationship.
-     * @param type The type of the relationship. Can be one of AGGREGATION, COMPOSITION, INHERITANCE, 
+     * @param type The type of the relationship. Can be one of AGGREGATION, COMPOSITION, INHERITANCE,
      *  or REALIZATION.
      * @return null if action is successful, appropriate error message if not
      */
@@ -643,7 +642,7 @@ public class DiagramModel {
                 // If relationship exists already
                 else
                 {
-                    return ("The relationship between \"" + from + "\" and \"" + to + 
+                    return ("The relationship between \"" + from + "\" and \"" + to +
                         "\" cannot be added, as a relationship already exists between those classes.");
                 }
         }
@@ -652,19 +651,19 @@ public class DiagramModel {
         {
         	if(!fromClassExists && !toClassExists)
         	{
-        		return ("The relationship cannot be added, as both the source class \"" + from + 
+        		return ("The relationship cannot be added, as both the source class \"" + from +
         				" and destination class \"" + to + " do not exist.");
         	}
             if(!fromClassExists)
             {
-                return ("The relationship cannot be added, as the source class \"" + from + 
+                return ("The relationship cannot be added, as the source class \"" + from +
                     "\" does not exist");
             }
             else /*if (!toClassExists)*/
             {
-                return ("The relationship cannot be added, as the destination class \"" + to + 
+                return ("The relationship cannot be added, as the destination class \"" + to +
                 "\" does not exist");
-            } 
+            }
         }
     }
 
@@ -697,10 +696,10 @@ public class DiagramModel {
             // If relationship did not exist prior
             if(!relationshipExists)
             {
-                return ("The relationship between \"" + from + "\" and \"" + to + 
+                return ("The relationship between \"" + from + "\" and \"" + to +
                     "\" cannot be deleted, as it does not exist");
-            } 
-            else 
+            }
+            else
             {
             	return "An unknown error occurred."; // impossible code path
             }
@@ -753,10 +752,10 @@ public class DiagramModel {
             // If relationship did not exist prior
             if(!relationshipExists)
             {
-            	return ("The type of the relationship between \"" + from + "\" and \"" + to + 
+            	return ("The type of the relationship between \"" + from + "\" and \"" + to +
                     "\" cannot be changed, as the relationship does not exist");
             }
-            else 
+            else
             {
             	return "An unknown error occurred."; // impossible code path
             }
@@ -777,7 +776,7 @@ public class DiagramModel {
             }
         }
     }
-  
+
     /**
      * Prints all the relationships in the class diagram.
      */
@@ -788,13 +787,13 @@ public class DiagramModel {
         if (relationships.isEmpty()) {
             bob.append("There are no relationships to display.");
         }
-      
+
         while (iterator.hasNext())
         {
             Relationship current = iterator.next();
             UMLClass from = current.getFrom();
             UMLClass to = current.getTo();
-            bob.append("From: " + from.getName() + " To: " + to.getName() + " Type: " + 
+            bob.append("From: " + from.getName() + " To: " + to.getName() + " Type: " +
                 current.getRelationshipType() + "\n");
         }
         return bob.toString();
@@ -810,7 +809,7 @@ public class DiagramModel {
     }
 
     /**
-     * Renames a class in the diagram, checking to ensure that the specified class exists and that the new 
+     * Renames a class in the diagram, checking to ensure that the specified class exists and that the new
      *  class name conforms to the standards set forth in javax.lang.model.SourceVersion.isIdentifier().
      * Is supported as an undoable operation
      * @param oldName The name of the class to rename.
@@ -841,7 +840,7 @@ public class DiagramModel {
 		        }
 		        else if(newClassExists)
 		        {
-		            return ("The class \"" + oldName + "\" cannot be renamed to \"" + newName + 
+		            return ("The class \"" + oldName + "\" cannot be renamed to \"" + newName +
 		                "\", as \"" + newName + "\" already exists as a class.");
 		        }
 		    }
@@ -857,7 +856,7 @@ public class DiagramModel {
      * @param name The name of the class to check for.
      * @return True if class exists, false if not.
      */
-    public boolean classExists(String name) { 
+    public boolean classExists(String name) {
         return diagram.containsKey(name);
     }
 
@@ -874,8 +873,8 @@ public class DiagramModel {
         if(SourceVersion.isIdentifier(fieldName)){
 	        if(parentExists)
 	        {
-	           boolean fieldExists = parentClass.getFields().contains(fieldName); 
-	
+	           boolean fieldExists = parentClass.getFields().contains(fieldName);
+
 	           if(!fieldExists)
 	           {
 	               snapshot();
@@ -884,14 +883,14 @@ public class DiagramModel {
 	           }
 	           else
 	           {
-	                return ("The field \"" + fieldName + 
+	                return ("The field \"" + fieldName +
 	                    "\" cannot be added, as it already exists in the parent class \"" + className + "\".");
 	           }
 	        }
 	        else
 	        {
-	            return ("The field \"" + fieldName + 
-	                "\" cannot be added, as the parent class \"" + className + "\" does not exist.");  
+	            return ("The field \"" + fieldName +
+	                "\" cannot be added, as the parent class \"" + className + "\" does not exist.");
 	        }
 	    }
 	    else{
@@ -910,10 +909,10 @@ public class DiagramModel {
     {
         UMLClass parentClass = getUML(className);
         boolean parentExists = classExists(className);
-    
+
         if(parentExists)
         {
-           boolean fieldExists = parentClass.getFields().contains(fieldName); 
+           boolean fieldExists = parentClass.getFields().contains(fieldName);
 
            if(fieldExists)
            {
@@ -923,19 +922,19 @@ public class DiagramModel {
            }
            else
            {
-                return ("The field \"" + fieldName + 
+                return ("The field \"" + fieldName +
                     "\" cannot be deleted, as it does not exist in the parent class \"" + className + "\".");
            }
         }
         else
         {
-            return ("The field \"" + fieldName + 
-                "\" cannot be deleted, as the parent class \"" + className + "\" does not exist.");  
+            return ("The field \"" + fieldName +
+                "\" cannot be deleted, as the parent class \"" + className + "\" does not exist.");
         }
     }
 
     /**
-     * Renames a field from a class, given that the class exists, the field exists, and the new 
+     * Renames a field from a class, given that the class exists, the field exists, and the new
      *  field name does not exist.
      * Is supported as an undoable operation
      * @param className The name of the class to add an field to.
@@ -949,9 +948,9 @@ public class DiagramModel {
         if(SourceVersion.isIdentifier(newFieldName)){
 	        if(parentExists)
 	        {
-	           boolean oldFieldExists = parentClass.getFields().contains(oldFieldName); 
-	           boolean newFieldExists = parentClass.getFields().contains(newFieldName); 
-	
+	           boolean oldFieldExists = parentClass.getFields().contains(oldFieldName);
+	           boolean newFieldExists = parentClass.getFields().contains(newFieldName);
+
 	           if(oldFieldExists && !newFieldExists)
 	           {
 	               snapshot();
@@ -960,20 +959,20 @@ public class DiagramModel {
 	           }
 	           else if(!oldFieldExists)
 	           {
-	                return ("The field \"" + oldFieldName + 
+	                return ("The field \"" + oldFieldName +
 	                    "\" cannot be renamed, as it does not exist in the parent class \"" + className + "\".");
 	           }
 	           else if(oldFieldExists)
 	           {
-	                return ("The field \"" + oldFieldName + 
-	                    "\" cannot be renamed to \"" + newFieldName + "\", as \"" + newFieldName + 
+	                return ("The field \"" + oldFieldName +
+	                    "\" cannot be renamed to \"" + newFieldName + "\", as \"" + newFieldName +
 	                    "\" already exists in the parent class \"" + className + "\".");
 	           }
 	        }
 	        else
 	        {
-	            return ("The field \"" + oldFieldName + 
-	                "\" cannot be renamed, as the parent class \"" + className + "\" does not exist.");  
+	            return ("The field \"" + oldFieldName +
+	                "\" cannot be renamed, as the parent class \"" + className + "\" does not exist.");
 	        }
         }
         else{
@@ -981,16 +980,62 @@ public class DiagramModel {
         }
         return "An unknown error occurred.";
     }
-    
+
     /**
-     * Returns the number of classes currently in the diagram. 
+     * Stores the coordinates of the specified class.
+     * @param className The name of the class
+     * @param x The x coordinate.
+     * @param y The y coordinate.
+     * @return null if operation was successful, appropriate error message if not.
+     */
+    public String setCoordinates(String className, int x, int y) {
+      if(classExists(className)) {
+        UMLClass theClass = getUML(className);
+        theClass.setXPosition(x);
+        theClass.setYPosition(y);
+        return null;
+      } else {
+        return "The specified class " + className + " does not exist on the diagram.";
+      }
+    }
+
+    /**
+     * Gets the x position of the specified class.
+     * @param className The name of the class.
+     * @return the x coordinate of the class.
+     */
+    public int getXPosition(String className) {
+      if(classExists(className)) {
+        UMLClass theClass = getUML(className);
+        return theClass.getXPosition();
+      } else {
+        return 0;
+      }
+    }
+
+    /**
+     * Gets the y position of the specified class.
+     * @param className The name of the class.
+     * @return the y coordinate of the class.
+     */
+    public int getYPosition(String className) {
+      if(classExists(className)) {
+        UMLClass theClass = getUML(className);
+        return theClass.getYPosition();
+      } else {
+        return 0;
+      }
+    }
+
+    /**
+     * Returns the number of classes currently in the diagram.
      * @return The number of classes in the diagram
      */
-    public int numberOfClasses() 
+    public int numberOfClasses()
     {
     	return diagram.size();
     }
-    
+
     /**
      * Returns a boolean determined by if any methods are within the diagram.
      * @return True if a method exists, false otherwise
@@ -998,7 +1043,7 @@ public class DiagramModel {
     public boolean methodsPresent()
     {
     	boolean methPres = false;
-    	for (UMLClass value : diagram.values()) 
+    	for (UMLClass value : diagram.values())
     	{
     		if (value.getMethods().size() > 0)
     		{
@@ -1006,10 +1051,10 @@ public class DiagramModel {
     			return methPres;
     		}
     	}
-    	
+
     	return methPres;
     }
-    
+
     /**
      * Returns a boolean determined by if any parameters are within the diagram.
      * @return True if a parameter exists, false otherwise
@@ -1017,7 +1062,7 @@ public class DiagramModel {
     public boolean paramsPresent()
     {
     	boolean parPres = false;
-    	for (UMLClass value : diagram.values()) 
+    	for (UMLClass value : diagram.values())
     	{
     		for (Method meth : value.getMethods())
     		{
@@ -1028,10 +1073,10 @@ public class DiagramModel {
 	    		}
     		}
     	}
-    	
+
     	return parPres;
     }
-    
+
     /**
      * Returns a boolean determined by if any relationships are within the diagram.
      * @return True if a relationship exists, false otherwise.
@@ -1043,10 +1088,10 @@ public class DiagramModel {
     	{
     		relPres = true;
     	}
-    	
+
     	return relPres;
     }
-    
+
     /**
      * Returns a boolean determined by if any fields are within the diagram.
      * @return True if a field exists, false otherwise
@@ -1054,7 +1099,7 @@ public class DiagramModel {
     public boolean fieldsPresent()
     {
     	boolean fieldsPres = false;
-    	for (UMLClass value : diagram.values()) 
+    	for (UMLClass value : diagram.values())
     	{
     		if (value.getFields().size() > 0)
     		{
@@ -1062,12 +1107,12 @@ public class DiagramModel {
     			return fieldsPres;
     		}
     	}
-    	
+
     	return fieldsPres;
     }
 
     /**
-     *  Undos the most recent undoable operation. 
+     *  Undos the most recent undoable operation.
      * @return Whether or not the undo was successful (false in the case where the undo history is empty)
      */
     public boolean undo()
@@ -1078,7 +1123,7 @@ public class DiagramModel {
         {
             return false;
         }
-        else 
+        else
         {
             DiagramModel old = history.undo(new DiagramModel(this));
             this.diagram = old.diagram;
@@ -1088,7 +1133,7 @@ public class DiagramModel {
     }
 
     /**
-     *  Redos the most recent undo, restoring the state to what it was. 
+     *  Redos the most recent undo, restoring the state to what it was.
      * @return Whether or not the redo was successful (false in the case where the redo history is empty)
      */
     public boolean redo()
@@ -1099,7 +1144,7 @@ public class DiagramModel {
         {
             return false;
         }
-        else 
+        else
         {
             DiagramModel old = history.redo(new DiagramModel(this));
             this.diagram = old.diagram;
@@ -1109,21 +1154,21 @@ public class DiagramModel {
     }
 
     /**
-    * Snapshots the current state of the model to be pushed onto the undo stack. 
+    * Snapshots the current state of the model to be pushed onto the undo stack.
     */
     private void snapshot()
     {
         ModelHistory history = ModelHistory.getInstance();
         history.snapshotModel(new DiagramModel(this));
     }
-  
+
     public ArrayList<String> getClassNames(){
         ArrayList<String> listOfKeys
         = new ArrayList<String>(diagram.keySet());
 
         return listOfKeys;
     }
-    
+
     /**
      * Returns a boolean based on whether undo can be currently used
      * @return a boolean determined by if undo can be currently used
@@ -1131,17 +1176,17 @@ public class DiagramModel {
     public boolean canUndo()
     {
     	ModelHistory history = ModelHistory.getInstance();
-    	
+
     	if (history.isUndoHistoryEmpty())
     	{
     		return false;
     	}
-    	else 
+    	else
     	{
     		return true;
     	}
     }
-    
+
     /**
      * Returns a boolean based on whether redo can be currently used
      * @return a boolean determined by if redo can be currently used
@@ -1149,15 +1194,15 @@ public class DiagramModel {
     public boolean canRedo()
     {
     	ModelHistory history = ModelHistory.getInstance();
-    	
+
     	if (history.isRedoHistoryEmpty())
     	{
     		return false;
     	}
-    	else 
+    	else
     	{
     		return true;
     	}
     }
-    
+
 }
