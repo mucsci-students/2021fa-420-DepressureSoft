@@ -2,6 +2,18 @@ package umleditor;
 
 import java.util.ArrayList;
 
+import org.jline.reader.History;
+import org.jline.reader.LineReader;
+import org.jline.reader.LineReaderBuilder;
+import org.jline.reader.MaskingCallback;
+import org.jline.reader.impl.DefaultParser;
+
+import org.jline.reader.impl.completer.AggregateCompleter;
+import org.jline.reader.impl.completer.StringsCompleter;
+import org.jline.reader.impl.history.DefaultHistory;
+import org.jline.terminal.Terminal;
+import org.jline.terminal.TerminalBuilder;
+
 public class Controller {
 
 	private static final String ADD_HELP = "ADD: Adds a class, method, field, parameter, or relationship to the diagram.\nadd class <class>\nadd method <class> <method> <return_type>\nadd field <class> <field> <type>\nadd parameter <class> <method> <parameter> <type>\nadd relationship <source_class> <destination_class> {aggregation|composition|inheritance|realization}";

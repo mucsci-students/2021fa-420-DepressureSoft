@@ -14,47 +14,43 @@ public class TabCompletion {
         this.completer = new AggregateCompleter(
                             new ArgumentCompleter(
                                 new StringsCompleter("add"),
+                                new StringsCompleter("class", "field", "method", "parameter"),
                                 new NullCompleter()
                         ),
-                        new AggregateCompleter(
                             new ArgumentCompleter(
                                 new StringsCompleter("delete"),
                                 new NullCompleter()
                         ),
-                        new AggregateCompleter(
                             new ArgumentCompleter(
                                 new StringsCompleter("rename"),
                                 new NullCompleter()
                         ),
-                        new AggregateCompleter(
                             new ArgumentCompleter(
                                 new StringsCompleter("save"),
                                 new NullCompleter()
                         ),
-                        new AggregateCompleter(
                             new ArgumentCompleter(
                                 new StringsCompleter("load"),
                                 new NullCompleter()
                         ),
-                        new AggregateCompleter(
                             new ArgumentCompleter(
                                 new StringsCompleter("changetype"),
                                 new NullCompleter()
                         ),
-                        new AggregateCompleter(
                             new ArgumentCompleter(
                                 new StringsCompleter("display"),
                                 new NullCompleter()
                         ),
-                        new AggregateCompleter(
                             new ArgumentCompleter(
                                 new StringsCompleter("undo"),
                                 new NullCompleter()
                         ),
-                        new AggregateCompleter(
                             new ArgumentCompleter(
                                 new StringsCompleter("redo"),
                                 new NullCompleter()
-                        );
+                        )
+        );
     }
+
+    
 }
