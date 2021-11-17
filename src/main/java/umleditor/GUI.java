@@ -1252,7 +1252,6 @@ public class GUI {
         for(String key: arrowMap.keySet()){
             Arrow temp = arrowMap.get(key);
             temp.lineLength();
-
         }
     }
     /**
