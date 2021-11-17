@@ -23,9 +23,9 @@ import javax.swing.UIManager;
 
 import javax.lang.model.SourceVersion;
 
-public class GUI { 
-    
-    private JFrame frame; 
+public class GUI {
+
+    private JFrame frame;
     private JFrame action;
 
     JMenuBar menuBar;
@@ -50,9 +50,9 @@ public class GUI {
     private classBox box;
 
     public GUI(){
-    	
+
     }
-    
+
     public GUI(GUI other) {
     	this.model = new DiagramModel(other.model);
     	this.boxMap = new HashMap<String, classBox>();
@@ -63,16 +63,16 @@ public class GUI {
     		classBox boxCopy = new classBox((classBox) element.getValue());
     		this.boxMap.put(keyCopy, boxCopy);
     	}
-    	
+
     	this.box = new classBox(other.box);
     }
-    
+
     public static void main(String[] args){
-        GUI test = new GUI(); 
+        GUI test = new GUI();
         try {
             UIManager.setLookAndFeel(
             UIManager.getSystemLookAndFeelClassName());
-         } catch (Exception e) { 
+         } catch (Exception e) {
       }
          JFrame.setDefaultLookAndFeelDecorated(true);
          test.drawGUI();
@@ -270,7 +270,7 @@ public class GUI {
             public void actionPerformed(ActionEvent e) {
                 renameMethod();
             }
-         });     
+         });
         /**
           * Opens the Rename Parameter Window
           */
@@ -278,7 +278,7 @@ public class GUI {
             public void actionPerformed(ActionEvent e) {
                 renameParameter();
             }
-         });           
+         });
          /**
          * Opens the Help Window
          */
@@ -287,10 +287,21 @@ public class GUI {
                 helpWindow();
             }
          });
+        /**
+         * Opens the save window.
+         */
         save.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
         		saveWindow();
         	}
+        });
+        /**
+         * Opens the load window.
+         */
+        load.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		loadWindow();
+          }
         });
         saveImg.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
@@ -342,14 +353,18 @@ public class GUI {
         action.setVisible(true);
 
     }
-    
+
     public void saveWindow() {
     	JFileChooser chooser = new JFileChooser();
-    	FileNameExtensionFilter jsonOnly = new FileNameExtensionFilter(".json files", "json");
+    	FileNameExtensionFilter jsonOnly = new FileNameExtensionFilter("JSON files", "json");
     	chooser.addChoosableFileFilter(jsonOnly);
     	chooser.setAcceptAllFileFilterUsed(false);
     	chooser.setDialogTitle("Save diagram as JSON");
     	int s = chooser.showSaveDialog(null);
+      for(Map.Entry mapElement : boxMap.entrySet()) {
+        classBox box = (classBox)mapElement.getValue();
+        model.setCoordinates(box.getClassName(), box.getX(), box.getY());
+      }
     	if(s == JFileChooser.APPROVE_OPTION) {
     		model.save(chooser.getSelectedFile().getAbsolutePath());
     	}
@@ -368,6 +383,20 @@ public class GUI {
     		exportDiagramToImage(fileToSave);
     	}
     }
+
+    public void loadWindow() {
+    	JFileChooser chooser = new JFileChooser();
+    	FileNameExtensionFilter jsonOnly = new FileNameExtensionFilter("JSON files", "json");
+    	chooser.addChoosableFileFilter(jsonOnly);
+    	chooser.setAcceptAllFileFilterUsed(false);
+    	chooser.setDialogTitle("Load diagram from JSON");
+    	int s = chooser.showOpenDialog(null);
+    	if(s == JFileChooser.APPROVE_OPTION) {
+    		model.load(chooser.getSelectedFile().getAbsolutePath());
+    	}
+    }
+
+
 
     public void helpWindow(){
         action = new JFrame("UML Editor");
@@ -451,7 +480,7 @@ public class GUI {
 
         //Ensures No Error Message is showing prior to user input.
         errorMessage.setText("");
-        
+
 
         classAddButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -465,7 +494,7 @@ public class GUI {
 
         classNames = new JComboBox(model.getClassNames().toArray());
         classNames.setSize(200, classNames.getPreferredSize().height);
-        
+
         actionPane.add(classLabel);
         actionPane.add(classNames);
         actionPane.add(fieldLabel);
@@ -522,7 +551,7 @@ public class GUI {
 
         action.setVisible(true);
     }
-   
+
     public void addParameter(){
         action = new JFrame("UML Editor");
         action.setSize(250, 275);
@@ -538,7 +567,7 @@ public class GUI {
 
         //Ensures No Error Message is showing prior to user input.
         errorMessage.setText("");
-        
+
         JButton classAddButton = new JButton("Add");
         classAddButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -551,7 +580,7 @@ public class GUI {
 
          methodNames = new JComboBox();
          methodNames.setMaximumSize(classNames.getPreferredSize());
-         
+
          classNames.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
@@ -560,12 +589,12 @@ public class GUI {
                 for(String s: model.getUML(holder).getStringMethods()){
                     methodNames.addItem(s.toString());
                 }
-                
-                
-            }
-        });   
 
-         
+
+            }
+        });
+
+
         className = new JTextField("", 18);
         methodName = new JTextField("", 18);
         parameterName = new JTextField("", 18);
@@ -644,7 +673,7 @@ public class GUI {
 
         classNames = new JComboBox(model.getClassNames().toArray());
         classNames.setMaximumSize(classNames.getPreferredSize());
-        
+
         classNamesX = new JComboBox(model.getClassNames().toArray());
         classNamesX.setMaximumSize(classNames.getPreferredSize());
 
@@ -691,10 +720,10 @@ public class GUI {
                 for(String s: model.getUML(holder).getStringFields()){
                     fieldNames.addItem(s.toString());
                 }
-                
-                
+
+
             }
-        });   
+        });
 
         fieldName = new JTextField("", 18);
 
@@ -714,7 +743,7 @@ public class GUI {
         for(String s: model.getUML(holder).getStringFields()){
             fieldNames.addItem(s.toString());
         }
-        }  
+        }
     }
 
     public void deleteMethod(){
@@ -740,7 +769,7 @@ public class GUI {
 
         methodNames = new JComboBox();
         methodNames.setMaximumSize(classNames.getPreferredSize());
-        
+
         classNames.addItemListener(new ItemListener() {
            @Override
            public void itemStateChanged(ItemEvent e) {
@@ -749,10 +778,10 @@ public class GUI {
                for(String s: model.getUML(holder).getStringMethods()){
                    methodNames.addItem(s.toString());
                }
-               
-               
+
+
            }
-       });   
+       });
 
 
 
@@ -773,7 +802,7 @@ public class GUI {
         }
         }
     }
-   
+
     public void deleteParameter(){
         action = new JFrame("UML Editor");
         action.setSize(250, 225);
@@ -801,7 +830,7 @@ public class GUI {
 
         paramNames = new JComboBox();
         paramNames.setMaximumSize(classNames.getPreferredSize());
-        
+
         classNames.addItemListener(new ItemListener() {
            @Override
            public void itemStateChanged(ItemEvent e) {
@@ -810,11 +839,11 @@ public class GUI {
                for(String s: model.getUML(holder).getStringMethods()){
                    methodNames.addItem(s.toString());
                }
-               
-               
+
+
            }
        });
-          
+
        methodNames.addItemListener(new ItemListener() {
         @Override
         public void itemStateChanged(ItemEvent e) {
@@ -924,10 +953,10 @@ public class GUI {
                 for(String s: model.getUML(holder).getStringFields()){
                     fieldNames.addItem(s.toString());
                 }
-                
-                
+
+
             }
-        });   
+        });
 
         renamer = new JTextField("", 18);
 
@@ -944,14 +973,14 @@ public class GUI {
 
         action.setVisible(true);
 
-        //Grabs box elements when user first opens selection window. 
+        //Grabs box elements when user first opens selection window.
         if(classNames.getItemCount() >= 1){
             String holder = classNames.getSelectedItem().toString();
             fieldNames.removeAllItems();
             for(String s: model.getUML(holder).getStringFields()){
                 fieldNames.addItem(s.toString());
             }
-            }  
+            }
     }
 
     public void renameMethod(){
@@ -981,7 +1010,7 @@ public class GUI {
 
         methodNames = new JComboBox();
         methodNames.setMaximumSize(classNames.getPreferredSize());
-        
+
         classNames.addItemListener(new ItemListener() {
            @Override
            public void itemStateChanged(ItemEvent e) {
@@ -990,10 +1019,10 @@ public class GUI {
                for(String s: model.getUML(holder).getStringMethods()){
                    methodNames.addItem(s.toString());
                }
-               
-               
+
+
            }
-       });   
+       });
 
         renamer = new JTextField("", 18);
 
@@ -1052,7 +1081,7 @@ public class GUI {
 
         paramNames = new JComboBox();
         paramNames.setMaximumSize(classNames.getPreferredSize());
-        
+
         classNames.addItemListener(new ItemListener() {
            @Override
            public void itemStateChanged(ItemEvent e) {
@@ -1061,10 +1090,10 @@ public class GUI {
                for(String s: model.getUML(holder).getStringMethods()){
                    methodNames.addItem(s.toString());
                }
-               
-               
+
+
            }
-       });  
+       });
 
        methodNames.addItemListener(new ItemListener() {
        @Override
@@ -1107,7 +1136,7 @@ public class GUI {
     }
 
     /**
-     * Methods below are responsible for manipulating GUI Display Boxs and backend data fields. 
+     * Methods below are responsible for manipulating GUI Display Boxs and backend data fields.
      */
     public void addClassAction(){
         String newClass = className.getText();
@@ -1221,13 +1250,13 @@ public class GUI {
             model.addRelationship(classOne,classTwo,RelationshipType.AGGREGATION);
         }
         else if(relationT.equals("Compositon")){
-        model.addRelationship(classOne,classTwo,RelationshipType.COMPOSITION);
+        	model.addRelationship(classOne,classTwo,RelationshipType.COMPOSITION);
         }
         else if(relationT.equals("Inheritance")){
-        model.addRelationship(classOne,classTwo,RelationshipType.INHERITANCE);
+        	model.addRelationship(classOne,classTwo,RelationshipType.INHERITANCE);
         }
         else if(relationT.equals("Realization")){
-        model.addRelationship(classOne,classTwo,RelationshipType.REALIZATION);
+        	model.addRelationship(classOne,classTwo,RelationshipType.REALIZATION);
         }
 
         action.dispose();
@@ -1246,7 +1275,7 @@ public class GUI {
         pane.repaint();
         updateButtons();
     }
-  
+
     public void deleteRelationshipAction(){
         String classOne = classNames.getSelectedItem().toString();
         String classTwo = classNamesX.getSelectedItem().toString();
@@ -1255,18 +1284,18 @@ public class GUI {
         action.dispose();
         updateButtons();
     }
-   
+
     public void deleteFieldAction(){
         String getClass = classNames.getSelectedItem().toString();
 		String field = fieldNames.getSelectedItem().toString();
 
-        model.deleteField(getClass, field); 
+        model.deleteField(getClass, field);
         box = boxMap.get(getClass);
         box.removeField(field);
         action.dispose();
         updateButtons();
     }
-    
+
     public void deleteMethodAction(){
         String getClass = classNames.getSelectedItem().toString();
 		String method = methodNames.getSelectedItem().toString();
@@ -1277,8 +1306,8 @@ public class GUI {
         action.dispose();
         updateButtons();
     }
-   
-    public void deleteParameterAction(){ 
+
+    public void deleteParameterAction(){
         String getClass = classNames.getSelectedItem().toString();
         String method = methodNames.getSelectedItem().toString();
         String param = paramNames.getSelectedItem().toString();
@@ -1316,7 +1345,7 @@ public class GUI {
             actionPane.validate();
         }
     }
-   
+
     public void renameFieldAction(){
         String getClass = classNames.getSelectedItem().toString();
 		String field = fieldNames.getSelectedItem().toString();
@@ -1340,7 +1369,7 @@ public class GUI {
             actionPane.validate();
         }
     }
-    
+
     public void renameMethodAction(){
         String getClass = classNames.getSelectedItem().toString();
 		String method = methodNames.getSelectedItem().toString();
@@ -1364,7 +1393,7 @@ public class GUI {
             actionPane.validate();
         }
     }
-   
+
     public void renameParameterAction(){
         String getClass = classNames.getSelectedItem().toString();
 		String method = methodNames.getSelectedItem().toString();
@@ -1396,14 +1425,6 @@ public class GUI {
         }
     }
 
-    public void save(){
-       // model.save();
-    }
-   
-    public void load(){
-       // model.load();
-    }
-  
     public void undoAction() {
     	GUIHistory history = GUIHistory.getInstance();
     	if(history.isUndoHistoryEmpty()) {
@@ -1415,10 +1436,10 @@ public class GUI {
     		this.boxMap = old.boxMap;
     		this.box = old.box;
     	}
-    	
+
     	updateButtons();
     }
-  
+
     public void redoAction() {
     	GUIHistory history = GUIHistory.getInstance();
     	if(history.isRedoHistoryEmpty()) {
@@ -1430,20 +1451,20 @@ public class GUI {
     		this.boxMap = old.boxMap;
     		this.box = old.box;
     	}
-    	
+
     	updateButtons();
     }
-    
+
     private void snapshot()
     {
         GUIHistory history = GUIHistory.getInstance();
         history.snapshotModel(new GUI(this));
     }
-    
+
     /**
      * Updates the availability of buttons based on the conditions of the model.
-     * If the conditions of the model prevent a button from functioning properly when clicked, that 
-     * button is grayed out and unclickable. 
+     * If the conditions of the model prevent a button from functioning properly when clicked, that
+     * button is grayed out and unclickable.
      */
     public void updateButtons() {
     	//All adds
@@ -1454,7 +1475,7 @@ public class GUI {
     	else {
     		addRelationship.setEnabled(true);
     	}
-    	
+
     	//addField, addMethod
     	if (model.numberOfClasses() == 0) {
     		addField.setEnabled(false);
@@ -1464,7 +1485,7 @@ public class GUI {
     		addField.setEnabled(true);
     		addMethod.setEnabled(true);
     	}
-    	
+
     	//addParameter
     	if (model.methodsPresent() == false) {
     		addParameter.setEnabled(false);
@@ -1472,7 +1493,7 @@ public class GUI {
     	else {
     		addParameter.setEnabled(true);
     	}
-    	
+
     	//All deletes
     	//deleteClass
     	if (model.numberOfClasses() == 0) {
@@ -1481,7 +1502,7 @@ public class GUI {
     	else {
     		deleteClass.setEnabled(true);
     	}
-    	
+
     	//deleteRelationship
     	if (model.relationshipsPresent() == false) {
     		deleteRelationship.setEnabled(false);
@@ -1489,7 +1510,7 @@ public class GUI {
     	else {
     		deleteRelationship.setEnabled(true);
     	}
-    	
+
     	//deleteField
     	if (model.fieldsPresent() == false) {
     		deleteField.setEnabled(false);
@@ -1497,7 +1518,7 @@ public class GUI {
     	else {
     		deleteField.setEnabled(true);
     	}
-    	
+
     	//deleteMethod
     	if (model.methodsPresent() == false) {
     		deleteMethod.setEnabled(false);
@@ -1505,7 +1526,7 @@ public class GUI {
     	else {
     		deleteMethod.setEnabled(true);
     	}
-    	
+
     	//deleteParameter
     	if (model.paramsPresent() == false) {
     		deleteParameter.setEnabled(false);
@@ -1513,7 +1534,7 @@ public class GUI {
     	else {
     		deleteParameter.setEnabled(true);
     	}
-    	
+
     	//All renames
     	//renameClass
     	if (model.numberOfClasses() == 0) {
@@ -1522,7 +1543,7 @@ public class GUI {
     	else {
     		renameClass.setEnabled(true);
     	}
-    	
+
     	//renameField
     	if (model.fieldsPresent() == false) {
     		renameField.setEnabled(false);
@@ -1530,7 +1551,7 @@ public class GUI {
     	else {
     		renameField.setEnabled(true);
     	}
-    	
+
     	//renameMethod
     	if (model.methodsPresent() == false) {
     		renameMethod.setEnabled(false);
@@ -1538,7 +1559,7 @@ public class GUI {
     	else {
     		renameMethod.setEnabled(true);
     	}
-    	
+
     	//renameParameter
     	if (model.paramsPresent() == false) {
     		renameParameter.setEnabled(false);
@@ -1546,7 +1567,7 @@ public class GUI {
     	else {
     		renameParameter.setEnabled(true);
     	}
-    	
+
     	//Undo-Redo
     	//Undo
     	if (!model.canUndo()) {
@@ -1555,7 +1576,7 @@ public class GUI {
     	else {
     		undo.setEnabled(true);
     	}
-    	
+
     	//Redo
     	if (!model.canRedo()) {
     		redo.setEnabled(false);
