@@ -409,85 +409,112 @@ class DiagramModelTest {
 	}
 
 	@Test
+	@DisplayName("Undo/redo delete all parameters")
+	void deleteAllParametersUndo() {
+		testDiagram.addMethod("trial", "sum", "int");
+		testDiagram.addParameter("trial", "sum", "n1", "int");
+		testDiagram.addParameter("trial", "sum", "n2", "int");
+		assertTrue(testDiagram.parameterExists("trial", "sum", "n1")
+			&& testDiagram.parameterExists("trial", "sum", "n2"));
+		testDiagram.deleteAllParameters("trial", "sum");
+		assertFalse(testDiagram.parameterExists("trial", "sum", "n1")
+			|| testDiagram.parameterExists("trial", "sum", "n2"));
+		testDiagram.undo();
+		assertTrue(testDiagram.parameterExists("trial", "sum", "n1")
+			&& testDiagram.parameterExists("trial", "sum", "n2"));
+		testDiagram.redo();
+		assertFalse(testDiagram.parameterExists("trial", "sum", "n1")
+			|| testDiagram.parameterExists("trial", "sum", "n2"));
+	}
+
+	@Test
 	@DisplayName("Renaming a class")
-	void testRenamedClass() {
-		testDiagram.addClass("trial");
-
-		assertEquals(1, testDiagram.numberOfClasses(),
-				"Diagram should include only added 'trial' class");
-
+	void renameClass() {
 		testDiagram.renameUMLClass("trial", "renamedClass");
+		assertFalse(testDiagram.classExists("trial"));
+		assertTrue(testDiagram.classExists("renamedClass"));
+	}
 
-		assertEquals(false, testDiagram.classExists("trial"),
-				"'trial' should not exist");
-
-		assertEquals(true, testDiagram.classExists("renamedClass"),
-				"'renamedClass' should exist");
+	@Test
+	@DisplayName("Undo/redo renaming a class")
+	void renameClassUndo() {
+		testDiagram.renameUMLClass("trial", "renamedClass");
+		assertFalse(testDiagram.classExists("trial"));
+		assertTrue(testDiagram.classExists("renamedClass"));
+		testDiagram.undo();
+		assertTrue(testDiagram.classExists("trial"));
+		assertFalse(testDiagram.classExists("renamedClass"));
+		testDiagram.redo();
+		assertFalse(testDiagram.classExists("trial"));
+		assertTrue(testDiagram.classExists("renamedClass"));
 	}
 
 	@Test
 	@DisplayName("Adding a field")
-	void testAddField() {
-		testDiagram.addClass("trial");
-
-		assertEquals(1, testDiagram.numberOfClasses(),
-				"Diagram should include only added 'trial' class");
-
+	void addField() {
+		assertFalse(testDiagram.fieldExists("trial", "testField"));
 		testDiagram.addField("trial", "testField", "testType");
-		UMLClass testClass = testDiagram.getUML("trial");
-		ArrayList<String> fieldTest = new ArrayList<String>();
-		fieldTest.add("testField");
+		assertTrue(testDiagram.fieldExists("trial", "testField"));
+	}
 
-		assertEquals(fieldTest, testClass.getStringFields(),
-				"Added fields should be in fields arraylist");
+	@Test
+	@DisplayName("Undo/redo add field")
+	void addFieldUndo() {
+		testDiagram.addField("trial", "testField", "testType");
+		assertTrue(testDiagram.fieldExists("trial", "testField"));
+		testDiagram.undo();
+		assertFalse(testDiagram.fieldExists("trial", "testField"));
+		testDiagram.redo();
+		assertTrue(testDiagram.fieldExists("trial", "testField"));
 	}
 
 	@Test
 	@DisplayName("Deleting a field")
-	void testDeleteField() {
-		testDiagram.addClass("trial");
-
-		assertEquals(1, testDiagram.numberOfClasses(),
-				"Diagram should include only added 'trial' class");
-
+	void deleteField() {
 		testDiagram.addField("trial", "testField", "testType");
-		UMLClass testClass = testDiagram.getUML("trial");
-		ArrayList<String> fieldTest = new ArrayList<String>();
-		fieldTest.add("testField");
-
-		assertEquals(fieldTest, testClass.getStringFields(),
-				"Added fields should be in fields arraylist");
-
+		assertTrue(testDiagram.fieldExists("trial", "testField"));
 		testDiagram.deleteField("trial", "testField");
+		assertFalse(testDiagram.fieldExists("trial", "testField"));
+	}
 
-		fieldTest.remove("testField");
-
-		assertEquals(fieldTest, testClass.getStringFields(),
-				"Removed fields shouldn't be in fields arraylist");
+	@Test
+	@DisplayName("Undo/redo delete field")
+	void deleteFieldUndo() {
+		testDiagram.addField("trial", "testField", "testType");
+		assertTrue(testDiagram.fieldExists("trial", "testField"));
+		testDiagram.deleteField("trial", "testField");
+		assertFalse(testDiagram.fieldExists("trial", "testField"));
+		testDiagram.undo();
+		assertTrue(testDiagram.fieldExists("trial", "testField"));
+		testDiagram.redo();
+		assertFalse(testDiagram.fieldExists("trial", "testField"));
 	}
 
 	@Test
 	@DisplayName("Renaming a field")
-	void testRenameField() {
-		testDiagram.addClass("trial");
-
-		assertEquals(1, testDiagram.numberOfClasses(),
-				"Diagram should include only added 'trial' class");
-
+	void renameField() {
 		testDiagram.addField("trial", "testField", "testType");
-		UMLClass testClass = testDiagram.getUML("trial");
-		ArrayList<String> fieldTest = new ArrayList<String>();
-		fieldTest.add("testField");
-
-		assertEquals(fieldTest, testClass.getStringFields(),
-				"Added fields should be in fields arraylist");
-
+		assertTrue(testDiagram.fieldExists("trial", "testField"));
 		testDiagram.renameField("trial", "testField", "renamedField");
-
-		fieldTest.remove("testField");
-		fieldTest.add("renamedField");
-
-		assertEquals(fieldTest, testClass.getStringFields(),
-				"Renamed fields should be in fields arraylist");
+		assertFalse(testDiagram.fieldExists("trial", "testField"));
+		assertTrue(testDiagram.fieldExists("trial", "renamedField"));
 	}
+
+	@Disabled
+	@Test
+	@DisplayName("Undo/redo rename field")
+	void renameFieldUndo() {
+		testDiagram.addField("trial", "testField", "testType");
+		assertTrue(testDiagram.fieldExists("trial", "testField"));
+		testDiagram.renameField("trial", "testField", "renamedField");
+		assertFalse(testDiagram.fieldExists("trial", "testField"));
+		assertTrue(testDiagram.fieldExists("trial", "renamedField"));
+		testDiagram.undo();
+		assertTrue(testDiagram.fieldExists("trial", "testField"));
+		assertFalse(testDiagram.fieldExists("trial", "renamedField"));
+		testDiagram.redo();
+		assertFalse(testDiagram.fieldExists("trial", "testField"));
+		assertTrue(testDiagram.fieldExists("trial", "renamedField"));
+	}
+
 }

@@ -440,6 +440,28 @@ public class DiagramModel {
         }
     }
 
+    /**
+     * Checks that the class called name exists in the diagram.
+     * @param name The name of the class to check for.
+     * @return True if class exists, false if not.
+     */
+    public boolean classExists(String name) {
+      return diagram.containsKey(name);
+    }
+
+    /**
+     * Checks that the specified field exists in the diagram.
+     * @param className The name of the class to look for the field in.
+     * @param fieldName The name of the field to look for.
+     * @return True if field exists, false if not.
+     */
+    public boolean fieldExists(String className, String fieldName) {
+      UMLClass parentClass = getUML(className);
+      if(parentClass != null) {
+        return parentClass.fieldExists(fieldName);
+      }
+      return false;
+    }
 
     /**
      * Returns true if a method exists in the class diagram.
@@ -963,14 +985,7 @@ public class DiagramModel {
         return "An unknown error occurred.";
     }
 
-    /**
-     * Checks that the class called name exists in the diagram.
-     * @param name The name of the class to check for.
-     * @return True if class exists, false if not.
-     */
-    public boolean classExists(String name) {
-        return diagram.containsKey(name);
-    }
+
 
     /**
      * Adds a field to a class, given that the class exists and that the field is not a duplicate.
