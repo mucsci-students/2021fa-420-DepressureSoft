@@ -1,13 +1,37 @@
 package umleditor;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
+
+import org.jline.builtins.Completers.Completer;
+import org.jline.console.impl.Builtins.Command;
+import org.jline.reader.History;
+import org.jline.reader.LineReader;
+import org.jline.reader.LineReaderBuilder;
+import org.jline.reader.MaskingCallback;
+import org.jline.reader.ParsedLine;
+import org.jline.reader.LineReader.Option;
+import org.jline.reader.impl.DefaultParser;
+
+import org.jline.reader.impl.completer.AggregateCompleter;
+import org.jline.reader.impl.completer.ArgumentCompleter;
+import org.jline.reader.impl.completer.StringsCompleter;
+import org.jline.reader.impl.history.DefaultHistory;
+import org.jline.terminal.Terminal;
+import org.jline.terminal.TerminalBuilder;
 
 /**
  * Public Interface responsible for connecting all programmed methods to the Terminal. 
  * Allows for user to modify diagrams as they please. 
  */
 public class UMLInterface {
-	
+
+	private LineReader reader;
+	private Terminal terminal;
+	private ParsedLine parser;
+
 	/**
 	 * Displays a "splash screen" to the user.
 	 */
@@ -19,6 +43,24 @@ public class UMLInterface {
 		System.out.println("  |  Type \"help\" for a list of commands.  |");
 		System.out.println("  +---------------------------------------+");
 	}
+
+	 /**public ArrayList<String> startRead(ArrayList<String> testread) {
+		ArrayList<String> result = new ArrayList<String>();
+		while(true){
+			String line = null;
+			line = reader.readLine("Hello");
+			line = line.trim();
+
+			ParsedLine parsedLine = reader.getParsedLine();
+			String[] temp1 = parsedLine.words().toArray(new String[parsedLine.words().size()]);
+			result = new ArrayList<>(Arrays.asList(temp1));
+			return result;
+
+			//TabCompletion completer = new TabCompletion();
+
+			//reader = LineReaderBuilder.builder().terminal(terminal).completer(completer).variable(LineReader.MENU_COMPLETE, true).parser(parser).build();
+		}
+	} */
 	
 	/**
 	 * Gets an array of strings from the user.
@@ -26,12 +68,25 @@ public class UMLInterface {
 	 * @return An ArrayList<String> of user commands
 	 */
     public ArrayList<String> getInput(String promptHeader) {
+
+		try{
+			terminal = TerminalBuilder.builder().system(true).build();
+			AggregateCompleter comp = new TabCompletion().updateCompleter();
+			reader = LineReaderBuilder.builder().terminal(terminal).completer(comp).variable(LineReader.MENU_COMPLETE, true).build();
+            	
+		}catch(IOException e){
+			System.out.println(e);
+		}
+
     	ArrayList<String> result = new ArrayList<String>();
-        Scanner sc = new Scanner(System.in);
-        System.out.print(promptHeader);
-        String userEntry = "";
-        userEntry += sc.nextLine();
-        if(userEntry.trim().equalsIgnoreCase("exit")) {
+		String line = null;
+        //Scanner sc = new Scanner(System.in);
+        //System.out.print(promptHeader);
+        //String userEntry = "";
+        //userEntry += sc.nextLine();
+		line = reader.readLine(promptHeader);
+
+        if(line.trim().equalsIgnoreCase("exit")) {
         	boolean exit = yesNoDialog("Are you sure you want to exit?");
         	if(exit) {
         		result.add("exit");
@@ -41,7 +96,11 @@ public class UMLInterface {
         	}
         }
         else {
-        	result = splitString(userEntry);
+        	//result = splitString(userEntry);
+			parser = reader.getParsedLine();
+			String[] arrayLine = parser.words().toArray(new String[parser.words().size()]);
+			result = new ArrayList<String>(Arrays.asList(arrayLine));
+			
         }
         return result;
     }
