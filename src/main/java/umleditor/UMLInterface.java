@@ -7,6 +7,7 @@ import java.util.Scanner;
 
 import org.jline.builtins.Completers.Completer;
 import org.jline.console.impl.Builtins.Command;
+import org.jline.reader.Highlighter;
 import org.jline.reader.History;
 import org.jline.reader.LineReader;
 import org.jline.reader.LineReaderBuilder;
@@ -31,6 +32,8 @@ public class UMLInterface {
 	private LineReader reader;
 	private Terminal terminal;
 	private ParsedLine parser;
+	private History history;
+	private Highlighter highlighter;
 
 	/**
 	 * Displays a "splash screen" to the user.
@@ -44,24 +47,19 @@ public class UMLInterface {
 		System.out.println("  +---------------------------------------+");
 	}
 
-	 /**public ArrayList<String> startRead(ArrayList<String> testread) {
-		ArrayList<String> result = new ArrayList<String>();
-		while(true){
-			String line = null;
-			line = reader.readLine("Hello");
-			line = line.trim();
-
-			ParsedLine parsedLine = reader.getParsedLine();
-			String[] temp1 = parsedLine.words().toArray(new String[parsedLine.words().size()]);
-			result = new ArrayList<>(Arrays.asList(temp1));
-			return result;
-
-			//TabCompletion completer = new TabCompletion();
-
-			//reader = LineReaderBuilder.builder().terminal(terminal).completer(completer).variable(LineReader.MENU_COMPLETE, true).parser(parser).build();
+	/**
+	 * Creates a new terminal, tab completer, and line reader.
+	 */
+	public void setTerminal(){
+		try {
+			terminal = TerminalBuilder.builder().system(true).build();
+			AggregateCompleter comp = new TabCompletion().updateCompleter();
+			reader = LineReaderBuilder.builder().terminal(terminal).completer(comp).highlighter(highlighter).history(history).variable(LineReader.MENU_COMPLETE, true).build();
+		} catch (IOException e) {
+			System.out.println(e);
 		}
-	} */
-	
+	}
+
 	/**
 	 * Gets an array of strings from the user.
 	 * @param promptHeader The string to print before each command is entered.
@@ -69,21 +67,8 @@ public class UMLInterface {
 	 */
     public ArrayList<String> getInput(String promptHeader) {
 
-		try{
-			terminal = TerminalBuilder.builder().system(true).build();
-			AggregateCompleter comp = new TabCompletion().updateCompleter();
-			reader = LineReaderBuilder.builder().terminal(terminal).completer(comp).variable(LineReader.MENU_COMPLETE, true).build();
-            	
-		}catch(IOException e){
-			System.out.println(e);
-		}
-
     	ArrayList<String> result = new ArrayList<String>();
 		String line = null;
-        //Scanner sc = new Scanner(System.in);
-        //System.out.print(promptHeader);
-        //String userEntry = "";
-        //userEntry += sc.nextLine();
 		line = reader.readLine(promptHeader);
 
         if(line.trim().equalsIgnoreCase("exit")) {
@@ -96,11 +81,9 @@ public class UMLInterface {
         	}
         }
         else {
-        	//result = splitString(userEntry);
 			parser = reader.getParsedLine();
 			String[] arrayLine = parser.words().toArray(new String[parser.words().size()]);
 			result = new ArrayList<String>(Arrays.asList(arrayLine));
-			
         }
         return result;
     }

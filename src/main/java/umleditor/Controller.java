@@ -29,6 +29,7 @@ public class Controller {
 		DiagramModel model = new DiagramModel();
 		UMLInterface view = new UMLInterface();
 		view.displayWelcome();
+		view.setTerminal();
 		boolean userInputLoop = true;
 		ArrayList<String> commands;
 		while(userInputLoop) {

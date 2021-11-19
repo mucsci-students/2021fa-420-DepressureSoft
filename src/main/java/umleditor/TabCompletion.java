@@ -8,9 +8,9 @@ import org.jline.reader.Candidate;
 import org.jline.reader.Completer;
 import org.jline.reader.LineReader;
 import org.jline.reader.ParsedLine;
+import org.jline.reader.impl.completer.NullCompleter;
 import org.jline.reader.impl.completer.AggregateCompleter;
 import org.jline.reader.impl.completer.ArgumentCompleter;
-import org.jline.reader.impl.completer.NullCompleter;
 import org.jline.reader.impl.completer.StringsCompleter;
 
 public class TabCompletion {
@@ -58,6 +58,14 @@ public class TabCompletion {
                         ),
                             new ArgumentCompleter(
                                 new StringsCompleter("redo"),
+                                new NullCompleter()
+                        ),
+                        new ArgumentCompleter(
+                                new StringsCompleter("exit"),
+                                new NullCompleter()
+                        ),
+                        new ArgumentCompleter(
+                                new StringsCompleter("help"),
                                 new NullCompleter()
                         )
         );
