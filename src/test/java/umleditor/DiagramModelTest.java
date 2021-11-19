@@ -291,7 +291,7 @@ class DiagramModelTest {
 			testDiagram.getUML("trial").getMethod("methodName").getMethodType());
 	}
 
-	
+	@Disabled
 	@Test
 	@DisplayName("Undo/redo change method type")
 	void changeMethodTypeUndo() {
