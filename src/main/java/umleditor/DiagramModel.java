@@ -754,6 +754,44 @@ public class DiagramModel {
     }
 
     /**
+     * Checks that a relationship exists between two classes, in either direction.
+     * @param from The first class.
+     * @param to The second class.
+     * @return True if relationship exists, in either direction. False if not.
+     */
+    public boolean relationshipExists(String from, String to) {
+      for(int i = 0; i < relationships.size(); i++){
+          Relationship holder = relationships.get(i);
+          if(holder.getFrom().getName().equals(from) && holder.getTo().getName().equals(to))
+          {
+              return true;
+          }
+          else if(holder.getFrom().getName().equals(to) && holder.getTo().getName().equals(from))
+          {
+              return true;
+          }
+      }
+      return false;
+    }
+
+    /**
+     * Returns the specified relationship.
+     * @param from The "from" component of the relationship.
+     * @param to The "to" component of the relationship.
+     * @return The relationship between "from" and "to".
+     */
+     public Relationship getRelationship(String from, String to) {
+       for(int i = 0; i < relationships.size(); i++){
+           Relationship holder = relationships.get(i);
+           if(holder.getFrom().getName().equals(from) && holder.getTo().getName().equals(to))
+           {
+               return holder;
+           }
+       }
+       return null;
+     }
+
+    /**
      * Adds a class relationship to the diagram, checking to ensure that both classes exist, a relationship
      *  does not already exist between the two classes, and that the relationship is not recursive.
      * Is supported as an undoable operation

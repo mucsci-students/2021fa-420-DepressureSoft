@@ -282,6 +282,33 @@ class DiagramModelTest {
 	}
 
 	@Test
+	@DisplayName("Changing method type")
+	void changeMethodType() {
+		testDiagram.addMethod("trial", "methodName", "void");
+		assertTrue(testDiagram.methodExists("trial", "methodName"));
+		testDiagram.renameMethodType("trial", "methodName", "String[]");
+		assertEquals("String[]",
+			testDiagram.getUML("trial").getMethod("methodName").getMethodType());
+	}
+
+	
+	@Test
+	@DisplayName("Undo/redo change method type")
+	void changeMethodTypeUndo() {
+		testDiagram.addMethod("trial", "methodName", "void");
+		assertTrue(testDiagram.methodExists("trial", "methodName"));
+		testDiagram.renameMethodType("trial", "methodName", "String[]");
+		assertEquals("String[]",
+			testDiagram.getUML("trial").getMethod("methodName").getMethodType());
+		testDiagram.undo();
+		assertEquals("void",
+			testDiagram.getUML("trial").getMethod("methodName").getMethodType());
+		testDiagram.redo();
+		assertEquals("String[]",
+			testDiagram.getUML("trial").getMethod("methodName").getMethodType());
+	}
+
+	@Test
 	@DisplayName("Adding a parameter to a method")
 	void addParameter() {
 		testDiagram.addMethod("trial", "testMethod", "testType");
@@ -428,6 +455,92 @@ class DiagramModelTest {
 	}
 
 	@Test
+	@DisplayName("Add relationship")
+	void addRelationship() {
+		testDiagram.addClass("trial2");
+		testDiagram.addRelationship("trial", "trial2", Relationship.RelationshipType.INHERITANCE);
+		assertTrue(testDiagram.relationshipExists("trial", "trial2"));
+	}
+
+	@Test
+	@DisplayName("Undo/redo add relationship")
+	void addRelationshipUndo() {
+		testDiagram.addClass("trial2");
+		testDiagram.addRelationship("trial", "trial2", Relationship.RelationshipType.INHERITANCE);
+		assertTrue(testDiagram.relationshipExists("trial", "trial2"));
+		testDiagram.undo();
+		assertFalse(testDiagram.relationshipExists("trial", "trial2"));
+		testDiagram.redo();
+		assertTrue(testDiagram.relationshipExists("trial", "trial2"));
+	}
+
+	@Test
+	@DisplayName("Delete relationship")
+	void deleteRelationship() {
+		testDiagram.addClass("trial2");
+		testDiagram.addRelationship("trial", "trial2", Relationship.RelationshipType.INHERITANCE);
+		assertTrue(testDiagram.relationshipExists("trial", "trial2"));
+		testDiagram.deleteRelationship("trial", "trial2");
+		assertFalse(testDiagram.relationshipExists("trial", "trial2"));
+	}
+
+	@Test
+	@DisplayName("Undo/redo delete relationship")
+	void deleteRelationshipUndo() {
+		testDiagram.addClass("trial2");
+		testDiagram.addRelationship("trial", "trial2", Relationship.RelationshipType.INHERITANCE);
+		assertTrue(testDiagram.relationshipExists("trial", "trial2"));
+		testDiagram.deleteRelationship("trial", "trial2");
+		assertFalse(testDiagram.relationshipExists("trial", "trial2"));
+		testDiagram.undo();
+		assertTrue(testDiagram.relationshipExists("trial", "trial2"));
+		testDiagram.redo();
+		assertFalse(testDiagram.relationshipExists("trial", "trial2"));
+	}
+
+	@Test
+	@DisplayName("Attempting to delete relationship with flipped \"to\" and \"from\" classes")
+	void deleteRelationshipOpposite() {
+		testDiagram.addClass("trial2");
+		testDiagram.addRelationship("trial", "trial2", Relationship.RelationshipType.INHERITANCE);
+		assertTrue(testDiagram.relationshipExists("trial", "trial2"));
+		testDiagram.deleteRelationship("trial2", "trial");
+		assertTrue(testDiagram.relationshipExists("trial", "trial2"));
+	}
+
+	@Test
+	@DisplayName("Changing relationship type")
+	void changeRelationshipType() {
+		testDiagram.addClass("trial2");
+		testDiagram.addRelationship("trial", "trial2", Relationship.RelationshipType.INHERITANCE);
+		assertEquals(Relationship.RelationshipType.INHERITANCE,
+			testDiagram.getRelationship("trial", "trial2").getRelationshipType());
+		testDiagram.changeRelationshipType("trial", "trial2",
+			Relationship.RelationshipType.AGGREGATION);
+		assertEquals(Relationship.RelationshipType.AGGREGATION,
+			testDiagram.getRelationship("trial", "trial2").getRelationshipType());
+	}
+
+	@Test
+	@DisplayName("Undo/redo change relationship type")
+	void changeRelationshipTypeUndo() {
+		testDiagram.addClass("trial2");
+		testDiagram.addRelationship("trial", "trial2", Relationship.RelationshipType.INHERITANCE);
+		assertEquals(Relationship.RelationshipType.INHERITANCE,
+			testDiagram.getRelationship("trial", "trial2").getRelationshipType());
+		testDiagram.changeRelationshipType("trial", "trial2",
+			Relationship.RelationshipType.AGGREGATION);
+		assertEquals(Relationship.RelationshipType.AGGREGATION,
+			testDiagram.getRelationship("trial", "trial2").getRelationshipType());
+		testDiagram.undo();
+		assertEquals(Relationship.RelationshipType.INHERITANCE,
+			testDiagram.getRelationship("trial", "trial2").getRelationshipType());
+		testDiagram.redo();
+		assertEquals(Relationship.RelationshipType.AGGREGATION,
+			testDiagram.getRelationship("trial", "trial2").getRelationshipType());
+	}
+
+	@Test
 	@DisplayName("Renaming a class")
 	void renameClass() {
 		testDiagram.renameUMLClass("trial", "renamedClass");
@@ -516,5 +629,29 @@ class DiagramModelTest {
 		assertFalse(testDiagram.fieldExists("trial", "testField"));
 		assertTrue(testDiagram.fieldExists("trial", "renamedField"));
 	}
+
+	@Test
+	@DisplayName("Change field type")
+	void changeFieldType() {
+		testDiagram.addField("trial", "testField", "testType");
+		assertTrue(testDiagram.fieldExists("trial", "testField"));
+		testDiagram.renameFieldType("trial", "testField", "newType");
+		assertEquals("newType", testDiagram.getUML("trial").getField("testField").getFieldType());
+	}
+
+	@Disabled
+	@Test
+	@DisplayName("Undo/redo change field type")
+	void changeFieldTypeUndo() {
+		testDiagram.addField("trial", "testField", "testType");
+		assertTrue(testDiagram.fieldExists("trial", "testField"));
+		testDiagram.renameFieldType("trial", "testField", "newType");
+		assertEquals("newType", testDiagram.getUML("trial").getField("testField").getFieldType());
+		testDiagram.undo();
+		assertEquals("testType", testDiagram.getUML("trial").getField("testField").getFieldType());
+		testDiagram.redo();
+		assertEquals("newType", testDiagram.getUML("trial").getField("testField").getFieldType());
+	}
+
 
 }
