@@ -29,7 +29,7 @@ public class Controller {
 		DiagramModel model = new DiagramModel();
 		UMLInterface view = new UMLInterface();
 		view.displayWelcome();
-		view.setTerminal();
+		view.setTerminal(model);
 		boolean userInputLoop = true;
 		ArrayList<String> commands;
 		while(userInputLoop) {
@@ -71,16 +71,16 @@ public class Controller {
 						if(commands.size() == 4) {
 							view.print("Please specify a relationship type. {aggregation|composition|inheritance|realization}");
 							ArrayList<String> typeInput;
-							typeInput = view.getInput("Relationship Type > ");
+							typeInput = view.getRInput("Relationship Type > ");
 							if(Relationship.getRelTypeFromString(typeInput.get(0)) != null) {
-								m = model.addRelationship(commands.get(2), commands.get(3), Relationship.getRelTypeFromString(typeInput.get(0)));
+								m = model.addRelationship(Relationship.getRelTypeFromString(typeInput.get(0)), commands.get(2), commands.get(3));
 								if (m == null) m = "Added relationship.";
 							} else {
 								view.print("Relationship type must be one of {aggregation|composition|inheritance|realization}");
 							}
 						} else if(commands.size() > 4) {
-							if(Relationship.getRelTypeFromString(commands.get(4)) != null) {
-								m = model.addRelationship(commands.get(2), commands.get(3), Relationship.getRelTypeFromString(commands.get(4)));
+							if(Relationship.getRelTypeFromString(commands.get(2)) != null) {
+								m = model.addRelationship(Relationship.getRelTypeFromString(commands.get(2)), commands.get(3), commands.get(4));
 								if (m == null) m = "Added relationship.";
 							} else {
 								view.print("Relationship type must be one of {aggregation|composition|inheritance|realization}");
@@ -201,9 +201,11 @@ public class Controller {
 						} else {
 							view.print("Class name, method name, parameter name, and new type required.");
 						}
-					} else if(checkKeyword(commands, 1, "relationship")) {
-						if(commands.size() > 4) {
-							m = model.changeRelationshipType(commands.get(2), commands.get(3), Relationship.getRelTypeFromString(commands.get(4)));
+					} else if(checkKeyword(commands, 1, "relationship")) { ///////HI
+						ArrayList<String> typeInput;
+						typeInput = view.getRInput("rElation");
+						if(Relationship.getRelTypeFromString(typeInput.get(2)) != null) {
+							m = model.changeRelationshipType(Relationship.getRelTypeFromString(commands.get(2)), commands.get(3), commands.get(4));
 							if (m == null) m = "Changed relationship type.";
 						} else {
 							view.print("Source class name, destination class name, and new type (one of {aggregation|composition|inheritance|realization}) required.");

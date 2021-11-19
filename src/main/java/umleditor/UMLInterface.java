@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
+import javax.sound.sampled.Line;
+
 import org.jline.builtins.Completers.Completer;
 import org.jline.console.impl.Builtins.Command;
 import org.jline.reader.Highlighter;
@@ -50,15 +52,42 @@ public class UMLInterface {
 	/**
 	 * Creates a new terminal, tab completer, and line reader.
 	 */
-	public void setTerminal(){
+	public void setTerminal(DiagramModel model){
 		try {
 			terminal = TerminalBuilder.builder().system(true).build();
-			AggregateCompleter comp = new TabCompletion().updateCompleter();
+			AggregateCompleter comp = new TabCompletion().updateCompleter(model);
 			reader = LineReaderBuilder.builder().terminal(terminal).completer(comp).highlighter(highlighter).history(history).variable(LineReader.MENU_COMPLETE, true).build();
 		} catch (IOException e) {
 			System.out.println(e);
 		}
 	}
+
+	public ArrayList<String> getRInput(String prompt){
+
+		ArrayList<String> result = new ArrayList<String>();
+		String line = null;
+
+		AggregateCompleter comp2 = new TabCompletion().relationComplete();
+		LineReader reader2 = LineReaderBuilder.builder().terminal(terminal).completer(comp2).build();
+		line = reader2.readLine(prompt);
+
+        if(line.trim().equalsIgnoreCase("exit")) {
+        	boolean exit = yesNoDialog("Are you sure you want to exit?");
+        	if(exit) {
+        		result.add("exit");
+        		return result;
+        	} else {
+        		return result;
+        	}
+        }
+        else {
+			parser = reader.getParsedLine();
+			String[] arrayLine = parser.words().toArray(new String[parser.words().size()]);
+			result = new ArrayList<String>(Arrays.asList(arrayLine));
+        }
+        return result;
+    }
+	
 
 	/**
 	 * Gets an array of strings from the user.
