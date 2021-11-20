@@ -1247,16 +1247,16 @@ public class GUI {
         String relationT = relationshipTypes.getSelectedItem().toString();
 
         if(relationT.equals("Aggregation")){
-            model.addRelationship(classOne,classTwo,RelationshipType.AGGREGATION);
+            model.addRelationship(RelationshipType.AGGREGATION, classOne,classTwo);
         }
         else if(relationT.equals("Compositon")){
-        	model.addRelationship(classOne,classTwo,RelationshipType.COMPOSITION);
+        	model.addRelationship(RelationshipType.COMPOSITION,classOne,classTwo);
         }
         else if(relationT.equals("Inheritance")){
-        	model.addRelationship(classOne,classTwo,RelationshipType.INHERITANCE);
+        	model.addRelationship(RelationshipType.INHERITANCE,classOne,classTwo);
         }
         else if(relationT.equals("Realization")){
-        	model.addRelationship(classOne,classTwo,RelationshipType.REALIZATION);
+        	model.addRelationship(RelationshipType.REALIZATION,classOne,classTwo);
         }
 
         action.dispose();

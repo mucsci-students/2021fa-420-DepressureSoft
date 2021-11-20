@@ -55,13 +55,18 @@ public class UMLInterface {
 	public void setTerminal(DiagramModel model){
 		try {
 			terminal = TerminalBuilder.builder().system(true).build();
-			AggregateCompleter comp = new TabCompletion().updateCompleter(model);
+			AggregateCompleter comp = new TabCompletion().updateCompleter();
 			reader = LineReaderBuilder.builder().terminal(terminal).completer(comp).highlighter(highlighter).history(history).variable(LineReader.MENU_COMPLETE, true).build();
 		} catch (IOException e) {
 			System.out.println(e);
 		}
 	}
 
+	/**
+	 * 
+	 * @param prompt
+	 * @return
+	 */
 	public ArrayList<String> getRInput(String prompt){
 
 		ArrayList<String> result = new ArrayList<String>();

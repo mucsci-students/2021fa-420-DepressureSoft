@@ -78,7 +78,7 @@ public class TabCompletion {
         );
     }
 
-    public AggregateCompleter updateCompleter(DiagramModel model){
+    public AggregateCompleter updateCompleter(){
         Collection<Completer> completers = comp.getCompleters();
         completers = new ArrayList<>(completers);
         return new AggregateCompleter(completers);

@@ -27,8 +27,8 @@ class ModelHistoryTest {
         model.addField("MyClass1", "MyField2", "myType2");
         model.addMethod("MyClass2", "MyMethod1", "myType1");
         model.addParameter("MyClass2", "MyMethod1", "MyParameter", "myType1");
-        model.addRelationship("MyClass1", "MyClass2", Relationship.RelationshipType.AGGREGATION);
-        model.addRelationship("MyClass2", "MyClass1", Relationship.RelationshipType.INHERITANCE);
+        model.addRelationship(Relationship.RelationshipType.AGGREGATION, "MyClass1", "MyClass2");
+        model.addRelationship(Relationship.RelationshipType.INHERITANCE, "MyClass2", "MyClass1");
 
         DiagramModel modelCopy = new DiagramModel(model);
 
@@ -58,7 +58,7 @@ class ModelHistoryTest {
     {
         model.addClass("MyClass1");
         model.addClass("MyClass2");
-        model.addRelationship("MyClass1", "MyClass2", Relationship.RelationshipType.AGGREGATION);
+        model.addRelationship(Relationship.RelationshipType.AGGREGATION, "MyClass1", "MyClass2");
 
         //ensure model copy has classes
         assertEquals(true, model.classExists("MyClass1"));
