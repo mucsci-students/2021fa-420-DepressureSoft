@@ -1551,6 +1551,10 @@ public class GUI {
     	}
     }
 
+    public void refreshBoxes() {
+      
+    }
+
     public boolean duplicateClass(String className){
         if(boxMap.containsKey(className))
         return true;
