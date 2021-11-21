@@ -9,6 +9,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.MouseMotionListener;
+import javax.swing.event.MouseInputListener;
+
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 
@@ -36,7 +39,9 @@ public class GUI {
     JMenuItem deleteClass,deleteRelationship,deleteField,deleteMethod,deleteParameter;
     JMenuItem renameClass,renameField,renameMethod,renameParameter;
 
-    JPanel pane,boxPane,actionPane;
+    public static JPanel pane;
+    public JPanel boxPane;
+    public JPanel actionPane;
 
     JTextField textBoxClassAdd;
     JTextField className,className2,methodName,methodType,fieldName,fieldType,parameterName,parameterType,renamer,fileName;
@@ -47,6 +52,7 @@ public class GUI {
 
     private DiagramModel model = new DiagramModel();
     private HashMap<String,classBox> boxMap = new HashMap();
+    private static HashMap<String,Arrow> arrowMap = new HashMap();
     private classBox box;
 
     public GUI(){
@@ -63,8 +69,8 @@ public class GUI {
     		classBox boxCopy = new classBox((classBox) element.getValue());
     		this.boxMap.put(keyCopy, boxCopy);
     	}
-
     	this.box = new classBox(other.box);
+
     }
 
     public static void main(String[] args){
@@ -656,12 +662,11 @@ public class GUI {
 
     public void deleteRelationship(){
         action = new JFrame("UML Editor");
-        action.setSize(250, 175);
+        action.setSize(250, 125);
         action.setResizable(false);
         action.setLocationRelativeTo(frame);
 
-        JLabel classN = new JLabel("Select Class: ");
-        JLabel classN2 = new JLabel("Select Second Class: ");
+        JLabel classN = new JLabel("Select Relationship: ");
 
         JButton classDeleteButton = new JButton("Delete");
         classDeleteButton.addActionListener(new ActionListener() {
@@ -669,18 +674,13 @@ public class GUI {
                 deleteRelationshipAction();
             }
          });
-        actionPane = new JPanel(new GridLayout(6,1));
+        actionPane = new JPanel(new GridLayout(4,1));
 
-        classNames = new JComboBox(model.getClassNames().toArray());
+        classNames = new JComboBox(arrowMap.keySet().toArray());
         classNames.setMaximumSize(classNames.getPreferredSize());
-
-        classNamesX = new JComboBox(model.getClassNames().toArray());
-        classNamesX.setMaximumSize(classNames.getPreferredSize());
 
         actionPane.add(classN);
         actionPane.add(classNames);
-        actionPane.add(classN2);
-        actionPane.add(classNamesX);
         actionPane.add(classDeleteButton);
         action.add(actionPane);
 
@@ -1142,6 +1142,7 @@ public class GUI {
         String newClass = className.getText();
         if(SourceVersion.isIdentifier(newClass)){
             if(!duplicateClass(newClass)){
+               // snapshot();
                 model.addClass(newClass);
                 box = new classBox(newClass);
                 boxMap.put(newClass,box);
@@ -1169,6 +1170,7 @@ public class GUI {
         String fieldT = fieldType.getText();
         if(SourceVersion.isIdentifier(field)){
             if(!boxMap.get(getClass).duplicateField(field)){
+
                 model.addField(getClass, field, fieldT);
                 box = boxMap.get(getClass);
                 box.addField(field,fieldT);
@@ -1245,29 +1247,35 @@ public class GUI {
         String classOne = classNames.getSelectedItem().toString();
         String classTwo = classNamesX.getSelectedItem().toString();
         String relationT = relationshipTypes.getSelectedItem().toString();
+     //   snapshot();
 
         if(relationT.equals("Aggregation")){
             model.addRelationship(classOne,classTwo,RelationshipType.AGGREGATION);
+            drawArrow(classOne,classTwo,"A");
         }
-        else if(relationT.equals("Compositon")){
-        	model.addRelationship(classOne,classTwo,RelationshipType.COMPOSITION);
+        else if(relationT.equals("Composition")){
+            model.addRelationship(classOne,classTwo,RelationshipType.COMPOSITION);
+            drawArrow(classOne,classTwo,"C");
         }
         else if(relationT.equals("Inheritance")){
-        	model.addRelationship(classOne,classTwo,RelationshipType.INHERITANCE);
+            model.addRelationship(classOne,classTwo,RelationshipType.INHERITANCE);
+            drawArrow(classOne,classTwo,"I");
         }
         else if(relationT.equals("Realization")){
-        	model.addRelationship(classOne,classTwo,RelationshipType.REALIZATION);
+            model.addRelationship(classOne,classTwo,RelationshipType.REALIZATION);
+            drawArrow(classOne,classTwo,"R");
         }
-
-        action.dispose();
         updateButtons();
+        action.dispose();
     }
     /**
      * Delete Actions
      */
+
     public void deleteClassAction(){
         String remClass = classNames.getSelectedItem().toString();
 
+        snapshot();
         model.deleteClass(remClass);
         pane.remove(boxMap.get(remClass).getClassPanel());
         boxMap.remove(remClass);
@@ -1278,17 +1286,20 @@ public class GUI {
 
     public void deleteRelationshipAction(){
         String classOne = classNames.getSelectedItem().toString();
-        String classTwo = classNamesX.getSelectedItem().toString();
 
-        model.deleteRelationship(classOne,classTwo);
+        String[] holder = classOne.split(":");
+        snapshot();
+        model.deleteRelationship(holder[0],holder[1]);
+        arrowMap.remove(classOne);
+        pane.repaint();
+        redrawArrows();
         action.dispose();
         updateButtons();
     }
 
     public void deleteFieldAction(){
         String getClass = classNames.getSelectedItem().toString();
-		String field = fieldNames.getSelectedItem().toString();
-
+		    String field = fieldNames.getSelectedItem().toString();
         model.deleteField(getClass, field);
         box = boxMap.get(getClass);
         box.removeField(field);
@@ -1299,7 +1310,7 @@ public class GUI {
     public void deleteMethodAction(){
         String getClass = classNames.getSelectedItem().toString();
 		String method = methodNames.getSelectedItem().toString();
-
+        snapshot();
         box = boxMap.get(getClass);
         box.removeMethod(method);
         model.deleteMethod(getClass,method);
@@ -1311,7 +1322,7 @@ public class GUI {
         String getClass = classNames.getSelectedItem().toString();
         String method = methodNames.getSelectedItem().toString();
         String param = paramNames.getSelectedItem().toString();
-
+        snapshot();
        model.deleteParameter(getClass, method, param );
        box = boxMap.get(getClass);
        box.removeParameter(param,method);
@@ -1319,13 +1330,15 @@ public class GUI {
        updateButtons();
     }
    /**
-    * Rename Functions
+    * Rename Actions
     */
+    
     public void renameClassAction(){
         String oldClass = classNames.getSelectedItem().toString();
         String newClass = className2.getText();
         if(SourceVersion.isIdentifier(newClass)){
             if(!duplicateClass(newClass)){
+                snapshot();
                 model.renameUMLClass(oldClass,newClass);
                 box = boxMap.get(oldClass);
                 box.renameClass(newClass);
@@ -1352,6 +1365,7 @@ public class GUI {
         String newField = renamer.getText();
         if(SourceVersion.isIdentifier(newField)){
             if(!boxMap.get(getClass).duplicateField(newField)){
+                snapshot();
                 box = boxMap.get(getClass);
                 box.renameField(field,newField);
                 model.renameField(getClass,field,newField);
@@ -1376,6 +1390,7 @@ public class GUI {
         String newMethod = renamer.getText();
         if(SourceVersion.isIdentifier(newMethod)){
             if(!boxMap.get(getClass).duplicateMethod(newMethod)){
+                snapshot();
                 box = boxMap.get(getClass);
                 box.renameMethod(method,newMethod);
                 model.renameMethod(getClass,method,newMethod);
@@ -1407,6 +1422,7 @@ public class GUI {
         //Checks if the new name is proper and that the entry isn't a duplicate.
         if(SourceVersion.isIdentifier(newParam)){
             if(!boxMap.get(getClass).duplicateParameter(method,newParam)){
+                snapshot();
                 model.renameParameter(getClass, method,oldParam,newParam);
                 box = boxMap.get(getClass);
                 box.renameParameter(oldParam,newParam,method);
@@ -1425,6 +1441,36 @@ public class GUI {
         }
     }
 
+    /**
+     * Arrow Methods
+     */
+
+    public void drawArrow(String sourceClass, String destClass, String type) {
+		JPanel sourcePan = boxMap.get(sourceClass).getClassPanel();
+		JPanel destPan = boxMap.get(destClass).getClassPanel();
+
+		Arrow newArrow = new Arrow(sourcePan, destPan, type);
+        
+		String ID = sourceClass + ":" + destClass;
+		arrowMap.put(ID, newArrow);
+		newArrow.setVisible(true);
+		newArrow.setOpaque(false);
+        newArrow.setLocation(0, 0);
+        newArrow.setSize(5, 15);
+
+        pane.add(newArrow);
+		        
+		pane.validate();
+	}
+
+    public static void redrawArrows(){
+        for(String key: arrowMap.keySet()){
+            Arrow temp = arrowMap.get(key);
+            temp.lineLength();
+            temp.repaint();
+        }
+    }
+
     public void undoAction() {
     	GUIHistory history = GUIHistory.getInstance();
     	if(history.isUndoHistoryEmpty()) {
@@ -1434,8 +1480,18 @@ public class GUI {
     		GUI old = history.undo(new GUI(this));
     		this.model = old.model;
     		this.boxMap = old.boxMap;
-    		this.box = old.box;
+            JPanel oPane = new JPanel();
+            oPane.setLayout(new DragLayout());
+            for(classBox value: boxMap.values()){
+                value.getClassPanel().setLocation(value.getClassPanel().getX(),value.getClassPanel().getY());
+                oPane.add(value.getClassPanel());
+            }
+            frame.remove(pane);
+            this.pane = oPane;
     	}
+    	this.pane.repaint();
+        frame.add(pane);
+        frame.setVisible(true);
 
     	updateButtons();
     }
@@ -1457,7 +1513,7 @@ public class GUI {
 
     private void snapshot()
     {
-        GUIHistory history = GUIHistory.getInstance();
+       GUIHistory history = GUIHistory.getInstance();
         history.snapshotModel(new GUI(this));
     }
 
@@ -1570,7 +1626,9 @@ public class GUI {
 
     	//Undo-Redo
     	//Undo
-    	if (!model.canUndo()) {
+
+        GUIHistory instance = GUIHistory.getInstance();
+    	if (instance.isUndoHistoryEmpty()) {
     		undo.setEnabled(false);
     	}
     	else {
@@ -1592,6 +1650,7 @@ public class GUI {
         else
         return false;
     }
+
 
     public void exportDiagramToImage(File toSave)
     {

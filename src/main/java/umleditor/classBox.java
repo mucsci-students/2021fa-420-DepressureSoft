@@ -40,18 +40,21 @@ public class classBox {
     }
 
     public classBox(classBox other){
-        this.className = other.className;
+        JLabel holder = new JLabel(other.getClassName());
+        this.className = holder;
 
         methods = new HashMap<String, JLabel>();
+
         Iterator methodIter = other.methods.entrySet().iterator();
         while (methodIter.hasNext()){
             Map.Entry elem = (Map.Entry) methodIter.next();
             String keyCopy = (String) elem.getKey();
             JLabel labelCopy = new JLabel(((JLabel) elem.getValue()).getText());
             methods.put(keyCopy, labelCopy);
+            methodPanel.add(labelCopy);
         }
-
         params = new HashMap<String, ArrayList<String>>();
+
         Iterator paramIter = other.params.entrySet().iterator();
         while (paramIter.hasNext()){
             Map.Entry elem = (Map.Entry) paramIter.next();
@@ -60,8 +63,9 @@ public class classBox {
             elemArray = ((ArrayList<String>) elem.getValue());
             params.put(keyCopy, elemArray);
         }
-
+    
         fields = new HashMap<String, JLabel>();
+
         Iterator fieldIter = other.fields.entrySet().iterator();
         while (fieldIter.hasNext()){
             Map.Entry elem = (Map.Entry) fieldIter.next();
@@ -72,19 +76,20 @@ public class classBox {
 
         this.panel = other.panel;
         panel.setLocation(other.getClassPanel().getX(), other.getClassPanel().getY());
-
-
         this.fieldPanel = other.fieldPanel;
+        this.methodPanel = other.methodPanel;
         this.gl_panel = other.gl_panel;
 
-        initialize();
+        panel.add(fieldPanel);
+        
+
+       // initialize();
     }
 
     public void initialize(){
         panel = new JPanel();
-
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-    		panel.setBorder(new LineBorder(new Color(20, 20, 20), 1));
+    	panel.setBorder(new LineBorder(new Color(20, 20, 20), 1));
 
         panel.add(className);
         methodPanel = new JPanel();
@@ -98,19 +103,26 @@ public class classBox {
 
 
         MouseInputAdapter movement = new MouseInputAdapter (){
-			       private int x;
-			       private int y;
-			       public void mousePressed(MouseEvent e) {
-				           this.x = e.getX();
-				           this.y = e.getY();
-			       }
-      			public void mouseDragged(MouseEvent e) {
-      				panel.setLocation(panel.getX() + (e.getX() - this.x), panel.getY() + (e.getY() - this.y));
-      			}
-      		};
-
-  		panel.addMouseListener(movement);
-  		panel.addMouseMotionListener(movement);
+          
+			private int x;
+			private int y;
+			public void mousePressed(MouseEvent e) {
+				this.x = e.getX();
+				this.y = e.getY();
+			}
+			public void mouseDragged(MouseEvent e) {
+				panel.setLocation(panel.getX() + (e.getX() - this.x), panel.getY() + (e.getY() - this.y));
+                panel.repaint();
+                GUI.pane.repaint();
+                GUI.redrawArrows();
+			}
+            public void mouseReleased(MouseEvent e) {
+                GUI.redrawArrows();
+			}
+		};
+	
+		panel.addMouseListener(movement);
+		panel.addMouseMotionListener(movement);
 
     }
 
