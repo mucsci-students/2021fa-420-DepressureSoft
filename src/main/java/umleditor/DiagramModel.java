@@ -1026,15 +1026,6 @@ public class DiagramModel {
     }
 
     /**
-     * Checks that the class called name exists in the diagram.
-     * @param name The name of the class to check for.
-     * @return True if class exists, false if not.
-     */
-    public boolean classExists(String name) {
-        return diagram.containsKey(name);
-    }
-
-    /**
      * Adds a field to a class, given that the class exists and that the field is not a duplicate.
      * Is supported as an undoable operation
      * @param className The name of the class to add a field to.
@@ -1220,7 +1211,7 @@ public class DiagramModel {
         return 0;
       }
     }
-    
+
     /**
      * Returns the number of classes currently in the diagram.
      * @return The number of classes in the diagram
