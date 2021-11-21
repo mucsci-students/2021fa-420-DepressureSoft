@@ -64,8 +64,8 @@ public class UMLInterface {
 
 	/**
 	 * 
-	 * @param prompt
-	 * @return
+	 * @param Gets inputs for relationships for tab completer to provide output.
+	 * @return An ArrayList<String> of user commands for relationships. 
 	 */
 	public ArrayList<String> getRInput(String prompt){
 

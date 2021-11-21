@@ -14,6 +14,10 @@ import org.jline.reader.impl.completer.AggregateCompleter;
 import org.jline.reader.impl.completer.ArgumentCompleter;
 import org.jline.reader.impl.completer.StringsCompleter;
 
+/**
+ * Tab Completer class for the UML Diagram. Establishes words meant for completion.
+ */
+
 public class TabCompletion {
 
     private AggregateCompleter comp;
@@ -78,12 +82,20 @@ public class TabCompletion {
         );
     }
 
+    /**
+     * Returns an AggregateCompleter to the UML Interface and Controller. 
+     * @return AggregateCompleter
+     */
     public AggregateCompleter updateCompleter(){
         Collection<Completer> completers = comp.getCompleters();
         completers = new ArrayList<>(completers);
         return new AggregateCompleter(completers);
     }
 
+    /**
+     * Provides an AggregateCompleter for the relationships. 
+     * @return AggregateCompleter
+     */
     public AggregateCompleter relationComplete(){
         AggregateCompleter completers;
 
