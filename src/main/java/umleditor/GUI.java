@@ -1273,6 +1273,7 @@ public class GUI {
 
         action.dispose();
         updateButtons();
+        }
     }
 
     public void drawArrow(String sourceClass, String destClass, String type) {
