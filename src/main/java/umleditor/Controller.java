@@ -3,8 +3,8 @@ package umleditor;
 import java.util.ArrayList;
 
 public class Controller {
-	
-	private static final String ADD_HELP = "ADD: Adds a class, method, field, parameter, or relationship to the diagram.\nadd class <class>\nadd method <class> <method>\nadd field <class> <field>\nadd parameter <class> <method> <parameter>\nadd relationship <source_class> <destination_class> {aggregation|composition|inheritance|realization}";
+
+	private static final String ADD_HELP = "ADD: Adds a class, method, field, parameter, or relationship to the diagram.\nadd class <class>\nadd method <class> <method> <return_type>\nadd field <class> <field> <type>\nadd parameter <class> <method> <parameter> <type>\nadd relationship <source_class> <destination_class> {aggregation|composition|inheritance|realization}";
 	private static final String DELETE_HELP = "DELETE: Deletes a class, method, field, parameter, or relationship from the diagram.\ndelete class <class>\ndelete method <class> <method>\ndelete field <class> <field>\ndelete parameter <class> <method> <parameter>\ndelete relationship <source_class> <destination_class>";
 	private static final String RENAME_HELP = "RENAME: Renames a class, method, field, or parameter.\nrename class <class> <new_name>\nrename method <class> <method> <new_name>\nrename field <class> <field> <new_name>\nrename parameter <class> <method> <parameter> <new_name>";
 	private static final String SAVE_HELP = "SAVE: Saves the current class diagram to a json file. Directory and file name must exist. \".json\" extension is optional and will be appended automatically if not included in file name.\nsave <directory> <file_name>";
@@ -12,19 +12,19 @@ public class Controller {
 	private static final String CHANGETYPE_HELP = "CHANGETYPE: Changes the type of a field, method, parameter, or relationship.\nchangetype field <class> <field> <new_type>\nchangetype method <class> <method> <type> <new_type>\nchangetype relationship <source_class> <destination_class> {aggregation|composition|inheritance|realization}";
 	private static final String DISPLAY_HELP = "DISPLAY: Displays the class diagram in various ways.\ndisplay class <classname>\ndisplay {all|relationships}";
 	private static final String UNDO_HELP = "UNDO: Reverts to the program state before the most recent change.\nundo";
-	private static final String REDO_HELP = "REDO: If undo has been called, reverts to the state of the program before change was undone.\nundo";
+	private static final String REDO_HELP = "REDO: If undo has been called, reverts to the state of the program before change was undone.\nredo";
 	private static final String HELP_MENU = "----------| HELP MENU |----------\n"
 			+ "Type help <command> for additional information about each command.\n"
 			+ "add {class|method|field|parameter|relationship} \n"
 			+ "delete {class|method|field|parameter|relationship}\n"
 			+ "rename {class|method|field|parameter|relationship}\n"
-			+ "save <file_path>\n"
+			+ "save <directory> <file_name>\n"
 			+ "load <file_path>\n"
-			+ "changetype {field|method|relationship}\n"
+			+ "changetype {field|method|parameter|relationship}\n"
 			+ "display {class|all|relationships}\n"
 			+ "undo\n"
 			+ "redo\n";
-	
+
 	public static void main(String[] args) {
 		DiagramModel model = new DiagramModel();
 		UMLInterface view = new UMLInterface();
@@ -46,42 +46,50 @@ public class Controller {
 							view.print("Class name required.");
 						}
 					} else if(checkKeyword(commands, 1, "method")) {
-						if (commands.size() > 3) {
-							m = model.addMethod(commands.get(2), commands.get(3));
+						if (commands.size() > 4) {
+							m = model.addMethod(commands.get(2), commands.get(3), commands.get(4));
 							if (m == null) m = "Added method.";
 						} else {
-							view.print("Class and method names required.");
+							view.print("Class and method names, and return type required.");
 						}
 					} else if(checkKeyword(commands, 1, "field")) {
-						if (commands.size() > 3) {
-							m = model.addField(commands.get(2), commands.get(3));
+						if (commands.size() > 4) {
+							m = model.addField(commands.get(2), commands.get(3), commands.get(4));
 							if (m == null) m = "Added field.";
 						} else {
 							view.print("Class and field names required.");
 						}
 					} else if(checkKeyword(commands, 1, "parameter")) {
-						if(commands.size() > 4) {
-							m = model.addParameter(commands.get(2), commands.get(3), commands.get(4));
+						if(commands.size() > 5) {
+							m = model.addParameter(commands.get(2), commands.get(3), commands.get(4), commands.get(5));
 							if (m == null) m = "Added parameter.";
 						} else {
-							view.print("Class, method, and parameter names required.");
+							view.print("Class, method, parameter names, and parameter type is required.");
 						}
 					} else if(checkKeyword(commands, 1, "relationship")) {
 						if(commands.size() == 4) {
 							view.print("Please specify a relationship type. {aggregation|composition|inheritance|realization}");
 							ArrayList<String> typeInput;
 							typeInput = view.getInput("Relationship Type > ");
-							m = model.addRelationship(commands.get(2), commands.get(3), getRelTypeFromString(typeInput.get(0)));
-							if (m == null) m = "Added relationship.";
+							if(Relationship.getRelTypeFromString(typeInput.get(0)) != null) {
+								m = model.addRelationship(commands.get(2), commands.get(3), Relationship.getRelTypeFromString(typeInput.get(0)));
+								if (m == null) m = "Added relationship.";
+							} else {
+								view.print("Relationship type must be one of {aggregation|composition|inheritance|realization}");
+							}
 						} else if(commands.size() > 4) {
-							m = model.addRelationship(commands.get(2), commands.get(3), getRelTypeFromString(commands.get(4)));
-							if (m == null) m = "Added relationship.";
+							if(Relationship.getRelTypeFromString(commands.get(4)) != null) {
+								m = model.addRelationship(commands.get(2), commands.get(3), Relationship.getRelTypeFromString(commands.get(4)));
+								if (m == null) m = "Added relationship.";
+							} else {
+								view.print("Relationship type must be one of {aggregation|composition|inheritance|realization}");
+							}
 						} else {
 							view.print("Source class and destination class names required.");
 						}
 					} else {
 						view.print("Unrecognized command. Type \"help add\" for more info.");
-					}	
+					}
 				} else if(checkKeyword(commands, 0, "delete")) {
 					if(checkKeyword(commands, 1, "class")) {
 						if(commands.size() > 2) {
@@ -171,7 +179,35 @@ public class Controller {
 						view.print("Load requires a file path to load the file from. Type \"help load\" for more info.");
 					}
 				} else if (checkKeyword(commands, 0, "changetype")) {
-					view.print("Types are not yet implemented. Check back later!");
+					if(checkKeyword(commands, 1, "field")){
+						if(commands.size() > 4){
+							m = model.renameFieldType(commands.get(2), commands.get(3), commands.get(4));
+							if (m == null) m = "Changed field type.";
+						} else {
+							view.print("Class name, field name, and new type required.");
+						}
+					} else if(checkKeyword(commands, 1, "method")){
+						if(commands.size() > 4){
+							m = model.renameMethodType(commands.get(2), commands.get(3), commands.get(4));
+							if (m == null) m = "Changed method type.";
+						} else {
+							view.print("Class name, method name, and new return type required.");
+						}
+					} else if(checkKeyword(commands, 1, "parameter")){
+						if(commands.size() > 5){
+							m = model.renameParameterType(commands.get(2), commands.get(3), commands.get(4), commands.get(5));
+							if (m == null) m = "Changed parameter type.";
+						} else {
+							view.print("Class name, method name, parameter name, and new type required.");
+						}
+					} else if(checkKeyword(commands, 1, "relationship")) {
+						if(commands.size() > 4) {
+							m = model.changeRelationshipType(commands.get(2), commands.get(3), Relationship.getRelTypeFromString(commands.get(4)));
+							if (m == null) m = "Changed relationship type.";
+						} else {
+							view.print("Source class name, destination class name, and new type (one of {aggregation|composition|inheritance|realization}) required.");
+						}
+					}
 				} else if(checkKeyword(commands, 0, "display")) {
 					if(checkKeyword(commands, 1, "all")) {
 						view.print(model.listClasses());
@@ -222,20 +258,20 @@ public class Controller {
 					} else {
 						view.print(HELP_MENU);
 					}
-					
+
 				} else {
 					view.print("Unrecognized command. Type \"help\" to view commands.");
 				}
-				
+
 				if (!m.equals("")) view.print(m);
-				
+
 			}
 			catch (Exception error) {
 				System.out.println(error.getMessage());
 			}
 		}
 	}
-	
+
 	/**
 	 * Checks that a string in a list of strings exists at the specified index.
 	 * @param index The index of the list to look at.
@@ -245,24 +281,4 @@ public class Controller {
 	private static boolean checkKeyword(ArrayList<String> commandList, int index, String keyword) {
 		return (commandList.size() > index) && (commandList.get(index).equalsIgnoreCase(keyword));
 	}
-	
-    /**
-     * Helper method that returns a value from the RelationshipType enum that matches the input string.
-     * @param input The input string.
-     * @return The correct RelationshipType enum value if input equals "aggregation", "composition", "inheritance", 
-     *  or "realization", null if not.
-     */
-    private static Relationship.RelationshipType getRelTypeFromString(String input) throws Exception {
-        if (input.equalsIgnoreCase("aggregation")) {
-            return Relationship.RelationshipType.AGGREGATION;
-        } else if (input.equalsIgnoreCase("composition")) {
-            return Relationship.RelationshipType.COMPOSITION;
-        } else if (input.equalsIgnoreCase("inheritance")) {
-            return Relationship.RelationshipType.INHERITANCE;
-        } else if (input.equalsIgnoreCase("realization")) {
-            return Relationship.RelationshipType.REALIZATION;
-        } else {
-            throw new Exception(input + " is not a valid relationship type.");
-        }
-    }
 }

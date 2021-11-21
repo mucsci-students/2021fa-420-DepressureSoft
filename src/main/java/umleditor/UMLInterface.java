@@ -78,6 +78,13 @@ public class UMLInterface {
     			}
     		}
     	}
+    	for(int i = 0; i < result.size(); i++)
+    	{
+    		if(result.get(i).equalsIgnoreCase("")) {
+    			result.remove(i);
+    			i = -1;
+    		}
+    	}
     	return result;
     }
     

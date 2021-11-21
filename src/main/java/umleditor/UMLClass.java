@@ -1,14 +1,10 @@
 package umleditor;
-/**
- * Authors: Jeffrey Flynn, Jeffrey Cutcher, David Jachimowicz, Alex Balagurak, Jon Brennan
- * Date: 9/15/21
- */
 
 import java.util.ArrayList;
 
 /**
- * Represents a class in a class diagram, including the name of the class, the class's fields, and 
- *  classes related to this class. 
+ * Represents a class in a class diagram, including the name of the class, the class's fields, and
+ *  classes related to this class.
  */
 public class UMLClass {
 
@@ -19,16 +15,25 @@ public class UMLClass {
     /**
      * The fields of the class (does not include methods).
      */
-    private ArrayList<String> fields = new ArrayList<String>();
+    private ArrayList<Field> fields = new ArrayList<Field>();
     /**
      * Names of the classes that this class is related to.
      */
+    @Deprecated
     private ArrayList<String> relationship = new ArrayList<String>();
     /**
      * The methods of the class.
      */
     private ArrayList<Method> methods = new ArrayList<Method>();
-  
+    /**
+     * The x position of this class on the diagram.
+     */
+    private int xPosition;
+    /**
+     * The y position of this class on the diagram.
+     */
+    private int yPosition;
+
     /**
      * Main constructor that sets the name of the new class.
      * @param name The name of the new class.
@@ -39,14 +44,14 @@ public class UMLClass {
 
     public UMLClass(UMLClass other){
         this.dName = other.dName;
-        this.fields = new ArrayList(other.fields);
-        this.relationship = new ArrayList(other.relationship);
+        this.fields = new ArrayList<Field>(other.fields);
+        this.relationship = new ArrayList<String>(other.relationship);
         for(Method m : other.methods){
             Method methodCopy = new Method(m);
             methods.add(methodCopy);
         }
     }
-    
+
     /**
      * Renames the class representation.
      * @param newName The new name for the class representation.
@@ -56,9 +61,42 @@ public class UMLClass {
     }
 
     /**
+     * Returns the x position of this class.
+     * @return The x position of this class.
+     */
+    public int getXPosition() {
+    	return this.xPosition;
+    }
+
+    /**
+     * Returns the y position of this class.
+     * @return The y position of this class.
+     */
+    public int getYPosition() {
+    	return this.yPosition;
+    }
+
+    /**
+     * Sets the x position of this class.
+     * @param newX The new x position.
+     */
+    public void setXPosition(int newX) {
+    	this.xPosition = newX;
+    }
+
+    /**
+     * Sets the y position of this class.
+     * @param newY The new y position.
+     */
+    public void setYPosition(int newY) {
+    	this.yPosition = newY;
+    }
+
+    /**
      * Adds a relationship to the class representation.
      * @param newRelation The name of the class that this class will be related to.
      */
+    @Deprecated
     public void addRelationship(String newRelation){
         relationship.add(newRelation);
     }
@@ -67,6 +105,7 @@ public class UMLClass {
      * Deletes a relationship to the class representation.
      * @param deleteRelation The name of the class that this class is related to that will be deleted.
      */
+    @Deprecated
     public void deleteRelationship(String deleteRelation){
         relationship.remove(deleteRelation);
     }
@@ -75,8 +114,8 @@ public class UMLClass {
      * Adds a new method to the class representation.
      * @param methodName The name of the new method.
      */
-    public void addMethod(String methodName){
-        methods.add(new Method(methodName));
+    public void addMethod(String methodName, String methodType){
+        methods.add(new Method(methodName, methodType));
     }
 
     /**
@@ -92,13 +131,24 @@ public class UMLClass {
     }
 
     /**
-     * Renames a method if it exists in the class representation. 
-     * @param currentMethod 
-     * @param newMethodName 
+     * Renames a method if it exists in the class representation.
+     * @param currentMethod
+     * @param newMethodName
      */
     public void renameMethod(String currentMethod, String newMethodName){
         if(getMethod(currentMethod) != null) {
             getMethod(currentMethod).renameMethod(newMethodName);
+        }
+    }
+
+    /**
+     * Sets the method return type to a new type in the class representation.
+     * @param currentMethod
+     * @param newMethodType
+     */
+    public void renameMethodType(String currentMethod, String newMethodType){
+        if(getMethod(currentMethod) != null){
+            getMethod(currentMethod).renameMethodType(newMethodType);
         }
     }
 
@@ -145,9 +195,9 @@ public class UMLClass {
      * @param methodName The name of the method to add the parameter to.
      * @param pName The name of the parameter to add.
      */
-    public void addParameter(String methodName, String pName){
+    public void addParameter(String methodName, String pName, String pType){
         if (getMethod(methodName) != null) {
-            getMethod(methodName).addParameter(pName);
+            getMethod(methodName).addParameter(pName, pType);
         }
     }
 
@@ -176,8 +226,8 @@ public class UMLClass {
      * Adds a new field the class representation.
      * @param newField The name of the new field.
      */
-    public void addField(String newField){
-        fields.add(newField);
+    public void addField(String newField, String fieldType){
+        fields.add(new Field(newField, fieldType));
     }
 
     /**
@@ -185,7 +235,11 @@ public class UMLClass {
      * @param removedField The name of the field to delete.
      */
     public void removeField(String removedField){
-        fields.remove(removedField);
+        for(int index = 0; index < fields.size(); index++) {
+            if (fields.get(index).getFieldName().equals(removedField)) {
+                fields.remove(index);
+            }
+        }
     }
 
     /**
@@ -194,17 +248,64 @@ public class UMLClass {
      * @param newName New name for the field.
      */
     public void renameField(String oldName, String newName){
-        int index = fields.indexOf(oldName);
-        fields.set(index, newName);
+        if(getField(oldName) != null) {
+            getField(oldName).renameField(newName);
+        }
+    }
+
+    /**
+     * Sets the current field type to a new type in the class representation.
+     * @param fieldName
+     * @param newType
+     */
+    public void renameFieldType(String fieldName, String newType){
+        if(getField(fieldName) != null){
+            getField(fieldName).renameFieldType(newType);
+        }
+    }
+
+    /**
+     * Returns the field in the UML Class.
+     * @param fieldName
+     * @return field
+     */
+    public Field getField(String fieldName){
+        for(int index = 0; index < fields.size(); index++) {
+            if (fields.get(index).getFieldName().equals(fieldName)) {
+                return fields.get(index);
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Checks to see if the field exists in the UML Class.
+     * @param fieldName
+     * @return
+     */
+    public boolean fieldExists(String fieldName) {
+        return (getField(fieldName) != null);
     }
 
     /**
      * Returns an ArrayList<String> of all the class representation's fields.
      * @return The fields ArrayList.
      */
-    public  ArrayList<String> getFields(){
+    public  ArrayList<Field> getFields(){
         return fields;
     }
+
+    /**
+     * Returns ArrayList<String> of the field names.
+     * @return
+     */
+    public ArrayList<String> getStringFields(){
+        ArrayList<String> holder = new ArrayList<String>();
+         for(Field f: fields){
+             holder.add(f.getFieldName());
+         };
+         return holder;
+     }
 
     /**
      * Returns an ArrayList<String> of all the classes related to this class.

@@ -1,5 +1,50 @@
 ## Design Patterns
 
-1. Singleton - ModelHistory.java:41-49
+1. Singleton 
+- ModelHistory acts such that only a single instance of it can ever exist, which is in historySingleton.
+getInstance() acts as its constructor, and returns the private static singleton if it is not null. This provides history for the CLI.
+- GUIHistory acts similarly so that only one guiHistorySingleton can exist. This holds GUI history.
+- File: ModelHistory.java
+- Line #: 10, 40-48
+- File: GUIHistory.java
+- Line #: 7, 19-27
 
-2. Memento - ModelHistory.java:56-60
+2. Memento 
+- Allows implementation of undo and redo functionality. Prior to a change being made to the CLI model
+or the GUI, the current state of the model is snapshotted and pushed onto an undo stack for access.
+- File: ModelHistory.java
+- Line #: 55-59
+- File: GUIHistory.java
+- Line #: 29-33
+
+3. Iterator
+  - Implemented to create a diagram model from an existing diagram model
+  - File: DiagramModel.java
+  - Line #: 49-55
+  
+4. Composite
+  - The GUI uses a composite design pattern, as the JFrame is composed of JMenus, JLabels, JComboBoxes, and JPanels, all of which can be treated as individual objects with 
+    possible children.
+  - File: GUI.java
+
+5. Adapter 
+  - The GUI uses .toArray() to adapt an ArrayList of strings into a standard array.
+  - File: GUI.java
+  - Line #: 537
+  
+6. Bridge 
+  - Relationship.java extends DiagramModel.java, such that Relationship.java handles all relationship types and their implementation, and DiagramModel.java handles class
+    creation and only creates Relationship objects. New types of relationships could be added to Relationship.java without issue.
+  - Files: Relationship.java, DiagramModel.java
+  
+7. Prototype
+  - A copy constructor exists within UMLClass.java that allows a copy of an existing class to be made. This copy class is independent of its original.
+  - File: UMLClass.java
+  - Line #: 40-48
+
+8. Facade
+  - The user interacts with the CLI or GUI, both of which are facades providing a screen from the rest of the application implementation. 
+  - Fles: UserInterface.java, GUI.java
+  
+9. MVC 
+  - MVC design pattern used to differentiate model, view, and controller functionality.
