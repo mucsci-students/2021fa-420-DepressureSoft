@@ -75,7 +75,7 @@ public class Arrow extends JPanel{
         	destPoint.y = (destPanel.getHeight() / 2) + destPanel.getY();
         }
         Graphics g = GUI.pane.getGraphics();
-        drawLine(g);
+        paintComponent(g);
 	}
 	
 	// Draws the arrow head
@@ -120,7 +120,8 @@ public class Arrow extends JPanel{
 	}
 	
 	//Draws the line based on the relationship
-	public void drawLine(Graphics g) {
+	@Override
+	protected void paintComponent(Graphics g) {
 
 		super.paintComponent(g);
 		

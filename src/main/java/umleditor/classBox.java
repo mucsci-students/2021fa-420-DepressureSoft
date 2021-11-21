@@ -111,8 +111,12 @@ public class classBox {
 			}
 			public void mouseDragged(MouseEvent e) {
 				panel.setLocation(panel.getX() + (e.getX() - this.x), panel.getY() + (e.getY() - this.y));
-                GUI.redrawArrows();
                 panel.repaint();
+                GUI.pane.repaint();
+                GUI.redrawArrows();
+			}
+            public void mouseReleased(MouseEvent e) {
+                GUI.redrawArrows();
 			}
 		};
 	

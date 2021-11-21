@@ -1252,12 +1252,13 @@ public class GUI {
         for(String key: arrowMap.keySet()){
             Arrow temp = arrowMap.get(key);
             temp.lineLength();
-
+            temp.repaint();
         }
     }
     /**
      * Delete Actions
      */
+
     public void deleteClassAction(){
         String remClass = classNames.getSelectedItem().toString();
 
