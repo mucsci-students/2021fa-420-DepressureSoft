@@ -662,12 +662,11 @@ public class GUI {
 
     public void deleteRelationship(){
         action = new JFrame("UML Editor");
-        action.setSize(250, 175);
+        action.setSize(250, 125);
         action.setResizable(false);
         action.setLocationRelativeTo(frame);
 
-        JLabel classN = new JLabel("Select Class: ");
-        JLabel classN2 = new JLabel("Select Second Class: ");
+        JLabel classN = new JLabel("Select Relationship: ");
 
         JButton classDeleteButton = new JButton("Delete");
         classDeleteButton.addActionListener(new ActionListener() {
@@ -675,18 +674,13 @@ public class GUI {
                 deleteRelationshipAction();
             }
          });
-        actionPane = new JPanel(new GridLayout(6,1));
+        actionPane = new JPanel(new GridLayout(4,1));
 
-        classNames = new JComboBox(model.getClassNames().toArray());
+        classNames = new JComboBox(arrowMap.keySet().toArray());
         classNames.setMaximumSize(classNames.getPreferredSize());
-
-        classNamesX = new JComboBox(model.getClassNames().toArray());
-        classNamesX.setMaximumSize(classNames.getPreferredSize());
 
         actionPane.add(classN);
         actionPane.add(classNames);
-        actionPane.add(classN2);
-        actionPane.add(classNamesX);
         actionPane.add(classDeleteButton);
         action.add(actionPane);
 
@@ -1270,45 +1264,9 @@ public class GUI {
         else if(relationT.equals("Realization")){
             model.addRelationship(classOne,classTwo,RelationshipType.REALIZATION);
             drawArrow(classOne,classTwo,"R");
-
-        action.dispose();
+        }
         updateButtons();
-        }
-    }
-
-    public void drawArrow(String sourceClass, String destClass, String type) {
-		JPanel sourcePan = boxMap.get(sourceClass).getClassPanel();
-		JPanel destPan = boxMap.get(destClass).getClassPanel();
-
-		Arrow newArrow = new Arrow(sourcePan, destPan, type);
-        
-		String ID = sourceClass + ":" + destClass;
-		arrowMap.put(ID, newArrow);
-		newArrow.setVisible(true);
-		newArrow.setOpaque(false);
-        newArrow.setLocation(0, 0);
-        newArrow.setSize(5, 15);
-
-        pane.add(newArrow);
-		        
-		pane.validate();
-	}
-
-    public void deleteArrow(String classOne, String classTwo){
-        String holder = classOne + ":" + classTwo;
-
-        Arrow oldArrow = arrowMap.get(holder);
-        oldArrow.setVisible(false);
-
-        arrowMap.remove(holder);
-    }
-  
-    public static void redrawArrows(){
-        for(String key: arrowMap.keySet()){
-            Arrow temp = arrowMap.get(key);
-            temp.lineLength();
-            temp.repaint();
-        }
+        action.dispose();
     }
     /**
      * Delete Actions
@@ -1328,9 +1286,13 @@ public class GUI {
 
     public void deleteRelationshipAction(){
         String classOne = classNames.getSelectedItem().toString();
-        String classTwo = classNamesX.getSelectedItem().toString();
+
+        String[] holder = classOne.split(":");
         snapshot();
-        model.deleteRelationship(classOne,classTwo);
+        model.deleteRelationship(holder[0],holder[1]);
+        arrowMap.remove(classOne);
+        pane.repaint();
+        redrawArrows();
         action.dispose();
         updateButtons();
     }
@@ -1368,8 +1330,9 @@ public class GUI {
        updateButtons();
     }
    /**
-    * Rename Functions
+    * Rename Actions
     */
+    
     public void renameClassAction(){
         String oldClass = classNames.getSelectedItem().toString();
         String newClass = className2.getText();
@@ -1475,6 +1438,36 @@ public class GUI {
         else{
             errorMessage.setText("Improper Name.");
             actionPane.validate();
+        }
+    }
+
+    /**
+     * Arrow Methods
+     */
+
+    public void drawArrow(String sourceClass, String destClass, String type) {
+		JPanel sourcePan = boxMap.get(sourceClass).getClassPanel();
+		JPanel destPan = boxMap.get(destClass).getClassPanel();
+
+		Arrow newArrow = new Arrow(sourcePan, destPan, type);
+        
+		String ID = sourceClass + ":" + destClass;
+		arrowMap.put(ID, newArrow);
+		newArrow.setVisible(true);
+		newArrow.setOpaque(false);
+        newArrow.setLocation(0, 0);
+        newArrow.setSize(5, 15);
+
+        pane.add(newArrow);
+		        
+		pane.validate();
+	}
+
+    public static void redrawArrows(){
+        for(String key: arrowMap.keySet()){
+            Arrow temp = arrowMap.get(key);
+            temp.lineLength();
+            temp.repaint();
         }
     }
 
