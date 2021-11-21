@@ -62,6 +62,25 @@ public class Relationship {
     public RelationshipType getRelationshipType() {
         return this.type;
     }
+    
+    /**
+     * Returns a String of the current relationship's type.
+     * @return A string containing one of {Aggregation|Composition|Inheritance|Realization}, or null if this relationship
+     * 	type is null.
+     */
+    public String getRelationshipTypeString() {
+    	if (this.type.equals(RelationshipType.AGGREGATION)) {
+    		return "aggregation";
+    	} else if (this.type.equals(RelationshipType.COMPOSITION)) {
+    		return "composition";
+    	} else if (this.type.equals(RelationshipType.INHERITANCE)) {
+    		return "inheritance";
+    	} else if (this.type.equals(RelationshipType.REALIZATION)) {
+    		return "realization";
+    	} else {
+    		return null;
+    	}
+    }
 
     /**
      * Changes the type of the relationship.
@@ -76,5 +95,25 @@ public class Relationship {
         System.out.println(from.getName());
         System.out.println(to.getName());
         System.out.println(type);
+    }
+    
+    /**
+     * Helper method that returns a value from the RelationshipType enum that matches the input string.
+     * @param input The input string.
+     * @return The correct RelationshipType enum value if input equals "aggregation", "composition", "inheritance", 
+     *  or "realization", null if not.
+     */
+    public static Relationship.RelationshipType getRelTypeFromString(String input) {
+        if (input.equalsIgnoreCase("aggregation")) {
+            return Relationship.RelationshipType.AGGREGATION;
+        } else if (input.equalsIgnoreCase("composition")) {
+            return Relationship.RelationshipType.COMPOSITION;
+        } else if (input.equalsIgnoreCase("inheritance")) {
+            return Relationship.RelationshipType.INHERITANCE;
+        } else if (input.equalsIgnoreCase("realization")) {
+            return Relationship.RelationshipType.REALIZATION;
+        } else {
+            return null;
+        }
     }
 }

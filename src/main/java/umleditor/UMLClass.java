@@ -1,14 +1,10 @@
 package umleditor;
-/**
- * Authors: Jeffrey Flynn, Jeffrey Cutcher, David Jachimowicz, Alex Balagurak, Jon Brennan
- * Date: 9/15/21
- */
 
 import java.util.ArrayList;
 
 /**
- * Represents a class in a class diagram, including the name of the class, the class's fields, and 
- *  classes related to this class. 
+ * Represents a class in a class diagram, including the name of the class, the class's fields, and
+ *  classes related to this class.
  */
 public class UMLClass {
 
@@ -23,12 +19,21 @@ public class UMLClass {
     /**
      * Names of the classes that this class is related to.
      */
+    @Deprecated
     private ArrayList<String> relationship = new ArrayList<String>();
     /**
      * The methods of the class.
      */
     private ArrayList<Method> methods = new ArrayList<Method>();
-  
+    /**
+     * The x position of this class on the diagram.
+     */
+    private int xPosition;
+    /**
+     * The y position of this class on the diagram.
+     */
+    private int yPosition;
+
     /**
      * Main constructor that sets the name of the new class.
      * @param name The name of the new class.
@@ -39,14 +44,14 @@ public class UMLClass {
 
     public UMLClass(UMLClass other){
         this.dName = other.dName;
-        this.fields = new ArrayList(other.fields);
-        this.relationship = new ArrayList(other.relationship);
+        this.fields = new ArrayList<Field>(other.fields);
+        this.relationship = new ArrayList<String>(other.relationship);
         for(Method m : other.methods){
             Method methodCopy = new Method(m);
             methods.add(methodCopy);
         }
     }
-    
+
     /**
      * Renames the class representation.
      * @param newName The new name for the class representation.
@@ -56,9 +61,42 @@ public class UMLClass {
     }
 
     /**
+     * Returns the x position of this class.
+     * @return The x position of this class.
+     */
+    public int getXPosition() {
+    	return this.xPosition;
+    }
+
+    /**
+     * Returns the y position of this class.
+     * @return The y position of this class.
+     */
+    public int getYPosition() {
+    	return this.yPosition;
+    }
+
+    /**
+     * Sets the x position of this class.
+     * @param newX The new x position.
+     */
+    public void setXPosition(int newX) {
+    	this.xPosition = newX;
+    }
+
+    /**
+     * Sets the y position of this class.
+     * @param newY The new y position.
+     */
+    public void setYPosition(int newY) {
+    	this.yPosition = newY;
+    }
+
+    /**
      * Adds a relationship to the class representation.
      * @param newRelation The name of the class that this class will be related to.
      */
+    @Deprecated
     public void addRelationship(String newRelation){
         relationship.add(newRelation);
     }
@@ -67,6 +105,7 @@ public class UMLClass {
      * Deletes a relationship to the class representation.
      * @param deleteRelation The name of the class that this class is related to that will be deleted.
      */
+    @Deprecated
     public void deleteRelationship(String deleteRelation){
         relationship.remove(deleteRelation);
     }
@@ -92,9 +131,9 @@ public class UMLClass {
     }
 
     /**
-     * Renames a method if it exists in the class representation. 
-     * @param currentMethod 
-     * @param newMethodName 
+     * Renames a method if it exists in the class representation.
+     * @param currentMethod
+     * @param newMethodName
      */
     public void renameMethod(String currentMethod, String newMethodName){
         if(getMethod(currentMethod) != null) {
@@ -103,7 +142,7 @@ public class UMLClass {
     }
 
     /**
-     * Sets the method return type to a new type in the class representation. 
+     * Sets the method return type to a new type in the class representation.
      * @param currentMethod
      * @param newMethodType
      */
@@ -255,7 +294,7 @@ public class UMLClass {
     public  ArrayList<Field> getFields(){
         return fields;
     }
-    
+
     /**
      * Returns ArrayList<String> of the field names.
      * @return
