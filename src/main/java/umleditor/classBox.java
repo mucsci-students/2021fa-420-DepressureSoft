@@ -118,10 +118,6 @@ public class classBox {
             public void mouseReleased(MouseEvent e) {
                 GUI.redrawArrows();
 			}
-            public void mouseReleased(MouseEvent e) {
-				panel.setLocation(panel.getX() + (e.getX() - this.x), panel.getY() + (e.getY() - this.y));
-                GUI.redrawArrows();
-			}
 		};
 	
 		panel.addMouseListener(movement);
