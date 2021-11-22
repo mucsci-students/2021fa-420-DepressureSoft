@@ -1250,20 +1250,20 @@ public class GUI {
      //   snapshot();
 
         if(relationT.equals("Aggregation")){
-            model.addRelationship(classOne,classTwo,RelationshipType.AGGREGATION);
-            drawArrow(classOne,classTwo,"A");
+            model.addRelationship(RelationshipType.AGGREGATION,classOne,classTwo);
+            drawArrow("A",classOne,classTwo);
         }
         else if(relationT.equals("Composition")){
-            model.addRelationship(classOne,classTwo,RelationshipType.COMPOSITION);
-            drawArrow(classOne,classTwo,"C");
+            model.addRelationship(RelationshipType.COMPOSITION,classOne,classTwo);
+            drawArrow("C",classOne,classTwo);
         }
         else if(relationT.equals("Inheritance")){
-            model.addRelationship(classOne,classTwo,RelationshipType.INHERITANCE);
-            drawArrow(classOne,classTwo,"I");
+            model.addRelationship(RelationshipType.INHERITANCE,classOne,classTwo);
+            drawArrow("I",classOne,classTwo);
         }
         else if(relationT.equals("Realization")){
-            model.addRelationship(classOne,classTwo,RelationshipType.REALIZATION);
-            drawArrow(classOne,classTwo,"R");
+            model.addRelationship(RelationshipType.REALIZATION,classOne,classTwo);
+            drawArrow("R",classOne,classTwo);
         }
         updateButtons();
         action.dispose();

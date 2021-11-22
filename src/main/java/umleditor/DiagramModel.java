@@ -114,8 +114,7 @@ public class DiagramModel {
         }
     }
 
-
-
+    
     /**
      * Saves the class diagram to a JSON file using the format specified by the CSCI 420 fall 2021
      * standardization committee.
@@ -268,7 +267,7 @@ public class DiagramModel {
                     throw new Exception("Invalid relationship type in json file in relationship between " +
                         source + ":" + destination + ".");
                 }
-                this.addRelationship(source, destination, relType);
+                this.addRelationship(relType, source, destination);
             }
             return null;
         }
@@ -803,7 +802,7 @@ public class DiagramModel {
      *  or REALIZATION.
      * @return null if action is successful, appropriate error message if not
      */
-    public String addRelationship(String from, String to, Relationship.RelationshipType type)
+    public String addRelationship(Relationship.RelationshipType type, String from, String to)
     {
         boolean fromClassExists = classExists(from);
         boolean toClassExists = classExists(to);
@@ -926,7 +925,7 @@ public class DiagramModel {
      * @param newType The new type to assign the relationship to.
      * @return null if action is successful, appropriate error message if not
      */
-    public String changeRelationshipType(String from, String to, Relationship.RelationshipType newType) {
+    public String changeRelationshipType(Relationship.RelationshipType newType, String from, String to) {
         boolean fromClassExists = classExists(from);
         boolean toClassExists = classExists(to);
 
