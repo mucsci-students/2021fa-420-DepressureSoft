@@ -1251,19 +1251,19 @@ public class GUI {
 
         if(relationT.equals("Aggregation")){
             model.addRelationship(RelationshipType.AGGREGATION,classOne,classTwo);
-            drawArrow("A",classOne,classTwo);
+            drawArrow(classOne,classTwo, "A");
         }
         else if(relationT.equals("Composition")){
             model.addRelationship(RelationshipType.COMPOSITION,classOne,classTwo);
-            drawArrow("C",classOne,classTwo);
+            drawArrow(classOne,classTwo, "C");
         }
         else if(relationT.equals("Inheritance")){
             model.addRelationship(RelationshipType.INHERITANCE,classOne,classTwo);
-            drawArrow("I",classOne,classTwo);
+            drawArrow(classOne,classTwo, "I");
         }
         else if(relationT.equals("Realization")){
             model.addRelationship(RelationshipType.REALIZATION,classOne,classTwo);
-            drawArrow("R",classOne,classTwo);
+            drawArrow(classOne,classTwo, "R");
         }
         updateButtons();
         action.dispose();
