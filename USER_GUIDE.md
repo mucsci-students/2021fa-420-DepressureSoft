@@ -95,8 +95,6 @@ If a command is grayed out, that command is currently unavailable because of the
 
 Please reference the "Help" button to find a brief overview of available commands. 
 
-All command descriptions are identical to their CLI versions, so if you desire more detailed explanation of a command please consult the corresponding CLI command documentation above. 
-
 When wishing to terminate the program, please select the red "X" button in the upper-right corner of the window. 
 
 ### GUI Button Header Structure
@@ -107,7 +105,7 @@ When wishing to terminate the program, please select the red "X" button in the u
 
 - Add
   - Class
-  - Relatioship
+  - Relationship
   - Field
   - Method
   - Parameter
@@ -130,3 +128,112 @@ When wishing to terminate the program, please select the red "X" button in the u
   - Redo (Also accessible via keyboard shortcut CTRL + Y)
 
 - Help
+
+### GUI File Buttons
+
+- Save
+  - Enter name to save UML Diagram file as.
+  - Select "Save" to save the UML Diagram as JSON file.
+- Save as Image
+  - Enter name to save UML Diagram image as.
+  - Select "Save" to save the UML Diagram as a jpg.
+- Load
+  - Locate UML Diagram JSON file to load.
+  - Select "Load" to load the UML Diagram JSON file into the program.
+
+### GUI Add Buttons
+
+- Class
+  - ![image](https://user-images.githubusercontent.com/70029899/142935167-9b2e58e5-39e1-4652-98ed-e7bb3623bf3c.png)
+  - Enter the desired name of the class in the text box, then select "Add" to add the class to the UML Diagram.
+- Method
+  - ![image](https://user-images.githubusercontent.com/70029899/142935954-40cee265-d4af-4664-bac9-fdf9ee179342.png)
+  - Select the desired class from the "Select Class" dropdown box.
+  - Enter the desired name of the method in the "Enter Method Name" text box.
+  - Enter the desired method return type in the "Enter Method Return Type" text box.
+  - Select "Add" to add the method to the desired class in the UML Diagram. 
+- Field
+  - ![image](https://user-images.githubusercontent.com/70029899/142936312-f2709d5c-f21f-4236-99b9-76578396932b.png)
+  - Select the desired class from the "Select Class" dropdown box.
+  - Enter the desired name of the field in the "Enter Field Name" text box.
+  - Enter the desired field return type in the "Enter Field Type" text box.
+  - Select "Add" to add the field to the desired class in the UML Diagram.
+- Parameter
+  - ![image](https://user-images.githubusercontent.com/70029899/142940862-47c6e40d-5c69-4333-ac97-7afc5fd64cda.png)
+  - Select the desired class from the "Select Class" dropdown box.
+  - Select the desired method from the "Select Method" dropdown box.
+  - Enter the desired parameter name in the "Enter Parameter Name" text box.
+  - Enter the desired parameter type in the "Enter Parameter Type" text box.
+  - Select "Add" to add the parameter to the desired method within the desired class in the UML Diagram. 
+- Relationship
+  - ![image](https://user-images.githubusercontent.com/70029899/142941257-bbc3a978-5f2f-416b-9941-573bd23e93d3.png)
+  - Select the desired source class from the "Select First Class" dropdown box.
+  - Select the desired destination class from the "Select Second Class" dropdown box.
+  - Select the desired relationship type from the "Select Relationship Type" dropdown box.
+  - Select "Add" to add the relationship between the desired classes in the UML Diagram. 
+
+### GUI Delete Buttons
+
+- Class
+  - ![image](https://user-images.githubusercontent.com/70029899/142941783-2fbf2aa5-c25c-4320-bf38-6bae1cc64cbc.png)
+  - Select the desired class from the "Select Class" dropdown box.
+  - Select "Delete" to remove the desired class from the UML Diagram.
+- Method
+  - ![image](https://user-images.githubusercontent.com/70029899/142943187-8db89429-ae3c-4469-b037-9c6a15d356de.png)
+  - Select the desired class from the "Select Class" dropdown box.
+  - Select the desired method from the "Select Method" dropdown box.
+  - Select "Delete" to remove the desired method from the UML Diagram.
+- Field
+  - ![image](https://user-images.githubusercontent.com/70029899/142943370-13f19e85-9d2d-4abc-a8fd-1749b17a799f.png)
+  - Select the desired class from the "Select Class" dropdown box.
+  - Select the desired field from the "Select field" dropdown box.
+  - Select "Delete" to remove the desired field from the UML Diagram. 
+- Parameter
+  - ![image](https://user-images.githubusercontent.com/70029899/142943823-51bea805-37d5-4302-b251-2212afbdcbac.png)
+  - Select the desired class from the "Select Class" dropdown box.
+  - Select the desired method from the "Select Method" dropdown box.
+  - Select the desired parameter from the "Select Parameter" dropdown box.
+  - Select "Delete" to remove the desired parameter from the UML Diagram.
+- Relationship
+  - ![image](https://user-images.githubusercontent.com/70029899/142943939-b199c8d7-d75a-421e-adcf-76e8dfe0d3f2.png)
+  - Select the desired relationship from the "Select Relationship" dropdown box.
+  - Select "Delete" to remove the desired relationship from the UML Diagram.
+
+### GUI Rename Buttons
+
+- Class
+  - ![image](https://user-images.githubusercontent.com/70029899/142944873-63b9c9c1-1562-41da-9a36-10bd72dac1b7.png)
+  - Select the desired class from the "Select Class" dropdown box.
+  - Enter the new name of the class in the "Enter NEW Class Name" text box.
+  - Select "Rename" to rename the desired class in the UML Diagram.
+- Method
+  - ![image](https://user-images.githubusercontent.com/70029899/142945010-a8deeb37-11ee-43e8-b41e-2532d93ab5f8.png)
+  - Select the desired class from the "Select Class" dropdown box.
+  - Select the desired method from the "Select Method" dropdown box.
+  - Enter the new name of the method in the "Enter NEW Method Name" text box.
+  - Select "Rename" to rename the desired method in the UML Diagram.
+- Field
+  - ![image](https://user-images.githubusercontent.com/70029899/142945144-dfa5f712-1ce2-44ed-b844-8e8997428ec4.png)
+  - Select the desired class from the "Select Class" dropdown box.
+  - Select the desired field from the "Select Field" dropdown box.
+  - Enter the new name of the field in the "Enter NEW Field Name" text box.
+  - Select "Rename" to rename the desired field in the UML Diagram.
+- Parameter
+  - ![image](https://user-images.githubusercontent.com/70029899/142945242-a0f0ff2e-566f-4325-9a72-0f3da9d3f603.png)
+  - Select the desired class from the "Select Class" dropdown box.
+  - Select the desired method from the "Select Method" dropdown box.
+  - Select the desired parameter from the "Select Parameter" dropdown box.
+  - Enter the new name of the parameter in the "Enter NEW Parameter Name" text box.
+  - Select "Rename" to rename the desired parameter in the UML Diagram.  
+
+### GUI Edit Buttons
+
+- Undo
+  - Reverts to the program state before the most recent change.
+- Redo
+  - Reverts to the program state before "undo" was executed, if "undo" has been executed.
+
+### GUI Help Button
+
+- Help
+  - Displays the help menu.
