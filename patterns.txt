@@ -44,7 +44,22 @@ or the GUI, the current state of the model is snapshotted and pushed onto an und
 
 8. Facade
   - The user interacts with the CLI or GUI, both of which are facades providing a screen from the rest of the application implementation. 
-  - Fles: UserInterface.java, GUI.java
+  - Files: UserInterface.java, GUI.java
   
 9. MVC 
   - MVC design pattern used to differentiate model, view, and controller functionality.
+
+10. Builder 
+  - The Method class is composed of a name and parameters.
+  - The UML class is composed of the fields, methods, and parameters
+  - Files: UMLClass.java, Method.java, Field.java, Parameter.java
+
+11. Observer
+  - The Jline LineReader observes commands typed in the CLI, then informs the tab completer for completion.
+  - File: UMLInterface.java
+  - Line #: 77, 106
+
+12. Chain of Responsibility
+  - The UMLInterface can provide a yes/no dialog, exit dialog and recieve an input. If a yes/no or exit dialog is used, the UMLInterface can 
+    process the Y/N and exit. Otherwise, the chain of responsibility will be passed to the controller and tab completer to handle user inputs.
+  -Files: UMLInterface.java, Controller.java, TabCompletion.java
