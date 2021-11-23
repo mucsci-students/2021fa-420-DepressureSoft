@@ -1689,7 +1689,7 @@ public class GUI {
         } else if(r.getRelationshipType() == Relationship.RelationshipType.REALIZATION) {
           shouldBeAnEnum = "R";
         }
-        drawArrow(r.getTo().getName(), r.getFrom().getName(), shouldBeAnEnum);
+        drawArrow(r.getFrom().getName(), r.getTo().getName(), shouldBeAnEnum);
       }
       updateButtons();
       redrawArrows();

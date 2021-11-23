@@ -226,15 +226,16 @@ public class DiagramModel {
                 JSONObject currentClass = classIterator.next();
                 String currentClassName = (String) currentClass.get("name");
                 this.addClass(currentClassName);
-                // String x_pos = (String) currentClass.get("x_position");
-                // String y_pos = (String) currentClass.get("y_position");
-                // this.getUML(currentClassName).setXPosition(Integer.parseInt(x_pos));
-                // this.getUML(currentClassName).setYPosition(Integer.parseInt(y_pos));
+                String x_pos = (String) currentClass.get("x_position");
+                String y_pos = (String) currentClass.get("y_position");
+                this.getUML(currentClassName).setXPosition(Integer.parseInt(x_pos));
+                this.getUML(currentClassName).setYPosition(Integer.parseInt(y_pos));
                 JSONArray fieldList = (JSONArray) currentClass.get("fields");
                 Iterator<JSONObject> fieldIterator = fieldList.iterator();
                 while(fieldIterator.hasNext()) {
-                    String currentFieldName = (String) fieldIterator.next().get("name");
-                    String currentFieldType = (String) fieldIterator.next().get("type");
+                    JSONObject currentField = fieldIterator.next();
+                    String currentFieldName = (String) currentField.get("name");
+                    String currentFieldType = (String) currentField.get("type");
                     this.addField(currentClassName, currentFieldName, currentFieldType);
                 }
                 JSONArray methodList = (JSONArray) currentClass.get("methods");
