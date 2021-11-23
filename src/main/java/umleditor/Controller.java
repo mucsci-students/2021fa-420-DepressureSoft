@@ -4,12 +4,12 @@ import java.util.ArrayList;
 
 public class Controller {
 
-	private static final String ADD_HELP = "ADD: Adds a class, method, field, parameter, or relationship to the diagram.\nadd class <class>\nadd method <class> <method> <return_type>\nadd field <class> <field> <type>\nadd parameter <class> <method> <parameter> <type>\nadd relationship <source_class> <destination_class> {aggregation|composition|inheritance|realization}";
+	private static final String ADD_HELP = "ADD: Adds a class, method, field, parameter, or relationship to the diagram.\nadd class <class>\nadd method <class> <method> <return_type>\nadd field <class> <field> <type>\nadd parameter <class> <method> <parameter> <type>\nadd relationship {aggregation|composition|inheritance|realization} <source_class> <destination_class>";
 	private static final String DELETE_HELP = "DELETE: Deletes a class, method, field, parameter, or relationship from the diagram.\ndelete class <class>\ndelete method <class> <method>\ndelete field <class> <field>\ndelete parameter <class> <method> <parameter>\ndelete relationship <source_class> <destination_class>";
 	private static final String RENAME_HELP = "RENAME: Renames a class, method, field, or parameter.\nrename class <class> <new_name>\nrename method <class> <method> <new_name>\nrename field <class> <field> <new_name>\nrename parameter <class> <method> <parameter> <new_name>";
 	private static final String SAVE_HELP = "SAVE: Saves the current class diagram to a json file. Directory and file name must exist. \".json\" extension is optional and will be appended automatically if not included in file name.\nsave <directory> <file_name>";
 	private static final String LOAD_HELP = "LOAD: Loads a class diagram from a json file. File path must exist.\nload <file_path>";
-	private static final String CHANGETYPE_HELP = "CHANGETYPE: Changes the type of a field, method, parameter, or relationship.\nchangetype field <class> <field> <new_type>\nchangetype method <class> <method> <type> <new_type>\nchangetype relationship <source_class> <destination_class> {aggregation|composition|inheritance|realization}";
+	private static final String CHANGETYPE_HELP = "CHANGETYPE: Changes the type of a field, method, parameter, or relationship.\nchangetype field <class> <field> <new_type>\nchangetype method <class> <method> <type> <new_type>\nchangetype relationship {aggregation|composition|inheritance|realization} <source_class> <destination_class>";
 	private static final String DISPLAY_HELP = "DISPLAY: Displays the class diagram in various ways.\ndisplay class <classname>\ndisplay {all|relationships}";
 	private static final String UNDO_HELP = "UNDO: Reverts to the program state before the most recent change.\nundo";
 	private static final String REDO_HELP = "REDO: If undo has been called, reverts to the state of the program before change was undone.\nredo";
@@ -29,10 +29,11 @@ public class Controller {
 		DiagramModel model = new DiagramModel();
 		UMLInterface view = new UMLInterface();
 		view.displayWelcome();
+		view.setTerminal(model);
 		boolean userInputLoop = true;
 		ArrayList<String> commands;
 		while(userInputLoop) {
-			commands = view.getInput("Command > ");
+				commands = view.getInput("Command > ");
 			try {
 				String m = "";
 				if(checkKeyword(commands, 0, "exit")) {
@@ -70,16 +71,16 @@ public class Controller {
 						if(commands.size() == 4) {
 							view.print("Please specify a relationship type. {aggregation|composition|inheritance|realization}");
 							ArrayList<String> typeInput;
-							typeInput = view.getInput("Relationship Type > ");
+							typeInput = view.getRInput("Relationship Type > ");
 							if(Relationship.getRelTypeFromString(typeInput.get(0)) != null) {
-								m = model.addRelationship(commands.get(2), commands.get(3), Relationship.getRelTypeFromString(typeInput.get(0)));
+								m = model.addRelationship(Relationship.getRelTypeFromString(typeInput.get(0)), commands.get(2), commands.get(3));
 								if (m == null) m = "Added relationship.";
 							} else {
 								view.print("Relationship type must be one of {aggregation|composition|inheritance|realization}");
 							}
 						} else if(commands.size() > 4) {
-							if(Relationship.getRelTypeFromString(commands.get(4)) != null) {
-								m = model.addRelationship(commands.get(2), commands.get(3), Relationship.getRelTypeFromString(commands.get(4)));
+							if(Relationship.getRelTypeFromString(commands.get(2)) != null) {
+								m = model.addRelationship(Relationship.getRelTypeFromString(commands.get(2)), commands.get(3), commands.get(4));
 								if (m == null) m = "Added relationship.";
 							} else {
 								view.print("Relationship type must be one of {aggregation|composition|inheritance|realization}");
@@ -200,9 +201,9 @@ public class Controller {
 						} else {
 							view.print("Class name, method name, parameter name, and new type required.");
 						}
-					} else if(checkKeyword(commands, 1, "relationship")) {
+					} else if(checkKeyword(commands, 1, "relationship")) { 
 						if(commands.size() > 4) {
-							m = model.changeRelationshipType(commands.get(2), commands.get(3), Relationship.getRelTypeFromString(commands.get(4)));
+							m = model.changeRelationshipType(Relationship.getRelTypeFromString(commands.get(2)), commands.get(3), commands.get(4));
 							if (m == null) m = "Changed relationship type.";
 						} else {
 							view.print("Source class name, destination class name, and new type (one of {aggregation|composition|inheritance|realization}) required.");

@@ -1,13 +1,42 @@
 package umleditor;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
+
+import javax.sound.sampled.Line;
+
+import org.jline.builtins.Completers.Completer;
+import org.jline.console.impl.Builtins.Command;
+import org.jline.reader.Highlighter;
+import org.jline.reader.History;
+import org.jline.reader.LineReader;
+import org.jline.reader.LineReaderBuilder;
+import org.jline.reader.MaskingCallback;
+import org.jline.reader.ParsedLine;
+import org.jline.reader.LineReader.Option;
+import org.jline.reader.impl.DefaultParser;
+
+import org.jline.reader.impl.completer.AggregateCompleter;
+import org.jline.reader.impl.completer.ArgumentCompleter;
+import org.jline.reader.impl.completer.StringsCompleter;
+import org.jline.reader.impl.history.DefaultHistory;
+import org.jline.terminal.Terminal;
+import org.jline.terminal.TerminalBuilder;
 
 /**
  * Public Interface responsible for connecting all programmed methods to the Terminal. 
  * Allows for user to modify diagrams as they please. 
  */
 public class UMLInterface {
-	
+
+	private LineReader reader;
+	private Terminal terminal;
+	private ParsedLine parser;
+	private History history;
+	private Highlighter highlighter;
+
 	/**
 	 * Displays a "splash screen" to the user.
 	 */
@@ -19,19 +48,35 @@ public class UMLInterface {
 		System.out.println("  |  Type \"help\" for a list of commands.  |");
 		System.out.println("  +---------------------------------------+");
 	}
-	
+
 	/**
-	 * Gets an array of strings from the user.
-	 * @param promptHeader The string to print before each command is entered.
-	 * @return An ArrayList<String> of user commands
+	 * Creates a new terminal, tab completer, and line reader.
 	 */
-    public ArrayList<String> getInput(String promptHeader) {
-    	ArrayList<String> result = new ArrayList<String>();
-        Scanner sc = new Scanner(System.in);
-        System.out.print(promptHeader);
-        String userEntry = "";
-        userEntry += sc.nextLine();
-        if(userEntry.trim().equalsIgnoreCase("exit")) {
+	public void setTerminal(DiagramModel model){
+		try {
+			terminal = TerminalBuilder.builder().system(true).build();
+			AggregateCompleter comp = new TabCompletion().updateCompleter();
+			reader = LineReaderBuilder.builder().terminal(terminal).completer(comp).highlighter(highlighter).history(history).variable(LineReader.MENU_COMPLETE, true).build();
+		} catch (IOException e) {
+			System.out.println(e);
+		}
+	}
+
+	/**
+	 * 
+	 * @param Gets inputs for relationships for tab completer to provide output.
+	 * @return An ArrayList<String> of user commands for relationships. 
+	 */
+	public ArrayList<String> getRInput(String prompt){
+
+		ArrayList<String> result = new ArrayList<String>();
+		String line = null;
+
+		AggregateCompleter comp2 = new TabCompletion().relationComplete();
+		LineReader reader2 = LineReaderBuilder.builder().terminal(terminal).completer(comp2).build();
+		line = reader2.readLine(prompt);
+
+        if(line.trim().equalsIgnoreCase("exit")) {
         	boolean exit = yesNoDialog("Are you sure you want to exit?");
         	if(exit) {
         		result.add("exit");
@@ -41,7 +86,38 @@ public class UMLInterface {
         	}
         }
         else {
-        	result = splitString(userEntry);
+			parser = reader.getParsedLine();
+			String[] arrayLine = parser.words().toArray(new String[parser.words().size()]);
+			result = new ArrayList<String>(Arrays.asList(arrayLine));
+        }
+        return result;
+    }
+	
+
+	/**
+	 * Gets an array of strings from the user.
+	 * @param promptHeader The string to print before each command is entered.
+	 * @return An ArrayList<String> of user commands
+	 */
+    public ArrayList<String> getInput(String promptHeader) {
+
+    	ArrayList<String> result = new ArrayList<String>();
+		String line = null;
+		line = reader.readLine(promptHeader);
+
+        if(line.trim().equalsIgnoreCase("exit")) {
+        	boolean exit = yesNoDialog("Are you sure you want to exit?");
+        	if(exit) {
+        		result.add("exit");
+        		return result;
+        	} else {
+        		return result;
+        	}
+        }
+        else {
+			parser = reader.getParsedLine();
+			String[] arrayLine = parser.words().toArray(new String[parser.words().size()]);
+			result = new ArrayList<String>(Arrays.asList(arrayLine));
         }
         return result;
     }

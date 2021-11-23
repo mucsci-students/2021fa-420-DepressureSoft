@@ -16,6 +16,10 @@ plugins {
 repositories {
     // Use Maven Central for resolving dependencies.
     mavenCentral()
+    
+    flatDir {
+    	dirs 'lib'
+    }
 }
 
 dependencies {
@@ -28,6 +32,12 @@ dependencies {
     implementation 'com.google.guava:guava:29.0-jre'
 
     implementation 'com.googlecode.json-simple:json-simple:1.1.1'
+
+    implementation group: 'org.jline', name: 'jline', version: '3.21.0'
+
+    implementation group: 'org.fusesource.jansi', name: 'jansi', version: '2.4.0'
+
+    implementation group: 'org.jline', name: 'jline-terminal-jansi', version: '3.21.0'
 }
 
 jar {

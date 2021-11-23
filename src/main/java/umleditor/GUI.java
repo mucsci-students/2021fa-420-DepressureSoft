@@ -1263,21 +1263,22 @@ public class GUI {
         String relationT = relationshipTypes.getSelectedItem().toString();
      //   snapshot();
 
+
         if(!duplicateRelationship(classOne,classTwo)){
             if(relationT.equals("Aggregation")){
-                model.addRelationship(classOne,classTwo,RelationshipType.AGGREGATION);
+                model.addRelationship(RelationshipType.AGGREGATION,classOne,classTwo);
                 drawArrow(classOne,classTwo,"A");
             }
             else if(relationT.equals("Composition")){
-                model.addRelationship(classOne,classTwo,RelationshipType.COMPOSITION);
+                model.addRelationship(RelationshipType.COMPOSITION,classOne,classTwo);
                 drawArrow(classOne,classTwo,"C");
             }
             else if(relationT.equals("Inheritance")){
-                model.addRelationship(classOne,classTwo,RelationshipType.INHERITANCE);
+                model.addRelationship(RelationshipType.INHERITANCE,classOne,classTwo);
                 drawArrow(classOne,classTwo,"I");
             }
             else if(relationT.equals("Realization")){
-                model.addRelationship(classOne,classTwo,RelationshipType.REALIZATION);
+                model.addRelationship(RelationshipType.REALIZATION,classOne,classTwo);
                 drawArrow(classOne,classTwo,"R");
             }
             updateButtons();

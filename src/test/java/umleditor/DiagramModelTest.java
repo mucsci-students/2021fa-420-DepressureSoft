@@ -458,7 +458,7 @@ class DiagramModelTest {
 	@DisplayName("Add relationship")
 	void addRelationship() {
 		testDiagram.addClass("trial2");
-		testDiagram.addRelationship("trial", "trial2", Relationship.RelationshipType.INHERITANCE);
+		testDiagram.addRelationship(Relationship.RelationshipType.INHERITANCE, "trial", "trial2");
 		assertTrue(testDiagram.relationshipExists("trial", "trial2"));
 	}
 
@@ -466,7 +466,7 @@ class DiagramModelTest {
 	@DisplayName("Undo/redo add relationship")
 	void addRelationshipUndo() {
 		testDiagram.addClass("trial2");
-		testDiagram.addRelationship("trial", "trial2", Relationship.RelationshipType.INHERITANCE);
+		testDiagram.addRelationship(Relationship.RelationshipType.INHERITANCE, "trial", "trial2");
 		assertTrue(testDiagram.relationshipExists("trial", "trial2"));
 		testDiagram.undo();
 		assertFalse(testDiagram.relationshipExists("trial", "trial2"));
@@ -478,7 +478,7 @@ class DiagramModelTest {
 	@DisplayName("Delete relationship")
 	void deleteRelationship() {
 		testDiagram.addClass("trial2");
-		testDiagram.addRelationship("trial", "trial2", Relationship.RelationshipType.INHERITANCE);
+		testDiagram.addRelationship(Relationship.RelationshipType.INHERITANCE, "trial", "trial2");
 		assertTrue(testDiagram.relationshipExists("trial", "trial2"));
 		testDiagram.deleteRelationship("trial", "trial2");
 		assertFalse(testDiagram.relationshipExists("trial", "trial2"));
@@ -488,7 +488,7 @@ class DiagramModelTest {
 	@DisplayName("Undo/redo delete relationship")
 	void deleteRelationshipUndo() {
 		testDiagram.addClass("trial2");
-		testDiagram.addRelationship("trial", "trial2", Relationship.RelationshipType.INHERITANCE);
+		testDiagram.addRelationship(Relationship.RelationshipType.INHERITANCE, "trial", "trial2");
 		assertTrue(testDiagram.relationshipExists("trial", "trial2"));
 		testDiagram.deleteRelationship("trial", "trial2");
 		assertFalse(testDiagram.relationshipExists("trial", "trial2"));
@@ -502,7 +502,7 @@ class DiagramModelTest {
 	@DisplayName("Attempting to delete relationship with flipped \"to\" and \"from\" classes")
 	void deleteRelationshipOpposite() {
 		testDiagram.addClass("trial2");
-		testDiagram.addRelationship("trial", "trial2", Relationship.RelationshipType.INHERITANCE);
+		testDiagram.addRelationship(Relationship.RelationshipType.INHERITANCE, "trial", "trial2");
 		assertTrue(testDiagram.relationshipExists("trial", "trial2"));
 		testDiagram.deleteRelationship("trial2", "trial");
 		assertTrue(testDiagram.relationshipExists("trial", "trial2"));
@@ -512,11 +512,11 @@ class DiagramModelTest {
 	@DisplayName("Changing relationship type")
 	void changeRelationshipType() {
 		testDiagram.addClass("trial2");
-		testDiagram.addRelationship("trial", "trial2", Relationship.RelationshipType.INHERITANCE);
+		testDiagram.addRelationship(Relationship.RelationshipType.INHERITANCE, "trial", "trial2");
 		assertEquals(Relationship.RelationshipType.INHERITANCE,
 			testDiagram.getRelationship("trial", "trial2").getRelationshipType());
-		testDiagram.changeRelationshipType("trial", "trial2",
-			Relationship.RelationshipType.AGGREGATION);
+		testDiagram.changeRelationshipType(Relationship.RelationshipType.AGGREGATION, "trial", 
+		"trial2");
 		assertEquals(Relationship.RelationshipType.AGGREGATION,
 			testDiagram.getRelationship("trial", "trial2").getRelationshipType());
 	}
@@ -525,11 +525,11 @@ class DiagramModelTest {
 	@DisplayName("Undo/redo change relationship type")
 	void changeRelationshipTypeUndo() {
 		testDiagram.addClass("trial2");
-		testDiagram.addRelationship("trial", "trial2", Relationship.RelationshipType.INHERITANCE);
+		testDiagram.addRelationship(Relationship.RelationshipType.INHERITANCE, "trial", "trial2");
 		assertEquals(Relationship.RelationshipType.INHERITANCE,
 			testDiagram.getRelationship("trial", "trial2").getRelationshipType());
-		testDiagram.changeRelationshipType("trial", "trial2",
-			Relationship.RelationshipType.AGGREGATION);
+		testDiagram.changeRelationshipType(Relationship.RelationshipType.AGGREGATION, "trial", 
+			"trial2");
 		assertEquals(Relationship.RelationshipType.AGGREGATION,
 			testDiagram.getRelationship("trial", "trial2").getRelationshipType());
 		testDiagram.undo();
