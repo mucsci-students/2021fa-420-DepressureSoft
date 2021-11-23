@@ -1275,7 +1275,6 @@ public class GUI {
     public void deleteClassAction(){
         String remClass = classNames.getSelectedItem().toString();
 
-        snapshot();
         model.deleteClass(remClass);
         pane.remove(boxMap.get(remClass).getClassPanel());
         boxMap.remove(remClass);
@@ -1288,7 +1287,6 @@ public class GUI {
         String classOne = classNames.getSelectedItem().toString();
 
         String[] holder = classOne.split(":");
-        snapshot();
         model.deleteRelationship(holder[0],holder[1]);
         arrowMap.remove(classOne);
         pane.repaint();
@@ -1310,7 +1308,6 @@ public class GUI {
     public void deleteMethodAction(){
         String getClass = classNames.getSelectedItem().toString();
 		String method = methodNames.getSelectedItem().toString();
-        snapshot();
         box = boxMap.get(getClass);
         box.removeMethod(method);
         model.deleteMethod(getClass,method);
@@ -1322,7 +1319,6 @@ public class GUI {
         String getClass = classNames.getSelectedItem().toString();
         String method = methodNames.getSelectedItem().toString();
         String param = paramNames.getSelectedItem().toString();
-        snapshot();
        model.deleteParameter(getClass, method, param );
        box = boxMap.get(getClass);
        box.removeParameter(param,method);
@@ -1338,7 +1334,6 @@ public class GUI {
         String newClass = className2.getText();
         if(SourceVersion.isIdentifier(newClass)){
             if(!duplicateClass(newClass)){
-                snapshot();
                 model.renameUMLClass(oldClass,newClass);
                 box = boxMap.get(oldClass);
                 box.renameClass(newClass);
@@ -1365,7 +1360,6 @@ public class GUI {
         String newField = renamer.getText();
         if(SourceVersion.isIdentifier(newField)){
             if(!boxMap.get(getClass).duplicateField(newField)){
-                snapshot();
                 box = boxMap.get(getClass);
                 box.renameField(field,newField);
                 model.renameField(getClass,field,newField);
@@ -1390,7 +1384,6 @@ public class GUI {
         String newMethod = renamer.getText();
         if(SourceVersion.isIdentifier(newMethod)){
             if(!boxMap.get(getClass).duplicateMethod(newMethod)){
-                snapshot();
                 box = boxMap.get(getClass);
                 box.renameMethod(method,newMethod);
                 model.renameMethod(getClass,method,newMethod);
@@ -1422,7 +1415,6 @@ public class GUI {
         //Checks if the new name is proper and that the entry isn't a duplicate.
         if(SourceVersion.isIdentifier(newParam)){
             if(!boxMap.get(getClass).duplicateParameter(method,newParam)){
-                snapshot();
                 model.renameParameter(getClass, method,oldParam,newParam);
                 box = boxMap.get(getClass);
                 box.renameParameter(oldParam,newParam,method);
