@@ -120,10 +120,17 @@ public class classBox {
                 GUI.redrawArrows();
 			}
 		};
-	
+
 		panel.addMouseListener(movement);
 		panel.addMouseMotionListener(movement);
+    }
 
+    public Point getLocation() {
+      return panel.getLocation();
+    }
+
+    public void setLocation(int x, int y) {
+      panel.setLocation(x, y);
     }
 
     public String getClassName(){
