@@ -361,7 +361,7 @@ public class GUI {
     }
 
     public void saveWindow() {
-      Collection<UMLClass> classes = model.getDiagram().values();
+      Collection<UMLClass> classes = model.getDiagramCopy().values();
       for (UMLClass c : classes) {
         classBox box = boxMap.get(c.getName());
         int xPos = (int) box.getLocation().getX();
@@ -383,12 +383,12 @@ public class GUI {
     		model.save(chooser.getSelectedFile().getAbsolutePath());
     	}
     }
-    
+
     public void saveImageWindow() {
         JFileChooser chooser = new JFileChooser();
     	FileNameExtensionFilter jpgOption = new FileNameExtensionFilter(".jpg", "jpg");
     	chooser.addChoosableFileFilter(jpgOption);
-    	
+
     	chooser.setAcceptAllFileFilterUsed(false);
     	chooser.setDialogTitle("Save diagram as image");
     	int s = chooser.showSaveDialog(null);
@@ -408,29 +408,8 @@ public class GUI {
     	if(s == JFileChooser.APPROVE_OPTION) {
     		model.load(chooser.getSelectedFile().getAbsolutePath());
     	}
-    }
-
-
-
-    public void updateLocations() {
-
-    }
-
-    public void loadWindow() {
-    	JFileChooser chooser = new JFileChooser();
-    	FileNameExtensionFilter jsonOnly = new FileNameExtensionFilter("JSON files", "json");
-    	chooser.addChoosableFileFilter(jsonOnly);
-    	chooser.setAcceptAllFileFilterUsed(false);
-    	chooser.setDialogTitle("Load diagram from JSON");
-    	int s = chooser.showOpenDialog(null);
-    	if(s == JFileChooser.APPROVE_OPTION) {
-    		model.load(chooser.getSelectedFile().getAbsolutePath());
-    	}
       refreshBoxes();
-
     }
-
-
 
     public void helpWindow(){
         action = new JFrame("UML Editor");
@@ -1087,7 +1066,7 @@ public class GUI {
         JLabel paramLabel = new JLabel("Select Parameter: ");
         JLabel paramRenameLabel = new JLabel("Enter NEW Parameter Name: ");
 
-        
+
         //Ensures No Error Message is showing prior to user input.
         errorMessage.setText("");
 
@@ -1360,7 +1339,7 @@ public class GUI {
    /**
     * Rename Actions
     */
-    
+
     public void renameClassAction(){
         String oldClass = classNames.getSelectedItem().toString();
         String newClass = className2.getText();
@@ -1478,7 +1457,7 @@ public class GUI {
 		JPanel destPan = boxMap.get(destClass).getClassPanel();
 
 		Arrow newArrow = new Arrow(sourcePan, destPan, type);
-        
+
 		String ID = sourceClass + ":" + destClass;
 		arrowMap.put(ID, newArrow);
 		newArrow.setVisible(true);
@@ -1487,7 +1466,7 @@ public class GUI {
         newArrow.setSize(5, 15);
 
         pane.add(newArrow);
-		        
+
 		pane.validate();
 	}
 
@@ -1676,30 +1655,44 @@ public class GUI {
       pane.removeAll();
       boxMap.clear();
       pane.repaint();
-      updateButtons();
-      Collection<UMLClass> classes = model.getDiagram().values();
+      Collection<UMLClass> classes = model.getDiagramCopy().values();
       for (UMLClass c : classes) {
         String className = c.getName();
         box = new classBox(className);
         box.setLocation(c.getXPosition(), c.getYPosition());
-        ArrayList<String> fields = c.getFields();
-        for(String field : fields) {
-          box.addField(field, "type");
+        ArrayList<Field> fields = c.getFields();
+        for(Field field : fields) {
+          box.addField(field.getFieldName(), field.getFieldType());
         }
         ArrayList<Method> methods = c.getMethods();
         for(Method method : methods) {
-          box.addMethod(method.getMethodName(), "type");
-          ArrayList<String> parameters = method.getParamList();
-          for(String param : parameters) {
-            box.addParameter(param, method.getMethodName());
+          box.addMethod(method.getMethodName(), method.getMethodType());
+          ArrayList<Parameter> parameters = method.getParamList();
+          for(Parameter param : parameters) {
+            box.addParameter(param.getParamName(), method.getMethodName());
           }
         }
         boxMap.put(className, box);
         pane.add(box.getClassPanel());
         frame.add(pane);
         frame.setVisible(true);
-        updateButtons();
       }
+      ArrayList<Relationship> relationships = model.getRelationshipsCopy();
+      for (Relationship r : relationships) {
+        String shouldBeAnEnum = "";
+        if(r.getRelationshipType() == Relationship.RelationshipType.AGGREGATION) {
+          shouldBeAnEnum = "A";
+        } else if(r.getRelationshipType() == Relationship.RelationshipType.COMPOSITION) {
+          shouldBeAnEnum = "C";
+        } else if(r.getRelationshipType() == Relationship.RelationshipType.INHERITANCE) {
+          shouldBeAnEnum = "I";
+        } else if(r.getRelationshipType() == Relationship.RelationshipType.REALIZATION) {
+          shouldBeAnEnum = "R";
+        }
+        drawArrow(r.getTo().getName(), r.getFrom().getName(), shouldBeAnEnum);
+      }
+      updateButtons();
+      redrawArrows();
     }
 
     public boolean duplicateClass(String className){

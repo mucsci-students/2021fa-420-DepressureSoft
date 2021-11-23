@@ -226,10 +226,10 @@ public class DiagramModel {
                 JSONObject currentClass = classIterator.next();
                 String currentClassName = (String) currentClass.get("name");
                 this.addClass(currentClassName);
-                String x_pos = (String) currentClass.get("x_position");
-                String y_pos = (String) currentClass.get("y_position");
-                this.getUML(currentClassName).setXPosition(Integer.parseInt(x_pos));
-                this.getUML(currentClassName).setYPosition(Integer.parseInt(y_pos));
+                // String x_pos = (String) currentClass.get("x_position");
+                // String y_pos = (String) currentClass.get("y_position");
+                // this.getUML(currentClassName).setXPosition(Integer.parseInt(x_pos));
+                // this.getUML(currentClassName).setYPosition(Integer.parseInt(y_pos));
                 JSONArray fieldList = (JSONArray) currentClass.get("fields");
                 Iterator<JSONObject> fieldIterator = fieldList.iterator();
                 while(fieldIterator.hasNext()) {
@@ -1302,8 +1302,12 @@ public class DiagramModel {
     	return fieldsPres;
     }
 
-    public HashMap<String, UMLClass> getDiagram() {
-      return diagram;
+    public HashMap<String, UMLClass> getDiagramCopy() {
+      return new HashMap<String, UMLClass>(diagram);
+    }
+
+    public ArrayList<Relationship> getRelationshipsCopy() {
+      return new ArrayList<Relationship>(relationships);
     }
 
     /**
