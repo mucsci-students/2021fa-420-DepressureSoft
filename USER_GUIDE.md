@@ -17,7 +17,7 @@ Hello! Thank you for choosing our UML Editor. You might still be a little confus
   - Creates a field named "fieldName" in the class named "className" with the return type "returnType".
 - `add parameter className methodName parameterName returnType`
   - Creates a parameter named "parameterName" in the method "methodName" (within the class named "className") with the return type "returnType".
-- `add relationship sourceClass destinationClass relationshipType`
+- `add relationship relationshipType sourceClass destinationClass`
   - Creates a relationship between the class "sourceClass" and the class "destinationClass" with the type "relationshipType".
   - There are four options for relationship types: aggregation, composition, inheritance, and realization.
 
@@ -61,7 +61,7 @@ Hello! Thank you for choosing our UML Editor. You might still be a little confus
   - Changes the return type of the field "fieldName" (within class "className") to "newType".
 - `changetype parameter className methodName parameterName newType`
   - Changes the return type of the parameter "parameterName" (within the method "methodName", which is itself within the class "className") to "newType".
-- `changetype relationship sourceClass destinationClass relationshipType`
+- `changetype relationship relationshipType sourceClass destinationClass`
   - Changes the relationship type of the relationship between class "sourceClass" and class "destinationClass".
   - There are four options for relationship types: aggregation, composition, inheritance, and realization.
 
