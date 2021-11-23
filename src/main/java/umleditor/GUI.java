@@ -1569,10 +1569,23 @@ public class GUI {
       boxMap.clear();
       pane.repaint();
       updateButtons();
-      HashMap<String, UMLClass> classes = model.getDiagram();
-      for (UMLClass c : classes.values()) {
+      Collection<UMLClass> classes = model.getDiagram().values();
+      for (UMLClass c : classes) {
         String className = c.getName();
         box = new classBox(className);
+        box.setLocation(c.getXPosition(), c.getYPosition());
+        ArrayList<String> fields = c.getFields();
+        for(String field : fields) {
+          box.addField(field, "type");
+        }
+        ArrayList<Method> methods = c.getMethods();
+        for(Method method : methods) {
+          box.addMethod(method.getMethodName(), "type");
+          ArrayList<String> parameters = method.getParamList();
+          for(String param : parameters) {
+            box.addParameter(param, method.getMethodName());
+          }
+        }
         boxMap.put(className, box);
         pane.add(box.getClassPanel());
         frame.add(pane);

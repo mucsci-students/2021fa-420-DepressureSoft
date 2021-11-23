@@ -118,6 +118,10 @@ public class classBox {
       return panel.getLocation();
     }
 
+    public void setLocation(int x, int y) {
+      panel.setLocation(x, y);
+    }
+
     public String getClassName(){
         return className.getText();
     }
