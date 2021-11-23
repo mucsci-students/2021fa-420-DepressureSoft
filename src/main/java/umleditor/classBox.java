@@ -40,48 +40,49 @@ public class classBox {
     }
 
     public classBox(classBox other){
-        JLabel holder = new JLabel(other.getClassName());
-        this.className = holder;
+        if (other != null){
+            JLabel holder = new JLabel(other.getClassName());
+            this.className = holder;
 
-        methods = new HashMap<String, JLabel>();
+            methods = new HashMap<String, JLabel>();
 
-        Iterator methodIter = other.methods.entrySet().iterator();
-        while (methodIter.hasNext()){
-            Map.Entry elem = (Map.Entry) methodIter.next();
-            String keyCopy = (String) elem.getKey();
-            JLabel labelCopy = new JLabel(((JLabel) elem.getValue()).getText());
-            methods.put(keyCopy, labelCopy);
-            methodPanel.add(labelCopy);
-        }
-        params = new HashMap<String, ArrayList<String>>();
+            Iterator methodIter = other.methods.entrySet().iterator();
+            while (methodIter.hasNext()){
+                Map.Entry elem = (Map.Entry) methodIter.next();
+                String keyCopy = (String) elem.getKey();
+                JLabel labelCopy = new JLabel(((JLabel) elem.getValue()).getText());
+                methods.put(keyCopy, labelCopy);
+                methodPanel.add(labelCopy);
+            }
+            params = new HashMap<String, ArrayList<String>>();
 
-        Iterator paramIter = other.params.entrySet().iterator();
-        while (paramIter.hasNext()){
-            Map.Entry elem = (Map.Entry) paramIter.next();
-            String keyCopy = (String) elem.getKey();
-            ArrayList<String> elemArray = new ArrayList<String>();
-            elemArray = ((ArrayList<String>) elem.getValue());
-            params.put(keyCopy, elemArray);
-        }
+            Iterator paramIter = other.params.entrySet().iterator();
+            while (paramIter.hasNext()){
+                Map.Entry elem = (Map.Entry) paramIter.next();
+                String keyCopy = (String) elem.getKey();
+                ArrayList<String> elemArray = new ArrayList<String>();
+                elemArray = ((ArrayList<String>) elem.getValue());
+                params.put(keyCopy, elemArray);
+            }
     
-        fields = new HashMap<String, JLabel>();
+            fields = new HashMap<String, JLabel>();
 
-        Iterator fieldIter = other.fields.entrySet().iterator();
-        while (fieldIter.hasNext()){
-            Map.Entry elem = (Map.Entry) fieldIter.next();
-            String keyCopy = (String) elem.getKey();
-            JLabel labelCopy = new JLabel(((JLabel) elem.getValue()).getText());
-            fields.put(keyCopy, labelCopy);
+            Iterator fieldIter = other.fields.entrySet().iterator();
+            while (fieldIter.hasNext()){
+                Map.Entry elem = (Map.Entry) fieldIter.next();
+                String keyCopy = (String) elem.getKey();
+                JLabel labelCopy = new JLabel(((JLabel) elem.getValue()).getText());
+                fields.put(keyCopy, labelCopy);
+            }
+
+            this.panel = other.panel;
+            panel.setLocation(other.getClassPanel().getX(), other.getClassPanel().getY());
+            this.fieldPanel = other.fieldPanel;
+            this.methodPanel = other.methodPanel;
+            this.gl_panel = other.gl_panel;
+
+            panel.add(fieldPanel);
         }
-
-        this.panel = other.panel;
-        panel.setLocation(other.getClassPanel().getX(), other.getClassPanel().getY());
-        this.fieldPanel = other.fieldPanel;
-        this.methodPanel = other.methodPanel;
-        this.gl_panel = other.gl_panel;
-
-        panel.add(fieldPanel);
-        
 
        // initialize();
     }

@@ -69,7 +69,7 @@ public class GUI {
     		classBox boxCopy = new classBox((classBox) element.getValue());
     		this.boxMap.put(keyCopy, boxCopy);
     	}
-    	this.box = new classBox(other.box);
+    	//this.box = new classBox(other.box);
 
     }
 
@@ -1142,7 +1142,7 @@ public class GUI {
         String newClass = className.getText();
         if(SourceVersion.isIdentifier(newClass)){
             if(!duplicateClass(newClass)){
-               // snapshot();
+                snapshot();
                 model.addClass(newClass);
                 box = new classBox(newClass);
                 boxMap.put(newClass,box);
@@ -1247,7 +1247,7 @@ public class GUI {
         String classOne = classNames.getSelectedItem().toString();
         String classTwo = classNamesX.getSelectedItem().toString();
         String relationT = relationshipTypes.getSelectedItem().toString();
-     //   snapshot();
+        snapshot();
         if(!duplicateRelationship(classOne,classTwo)){
         if(relationT.equals("Aggregation")){
             model.addRelationship(classOne,classTwo,RelationshipType.AGGREGATION);
