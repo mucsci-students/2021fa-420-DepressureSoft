@@ -361,6 +361,14 @@ public class GUI {
     }
 
     public void saveWindow() {
+      Collection<UMLClass> classes = model.getDiagram().values();
+      for (UMLClass c : classes) {
+        classBox box = boxMap.get(c.getName());
+        int xPos = (int) box.getLocation().getX();
+        int yPos = (int) box.getLocation().getY();
+        c.setXPosition(xPos);
+        c.setYPosition(yPos);
+      }
     	JFileChooser chooser = new JFileChooser();
     	FileNameExtensionFilter jsonOnly = new FileNameExtensionFilter("JSON files", "json");
     	chooser.addChoosableFileFilter(jsonOnly);
@@ -400,6 +408,26 @@ public class GUI {
     	if(s == JFileChooser.APPROVE_OPTION) {
     		model.load(chooser.getSelectedFile().getAbsolutePath());
     	}
+    }
+
+
+
+    public void updateLocations() {
+
+    }
+
+    public void loadWindow() {
+    	JFileChooser chooser = new JFileChooser();
+    	FileNameExtensionFilter jsonOnly = new FileNameExtensionFilter("JSON files", "json");
+    	chooser.addChoosableFileFilter(jsonOnly);
+    	chooser.setAcceptAllFileFilterUsed(false);
+    	chooser.setDialogTitle("Load diagram from JSON");
+    	int s = chooser.showOpenDialog(null);
+    	if(s == JFileChooser.APPROVE_OPTION) {
+    		model.load(chooser.getSelectedFile().getAbsolutePath());
+    	}
+      refreshBoxes();
+
     }
 
 
@@ -1642,6 +1670,36 @@ public class GUI {
     	else {
     		redo.setEnabled(true);
     	}
+    }
+
+    public void refreshBoxes() {
+      pane.removeAll();
+      boxMap.clear();
+      pane.repaint();
+      updateButtons();
+      Collection<UMLClass> classes = model.getDiagram().values();
+      for (UMLClass c : classes) {
+        String className = c.getName();
+        box = new classBox(className);
+        box.setLocation(c.getXPosition(), c.getYPosition());
+        ArrayList<String> fields = c.getFields();
+        for(String field : fields) {
+          box.addField(field, "type");
+        }
+        ArrayList<Method> methods = c.getMethods();
+        for(Method method : methods) {
+          box.addMethod(method.getMethodName(), "type");
+          ArrayList<String> parameters = method.getParamList();
+          for(String param : parameters) {
+            box.addParameter(param, method.getMethodName());
+          }
+        }
+        boxMap.put(className, box);
+        pane.add(box.getClassPanel());
+        frame.add(pane);
+        frame.setVisible(true);
+        updateButtons();
+      }
     }
 
     public boolean duplicateClass(String className){

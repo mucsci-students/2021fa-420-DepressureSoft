@@ -33,7 +33,7 @@ public class UMLClass {
      * The y position of this class on the diagram.
      */
     private int yPosition;
-
+    
     /**
      * Main constructor that sets the name of the new class.
      * @param name The name of the new class.
@@ -58,6 +58,38 @@ public class UMLClass {
      */
     public void renameClass(String newName){
         this.dName = newName;
+    }
+    
+    /**
+     * Returns the x position of this class.
+     * @return The x position of this class.
+     */
+    public int getXPosition() {
+    	return this.xPosition;
+    }
+
+    /**
+     * Returns the y position of this class.
+     * @return The y position of this class.
+     */
+    public int getYPosition() {
+    	return this.yPosition;
+    }
+
+    /**
+     * Sets the x position of this class.
+     * @param newX The new x position.
+     */
+    public void setXPosition(int newX) {
+    	this.xPosition = newX;
+    }
+
+    /**
+     * Sets the y position of this class.
+     * @param newY The new y position.
+     */
+    public void setYPosition(int newY) {
+    	this.yPosition = newY;
     }
 
     /**
