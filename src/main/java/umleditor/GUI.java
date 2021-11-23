@@ -1286,6 +1286,8 @@ public class GUI {
         boxMap.remove(remClass);
         action.dispose();
         pane.repaint();
+        deleteRelationshipKey(remClass);
+        redrawArrows();
         updateButtons();
     }
 
@@ -1295,7 +1297,6 @@ public class GUI {
         String[] holder = classOne.split(":");
         model.deleteRelationship(holder[0],holder[1]);
         arrowMap.remove(classOne);
-        pane.repaint();
         redrawArrows();
         action.dispose();
         updateButtons();
@@ -1348,6 +1349,7 @@ public class GUI {
                 action.dispose();
                 updateButtons();
                 errorMessage.setText("");
+                renameRelationshipKey(oldClass,newClass);
             }
             else{
                 errorMessage.setText("Class already exists.");
@@ -1643,6 +1645,7 @@ public class GUI {
     	}
     }
 
+
     public boolean duplicateClass(String className){
         if(boxMap.containsKey(className))
         return true;
@@ -1665,6 +1668,44 @@ public class GUI {
             }
         }
         return false;
+    }
+
+    public void renameRelationshipKey(String renamedClass,String newName){
+        for(String key: arrowMap.keySet()){
+            String[] classes = key.split(":");
+            Arrow temp = arrowMap.get(key);
+            if(renamedClass.equals(classes[0])){
+                String holder = newName + ":" + classes[1];
+                model.deleteRelationship(classes[0],classes[1]);
+                arrowMap.remove(key);
+                arrowMap.put(holder,temp);
+               // model.addRelationship(classes[0],classes[1], );
+            }
+            if(renamedClass.equals(classes[1])){
+                String holder = classes[0] + ":" + newName;
+                model.deleteRelationship(classes[0],classes[1]);
+                arrowMap.remove(key);
+                arrowMap.put(holder,temp);
+                // model.addRelationship(classes[0],classes[1], );
+            }
+        }
+        redrawArrows();
+    }
+
+    public void deleteRelationshipKey(String className){
+        for(String key: arrowMap.keySet()){
+            String[] classes = key.split(":");
+            Arrow temp = arrowMap.get(key);
+            if(className.equals(classes[0])){
+                model.deleteRelationship(classes[0],classes[1]);
+                arrowMap.remove(key);
+            }
+            if(className.equals(classes[1])){
+                model.deleteRelationship(classes[0],classes[1]);
+                arrowMap.remove(key);
+            }
+        }
+        redrawArrows();
     }
 
     public void exportDiagramToImage(File toSave)
