@@ -361,14 +361,7 @@ public class GUI {
     }
 
     public void saveWindow() {
-      Collection<UMLClass> classes = model.getDiagramCopy().values();
-      for (UMLClass c : classes) {
-        classBox box = boxMap.get(c.getName());
-        int xPos = (int) box.getLocation().getX();
-        int yPos = (int) box.getLocation().getY();
-        c.setXPosition(xPos);
-        c.setYPosition(yPos);
-      }
+      saveBoxPositions();
     	JFileChooser chooser = new JFileChooser();
     	FileNameExtensionFilter jsonOnly = new FileNameExtensionFilter("JSON files", "json");
     	chooser.addChoosableFileFilter(jsonOnly);
@@ -382,6 +375,20 @@ public class GUI {
     	if(s == JFileChooser.APPROVE_OPTION) {
     		model.save(chooser.getSelectedFile().getAbsolutePath());
     	}
+    }
+
+    /**
+     * Saves the positions of the class boxes in the diagram to the model.
+     */
+    public void saveBoxPositions() {
+      Collection<UMLClass> classes = model.getDiagramCopy().values();
+      for (UMLClass c : classes) {
+        classBox box = boxMap.get(c.getName());
+        int xPos = (int) box.getLocation().getX();
+        int yPos = (int) box.getLocation().getY();
+        c.setXPosition(xPos);
+        c.setYPosition(yPos);
+      }
     }
 
     public void saveImageWindow() {
