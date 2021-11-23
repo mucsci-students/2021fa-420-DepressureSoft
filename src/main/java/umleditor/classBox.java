@@ -15,14 +15,14 @@ import java.util.Iterator;
 public class classBox {
 
     private JLabel className;
-    
+
     private JPanel panel;
     private JPanel fieldPanel;
     private JPanel methodPanel;
 
     private GroupLayout gl_panel;
 
-    
+
     private HashMap<String,JLabel> methods;
     private HashMap<String, ArrayList<String>> params;
     private HashMap<String,JLabel> fields;
@@ -69,7 +69,7 @@ public class classBox {
             JLabel labelCopy = new JLabel(((JLabel) elem.getValue()).getText());
             fields.put(keyCopy, labelCopy);
         }
-        
+
         this.panel = other.panel;
         panel.setLocation(other.getClassPanel().getX(), other.getClassPanel().getY());
 
@@ -108,12 +108,16 @@ public class classBox {
 				panel.setLocation(panel.getX() + (e.getX() - this.x), panel.getY() + (e.getY() - this.y));
 			}
 		};
-	
+
 		panel.addMouseListener(movement);
 		panel.addMouseMotionListener(movement);
-		
+
     }
-    
+
+    public Point getLocation() {
+      return panel.getLocation();
+    }
+
     public String getClassName(){
         return className.getText();
     }
@@ -123,7 +127,7 @@ public class classBox {
 
 
     /**
-     * Add Element Functions 
+     * Add Element Functions
      */
 
      public void addField(String fieldName,String fieldT){
@@ -162,7 +166,7 @@ public class classBox {
             holder.add(holderV2);
             params.put(method,holder);
         }
-        
+
         for(String x : params.get(method)){
             param = param + x + ", ";
         }
@@ -180,13 +184,13 @@ public class classBox {
         fields.remove(removes);
         fieldPanel.repaint();
     }
-    
+
      public void removeMethod(String removes){
         methodPanel.remove(methods.get(removes));
         methods.remove(removes);
         methodPanel.repaint();
      }
-     
+
      public void removeParameter(String removes, String method){
         JLabel temp = methods.get(method);
         String holderv = temp.getText();
@@ -211,7 +215,7 @@ public class classBox {
           className.setText(newName);
           panel.repaint();
       }
-    
+
      public void renameField(String oldName, String newName){
         JLabel temp = fields.get(oldName);
         String holderv2 = temp.getText();
@@ -224,7 +228,7 @@ public class classBox {
         fields.put(newName,temp);
         fieldPanel.repaint();
     }
-    
+
      public void renameMethod(String oldName, String newName){
         JLabel temp = methods.get(oldName);
         methods.put(newName,temp);
@@ -249,7 +253,7 @@ public class classBox {
         methods.remove(oldName);
         methodPanel.repaint();
      }
-    
+
      public void renameParameter(String oldParameter, String newParameter, String method){
 
         JLabel temp = methods.get(method);
@@ -272,7 +276,7 @@ public class classBox {
 
 
      /**
-      * Existence Checkers 
+      * Existence Checkers
       */
     public boolean duplicateField(String fieldName){
         if(fields.containsKey(fieldName))

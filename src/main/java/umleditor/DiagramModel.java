@@ -1071,6 +1071,10 @@ public class DiagramModel {
     	return fieldsPres;
     }
 
+    public HashMap<String, UMLClass> getDiagram() {
+      return diagram;
+    }
+
     /**
      *  Undos the most recent undoable operation.
      * @return Whether or not the undo was successful (false in the case where the undo history is empty)
