@@ -1546,16 +1546,8 @@ public class GUI {
         return false;
     }
 
-/*
-    public boolean duplicateRelationship(String classFrom, String classTo){
-        Relationship holder = new Relationship(classFrom, classTo, type);
-        if(model.relationships.contains(holder)){
-            return true;
-        } else {
-            return false;
-        }
-}
 
+    public boolean duplicateRelationship(String classFrom, String classTo){
         String tester = classFrom + ":" + classTo;
         for(String key : arrowMap.keySet()){
             if(key == tester){
@@ -1563,6 +1555,7 @@ public class GUI {
             }
         }
         return false;
-    */
+}
+
     
 }
