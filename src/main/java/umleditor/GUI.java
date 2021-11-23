@@ -1191,7 +1191,7 @@ public class GUI {
         String classTwo = classNamesX.getSelectedItem().toString();
         String relationT = relationshipTypes.getSelectedItem().toString();
 
-        //if (!duplicateRelationship(classOne, classTwo, relationT)){
+        if (!duplicateRelationship(classOne, classTwo)){
             if(relationT.equals("Aggregation")){
                 model.addRelationship(classOne,classTwo,RelationshipType.AGGREGATION);
             }
@@ -1204,10 +1204,10 @@ public class GUI {
             else if(relationT.equals("Realization")){
             model.addRelationship(classOne,classTwo,RelationshipType.REALIZATION);
             }
-       // } else {
-           // errorMessage.setText("Relationship already exists.");
-        //actionPane.validate();
-        //}
+        } else {
+            errorMessage.setText("Relationship already exists.");
+            actionPane.validate();
+            }
         action.dispose();
         updateButtons();
     }
