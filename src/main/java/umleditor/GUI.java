@@ -1248,7 +1248,7 @@ public class GUI {
         String classTwo = classNamesX.getSelectedItem().toString();
         String relationT = relationshipTypes.getSelectedItem().toString();
      //   snapshot();
-
+        if(!duplicateRelationship(classOne,classTwo)){
         if(relationT.equals("Aggregation")){
             model.addRelationship(classOne,classTwo,RelationshipType.AGGREGATION);
             drawArrow(classOne,classTwo,"A");
@@ -1268,6 +1268,12 @@ public class GUI {
         updateButtons();
         action.dispose();
     }
+        else{
+            errorMessage.setText("Relationship Exist Already");
+            actionPane.validate();
+        }
+    }
+
     /**
      * Delete Actions
      */
@@ -1644,6 +1650,22 @@ public class GUI {
         return false;
     }
 
+    public boolean duplicateRelationship(String classOne, String classTwo){
+        for(String key: arrowMap.keySet()){
+            String[] classes = key.split(":");
+            if(classOne.equals(classes[0])){
+                if(classTwo.equals(classes[1])){
+                    return true;
+                }
+            }
+            if(classOne.equals(classes[1])){
+                if(classTwo.equals(classes[0])){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
     public void exportDiagramToImage(File toSave)
     {
