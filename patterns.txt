@@ -26,40 +26,26 @@ or the GUI, the current state of the model is snapshotted and pushed onto an und
   - The GUI uses a composite design pattern, as the JFrame is composed of JMenus, JLabels, JComboBoxes, and JPanels, all of which can be treated as individual objects with 
     possible children.
   - File: GUI.java
-
-5. Adapter 
-  - The GUI uses .toArray() to adapt an ArrayList of strings into a standard array.
-  - File: GUI.java
-  - Line #: 537
   
-6. Bridge 
-  - Relationship.java extends DiagramModel.java, such that Relationship.java handles all relationship types and their implementation, and DiagramModel.java handles class
-    creation and only creates Relationship objects. New types of relationships could be added to Relationship.java without issue.
-  - Files: Relationship.java, DiagramModel.java
-  
-7. Prototype
+5. Prototype
   - A copy constructor exists within UMLClass.java that allows a copy of an existing class to be made. This copy class is independent of its original.
   - File: UMLClass.java
   - Line #: 40-48
-
-8. Facade
-  - The user interacts with the CLI or GUI, both of which are facades providing a screen from the rest of the application implementation. 
-  - Files: UserInterface.java, GUI.java
   
-9. MVC 
+6. MVC 
   - MVC design pattern used to differentiate model, view, and controller functionality.
 
-10. Builder 
+7. Builder 
   - The Method class is composed of a name and parameters.
   - The UML class is composed of the fields, methods, and parameters
   - Files: UMLClass.java, Method.java, Field.java, Parameter.java
 
-11. Observer
+8. Observer
   - The Jline LineReader observes commands typed in the CLI, then informs the tab completer for completion.
   - File: UMLInterface.java
   - Line #: 77, 106
 
-12. Chain of Responsibility
+9. Chain of Responsibility
   - The UMLInterface can provide a yes/no dialog, exit dialog and recieve an input. If a yes/no or exit dialog is used, the UMLInterface can 
     process the Y/N and exit. Otherwise, the chain of responsibility will be passed to the controller and tab completer to handle user inputs.
-  -Files: UMLInterface.java, Controller.java, TabCompletion.java
+  - Files: UMLInterface.java, Controller.java, TabCompletion.java
