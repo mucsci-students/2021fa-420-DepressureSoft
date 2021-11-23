@@ -1653,6 +1653,10 @@ public class GUI {
         return false;
     }
 
+    /**
+     * Methods below ensure proper relationship arrows are maintained regardeless of what state occurs with classBox.
+     * Handles potential duplicate relationships, renamed classes, and deleted classes. 
+     */
     public boolean duplicateRelationship(String classOne, String classTwo){
         for(String key: arrowMap.keySet()){
             String[] classes = key.split(":");
