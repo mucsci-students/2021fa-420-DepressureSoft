@@ -1248,7 +1248,9 @@ public class GUI {
         String classTwo = classNamesX.getSelectedItem().toString();
         String relationT = relationshipTypes.getSelectedItem().toString();
      //   snapshot();
+
         if(!duplicateRelationship(classOne,classTwo)){
+
         if(relationT.equals("Aggregation")){
             model.addRelationship(classOne,classTwo,RelationshipType.AGGREGATION);
             drawArrow(classOne,classTwo,"A");
@@ -1272,6 +1274,7 @@ public class GUI {
             errorMessage.setText("Relationship Exist Already");
             actionPane.validate();
         }
+
     }
 
     /**
@@ -1281,6 +1284,7 @@ public class GUI {
     public void deleteClassAction(){
         String remClass = classNames.getSelectedItem().toString();
 
+        snapshot();
         model.deleteClass(remClass);
         pane.remove(boxMap.get(remClass).getClassPanel());
         boxMap.remove(remClass);
@@ -1295,6 +1299,7 @@ public class GUI {
         String classOne = classNames.getSelectedItem().toString();
 
         String[] holder = classOne.split(":");
+
         model.deleteRelationship(holder[0],holder[1]);
         arrowMap.remove(classOne);
         redrawArrows();
@@ -1326,11 +1331,11 @@ public class GUI {
         String getClass = classNames.getSelectedItem().toString();
         String method = methodNames.getSelectedItem().toString();
         String param = paramNames.getSelectedItem().toString();
-       model.deleteParameter(getClass, method, param );
-       box = boxMap.get(getClass);
-       box.removeParameter(param,method);
-       action.dispose();
-       updateButtons();
+        model.deleteParameter(getClass, method, param );
+        box = boxMap.get(getClass);
+        box.removeParameter(param,method);
+        action.dispose();
+        updateButtons();
     }
    /**
     * Rename Actions
@@ -1341,6 +1346,7 @@ public class GUI {
         String newClass = className2.getText();
         if(SourceVersion.isIdentifier(newClass)){
             if(!duplicateClass(newClass)){
+                snapshot();
                 model.renameUMLClass(oldClass,newClass);
                 box = boxMap.get(oldClass);
                 box.renameClass(newClass);
@@ -1368,6 +1374,7 @@ public class GUI {
         String newField = renamer.getText();
         if(SourceVersion.isIdentifier(newField)){
             if(!boxMap.get(getClass).duplicateField(newField)){
+                snapshot();
                 box = boxMap.get(getClass);
                 box.renameField(field,newField);
                 model.renameField(getClass,field,newField);
@@ -1392,6 +1399,7 @@ public class GUI {
         String newMethod = renamer.getText();
         if(SourceVersion.isIdentifier(newMethod)){
             if(!boxMap.get(getClass).duplicateMethod(newMethod)){
+                snapshot();
                 box = boxMap.get(getClass);
                 box.renameMethod(method,newMethod);
                 model.renameMethod(getClass,method,newMethod);
@@ -1423,7 +1431,6 @@ public class GUI {
         //Checks if the new name is proper and that the entry isn't a duplicate.
         if(SourceVersion.isIdentifier(newParam)){
             if(!boxMap.get(getClass).duplicateParameter(method,newParam)){
-
                 model.renameParameter(getClass, method,oldParam,newParam);
                 box = boxMap.get(getClass);
                 box.renameParameter(oldParam,newParam,method);
@@ -1653,6 +1660,7 @@ public class GUI {
         return false;
     }
 
+
     public boolean duplicateRelationship(String classOne, String classTwo){
         for(String key: arrowMap.keySet()){
             String[] classes = key.split(":");
@@ -1707,6 +1715,7 @@ public class GUI {
         }
         redrawArrows();
     }
+
 
     public void exportDiagramToImage(File toSave)
     {
