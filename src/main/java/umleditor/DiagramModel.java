@@ -18,7 +18,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Type;
 
-
 /**
  * Represents a UML class diagram, and allows users to manipulate the diagram by
  *  adding/removing/renaming classes, fields, and relationships between classes.
@@ -55,7 +54,6 @@ public class DiagramModel {
             UMLClass toCopy = diagram.get(rel.getTo().getName());
             if(toCopy == null || fromCopy == null)
             {
-                System.out.println("How tf did we get here");
                 return;
             }
             Relationship.RelationshipType typeCopy = rel.getRelationshipType();
@@ -444,6 +442,28 @@ public class DiagramModel {
         }
     }
 
+    /**
+     * Checks that the class called name exists in the diagram.
+     * @param name The name of the class to check for.
+     * @return True if class exists, false if not.
+     */
+    public boolean classExists(String name) {
+      return diagram.containsKey(name);
+    }
+
+    /**
+     * Checks that the specified field exists in the diagram.
+     * @param className The name of the class to look for the field in.
+     * @param fieldName The name of the field to look for.
+     * @return True if field exists, false if not.
+     */
+    public boolean fieldExists(String className, String fieldName) {
+      UMLClass parentClass = getUML(className);
+      if(parentClass != null) {
+        return parentClass.fieldExists(fieldName);
+      }
+      return false;
+    }
 
     /**
      * Returns true if a method exists in the class diagram.
@@ -460,6 +480,25 @@ public class DiagramModel {
     }
 
     /**
+     * Returns true if parameter exists.
+     * @param className The name of the class to search for the parameter in.
+     * @param methodName The name of the method to search for the parameter in.
+     * @param parameterName The name of the parameter to look for.
+     * @return true if parameter exists, false if not.
+     */
+    public boolean parameterExists(String className, String methodName, String parameterName) {
+        UMLClass parentClass = getUML(className);
+        if(parentClass != null) {
+          Method parentMethod = parentClass.getMethod(methodName);
+          if(parentMethod != null) {
+            Parameter theParameter = parentMethod.getParam(parameterName);
+            if (theParameter != null) return true;
+          }
+        }
+        return false;
+      }
+
+    /**
      * Renames a method as long as it already exists.
      * Is supported as an undoable operation
      * @param className The name of the class the method resides in.
@@ -473,9 +512,15 @@ public class DiagramModel {
         {
             if(parentClass != null){
                 if(parentClass.methodExists(oldMethodName)){
+                  if(!parentClass.methodExists(newMethodName) || oldMethodName.equals(newMethodName)) {
                     snapshot();
                     parentClass.renameMethod(oldMethodName, newMethodName);
                     return null;
+                  }
+                  else {
+                    return ("A method by the name of " + oldMethodName +
+                      " already exists in the specified class.");
+                  }
                 }
                 else
                 {
@@ -539,9 +584,16 @@ public class DiagramModel {
                 Method parentMethod = parentClass.getMethod(methodName);
                 if(parentClass.methodExists(methodName))
                 {
+                  if(!parameterExists(className, methodName, pName))
+                  {
                     snapshot();
                     parentMethod.addParameter(pName, pType);
                     return null;
+                  }
+                  else
+                  {
+                    return ("A parameter called " + pName + " already exists in the specified method.");
+                  }
                 }
                 else
                 {
@@ -702,6 +754,44 @@ public class DiagramModel {
             return ("The parameters cannot be removed, as the parent class \"" + className + "\" does not exist.");
         }
     }
+
+    /**
+     * Checks that a relationship exists between two classes, in either direction.
+     * @param from The first class.
+     * @param to The second class.
+     * @return True if relationship exists, in either direction. False if not.
+     */
+    public boolean relationshipExists(String from, String to) {
+      for(int i = 0; i < relationships.size(); i++){
+          Relationship holder = relationships.get(i);
+          if(holder.getFrom().getName().equals(from) && holder.getTo().getName().equals(to))
+          {
+              return true;
+          }
+          else if(holder.getFrom().getName().equals(to) && holder.getTo().getName().equals(from))
+          {
+              return true;
+          }
+      }
+      return false;
+    }
+
+    /**
+     * Returns the specified relationship.
+     * @param from The "from" component of the relationship.
+     * @param to The "to" component of the relationship.
+     * @return The relationship between "from" and "to".
+     */
+     public Relationship getRelationship(String from, String to) {
+       for(int i = 0; i < relationships.size(); i++){
+           Relationship holder = relationships.get(i);
+           if(holder.getFrom().getName().equals(from) && holder.getTo().getName().equals(to))
+           {
+               return holder;
+           }
+       }
+       return null;
+     }
 
     /**
      * Adds a class relationship to the diagram, checking to ensure that both classes exist, a relationship
@@ -936,15 +1026,6 @@ public class DiagramModel {
     }
 
     /**
-     * Checks that the class called name exists in the diagram.
-     * @param name The name of the class to check for.
-     * @return True if class exists, false if not.
-     */
-    public boolean classExists(String name) {
-        return diagram.containsKey(name);
-    }
-
-    /**
      * Adds a field to a class, given that the class exists and that the field is not a duplicate.
      * Is supported as an undoable operation
      * @param className The name of the class to add a field to.
@@ -955,29 +1036,29 @@ public class DiagramModel {
         UMLClass parentClass = getUML(className);
         boolean parentExists = classExists(className);
         if(SourceVersion.isIdentifier(fieldName)){
-        if(parentExists)
-        {
-           if(!parentClass.fieldExists(fieldName))
-           {
-               snapshot();
-               parentClass.addField(fieldName, fieldType);
-               return null;
-           }
-           else
-           {
+            if(parentExists)
+            {
+               if(!parentClass.fieldExists(fieldName))
+               {
+                   snapshot();
+                   parentClass.addField(fieldName, fieldType);
+                   return null;
+               }
+               else
+               {
+                    return ("The field \"" + fieldName +
+                        "\" cannot be added, as it already exists in the parent class \"" + className + "\".");
+               }
+            }
+            else
+            {
                 return ("The field \"" + fieldName +
-                    "\" cannot be added, as it already exists in the parent class \"" + className + "\".");
-           }
+                    "\" cannot be added, as the parent class \"" + className + "\" does not exist.");
+            }
         }
-        else
-        {
-            return ("The field \"" + fieldName +
-                "\" cannot be added, as the parent class \"" + className + "\" does not exist.");
+        else{
+            return (fieldName + "\" is not a proper name.");
         }
-    }
-    else{
-        return (fieldName + "\" is not a proper name.");
-    }
     }
 
     /**
