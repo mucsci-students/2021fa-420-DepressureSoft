@@ -85,6 +85,7 @@ local.properties
 
 # Package Files #
 *.jar
+!jansi-1.18.jar
 *.war
 *.nar
 *.ear

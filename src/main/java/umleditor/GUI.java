@@ -1249,25 +1249,33 @@ public class GUI {
         String relationT = relationshipTypes.getSelectedItem().toString();
      //   snapshot();
 
-        if(relationT.equals("Aggregation")){
-            model.addRelationship(classOne,classTwo,RelationshipType.AGGREGATION);
-            drawArrow(classOne,classTwo,"A");
+        if(!duplicateRelationship(classOne,classTwo)){
+            if(relationT.equals("Aggregation")){
+                model.addRelationship(classOne,classTwo,RelationshipType.AGGREGATION);
+                drawArrow(classOne,classTwo,"A");
+            }
+            else if(relationT.equals("Composition")){
+                model.addRelationship(classOne,classTwo,RelationshipType.COMPOSITION);
+                drawArrow(classOne,classTwo,"C");
+            }
+            else if(relationT.equals("Inheritance")){
+                model.addRelationship(classOne,classTwo,RelationshipType.INHERITANCE);
+                drawArrow(classOne,classTwo,"I");
+            }
+            else if(relationT.equals("Realization")){
+                model.addRelationship(classOne,classTwo,RelationshipType.REALIZATION);
+                drawArrow(classOne,classTwo,"R");
+            }
+            updateButtons();
+            action.dispose();
         }
-        else if(relationT.equals("Composition")){
-            model.addRelationship(classOne,classTwo,RelationshipType.COMPOSITION);
-            drawArrow(classOne,classTwo,"C");
+        else{
+            errorMessage.setText("Relationship Already Exist.");
+            actionPane.validate();
         }
-        else if(relationT.equals("Inheritance")){
-            model.addRelationship(classOne,classTwo,RelationshipType.INHERITANCE);
-            drawArrow(classOne,classTwo,"I");
-        }
-        else if(relationT.equals("Realization")){
-            model.addRelationship(classOne,classTwo,RelationshipType.REALIZATION);
-            drawArrow(classOne,classTwo,"R");
-        }
-        updateButtons();
-        action.dispose();
+
     }
+
     /**
      * Delete Actions
      */
@@ -1280,6 +1288,8 @@ public class GUI {
         boxMap.remove(remClass);
         action.dispose();
         pane.repaint();
+        deleteRelationshipKey(remClass);
+        redrawArrows();
         updateButtons();
     }
 
@@ -1287,9 +1297,9 @@ public class GUI {
         String classOne = classNames.getSelectedItem().toString();
 
         String[] holder = classOne.split(":");
+
         model.deleteRelationship(holder[0],holder[1]);
         arrowMap.remove(classOne);
-        pane.repaint();
         redrawArrows();
         action.dispose();
         updateButtons();
@@ -1319,11 +1329,12 @@ public class GUI {
         String getClass = classNames.getSelectedItem().toString();
         String method = methodNames.getSelectedItem().toString();
         String param = paramNames.getSelectedItem().toString();
-       model.deleteParameter(getClass, method, param );
-       box = boxMap.get(getClass);
-       box.removeParameter(param,method);
-       action.dispose();
-       updateButtons();
+
+        model.deleteParameter(getClass, method, param );
+        box = boxMap.get(getClass);
+        box.removeParameter(param,method);
+        action.dispose();
+        updateButtons();
     }
    /**
     * Rename Actions
@@ -1342,6 +1353,7 @@ public class GUI {
                 action.dispose();
                 updateButtons();
                 errorMessage.setText("");
+                renameRelationshipKey(oldClass,newClass);
             }
             else{
                 errorMessage.setText("Class already exists.");
@@ -1636,11 +1648,70 @@ public class GUI {
     	}
     }
 
+
     public boolean duplicateClass(String className){
         if(boxMap.containsKey(className))
         return true;
         else
         return false;
+    }
+
+    /**
+     * Methods below ensure proper relationship arrows are maintained regardless of what state occurs with classBox. 
+     */
+    public boolean duplicateRelationship(String classOne, String classTwo){
+        for(String key: arrowMap.keySet()){
+            String[] classes = key.split(":");
+            if(classOne.equals(classes[0])){
+                if(classTwo.equals(classes[1])){
+                    return true;
+                }
+            }
+            if(classOne.equals(classes[1])){
+                if(classTwo.equals(classes[0])){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public void renameRelationshipKey(String renamedClass,String newName){
+        for(String key: arrowMap.keySet()){
+            String[] classes = key.split(":");
+            Arrow temp = arrowMap.get(key);
+            if(renamedClass.equals(classes[0])){
+                String holder = newName + ":" + classes[1];
+                model.deleteRelationship(classes[0],classes[1]);
+                arrowMap.remove(key);
+                arrowMap.put(holder,temp);
+               // model.addRelationship(classes[0],classes[1], );
+            }
+            if(renamedClass.equals(classes[1])){
+                String holder = classes[0] + ":" + newName;
+                model.deleteRelationship(classes[0],classes[1]);
+                arrowMap.remove(key);
+                arrowMap.put(holder,temp);
+                // model.addRelationship(classes[0],classes[1], );
+            }
+        }
+        redrawArrows();
+    }
+
+    public void deleteRelationshipKey(String className){
+        for(String key: arrowMap.keySet()){
+            String[] classes = key.split(":");
+            Arrow temp = arrowMap.get(key);
+            if(className.equals(classes[0])){
+                model.deleteRelationship(classes[0],classes[1]);
+                arrowMap.remove(key);
+            }
+            if(className.equals(classes[1])){
+                model.deleteRelationship(classes[0],classes[1]);
+                arrowMap.remove(key);
+            }
+        }
+        redrawArrows();
     }
 
 
