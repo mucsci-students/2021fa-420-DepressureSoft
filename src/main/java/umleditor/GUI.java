@@ -1250,28 +1250,27 @@ public class GUI {
      //   snapshot();
 
         if(!duplicateRelationship(classOne,classTwo)){
-
-        if(relationT.equals("Aggregation")){
-            model.addRelationship(classOne,classTwo,RelationshipType.AGGREGATION);
-            drawArrow(classOne,classTwo,"A");
+            if(relationT.equals("Aggregation")){
+                model.addRelationship(classOne,classTwo,RelationshipType.AGGREGATION);
+                drawArrow(classOne,classTwo,"A");
+            }
+            else if(relationT.equals("Composition")){
+                model.addRelationship(classOne,classTwo,RelationshipType.COMPOSITION);
+                drawArrow(classOne,classTwo,"C");
+            }
+            else if(relationT.equals("Inheritance")){
+                model.addRelationship(classOne,classTwo,RelationshipType.INHERITANCE);
+                drawArrow(classOne,classTwo,"I");
+            }
+            else if(relationT.equals("Realization")){
+                model.addRelationship(classOne,classTwo,RelationshipType.REALIZATION);
+                drawArrow(classOne,classTwo,"R");
+            }
+            updateButtons();
+            action.dispose();
         }
-        else if(relationT.equals("Composition")){
-            model.addRelationship(classOne,classTwo,RelationshipType.COMPOSITION);
-            drawArrow(classOne,classTwo,"C");
-        }
-        else if(relationT.equals("Inheritance")){
-            model.addRelationship(classOne,classTwo,RelationshipType.INHERITANCE);
-            drawArrow(classOne,classTwo,"I");
-        }
-        else if(relationT.equals("Realization")){
-            model.addRelationship(classOne,classTwo,RelationshipType.REALIZATION);
-            drawArrow(classOne,classTwo,"R");
-        }
-        updateButtons();
-        action.dispose();
-    }
         else{
-            errorMessage.setText("Relationship Exist Already");
+            errorMessage.setText("Relationship Already Exist.");
             actionPane.validate();
         }
 
@@ -1661,8 +1660,7 @@ public class GUI {
     }
 
     /**
-     * Methods below ensure proper relationship arrows are maintained regardeless of what state occurs with classBox.
-     * Handles potential duplicate relationships, renamed classes, and deleted classes. 
+     * Methods below ensure proper relationship arrows are maintained regardless of what state occurs with classBox. 
      */
     public boolean duplicateRelationship(String classOne, String classTwo){
         for(String key: arrowMap.keySet()){
