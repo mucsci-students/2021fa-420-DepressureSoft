@@ -4,6 +4,9 @@
 # Export images
 *.jpg
 
+# Dummy save file
+testArtifacts/dummy.json
+
 ### Eclipse ###
 .metadata
 bin/
