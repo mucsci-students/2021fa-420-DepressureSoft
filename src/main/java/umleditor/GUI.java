@@ -1772,12 +1772,18 @@ public class GUI {
         redrawArrows();
     }
 
-
     public void exportDiagramToImage(File toSave)
     {
         BufferedImage image = new BufferedImage(pane.getWidth(), pane.getHeight(), BufferedImage.TYPE_INT_RGB);
         Graphics2D g = image.createGraphics();
-        pane.printAll(g);
+        pane.paintAll(g);
+
+        // Apparently i have to call the overridden paintComponent of each arrow
+        // Why? because java literally hates me
+        for(String key: arrowMap.keySet()) {
+            Arrow arrow = arrowMap.get(key);
+            arrow.paintComponent(g);
+        }
 
         g.dispose();
         try {
