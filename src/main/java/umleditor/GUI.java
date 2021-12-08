@@ -1231,14 +1231,14 @@ public class GUI {
 
     public void addParameterAction(){
         String getClass = classNames.getSelectedItem().toString();
-		String method = methodNames.getSelectedItem().toString();
+		    String method = methodNames.getSelectedItem().toString();
         String parameter = parameterName.getText();
         String parameterT = parameterType.getText();
 
-        String newParam = parameterT + "_" + parameter;
+        String newParam = parameter + " : " + parameterT;
         if(SourceVersion.isIdentifier(parameter)){
             if(!boxMap.get(getClass).duplicateParameter(method,newParam)){
-                model.addParameter(getClass,method,newParam, parameterT);
+                model.addParameter(getClass,method,parameter,parameterT);
                 box = boxMap.get(getClass);
                 box.addParameter(newParam,method);
                 action.dispose();
@@ -1681,7 +1681,7 @@ public class GUI {
           box.addMethod(method.getMethodName(), method.getMethodType());
           ArrayList<Parameter> parameters = method.getParamList();
           for(Parameter param : parameters) {
-            box.addParameter(param.getParamName(), method.getMethodName());
+            box.addParameter(param.getParamName() + " : " + param.getParamType(), method.getMethodName());
           }
         }
         boxMap.put(className, box);
@@ -1715,7 +1715,7 @@ public class GUI {
     }
 
     /**
-     * Methods below ensure proper relationship arrows are maintained regardless of what state occurs with classBox. 
+     * Methods below ensure proper relationship arrows are maintained regardless of what state occurs with classBox.
      */
     public boolean duplicateRelationship(String classOne, String classTwo){
         for(String key: arrowMap.keySet()){

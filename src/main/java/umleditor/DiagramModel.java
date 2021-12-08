@@ -116,7 +116,7 @@ public class DiagramModel {
         }
     }
 
-    
+
     /**
      * Saves the class diagram to a JSON file using the format specified by the CSCI 420 fall 2021
      * standardization committee.
@@ -242,7 +242,7 @@ public class DiagramModel {
                 while(methodIterator.hasNext()) {
                     JSONObject currentMethod = methodIterator.next();
                     String currentMethodName = (String) currentMethod.get("name");
-                    String currentMethodType = (String) currentMethod.get("type");
+                    String currentMethodType = (String) currentMethod.get("return_type");
                     this.addMethod(currentClassName, currentMethodName, currentMethodType);
                     JSONArray parameterList = (JSONArray) currentMethod.get("params");
                     Iterator<JSONObject> parameterIterator = parameterList.iterator();
