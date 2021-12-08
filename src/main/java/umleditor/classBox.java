@@ -94,10 +94,12 @@ public class classBox {
         panel.add(className);
         methodPanel = new JPanel();
         fieldPanel = new JPanel();
-        methodPanel.setLayout(new GridLayout(4,2));
+        methodPanel.setLayout(new BoxLayout(methodPanel,BoxLayout.PAGE_AXIS));
+        methodPanel.add(Box.createHorizontalGlue());
         methodPanel.setBorder(new LineBorder(new Color(20, 20, 20), 1));
-		    fieldPanel.setLayout(new GridLayout(4,2));
+		fieldPanel.setLayout(new BoxLayout(fieldPanel,BoxLayout.PAGE_AXIS));
         fieldPanel.setBorder(new LineBorder(new Color(20, 20, 20), 1));
+        fieldPanel.add(Box.createHorizontalGlue());
         panel.add(fieldPanel);
         panel.add(methodPanel);
 
