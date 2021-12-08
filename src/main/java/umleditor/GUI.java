@@ -1231,14 +1231,14 @@ public class GUI {
 
     public void addParameterAction(){
         String getClass = classNames.getSelectedItem().toString();
-		     String method = methodNames.getSelectedItem().toString();
+		    String method = methodNames.getSelectedItem().toString();
         String parameter = parameterName.getText();
         String parameterT = parameterType.getText();
 
         String newParam = parameter + " : " + parameterT;
         if(SourceVersion.isIdentifier(parameter)){
             if(!boxMap.get(getClass).duplicateParameter(method,newParam)){
-                model.addParameter(getClass,method,newParam, parameterT);
+                model.addParameter(getClass,method,parameter,parameterT);
                 box = boxMap.get(getClass);
                 box.addParameter(newParam,method);
                 action.dispose();
