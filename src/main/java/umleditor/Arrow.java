@@ -15,6 +15,10 @@ public class Arrow extends JPanel{
 	
     final float THICKNESS = 2;
 
+    final float DASH_ARRAY[] = {15};
+    private BasicStroke SOLIDLINE = new BasicStroke(THICKNESS);
+	private BasicStroke DASHEDLINE = new BasicStroke(THICKNESS, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 15, DASH_ARRAY, 0);
+
     boolean right;
     boolean left;
 	
@@ -80,8 +84,8 @@ public class Arrow extends JPanel{
 	
 	// Draws the arrow head
 	private void drawType(Graphics2D g) {
-	    final int MAX_SIZE = 20;
-	    final int MIN_SIZE = 10;
+	    final int MAX_SIZE = 12;
+	    final int MIN_SIZE = 8;
 	    final BasicStroke SOLIDLINE = new BasicStroke(THICKNESS);
 
 	    int destX = destPoint.x;
@@ -94,12 +98,16 @@ public class Arrow extends JPanel{
 		if(!left) {
 			if(!right) {
 				shape.addPoint(MIN_SIZE + destX, destY - MAX_SIZE);
+				if(type.equals("A") || type.equals("C")) {
+					shape.addPoint(destX,  destY - (MAX_SIZE * 2));
+				}
 				shape.addPoint(destX - MIN_SIZE, destY - MAX_SIZE);
 			}
 			else {
 				shape.addPoint(destX - MAX_SIZE, destY - MIN_SIZE);
-
-
+				if(type.equals("A") || type.equals("C")) {
+					shape.addPoint(destX - (MAX_SIZE * 2), destY);
+				}
 				shape.addPoint(destX - MAX_SIZE, MIN_SIZE + destY);
 			}
 		}
@@ -107,10 +115,16 @@ public class Arrow extends JPanel{
 
 			if(!right) {
 				shape.addPoint(MIN_SIZE + destX, MAX_SIZE + destY);
+				if(type.equals("A") || type.equals("C")) {
+					shape.addPoint(destX, (MAX_SIZE * 2) + destY);
+				}
 				shape.addPoint(destX - MIN_SIZE, MAX_SIZE + destY);
 			}
 			else {
 				shape.addPoint(MAX_SIZE + destX, destY - MIN_SIZE);
+				if(type.equals("A") || type.equals("C")) {
+					shape.addPoint((MAX_SIZE * 2) + destX, destY);
+				}
 				shape.addPoint(MAX_SIZE + destX, MIN_SIZE + destY);
 			}
 		}
@@ -130,7 +144,7 @@ public class Arrow extends JPanel{
 		int Xos = sourcePoint.x + sourcePanel.getHeight() / 2;
 		int Yos = destPoint.y - sourcePanel.getHeight() / 2;
 		
-
+		
 		if(type.equals("A")) {
             g2.setColor(Color.BLACK);
 		}
@@ -144,6 +158,12 @@ public class Arrow extends JPanel{
 			g2.setColor(Color.GREEN);
 		}
 		
+		if(type.equals("C") || type.equals("I")) {
+			g2.setStroke(SOLIDLINE);
+		}
+		else {
+			g2.setStroke(DASHEDLINE);
+		}
 
 		if(sourcePanel != destPanel) {
 			if(!right) {
