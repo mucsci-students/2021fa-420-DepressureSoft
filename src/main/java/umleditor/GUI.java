@@ -1235,7 +1235,7 @@ public class GUI {
         String parameter = parameterName.getText();
         String parameterT = parameterType.getText();
 
-        String newParam = parameter + " : " + parameterT;
+        String newParam = parameterT+ "_" + parameter;
         if(SourceVersion.isIdentifier(parameter)){
             if(!boxMap.get(getClass).duplicateParameter(method,newParam)){
                 model.addParameter(getClass,method,parameter,parameterT);
