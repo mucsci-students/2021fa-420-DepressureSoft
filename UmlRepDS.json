@@ -1,0 +1,1687 @@
+{
+  "classes": [
+    {
+      "name": "Arrow",
+      "x_position": "1347",
+      "y_position": "940",
+      "fields": [
+        { "name": "THICKNESS", "type": "float" },
+        { "name": "right", "type": "boolean" },
+        { "name": "left", "type": "boolean" },
+        { "name": "sourcePanel", "type": "JPanel" },
+        { "name": "destPanel", "type": "JPanel" },
+        { "name": "type", "type": "String" },
+        { "name": "sourcePoint", "type": "Point" },
+        { "name": "destPoint", "type": "Point" }
+      ],
+      "methods": [
+        {
+          "name": "lineLength",
+          "return_type": "void",
+          "params": [
+          ]
+        },
+        {
+          "name": "drawType",
+          "return_type": "void",
+          "params": [
+            { "name": "g", "type": "Graphics2D"}
+          ]
+        },
+        {
+          "name": "paintComponent",
+          "return_type": "void",
+          "params": [
+            { "name": "g", "type": "Graphics"}
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Method",
+      "x_position": "13",
+      "y_position": "627",
+      "fields": [
+        { "name": "methodName", "type": "String" },
+        { "name": "methodType", "type": "String" },
+        { "name": "parameters", "type": "ArrayList<Parameter>" }
+      ],
+      "methods": [
+        {
+          "name": "Method",
+          "return_type": "",
+          "params": [
+            { "name": "String_methodName", "type": "String"},
+            { "name": "String_methodType", "type": "String"}
+          ]
+        },
+        {
+          "name": "Method1",
+          "return_type": "",
+          "params": [
+            { "name": "Method_other", "type": "Method"}
+          ]
+        },
+        {
+          "name": "getMethodName",
+          "return_type": "String",
+          "params": [
+          ]
+        },
+        {
+          "name": "getMethodType",
+          "return_type": "String",
+          "params": [
+          ]
+        },
+        {
+          "name": "renameMethod",
+          "return_type": "",
+          "params": [
+            { "name": "String_newName", "type": "String"}
+          ]
+        },
+        {
+          "name": "renameMethodType",
+          "return_type": "",
+          "params": [
+            { "name": "String_newType", "type": "String"}
+          ]
+        },
+        {
+          "name": "addParameter",
+          "return_type": "",
+          "params": [
+            { "name": "String_pName", "type": "String"},
+            { "name": "String_pType", "type": "String"}
+          ]
+        },
+        {
+          "name": "renameParameter",
+          "return_type": "",
+          "params": [
+            { "name": "String_oldPName", "type": "String"},
+            { "name": "String_newPName", "type": "String"}
+          ]
+        },
+        {
+          "name": "removeParameter",
+          "return_type": "",
+          "params": [
+            { "name": "String_pName", "type": "String"}
+          ]
+        },
+        {
+          "name": "renameParameterType",
+          "return_type": "",
+          "params": [
+            { "name": "String_pName", "type": "String"},
+            { "name": "String_newType", "type": "String"}
+          ]
+        },
+        {
+          "name": "removeAllParameters",
+          "return_type": "",
+          "params": [
+          ]
+        },
+        {
+          "name": "parameterExists",
+          "return_type": "boolean",
+          "params": [
+            { "name": "String_pName", "type": "String"}
+          ]
+        },
+        {
+          "name": "getParam",
+          "return_type": "Parameter",
+          "params": [
+            { "name": "String_pName", "type": "String"}
+          ]
+        },
+        {
+          "name": "getPName",
+          "return_type": "String",
+          "params": [
+          ]
+        },
+        {
+          "name": "getParamList",
+          "return_type": "ArrayList<Parameter>",
+          "params": [
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Controller",
+      "x_position": "499",
+      "y_position": "1060",
+      "fields": [
+        { "name": "ADD_HELP", "type": "String" },
+        { "name": "DELETE_HELP", "type": "String" },
+        { "name": "RENAME_HELP", "type": "String" },
+        { "name": "SAVE_HELP", "type": "String" },
+        { "name": "LOAD_HELP", "type": "String" },
+        { "name": "CHANGETYPE_HELP", "type": "String" },
+        { "name": "DISPLAY_HELP", "type": "String" },
+        { "name": "UNDO_HELP", "type": "String" },
+        { "name": "REDO_HELP", "type": "String" },
+        { "name": "HELP_MENU", "type": "String" }
+      ],
+      "methods": [
+        {
+          "name": "main",
+          "return_type": "void",
+          "params": [
+            { "name": "args", "type": "String[]"}
+          ]
+        },
+        {
+          "name": "checkKeyword",
+          "return_type": "boolean",
+          "params": [
+            { "name": "commandList", "type": "ArrayList<String>"},
+            { "name": "index", "type": "int"},
+            { "name": "keyword", "type": "String"}
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Field",
+      "x_position": "14",
+      "y_position": "502",
+      "fields": [
+        { "name": "fieldName", "type": "String" },
+        { "name": "fieldType", "type": "String" }
+      ],
+      "methods": [
+        {
+          "name": "getFieldName",
+          "return_type": "String",
+          "params": [
+          ]
+        },
+        {
+          "name": "getFieldType",
+          "return_type": "String",
+          "params": [
+          ]
+        },
+        {
+          "name": "renameField",
+          "return_type": "void",
+          "params": [
+            { "name": "newFieldName", "type": "String"}
+          ]
+        },
+        {
+          "name": "renameFieldType",
+          "return_type": "void",
+          "params": [
+            { "name": "newFieldType", "type": "String"}
+          ]
+        }
+      ]
+    },
+    {
+      "name": "DragLayout",
+      "x_position": "1226",
+      "y_position": "701",
+      "fields": [
+        { "name": "usePreferredSize", "type": "boolean" }
+      ],
+      "methods": [
+        {
+          "name": "DragLayout",
+          "return_type": "",
+          "params": [
+          ]
+        },
+        {
+          "name": "setUsePreferredSize",
+          "return_type": "",
+          "params": [
+            { "name": "boolean_usePreferredSize", "type": "boolean"}
+          ]
+        },
+        {
+          "name": "DragLayout1",
+          "return_type": "",
+          "params": [
+            { "name": "boolean_usePreferredSize", "type": "boolean"}
+          ]
+        },
+        {
+          "name": "isUsePreferredSize",
+          "return_type": "boolean",
+          "params": [
+          ]
+        },
+        {
+          "name": "addLayoutComponent",
+          "return_type": "",
+          "params": [
+            { "name": "String_name", "type": "String"},
+            { "name": "Component_comp", "type": "Component"}
+          ]
+        },
+        {
+          "name": "removeLayoutComponent",
+          "return_type": "",
+          "params": [
+            { "name": "Component_component", "type": "Component"}
+          ]
+        },
+        {
+          "name": "minimumLayoutSize",
+          "return_type": "Dimension",
+          "params": [
+            { "name": "Container_parent", "type": "Container"}
+          ]
+        },
+        {
+          "name": "preferredLayoutSize",
+          "return_type": "Dimension",
+          "params": [
+            { "name": "Container_parent", "type": "Container"}
+          ]
+        },
+        {
+          "name": "getLayoutSize",
+          "return_type": "Dimension",
+          "params": [
+            { "name": "Container_parent", "type": "Container"}
+          ]
+        },
+        {
+          "name": "getActualSize",
+          "return_type": "Dimension",
+          "params": [
+            { "name": "Component_component", "type": "Component"}
+          ]
+        },
+        {
+          "name": "layoutContainer",
+          "return_type": "",
+          "params": [
+            { "name": "Container_parent", "type": "Container"}
+          ]
+        },
+        {
+          "name": "toString",
+          "return_type": "String",
+          "params": [
+          ]
+        }
+      ]
+    },
+    {
+      "name": "UMLClass",
+      "x_position": "14",
+      "y_position": "9",
+      "fields": [
+        { "name": "dName", "type": "String" },
+        { "name": "fields", "type": "ArrayList<Field>" },
+        { "name": "methods", "type": "ArrayList<Method>" },
+        { "name": "xPosition", "type": "int" },
+        { "name": "yPosition", "type": "int" }
+      ],
+      "methods": [
+        {
+          "name": "renameClass",
+          "return_type": "void",
+          "params": [
+            { "name": "newName", "type": "String"}
+          ]
+        },
+        {
+          "name": "getXPosition",
+          "return_type": "int",
+          "params": [
+          ]
+        },
+        {
+          "name": "getYPosition",
+          "return_type": "int",
+          "params": [
+          ]
+        },
+        {
+          "name": "setXPosition",
+          "return_type": "void",
+          "params": [
+            { "name": "newX", "type": "int"}
+          ]
+        },
+        {
+          "name": "setYPosition",
+          "return_type": "void",
+          "params": [
+            { "name": "newY", "type": "int"}
+          ]
+        },
+        {
+          "name": "addMethod",
+          "return_type": "void",
+          "params": [
+            { "name": "methodName", "type": "String"},
+            { "name": "methodType", "type": "String"}
+          ]
+        },
+        {
+          "name": "removeMethod",
+          "return_type": "void",
+          "params": [
+            { "name": "methodName", "type": "String"}
+          ]
+        },
+        {
+          "name": "renameMethod",
+          "return_type": "void",
+          "params": [
+            { "name": "currentMethod", "type": "String"},
+            { "name": "newMethodName", "type": "String"}
+          ]
+        },
+        {
+          "name": "renameMethodType",
+          "return_type": "void",
+          "params": [
+            { "name": "currentMethod", "type": "String"},
+            { "name": "newMethodType", "type": "String"}
+          ]
+        },
+        {
+          "name": "methodExists",
+          "return_type": "boolean",
+          "params": [
+            { "name": "methodName", "type": "String"}
+          ]
+        },
+        {
+          "name": "getMethod",
+          "return_type": "Method",
+          "params": [
+            { "name": "methodName", "type": "String"}
+          ]
+        },
+        {
+          "name": "getMethods",
+          "return_type": "ArrayList<Method>",
+          "params": [
+          ]
+        },
+        {
+          "name": "getStringMethods",
+          "return_type": "ArrayList<String>",
+          "params": [
+          ]
+        },
+        {
+          "name": "addParameter",
+          "return_type": "void",
+          "params": [
+            { "name": "methodName", "type": "String"},
+            { "name": "pName", "type": "String"},
+            { "name": "pType", "type": "String"}
+          ]
+        },
+        {
+          "name": "removeParameter",
+          "return_type": "void",
+          "params": [
+            { "name": "methodName", "type": "String"},
+            { "name": "pName", "type": "String"}
+          ]
+        },
+        {
+          "name": "removeAllParameter",
+          "return_type": "void",
+          "params": [
+            { "name": "methodName", "type": "String"}
+          ]
+        },
+        {
+          "name": "removeField",
+          "return_type": "void",
+          "params": [
+            { "name": "removedField", "type": "String"}
+          ]
+        },
+        {
+          "name": "renameField",
+          "return_type": "void",
+          "params": [
+            { "name": "oldName", "type": "String"},
+            { "name": "newName", "type": "String"}
+          ]
+        },
+        {
+          "name": "renameFieldType",
+          "return_type": "void",
+          "params": [
+            { "name": "fieldName", "type": "String"},
+            { "name": "newType", "type": "String"}
+          ]
+        },
+        {
+          "name": "getField",
+          "return_type": "Field",
+          "params": [
+            { "name": "fieldName", "type": "String"}
+          ]
+        },
+        {
+          "name": "fieldExists",
+          "return_type": "boolean",
+          "params": [
+            { "name": "fieldName", "type": "String"}
+          ]
+        },
+        {
+          "name": "getFields",
+          "return_type": "ArrayList<Field>",
+          "params": [
+          ]
+        },
+        {
+          "name": "getFieldStrings",
+          "return_type": "ArrayList<String>",
+          "params": [
+          ]
+        },
+        {
+          "name": "getName",
+          "return_type": "String",
+          "params": [
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ModelHistory",
+      "x_position": "1219",
+      "y_position": "488",
+      "fields": [
+        { "name": "historySingleton", "type": "ModelHistory" },
+        { "name": "undoHistory", "type": "Stack<DiagramModel>" },
+        { "name": "redoHistory", "type": "Stack<DiagramModel>" }
+      ],
+      "methods": [
+        {
+          "name": "getInstance",
+          "return_type": "ModelHistory",
+          "params": [
+          ]
+        },
+        {
+          "name": "snapshotModel",
+          "return_type": "void",
+          "params": [
+            { "name": "model", "type": "DiagramModel"}
+          ]
+        },
+        {
+          "name": "clearHistory",
+          "return_type": "void",
+          "params": [
+          ]
+        },
+        {
+          "name": "undo",
+          "return_type": "DiagramModel",
+          "params": [
+            { "name": "currentModel", "type": "DiagramModel"}
+          ]
+        },
+        {
+          "name": "redo",
+          "return_type": "DiagramModel",
+          "params": [
+            { "name": "currentModel", "type": "DiagramModel"}
+          ]
+        },
+        {
+          "name": "isUndoHistoryEmpty",
+          "return_type": "boolean",
+          "params": [
+          ]
+        },
+        {
+          "name": "isRedoHistoryEmpty",
+          "return_type": "boolean",
+          "params": [
+          ]
+        }
+      ]
+    },
+    {
+      "name": "classBox",
+      "x_position": "1219",
+      "y_position": "10",
+      "fields": [
+        { "name": "className", "type": "JLabel" },
+        { "name": "panel", "type": "JPanel" },
+        { "name": "fieldPanel", "type": "JPanel" },
+        { "name": "methodPanel", "type": "JPanel" },
+        { "name": "gl_panel", "type": "GroupLayout" },
+        { "name": "params", "type": "HashMap<String, ArrayList<String>>" },
+        { "name": "methods", "type": "HashMap<String, JLabel>" },
+        { "name": "fields", "type": "HashMap<String, JLabel>" }
+      ],
+      "methods": [
+        {
+          "name": "initialize",
+          "return_type": "void",
+          "params": [
+          ]
+        },
+        {
+          "name": "getLocation",
+          "return_type": "Point",
+          "params": [
+          ]
+        },
+        {
+          "name": "setLocation",
+          "return_type": "void",
+          "params": [
+            { "name": "x", "type": "int"},
+            { "name": "y", "type": "int"}
+          ]
+        },
+        {
+          "name": "getClassName",
+          "return_type": "String",
+          "params": [
+          ]
+        },
+        {
+          "name": "getClassPanel",
+          "return_type": "JPanel",
+          "params": [
+          ]
+        },
+        {
+          "name": "getX",
+          "return_type": "int",
+          "params": [
+          ]
+        },
+        {
+          "name": "getY",
+          "return_type": "int",
+          "params": [
+          ]
+        },
+        {
+          "name": "addField",
+          "return_type": "void",
+          "params": [
+            { "name": "fieldName", "type": "String"},
+            { "name": "fieldT", "type": "String"}
+          ]
+        },
+        {
+          "name": "addMethod",
+          "return_type": "void",
+          "params": [
+            { "name": "methodName", "type": "String"},
+            { "name": "methodType", "type": "String"}
+          ]
+        },
+        {
+          "name": "addParameter",
+          "return_type": "void",
+          "params": [
+            { "name": "parameter", "type": "String"},
+            { "name": "method", "type": "String"}
+          ]
+        },
+        {
+          "name": "removeField",
+          "return_type": "void",
+          "params": [
+            { "name": "removes", "type": "String"}
+          ]
+        },
+        {
+          "name": "removeMethod",
+          "return_type": "void",
+          "params": [
+            { "name": "removes", "type": "String"}
+          ]
+        },
+        {
+          "name": "removeParameter",
+          "return_type": "void",
+          "params": [
+            { "name": "removes", "type": "String"},
+            { "name": "method", "type": "String"}
+          ]
+        },
+        {
+          "name": "renameClass",
+          "return_type": "newName",
+          "params": [
+            { "name": "newName", "type": "String"}
+          ]
+        },
+        {
+          "name": "renameField",
+          "return_type": "void",
+          "params": [
+            { "name": "oldName", "type": "String"},
+            { "name": "newName", "type": "String"}
+          ]
+        },
+        {
+          "name": "renameMethod",
+          "return_type": "void",
+          "params": [
+            { "name": "oldname", "type": "String"},
+            { "name": "newName", "type": "String"}
+          ]
+        },
+        {
+          "name": "renameParameter",
+          "return_type": "void",
+          "params": [
+            { "name": "oldParameter", "type": "String"},
+            { "name": "newParameter", "type": "String"},
+            { "name": "method", "type": "String"}
+          ]
+        },
+        {
+          "name": "duplicateField",
+          "return_type": "boolean",
+          "params": [
+            { "name": "fieldName", "type": "String"}
+          ]
+        },
+        {
+          "name": "duplicateMethod",
+          "return_type": "boolean",
+          "params": [
+            { "name": "methodName", "type": "String"}
+          ]
+        },
+        {
+          "name": "duplicateParameter",
+          "return_type": "boolean",
+          "params": [
+            { "name": "method", "type": "String"},
+            { "name": "parameterName", "type": "String"}
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Relationship",
+      "x_position": "13",
+      "y_position": "1076",
+      "fields": [
+        { "name": "from", "type": "UMLClass" },
+        { "name": "to", "type": "UMLClass" },
+        { "name": "type", "type": "RelationshipType" }
+      ],
+      "methods": [
+        {
+          "name": "getFrom",
+          "return_type": "UMLClass",
+          "params": [
+          ]
+        },
+        {
+          "name": "getTo",
+          "return_type": "UMLClass",
+          "params": [
+          ]
+        },
+        {
+          "name": "getRelationshipType",
+          "return_type": "RelationshipType",
+          "params": [
+          ]
+        },
+        {
+          "name": "getRelationshipTypeString",
+          "return_type": "String",
+          "params": [
+          ]
+        },
+        {
+          "name": "setType",
+          "return_type": "void",
+          "params": [
+            { "name": "newType", "type": "RelationshipType"}
+          ]
+        },
+        {
+          "name": "printRelationship",
+          "return_type": "void",
+          "params": [
+          ]
+        },
+        {
+          "name": "getRelTypeFromString",
+          "return_type": "RelationshipType",
+          "params": [
+            { "name": "relString", "type": "String"}
+          ]
+        }
+      ]
+    },
+    {
+      "name": "TabCompletion",
+      "x_position": "885",
+      "y_position": "838",
+      "fields": [
+        { "name": "comp", "type": "AggregateCompleter" }
+      ],
+      "methods": [
+        {
+          "name": "updateCompleter",
+          "return_type": "AggregateCompleter",
+          "params": [
+          ]
+        },
+        {
+          "name": "relationComplete",
+          "return_type": "AggregateCompleter",
+          "params": [
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Parameter",
+      "x_position": "13",
+      "y_position": "948",
+      "fields": [
+        { "name": "paramName", "type": "String" },
+        { "name": "paramType", "type": "String" }
+      ],
+      "methods": [
+        {
+          "name": "getParamName",
+          "return_type": "String",
+          "params": [
+          ]
+        },
+        {
+          "name": "getParamType",
+          "return_type": "String",
+          "params": [
+          ]
+        },
+        {
+          "name": "renameParameter",
+          "return_type": "void",
+          "params": [
+            { "name": "newParamName", "type": "String"}
+          ]
+        },
+        {
+          "name": "renameParameterType",
+          "return_type": "void",
+          "params": [
+            { "name": "newType", "type": "String"}
+          ]
+        }
+      ]
+    },
+    {
+      "name": "GUI",
+      "x_position": "1826",
+      "y_position": "10",
+      "fields": [
+        { "name": "frame", "type": "JFrame" },
+        { "name": "action", "type": "JFrame" },
+        { "name": "menuBar", "type": "JMenuBar" },
+        { "name": "help", "type": "JMenuItem" },
+        { "name": "add", "type": "JMenu" },
+        { "name": "delete", "type": "JMenu" },
+        { "name": "rename", "type": "JMenu" },
+        { "name": "file", "type": "JMenu" },
+        { "name": "edit", "type": "JMenu" },
+        { "name": "save", "type": "JMenuItem" },
+        { "name": "load", "type": "JMenuItem" },
+        { "name": "undo", "type": "JMenuItem" },
+        { "name": "redo", "type": "JMenuItem" },
+        { "name": "saveImg", "type": "JMenuItem" },
+        { "name": "addClass", "type": "JMenuItem" },
+        { "name": "addRelationship", "type": "JMenuItem" },
+        { "name": "addField", "type": "JMenuItem" },
+        { "name": "addMethod", "type": "JMenuItem" },
+        { "name": "addParameter", "type": "JMenuItem" },
+        { "name": "deleteClass", "type": "JMenuItem" },
+        { "name": "deleteRelationship", "type": "JMenuItem" },
+        { "name": "deleteField", "type": "JMenuItem" },
+        { "name": "deleteMethod", "type": "JMenuItem" },
+        { "name": "deleteParameter", "type": "JMenuItem" },
+        { "name": "renameClass", "type": "JMenuItem" },
+        { "name": "renameField", "type": "JMenuItem" },
+        { "name": "renameMethod", "type": "JMenuItem" },
+        { "name": "renameParameter", "type": "JMenuItem" },
+        { "name": "pane", "type": "JPanel" },
+        { "name": "boxPane", "type": "JPanel" },
+        { "name": "actionPane", "type": "JPanel" },
+        { "name": "textBoxClassAdd", "type": "JTextField" },
+        { "name": "className", "type": "JTextField" },
+        { "name": "className2", "type": "JTextField" },
+        { "name": "methodName", "type": "JTextField" },
+        { "name": "fieldName", "type": "JTextField" },
+        { "name": "fieldType", "type": "JTextField" },
+        { "name": "parameterName", "type": "JTextField" },
+        { "name": "parameterType", "type": "JTextField" },
+        { "name": "renamer", "type": "JTextField" },
+        { "name": "fileName", "type": "JTextField" },
+        { "name": "errorMessage", "type": "JTextField" },
+        { "name": "classNames", "type": "JComboBox" },
+        { "name": "classNamesX", "type": "JComboBox" },
+        { "name": "methodNames", "type": "JComboBox" },
+        { "name": "fieldNames", "type": "JComboBox" },
+        { "name": "paramNames", "type": "JComboBox" },
+        { "name": "relationshipTypes", "type": "JComboBox" },
+        { "name": "model", "type": "DiagramModel" },
+        { "name": "boxMap", "type": "HashMap<String,classBox>" },
+        { "name": "arrowMap", "type": "HashMap<String,Arrow>" },
+        { "name": "box", "type": "classBox" }
+      ],
+      "methods": [
+        {
+          "name": "main",
+          "return_type": "void",
+          "params": [
+            { "name": "args", "type": "String[]"}
+          ]
+        },
+        {
+          "name": "drawGUI",
+          "return_type": "void",
+          "params": [
+          ]
+        },
+        {
+          "name": "createInterface",
+          "return_type": "void",
+          "params": [
+          ]
+        },
+        {
+          "name": "addClassWindow",
+          "return_type": "void",
+          "params": [
+          ]
+        },
+        {
+          "name": "saveWindow",
+          "return_type": "void",
+          "params": [
+          ]
+        },
+        {
+          "name": "saveBoxPositions",
+          "return_type": "void",
+          "params": [
+          ]
+        },
+        {
+          "name": "GUI",
+          "return_type": "",
+          "params": [
+          ]
+        },
+        {
+          "name": "saveImageWindow",
+          "return_type": "void",
+          "params": [
+          ]
+        },
+        {
+          "name": "loadWindow",
+          "return_type": "void",
+          "params": [
+          ]
+        },
+        {
+          "name": "helpWindow",
+          "return_type": "void",
+          "params": [
+          ]
+        },
+        {
+          "name": "addRelationship",
+          "return_type": "void",
+          "params": [
+          ]
+        },
+        {
+          "name": "addField",
+          "return_type": "void",
+          "params": [
+          ]
+        },
+        {
+          "name": "addMethod",
+          "return_type": "void",
+          "params": [
+          ]
+        },
+        {
+          "name": "addParameter",
+          "return_type": "void",
+          "params": [
+          ]
+        },
+        {
+          "name": "deleteClass",
+          "return_type": "void",
+          "params": [
+          ]
+        },
+        {
+          "name": "deleteRelationship",
+          "return_type": "void",
+          "params": [
+          ]
+        },
+        {
+          "name": "deleteField",
+          "return_type": "void",
+          "params": [
+          ]
+        },
+        {
+          "name": "deleteMethod",
+          "return_type": "void",
+          "params": [
+          ]
+        },
+        {
+          "name": "deleteParameter",
+          "return_type": "void",
+          "params": [
+          ]
+        },
+        {
+          "name": "renameClass",
+          "return_type": "void",
+          "params": [
+          ]
+        },
+        {
+          "name": "renameField",
+          "return_type": "void",
+          "params": [
+          ]
+        },
+        {
+          "name": "renameMethod",
+          "return_type": "void",
+          "params": [
+          ]
+        },
+        {
+          "name": "renameParameter",
+          "return_type": "void",
+          "params": [
+          ]
+        },
+        {
+          "name": "addClassAction",
+          "return_type": "void",
+          "params": [
+          ]
+        },
+        {
+          "name": "addFieldAction",
+          "return_type": "void",
+          "params": [
+          ]
+        },
+        {
+          "name": "addMethodAction",
+          "return_type": "void",
+          "params": [
+          ]
+        },
+        {
+          "name": "addParameterAction",
+          "return_type": "void",
+          "params": [
+          ]
+        },
+        {
+          "name": "addRelationshipAction",
+          "return_type": "void",
+          "params": [
+          ]
+        },
+        {
+          "name": "deleteClassAction",
+          "return_type": "void",
+          "params": [
+          ]
+        },
+        {
+          "name": "deleteRelationshipAction",
+          "return_type": "void",
+          "params": [
+          ]
+        },
+        {
+          "name": "deleteFieldAction",
+          "return_type": "void",
+          "params": [
+          ]
+        },
+        {
+          "name": "deleteParameterAction",
+          "return_type": "void",
+          "params": [
+          ]
+        },
+        {
+          "name": "deleteMethodAction",
+          "return_type": "void",
+          "params": [
+          ]
+        },
+        {
+          "name": "renameClassAction",
+          "return_type": "void",
+          "params": [
+          ]
+        },
+        {
+          "name": "renameFieldAction",
+          "return_type": "void",
+          "params": [
+          ]
+        },
+        {
+          "name": "renameMethodAction",
+          "return_type": "void",
+          "params": [
+          ]
+        },
+        {
+          "name": "renameParameterAction",
+          "return_type": "void",
+          "params": [
+          ]
+        },
+        {
+          "name": "drawArrow",
+          "return_type": "void",
+          "params": [
+            { "name": "sourceClass", "type": "String"},
+            { "name": "destClass", "type": "String"}
+          ]
+        },
+        {
+          "name": "redrawArrows",
+          "return_type": "void",
+          "params": [
+          ]
+        },
+        {
+          "name": "undoAction",
+          "return_type": "void",
+          "params": [
+          ]
+        },
+        {
+          "name": "redoAction",
+          "return_type": "void",
+          "params": [
+          ]
+        },
+        {
+          "name": "snapshot",
+          "return_type": "void",
+          "params": [
+          ]
+        },
+        {
+          "name": "updateButtons",
+          "return_type": "void",
+          "params": [
+          ]
+        },
+        {
+          "name": "refreshBoxes",
+          "return_type": "void",
+          "params": [
+          ]
+        },
+        {
+          "name": "duplicateClass",
+          "return_type": "boolean",
+          "params": [
+            { "name": "className", "type": "String"}
+          ]
+        },
+        {
+          "name": "duplicateRelationship",
+          "return_type": "boolean",
+          "params": [
+            { "name": "classOne", "type": "String"},
+            { "name": "classTwo", "type": "String"}
+          ]
+        },
+        {
+          "name": "renameRelationshipKey",
+          "return_type": "void",
+          "params": [
+            { "name": "renamedClass", "type": "String"},
+            { "name": "newName", "type": "String"}
+          ]
+        },
+        {
+          "name": "deleteRelationshipKey",
+          "return_type": "void",
+          "params": [
+            { "name": "className", "type": "String"}
+          ]
+        },
+        {
+          "name": "exportDiagramToImage",
+          "return_type": "void",
+          "params": [
+            { "name": "toSave", "type": "File"}
+          ]
+        }
+      ]
+    },
+    {
+      "name": "DiagramModel",
+      "x_position": "500",
+      "y_position": "9",
+      "fields": [
+        { "name": "diagram", "type": "HashMap<String,UMLClass>" },
+        { "name": "relationships", "type": "ArrayList<Relationship>" }
+      ],
+      "methods": [
+        {
+          "name": "DiagramModel",
+          "return_type": "void",
+          "params": [
+          ]
+        },
+        {
+          "name": "addClass",
+          "return_type": "String",
+          "params": [
+            { "name": "name", "type": "String"}
+          ]
+        },
+        {
+          "name": "deleteClass",
+          "return_type": "String",
+          "params": [
+            { "name": "entry", "type": "String"}
+          ]
+        },
+        {
+          "name": "save",
+          "return_type": "String",
+          "params": [
+            { "name": "fileLocation", "type": "String"}
+          ]
+        },
+        {
+          "name": "jsonTxtClassMaker",
+          "return_type": "String",
+          "params": [
+            { "name": "theClass", "type": "UMLClass"}
+          ]
+        },
+        {
+          "name": "load",
+          "return_type": "String",
+          "params": [
+          ]
+        },
+        {
+          "name": "listClass",
+          "return_type": "String",
+          "params": [
+            { "name": "className", "type": "String"}
+          ]
+        },
+        {
+          "name": "listClasses",
+          "return_type": "String",
+          "params": [
+          ]
+        },
+        {
+          "name": "listRelationships",
+          "return_type": "String",
+          "params": [
+          ]
+        },
+        {
+          "name": "addMethod",
+          "return_type": "String",
+          "params": [
+            { "name": "className", "type": "String"},
+            { "name": "methodName", "type": "String"},
+            { "name": "methodType", "type": "String"}
+          ]
+        },
+        {
+          "name": "deleteMethod",
+          "return_type": "String",
+          "params": [
+            { "name": "className", "type": "String"},
+            { "name": "methodName", "type": "String"}
+          ]
+        },
+        {
+          "name": "classExists",
+          "return_type": "boolean",
+          "params": [
+          ]
+        },
+        {
+          "name": "fieldExists",
+          "return_type": "boolean",
+          "params": [
+            { "name": "className", "type": "String"},
+            { "name": "fieldName", "type": "String"}
+          ]
+        },
+        {
+          "name": "methodExists",
+          "return_type": "boolean",
+          "params": [
+            { "name": "className", "type": "String"},
+            { "name": "methodName", "type": "String"}
+          ]
+        },
+        {
+          "name": "parameterExists",
+          "return_type": "boolean",
+          "params": [
+            { "name": "className", "type": "String"},
+            { "name": "methodName", "type": "String"},
+            { "name": "parameterName", "type": "String"}
+          ]
+        },
+        {
+          "name": "renameMethod",
+          "return_type": "String",
+          "params": [
+            { "name": "className", "type": "String"},
+            { "name": "oldMethodName", "type": "String"},
+            { "name": "newMethodName", "type": "String"}
+          ]
+        },
+        {
+          "name": "renameMethodType",
+          "return_type": "String",
+          "params": [
+            { "name": "className", "type": "String"},
+            { "name": "methodName", "type": "String"},
+            { "name": "newMethodType", "type": "String"}
+          ]
+        },
+        {
+          "name": "addParameter",
+          "return_type": "String",
+          "params": [
+            { "name": "className", "type": "String"},
+            { "name": "methodName", "type": "String"},
+            { "name": "pName", "type": "String"},
+            { "name": "pType", "type": "String"}
+          ]
+        },
+        {
+          "name": "deleteParameter",
+          "return_type": "String",
+          "params": [
+            { "name": "className", "type": "String"},
+            { "name": "methodName", "type": "String"},
+            { "name": "pName", "type": "String"}
+          ]
+        },
+        {
+          "name": "renameParameter",
+          "return_type": "String",
+          "params": [
+            { "name": "className", "type": "String"},
+            { "name": "methodName", "type": "String"},
+            { "name": "oldPName", "type": "String"},
+            { "name": "newPName", "type": "String"}
+          ]
+        },
+        {
+          "name": "renameParameterType",
+          "return_type": "String",
+          "params": [
+            { "name": "className", "type": "String"},
+            { "name": "methodName", "type": "String"},
+            { "name": "paramName", "type": "String"},
+            { "name": "newPType", "type": "String"}
+          ]
+        },
+        {
+          "name": "deleteAllParameters",
+          "return_type": "String",
+          "params": [
+            { "name": "className", "type": "String"},
+            { "name": "methodName", "type": "String"}
+          ]
+        },
+        {
+          "name": "relationshipExists",
+          "return_type": "boolean",
+          "params": [
+            { "name": "from", "type": "String"},
+            { "name": "to", "type": "String"}
+          ]
+        },
+        {
+          "name": "getRelationship",
+          "return_type": "Relationship",
+          "params": [
+            { "name": "from", "type": "String"},
+            { "name": "to", "type": "String"}
+          ]
+        },
+        {
+          "name": "addRelationship",
+          "return_type": "String",
+          "params": [
+            { "name": "type", "type": "Relationship.RelationshipType"},
+            { "name": "from", "type": "String"},
+            { "name": "to", "type": "String"}
+          ]
+        },
+        {
+          "name": "deleteRelationship",
+          "return_type": "String",
+          "params": [
+            { "name": "from", "type": "String"},
+            { "name": "to", "type": "String"}
+          ]
+        },
+        {
+          "name": "changeRelationshipType",
+          "return_type": "String",
+          "params": [
+            { "name": "newType", "type": "Relationship.RelationshipType"},
+            { "name": "from", "type": "String"},
+            { "name": "to", "type": "String"}
+          ]
+        },
+        {
+          "name": "getUML",
+          "return_type": "UMLClass",
+          "params": [
+            { "name": "name", "type": "String"}
+          ]
+        },
+        {
+          "name": "renameUMLClass",
+          "return_type": "String",
+          "params": [
+            { "name": "oldName", "type": "String"},
+            { "name": "newName", "type": "String"}
+          ]
+        },
+        {
+          "name": "addField",
+          "return_type": "String",
+          "params": [
+            { "name": "className", "type": "String"},
+            { "name": "fieldName", "type": "String"},
+            { "name": "fieldType", "type": "String"}
+          ]
+        },
+        {
+          "name": "deleteField",
+          "return_type": "String",
+          "params": [
+            { "name": "className", "type": "String"},
+            { "name": "fieldName", "type": "String"}
+          ]
+        },
+        {
+          "name": "renameField",
+          "return_type": "String",
+          "params": [
+            { "name": "className", "type": "String"},
+            { "name": "oldFieldName", "type": "String"},
+            { "name": "newFieldName", "type": "String"}
+          ]
+        },
+        {
+          "name": "setCoordinates",
+          "return_type": "String",
+          "params": [
+            { "name": "className", "type": "String"},
+            { "name": "x", "type": "int"},
+            { "name": "y", "type": "int"}
+          ]
+        },
+        {
+          "name": "renameFieldType",
+          "return_type": "String",
+          "params": [
+            { "name": "className", "type": "String"},
+            { "name": "fieldName", "type": "String"},
+            { "name": "newFieldType", "type": "String"}
+          ]
+        },
+        {
+          "name": "getXPosition",
+          "return_type": "int",
+          "params": [
+            { "name": "className", "type": "String"}
+          ]
+        },
+        {
+          "name": "getYPosition",
+          "return_type": "int",
+          "params": [
+            { "name": "className", "type": "String"}
+          ]
+        },
+        {
+          "name": "numberOfClasses",
+          "return_type": "int",
+          "params": [
+          ]
+        },
+        {
+          "name": "methodsPresent",
+          "return_type": "boolean",
+          "params": [
+          ]
+        },
+        {
+          "name": "paramsPresent",
+          "return_type": "boolean",
+          "params": [
+          ]
+        },
+        {
+          "name": "relationshipsPresent",
+          "return_type": "boolean",
+          "params": [
+          ]
+        },
+        {
+          "name": "fieldsPresent",
+          "return_type": "boolean",
+          "params": [
+          ]
+        },
+        {
+          "name": "getDiagramCopy",
+          "return_type": "HashMap<String,UMLClass>",
+          "params": [
+          ]
+        },
+        {
+          "name": "getRelationshipsCopy",
+          "return_type": "ArrayList<Relationships>",
+          "params": [
+          ]
+        },
+        {
+          "name": "undo",
+          "return_type": "boolean",
+          "params": [
+          ]
+        },
+        {
+          "name": "redo",
+          "return_type": "boolean",
+          "params": [
+          ]
+        },
+        {
+          "name": "snapshot",
+          "return_type": "void",
+          "params": [
+          ]
+        },
+        {
+          "name": "canUndo",
+          "return_type": "boolean",
+          "params": [
+          ]
+        },
+        {
+          "name": "canRedo",
+          "return_type": "boolean",
+          "params": [
+          ]
+        }
+      ]
+    },
+    {
+      "name": "GUIHistory",
+      "x_position": "1560",
+      "y_position": "488",
+      "fields": [
+        { "name": "guiHistorySingleton", "type": "GUIHistory" },
+        { "name": "undoHistory", "type": "Stack<GUI>" },
+        { "name": "redoHistory", "type": "Stack<GUI>" }
+      ],
+      "methods": [
+        {
+          "name": "getInstance",
+          "return_type": "GUIHistory",
+          "params": [
+          ]
+        },
+        {
+          "name": "snapshotModel",
+          "return_type": "void",
+          "params": [
+            { "name": "currentGUI", "type": "GUI"}
+          ]
+        },
+        {
+          "name": "undo",
+          "return_type": "GUI",
+          "params": [
+            { "name": "currentGUI", "type": "GUI"}
+          ]
+        },
+        {
+          "name": "redo",
+          "return_type": "GUI",
+          "params": [
+            { "name": "currentGUI", "type": "GUI"}
+          ]
+        },
+        {
+          "name": "isUndoHistoryEmpty",
+          "return_type": "boolean",
+          "params": [
+          ]
+        },
+        {
+          "name": "isRedoHistoryEmpty",
+          "return_type": "boolean",
+          "params": [
+          ]
+        }
+      ]
+    },
+    {
+      "name": "UMLInterface",
+      "x_position": "499",
+      "y_position": "837",
+      "fields": [
+        { "name": "reader", "type": "LineReader" },
+        { "name": "terminal", "type": "Terminal" },
+        { "name": "parser", "type": "ParsedLine" },
+        { "name": "history", "type": "History" },
+        { "name": "highlighter", "type": "Highlighter" }
+      ],
+      "methods": [
+        {
+          "name": "displayWelcome",
+          "return_type": "",
+          "params": [
+          ]
+        },
+        {
+          "name": "setTerminal",
+          "return_type": "",
+          "params": [
+            { "name": "DiagramModel_model", "type": "DiagramModel"}
+          ]
+        },
+        {
+          "name": "getRInput",
+          "return_type": "ArrayList<String>",
+          "params": [
+            { "name": "String_prompt", "type": "String"}
+          ]
+        },
+        {
+          "name": "getInput",
+          "return_type": "ArrayList<String>",
+          "params": [
+            { "name": "String_promptHeader", "type": "String"}
+          ]
+        },
+        {
+          "name": "print",
+          "return_type": "",
+          "params": [
+            { "name": "String_m", "type": "String"}
+          ]
+        },
+        {
+          "name": "splitString",
+          "return_type": "ArrayList<String>",
+          "params": [
+            { "name": "String_input", "type": "String"}
+          ]
+        },
+        {
+          "name": "yesNoDialog",
+          "return_type": "boolean",
+          "params": [
+            { "name": "String_message", "type": "String"}
+          ]
+        }
+      ]
+    }
+  ],
+  "relationships": [
+  ]
+}
