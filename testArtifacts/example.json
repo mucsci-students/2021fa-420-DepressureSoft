@@ -1,0 +1,37 @@
+{
+  "classes": [
+    {
+      "name": "trial2",
+      "x_position": "0",
+      "y_position": "0",
+      "fields": [
+      ],
+      "methods": [
+      ]
+    },
+    {
+      "name": "trial",
+      "x_position": "0",
+      "y_position": "0",
+      "fields": [
+        { "name": "testField", "type": "testType" }
+      ],
+      "methods": [
+        {
+          "name": "testMethod",
+          "return_type": "testType",
+          "params": [
+            { "name": "testParam", "type": "testType"}
+          ]
+        }
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "source": "trial",
+      "destination": "trial2",
+      "type": "inheritance"
+    }
+  ]
+}

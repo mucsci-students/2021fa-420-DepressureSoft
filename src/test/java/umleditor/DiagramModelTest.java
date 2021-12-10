@@ -515,7 +515,7 @@ class DiagramModelTest {
 		testDiagram.addRelationship(Relationship.RelationshipType.INHERITANCE, "trial", "trial2");
 		assertEquals(Relationship.RelationshipType.INHERITANCE,
 			testDiagram.getRelationship("trial", "trial2").getRelationshipType());
-		testDiagram.changeRelationshipType(Relationship.RelationshipType.AGGREGATION, "trial", 
+		testDiagram.changeRelationshipType(Relationship.RelationshipType.AGGREGATION, "trial",
 		"trial2");
 		assertEquals(Relationship.RelationshipType.AGGREGATION,
 			testDiagram.getRelationship("trial", "trial2").getRelationshipType());
@@ -528,7 +528,7 @@ class DiagramModelTest {
 		testDiagram.addRelationship(Relationship.RelationshipType.INHERITANCE, "trial", "trial2");
 		assertEquals(Relationship.RelationshipType.INHERITANCE,
 			testDiagram.getRelationship("trial", "trial2").getRelationshipType());
-		testDiagram.changeRelationshipType(Relationship.RelationshipType.AGGREGATION, "trial", 
+		testDiagram.changeRelationshipType(Relationship.RelationshipType.AGGREGATION, "trial",
 			"trial2");
 		assertEquals(Relationship.RelationshipType.AGGREGATION,
 			testDiagram.getRelationship("trial", "trial2").getRelationshipType());
@@ -651,6 +651,36 @@ class DiagramModelTest {
 		assertEquals("testType", testDiagram.getUML("trial").getField("testField").getFieldType());
 		testDiagram.redo();
 		assertEquals("newType", testDiagram.getUML("trial").getField("testField").getFieldType());
+	}
+
+	@Test
+	@DisplayName("Tests saving and then loading from that save file")
+	void saveLoad() {
+		testDiagram.addField("trial", "testField", "testType");
+		testDiagram.addMethod("trial", "testMethod", "testType");
+		testDiagram.addParameter("trial", "testMethod", "testParam", "testType");
+		testDiagram.addClass("trial2");
+		testDiagram.addRelationship(Relationship.RelationshipType.INHERITANCE, "trial", "trial2");
+		testDiagram.save(System.getProperty("user.dir") + "/testArtifacts/" + "dummy");
+		testDiagram.load(System.getProperty("user.dir") + "/testArtifacts/dummy.json");
+		assertTrue(testDiagram.classExists("trial"));
+		assertTrue(testDiagram.classExists("trial2"));
+		assertTrue(testDiagram.fieldExists("trial", "testField"));
+		assertTrue(testDiagram.methodExists("trial", "testMethod"));
+		assertTrue(testDiagram.parameterExists("trial", "testMethod", "testParam"));
+		testDiagram.relationshipExists("trial", "trial2");
+	}
+
+	@Test
+	@DisplayName("Test load from a \"clean\" load file that is guaranteed to be formatted correctly")
+	void load() {
+		testDiagram.load(System.getProperty("user.dir") + "/testArtifacts/example.json");
+		assertTrue(testDiagram.classExists("trial"));
+		assertTrue(testDiagram.classExists("trial2"));
+		assertTrue(testDiagram.fieldExists("trial", "testField"));
+		assertTrue(testDiagram.methodExists("trial", "testMethod"));
+		assertTrue(testDiagram.parameterExists("trial", "testMethod", "testParam"));
+		testDiagram.relationshipExists("trial", "trial2");
 	}
 
 
